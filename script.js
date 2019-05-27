@@ -1,6 +1,11 @@
 var spellListDatabase = [];
 var availSpellCount = 4;
 var selectedSpellCount = 0;
+//function for adding leading zeros, if needed
+function leadZeros(num, places) {
+  var zero = places - num.toString().length + 1;
+  return Array(+(zero > 0 && zero)).join("0") + num;
+}
 //Remove hidden and disabled attributes on target
 function resetVisibility(target) {
 	target.removeAttr('hidden');
@@ -562,56 +567,49 @@ function populateSpells() {
 	//to retrieve any spells associated with that attribute
 	$.each(selOptions, function(index,curOption) {
 		for (var i = 0; i < spellListDatabase.length; i++) {
+			//Define variables for the current spell
+			var spellName = spellListDatabase[i].name;
 			var spellTier = spellListDatabase[i].tier;
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
+			var spellRequired = spellListDatabase[i].required.includes("TRUE");
+			var spellType = spellListDatabase[i].type.toLowerCase() + "-spell";
+			var spellDescription = spellListDatabase[i].description;
+			var spellCost = spellListDatabase[i].cost;
+			var spellDuration = spellListDatabase[i].duration;
+			var spellEffect = spellListDatabase[i].aftereffect;
+			var spellRange = spellListDatabase[i].range;
+			var spellCooldown = spellListDatabase[i].cooldown;
+			var spellDamage = spellListDatabase[i].damage;
+			var spellOrigin;
+			switch ( curOption.charAt(0) ) {
+				case "D":
+				spellOrigin = $('#descriptor option[value="' + optionID + '"]').text();
+				break;
+				case "S":
+				spellOrigin = $('#species option[value="' + optionID + '"]').text();
+				break;
+				case "T":
+				spellOrigin = $('#type option[value="' + optionID + '"]').text();
+				break;
+				case "F":
+				spellOrigin = $('#focus option[value="' + optionID + '"]').text();
+				break;
+				case "V":
+				spellOrigin = $('#focus option[value="' + optionID + '"]').text();
+				break;
+				default:
+				spellOrigin = "";
+			}
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier ) {
-				//Define variables for the current spell
-				var spellType = spellListDatabase[i].type;
-				var spellCost = spellListDatabase[i].cost;
-				var spellDuration = spellListDatabase[i].duration;
-				var spellEffect = spellListDatabase[i].aftereffect;
-				var spellRange = spellListDatabase[i].range;
-				var spellCooldown = spellListDatabase[i].cooldown;
-				var spellDamage = spellListDatabase[i].damage;
-				var spellOrigin;
-				switch ( spellType ) {
-					case "Action":
-					spellType = "action-spell";
-					break;
-					case "Lore":
-					spellType = "lore-spell";
-					break;
-					default:
-					spellType = "";
-				}
-				switch ( curOption.charAt(0) ) {
-					case "D":
-					spellOrigin = $('#descriptor option[value="' + optionID + '"]').text();
-					break;
-					case "S":
-					spellOrigin = $('#species option[value="' + optionID + '"]').text();
-					break;
-					case "T":
-					spellOrigin = $('#type option[value="' + optionID + '"]').text();
-					break;
-					case "F":
-					spellOrigin = $('#focus option[value="' + optionID + '"]').text();
-					break;
-					case "V":
-					spellOrigin = $('#focus option[value="' + optionID + '"]').text();
-					break;
-					default:
-					spellOrigin = "";
-				}
+			if (( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['action-spell','enabler-spell','talent-spell','select-spell'].includes(spellType)) || ( !spellRequired && spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && spellType == "passive-spell" )) {
+				//Set the order of the spell in the flex-box by its Tier and name
+				var spellOrder = parseInt(String(2) + String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.charCodeAt(0)) - 64,2) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
-				if ( spellType == "lore-spell" ) {
-					spellTier = '<div class="spell-tier">LORE</div>';
-				} else if ( spellTier == 0 ) {
+				if ( spellTier == 0 ) {
 					spellTier = '<div class="spell-tier">BASELINE</div>';
 				} else {
 					spellTier = '<div class="spell-tier">TIER ' + spellTier + '</div>';
@@ -640,12 +638,12 @@ function populateSpells() {
 					$('#' + spellID + ' .spell-origin').text(spellOrigin);
 				} else {
 					$('#spell-list').append(
-						'<div id="' + spellID + '" class="spell" style="order: ' + parseInt(spellID) + '">' +
-						'<div class="spell-name">' +
+						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
+						'<h3 class="spell-name">' +
 						'<div class="spell-icon ' + spellType + '"></div>' +
-						spellListDatabase[i].name +
+						spellName +
 						spellTier +
-						'</div>' +
+						'</h3>' +
 						'<div class="spell-border">' +
 						'<div class="stats-left">' +
 						spellCost +
@@ -656,8 +654,8 @@ function populateSpells() {
 						spellRange +
 						spellCooldown +
 						'</div>' +
-						'<div class="description">' +
-						spellListDatabase[i].description +
+						'<div class="spell-description">' +
+						spellDescription +
 						'</div>' +
 						'<div class="stats-left">' +
 						spellDamage +
@@ -673,19 +671,36 @@ function populateSpells() {
 				}
 				//Push this spell to the spell list array
 				spellsList.push(spellID);
+				//If this spell is marked as required, add the
+				//required class, which disables interaction but
+				//highlights the spell as automatically selected
+				if ( spellRequired ) {
+					$('#' + spellID).addClass('required');
+					$('#' + spellID).css('order', parseInt(String(1) + String($('#' + spellID).css('order').substring(1))));
+				}
+			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellType == "lore-spell" ) {
+				//Set the order of the spell in the flex-box by its name
+				var spellOrder = parseInt(String(parseInt(spellName.charCodeAt(0)) - 64) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
+				if ( $('#' + spellID).length <= 0 ) {
+					$('#lore-area').append(
+						'<div id="' + spellID + '" class="lore" style="order: ' + spellOrder + '">' +
+						'<h3 class="lore-name">' +
+						spellName + " Lore" +
+						'</h3>' +
+						'<div class="lore-description">' +
+						spellDescription +
+						'</div>' +
+						'</div>'
+					);
+				}
+				//Push this spell to the spell list array
+				spellsList.push(spellID);
 			}
-			//If this spell is marked as required, add the
-			//required class, which disables interaction but
-			//highlights the spell as automatically selected
-			if ( spellListDatabase[i].required == "TRUE" ) {
-				var spellID = spellListDatabase[i].id;
-				$('#' + spellID).addClass('required');
-			}			
 		}
 	});
 	//Remove any spells that are not
 	//in the active spell list array
-	$('.spell').each( function() {
+	$('.spell, .lore').each( function() {
 		var spellID = $(this).attr('id');
 		if( $.inArray(spellID,spellsList) < 0 ) {
 			$(this).remove();
@@ -750,15 +765,18 @@ $(function() {
 	var resetSection = $('#reset-button');
 	var resetBtn = $('#reset-button div');
 	var spellList = $('#spell-list');
+	var spellButton = $('#spellbook-area .spellbook-button');
+	var spellModal = $('#spellbook-background');
+	var loreArea = $('#lore-area');
 	//Set the initial character tier
 	var curTier = 1;
-	//Spell list database URL and array
-	var spellListDatabaseURL = 'https://docs.google.com/spreadsheets/d/133J5k_1XfoPxFiWuVXcztwIunjamNA7YGTh11zS0U_M/edit?usp=sharing';
 	//Setup spell list database
 	Tabletop.init({
-		key: spellListDatabaseURL,
+		key: 'https://docs.google.com/spreadsheets/d/133J5k_1XfoPxFiWuVXcztwIunjamNA7YGTh11zS0U_M/edit?usp=sharing',
 		callback: function (data, tabletop) {
 			spellListDatabase = data;
+			$('#warning').text('👍 DATABASE PULLED 👍');
+			$('#warning').css('background-color','green');
 		},
 		simpleSheet: true
 	});
@@ -839,7 +857,7 @@ $(function() {
 		priFoci.val('');
 		secFoci.val('');
 		variants.val('');
-		$('.spell').remove();
+		$('.spell, .lore').remove();
 		secFociSection.addClass('hidden-section');
 		resetSection.addClass('hidden-section');
 		genVariation.addClass('hidden-section');
@@ -891,9 +909,11 @@ $(function() {
 	spellList.on('click', '.spell', function() {
 		if ( $(this).hasClass('required') == false && $(this).hasClass('selected') == false && selectedSpellCount < availSpellCount ) {
 			$(this).addClass('selected');
+			$(this).css('order', parseInt(String(1) + String($(this).css('order').substring(1))));
 			++selectedSpellCount;
 		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
 			$(this).removeClass('selected');
+			$(this).css('order', parseInt(String(2) + String($(this).css('order').substring(1))));
 			--selectedSpellCount;
 		}
 		if ( selectedSpellCount === availSpellCount ) {
@@ -901,18 +921,31 @@ $(function() {
 		} else {
 			$('.spell').removeClass('disabled-spell');
 		}
-		if ( $(this).hasClass('disabled-spell') ) {
-			alert('You have selected the maximum number of abilities for Tier ' + curTier + '! Deselect abilities, or wait until you get to the next tier.');
+		if ( availSpellCount - selectedSpellCount === 0 ) {
+			spellButton.text('Abilities');
+		} else if ( availSpellCount - selectedSpellCount === 1 ) {
+			spellButton.text(availSpellCount - selectedSpellCount + ' Ability Available'); 
+		} else {
+			spellButton.text(availSpellCount - selectedSpellCount + ' Abilities Available'); 
 		}
-		$('#spellbook-area .spellbook-button').text(availSpellCount - selectedSpellCount + ' Abilities Available'); 
 	});
 	//Show spellbook modal on click
 	$('.spellbook-button, #spellbook-background, #spellbook-wrapper').click( function(e) {
 		if(e.target !== e.currentTarget) return;
-		if ( $('#spellbook-background').hasClass('invisible-section') ) {
-			$('#spellbook-background').removeClass('invisible-section');
+		if ( spellModal.hasClass('invisible-section') ) {
+			spellModal.removeClass('invisible-section');
+			$('body').css('overflow','hidden');
 		} else {
-			$('#spellbook-background').addClass('invisible-section');
+			spellModal.addClass('invisible-section');
+			$('body').css('overflow','auto');
 		}
+	});
+	//Toggle lore accordions on lore name click
+	loreArea.on('click', '.lore-name', function() {
+		var thisLore = $(this).parent('.lore').children('.lore-description');
+		$('.lore-description:visible').not(thisLore).slideToggle(500);
+		$('.lore-name').removeClass('expanded');
+		$(this).toggleClass('expanded');
+		thisLore.slideToggle(500);
 	});
 });
