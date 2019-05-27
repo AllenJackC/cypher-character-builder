@@ -8,7 +8,7 @@ https://docs.google.com/spreadsheets/d/133J5k_1XfoPxFiWuVXcztwIunjamNA7YGTh11zS0
 * Tooltips
 * Buffs
 * Round tracker (works with buffs)
-* Lore section
+* ~~Lore section~~
 * Items/Cyphers/Artifacts
 * Cyberware
 * Damage tracker
