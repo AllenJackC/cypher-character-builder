@@ -22,5 +22,6 @@ https://docs.google.com/spreadsheets/d/133J5k_1XfoPxFiWuVXcztwIunjamNA7YGTh11zS0
 * Damage track
 * Contact list
 * Skill list
+* Credit plugins
 * Rules and guide
 * Starship builder
