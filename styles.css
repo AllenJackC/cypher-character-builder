@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:700,900|Oswald:400,700');
+/*------------
+ELEMENT RESETS
+-------------*/
+body {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	color: #212931;
+	background-color: #212931;
+	text-align: left;
+	font-family: 'Lato', sans-serif;
+	pointer-events: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#wrapper {
+	width: 100%;
+	height: 100%;
+	display: flex;
+}
+input, select, div.chosen-container {
+	pointer-events: auto;
+	-webkit-touch-callout: auto;
+	-webkit-user-select: auto;
+	-khtml-user-select: auto;
+	-moz-user-select: auto;
+	-ms-user-select: auto;
+	user-select: auto;
+}
+input, select {
+	width: calc( 100% - 1px );
+	padding: 6px;
+	border: none;
+	background-color: #FBFBFB;
+	color: #212931;
+}
+input {
+	padding: 8px 6px 6px 6px;
+}
+h2 {
+    color: #FBFBFB;
+    font-family: 'Oswald', sans-serif;
+	font-size: 35px;
+    line-height: 1em;
+	margin: 0;
+}
+strong {
+	font-weight: 800;
+}
+.hidden-section {
+	display: none!important;
+}
+.invisible-section {
+	visibility: hidden;
+}
+
+/*------------------
+CHARACTER ATTRIBUTES
+------------------*/
+#char-attributes {
+	max-width: 660px;
+}
+.char-attribute-row {
+	display: flex;
+	margin: 15px;
+}
+.char-attribute-row > div:nth-last-child(n+2){
+	margin-right: 15px;
+}
+
+/* Text in between inputs */
+.char-attribute-connectors {
+	line-height: 37px;
+	color: #FBFBFB;
+	font-family: 'Oswald', sans-serif;
+}
+
+/* Character attributes */
+.char-attribute {
+	display: flex;
+	flex-wrap: wrap;
+	flex-shrink: 0;
+	width: 100%;
+}
+.char-attribute-input-border {
+	background: #6C501B;
+	background: -moz-linear-gradient(top, #212931 0%, #6C501B 100%);
+	background: -webkit-linear-gradient(top, #212931 0%,#6C501B 100%);
+	background: linear-gradient(to bottom, #212931 0%,#6C501B 100%);
+	padding: 4px;
+	width: 100%;
+}
+.input-line {
+	width: calc( 100% - 12px)
+}
+label.under-label {
+	background: #6C501B;
+    color: #FBFBFB;
+    min-width: fit-content;
+    width: 20%;
+    padding: 2px 25px 2px 5px;
+    font-family: 'Oswald', sans-serif;
+}
+
+/* Buttons */
+.char-attribute-button {
+	height: 28px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 100%;
+	position: relative;
+	top: -28px;
+	margin-bottom: -28px;
+}
+.char-attribute-button div {
+	background-color: #212931;
+	color: #bdbddb;
+	box-shadow: inset 0 0 0 1px #bdbddb;
+	padding: 4px 4px 5px 4px;
+    line-height: 9px;
+    display: inline-flex;
+	font-size: 12px;
+	cursor: pointer;
+	pointer-events: auto;
+}
+.char-attribute-button div:hover {
+	color: #dedeed;
+	box-shadow: inset 0 0 0 1px #dedeed;
+}
+.char-attribute-button div:active {
+	color: #9c9cc9;
+	box-shadow: inset 0 0 0 1px #9c9cc9;
+}
+#reset-button div {
+	padding: 4px 5px 5px 4px;
+}
+.clicked {
+    background-color: #6C501B!important;
+	color: #FBFBFB!important;
+	box-shadow: none!important;
+}
+.clicked:hover {
+	background: #7a5a1f!important;
+}
+.clicked:active {
+	background: #513c15!important;
+}
+/*--------
+SPELL AREA
+---------*/
+#spellbook-area {
+	padding: 15px;
+}
+.spellbook-button {
+	width: fit-content;
+	background: #6C501B;
+    color: #FBFBFB;
+    padding: 8px 20px;
+    font-family: 'Oswald', sans-serif;
+	cursor: pointer;
+	pointer-events: auto;
+}
+.spellbook-button:hover {
+	background: #7a5a1f;
+}
+.spellbook-button:active {
+	background: #513c15;
+}
+/*--------
+SPELLBOOK
+---------*/
+#spellbook-background {
+	width: 100%;
+	height: 100%;
+	background: rgba(33, 41, 49, 0.8);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	overflow-y: auto;
+    pointer-events: auto;
+}
+#spellbook-wrapper {
+	display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+	max-width: 800px;
+	margin: 0 auto;
+	pointer-events: none;
+	padding: 30px;
+}
+#spellbook-title {
+	display:flex;
+	align-items: center;
+}
+#spellbook-title img {
+	width: 48px;
+	height: 48px;
+	margin-right: 10px;
+}
+#spell-list {
+	padding: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	flex-basis: 100%;
+}
+.spell {
+	background-color: #FBFBFB;
+	color: #212931;
+	border-radius: 12px;
+	font-size: 13px;
+	line-height: 18px;
+	margin: 10px;
+	cursor: pointer;
+	pointer-events: auto;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+.spell-icon {
+	background-image: url('images/unknown.png');
+	background-size: cover;
+	height: 24px;
+	width: 24px;
+	margin-right: 7px;
+	margin-bottom: -3px;
+	display: inline-block;
+}
+.action-spell {
+	background-image: url('images/action.png');
+}
+.lore-spell {
+	background-image: url('images/lore.png');
+}
+.spell-name {
+	background-color: #6C501B;
+	color: #FBFBFB;
+    font-family: 'Oswald', sans-serif;
+    padding: 12px 15px 15px 15px;
+    font-size: 21px;
+    line-height: 21px;
+	border-radius: 8px 8px 0 0;
+}
+.spell-tier {
+	float:right;
+	display: inline-block;
+}
+.stats-left {
+	padding: 20px;
+	float: left;
+}
+.stats-right {
+	padding: 20px;
+	text-align: right;
+	float: right;
+}
+.stats-left:empty, .stats-right:empty {
+	padding-top: 0!important;
+}
+.stats-right span, .stats-left span {
+	display: block;
+}
+.description {
+	padding: 0 20px;
+	clear: both;
+}
+.spell-origin {
+	color: #637180;
+	font-style: italic;
+}
+.required {
+	cursor: default;
+	pointer-event: none;
+}
+.selected .spell-name, .required .spell-name {
+	background-color: #e6b83d;
+	color: #212931;
+}
+.selected .spell-border, .required .spell-border {
+	border-color: #e6b83d;
+}
+.selected .spell-icon, .required .spell-icon {
+	filter: brightness(15%);
+}
+.disabled-spell {
+	filter: grayscale(80%);
+    opacity: 0.6;
+	pointer-event: none;
+	cursor: default;
+}
+/*-------------------
+CHOSEN.JS – CSS FIXES
+-------------------*/
+.chosen-single, .chosen-drop {
+	border-radius:0!important;
+	background: #FBFBFB!important;
+	color: #212931!important;
+}
+.chosen-default {
+	color: #4a5764!important;
+	font-style: italic!important;
+}
+
+/*------------
+RESPONSIVE CSS
+------------*/
+@media only screen and (max-width: 800px) {
+	.char-attribute, .char-attribute-connectors {
+		width: 100%!important;
+		padding-bottom: 10px;
+	}
+	.chosen-container {
+		width: 100%!important;
+	}
+	.char-attribute-connectors {
+		line-height: 18px;
+	}
+	.char-attribute-row {
+		flex-wrap: wrap;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.char-attribute-button {
+		right: 0!important;
+	}
+}

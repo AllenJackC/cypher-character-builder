@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Immortal Freedom Character Sheet</title>
+	<link href="styles.css" rel="stylesheet" type="text/css">
+	<link href="plugins/chosen.min.css" rel="stylesheet" type="text/css">
+	<script src="plugins/jquery-3.3.1.min.js" type="text/javascript">
+	</script>
+	<script src="script.js" type="text/javascript">
+	</script>
+	<script src="plugins/chosen.jquery.min.js" type="text/javascript">
+	</script>
+	<script src="plugins/tabletop.min.js" type="text/javascript">
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+		<!------------------------
+		BASIC CHARACTER ATTRIBUTES
+		------------------------->
+		<div id="char-attributes">
+			<!-- NAME -->
+			<div class="char-attribute-row">
+				<div class="char-attribute">
+					<div class="char-attribute-input-border">
+						<input id="name" class="input-line">
+					</div>
+					<label class="under-label" for="name">NAME</label>
+				</div>
+			</div>
+			<!-- DESCRIPTOR, SPECIES & TYPE -->
+			<div class="char-attribute-row">
+				<div class="char-attribute-connectors">
+					IS A
+				</div>
+				<!-- DESCRIPTOR -->
+				<div class="char-attribute" style="width: 175px">
+					<div class="char-attribute-input-border">
+						<select id="descriptor">
+							<option value="">
+							</option>
+							<option value="A1">
+								Abrasive
+							</option>
+							<option value="A2">
+								Addicted
+							</option>
+							<option value="A3">
+								Adroit
+							</option>
+							<option value="A4">
+								Aggressive
+							</option>
+							<option value="A5">
+								Altruistic
+							</option>
+							<option value="A6">
+								Amusing
+							</option>
+							<option value="A7">
+								Angry
+							</option>
+							<option value="A8">
+								Appealing
+							</option>
+							<option value="A9">
+								Beneficent
+							</option>
+							<option value="B1">
+								Brash
+							</option>
+							<option value="B2">
+								Calm
+							</option>
+							<option value="B3">
+								Chaotic
+							</option>
+							<option value="B4">
+								Charming
+							</option>
+							<option value="B5">
+								Clever
+							</option>
+							<option value="B6">
+								Clumsy
+							</option>
+							<option value="B7">
+								Compassionate
+							</option>
+							<option value="B8">
+								Corrupted
+							</option>
+							<option value="B9">
+								Craven
+							</option>
+							<option value="C1">
+								Crazy
+							</option>
+							<option value="C2">
+								Creative
+							</option>
+							<option value="C3">
+								Cruel
+							</option>
+							<option value="C4">
+								Dangerous
+							</option>
+							<option value="C5">
+								Daring
+							</option>
+							<option value="C6">
+								Deliberate
+							</option>
+							<option value="C7">
+								Desert-Dwelling
+							</option>
+							<option value="C8">
+								Devout
+							</option>
+							<option value="C9">
+								Dishonorable
+							</option>
+							<option value="D1">
+								Doomed
+							</option>
+							<option value="D2">
+								Driven
+							</option>
+							<option value="D3">
+								Earnest
+							</option>
+							<option value="D4">
+								Efficient
+							</option>
+							<option value="D5">
+								Elite
+							</option>
+							<option value="D6">
+								Empathic
+							</option>
+							<option value="D7">
+								Empirical
+							</option>
+							<option value="D8">
+								Exiled
+							</option>
+							<option value="D9">
+								Extroverted
+							</option>
+							<option value="E1">
+								Fabulous
+							</option>
+							<option value="E2">
+								Famous
+							</option>
+							<option value="E3">
+								Fast
+							</option>
+							<option value="E4">
+								Fearless
+							</option>
+							<option value="E5">
+								Foolish
+							</option>
+							<option value="E6">
+								Gluttonous
+							</option>
+							<option value="E7">
+								Graceful
+							</option>
+							<option value="E8">
+								Gregarious
+							</option>
+							<option value="E9">
+								Guarded
+							</option>
+							<option value="F1">
+								Hardy
+							</option>
+							<option value="F2">
+								Hedonistic
+							</option>
+							<option value="F3">
+								Heroic
+							</option>
+							<option value="F4">
+								Hideous
+							</option>
+							<option value="F5">
+								Honorable
+							</option>
+							<option value="F6">
+								Humble
+							</option>
+							<option value="F7">
+								Infected
+							</option>
+							<option value="F8">
+								Impulsive
+							</option>
+							<option value="F9">
+								Inquisitive
+							</option>
+							<option value="G1">
+								Insolent
+							</option>
+							<option value="G2">
+								Intelligent
+							</option>
+							<option value="G3">
+								Intimidating
+							</option>
+							<option value="G4">
+								Introverted
+							</option>
+							<option value="G5">
+								Intuitive
+							</option>
+							<option value="G6">
+								Jinxed
+							</option>
+							<option value="G7">
+								Jovial
+							</option>
+							<option value="G8">
+								Kind
+							</option>
+							<option value="G9">
+								Know-It-All
+							</option>
+							<option value="H1">
+								Lawful
+							</option>
+							<option value="H2">
+								Learned
+							</option>
+							<option value="H3">
+								Lonely
+							</option>
+							<option value="H4">
+								Lucky
+							</option>
+							<option value="H5">
+								Mad
+							</option>
+							<option value="H6">
+								Manipulative
+							</option>
+							<option value="H7">
+								Materialistic
+							</option>
+							<option value="H8">
+								Mechanical
+							</option>
+							<option value="H9">
+								Meddlesome
+							</option>
+							<option value="I1">
+								Meek
+							</option>
+							<option value="I2">
+								Mercurial
+							</option>
+							<option value="I3">
+								Meticulous
+							</option>
+							<option value="I4">
+								Mysterious
+							</option>
+							<option value="I5">
+								Naive
+							</option>
+							<option value="I6">
+								Obsessive
+							</option>
+							<option value="I7">
+								Offworlder
+							</option>
+							<option value="I8">
+								Paranoid
+							</option>
+							<option value="I9">
+								Passionate
+							</option>
+							<option value="J1">
+								Patient
+							</option>
+							<option value="J2">
+								Perceptive
+							</option>
+							<option value="J3">
+								Poker-Faced
+							</option>
+							<option value="J4">
+								Polyglot
+							</option>
+							<option value="J5">
+								Psi Sensitive
+							</option>
+							<option value="J6">
+								Rebellious
+							</option>
+							<option value="J7">
+								Relentless
+							</option>
+							<option value="J8">
+								Resilient
+							</option>
+							<option value="J9">
+								Resolute
+							</option>
+							<option value="K1">
+								Resourceful
+							</option>
+							<option value="K2">
+								Rugged
+							</option>
+							<option value="K3">
+								Savage
+							</option>
+							<option value="K4">
+								Serene
+							</option>
+							<option value="K5">
+								Sharp-Eyed
+							</option>
+							<option value="K6">
+								Shy
+							</option>
+							<option value="K7">
+								Skeptical
+							</option>
+							<option value="K8">
+								Slacker
+							</option>
+							<option value="K9">
+								Slick
+							</option>
+							<option value="L1">
+								Spiritual
+							</option>
+							<option value="L2">
+								Stealthy
+							</option>
+							<option value="L3">
+								Strong
+							</option>
+							<option value="L4">
+								Strong-Willed
+							</option>
+							<option value="L5">
+								Swift
+							</option>
+							<option value="L6">
+								Tongue-Tied
+							</option>
+							<option value="L7">
+								Tough
+							</option>
+							<option value="L8">
+								Traumatized
+							</option>
+							<option value="L9">
+								Utilitarian
+							</option>
+							<option value="M1">
+								Unforgiving
+							</option>
+							<option value="M2">
+								Vengeful
+							</option>
+							<option value="M3">
+								Vigilant
+							</option>
+							<option value="M4">
+								Virtuous
+							</option>
+							<option value="M5">
+								Volcanic
+							</option>
+							<option value="M6">
+								Wandering
+							</option>
+							<option value="M7">
+								Wealthy
+							</option>
+							<option value="M8">
+								Weird
+							</option>
+							<option value="M9">
+								Wise
+							</option>
+							<option value="N1">
+								World Weary
+							</option>
+							<option value="N2">
+								Young
+							</option>
+						</select>
+					</div>
+					<label class="under-label" for="descriptor">DESCRIPTOR</label>
+				</div>
+				<!-- SPECIES -->
+				<div class="char-attribute" style="width:145px">
+					<div class="char-attribute-input-border">
+						<select id="species">
+							<option value="">
+							</option>
+							<option value="0">
+								Aeyan
+							</option>
+							<option value="1">
+								Erelan
+							</option>
+							<option data-story-arc="3" value="2">
+								Ewoche
+							</option>
+							<option value="3">
+								K'ohma
+							</option>
+							<option data-story-arc="2" value="4">
+								Megor
+							</option>
+							<option value="5">
+								Natix'huav
+							</option>
+							<option value="6">
+								Terran
+							</option>
+							<option data-story-arc="3" value="7">
+								Uisi
+							</option>
+							<option data-story-arc="2" value="8">
+								Zao
+							</option>
+						</select>
+					</div>
+					<label class="under-label" for="species">SPECIES</label>
+					<!-- HYBRID TOGGLE -->
+					<div title="Hybrid" class="char-attribute-button" id="hybrid-button">
+						<div>
+							H
+						</div>
+					</div>
+				</div>
+				<!-- TYPE -->
+				<div class="char-attribute" style="width:190px">
+					<div class="char-attribute-input-border">
+						<select id="type">
+							<option data-available-species="" data-available-sec-species="" value="">
+							</option>
+							<option data-available-species="012345678" data-available-sec-species="012345678" value="A0">
+								Citizen
+							</option>
+							<option data-available-species="016" data-available-sec-species="016" value="A1">
+								Divine Cleric
+							</option>
+							<option data-available-species="016" data-available-sec-species="016" value="A2">
+								Dragoon
+							</option>
+							<option data-available-species="2456" data-available-sec-species="012345678" value="A3">
+								Elementalist
+							</option>
+							<option data-available-species="012345678" data-available-sec-species="012345678" value="A4">
+								Explorer
+							</option>
+							<option data-available-species="012345678" data-available-sec-species="012345678" value="A5">
+								Field Medic
+							</option>
+							<option data-available-species="1" data-available-sec-species="016" value="A6">
+								Keeper
+							</option>
+							<option data-available-species="012345678" data-available-sec-species="012345678" value="A7">
+								Outlaw
+							</option>
+							<option data-available-species="1" data-available-sec-species="016" value="A8">
+								Priestess of Ay'driel
+							</option>
+							<option data-available-species="012345678" data-available-sec-species="012345678" value="A9">
+								Ranger
+							</option>
+							<option data-available-species="01468" data-available-sec-species="012345678" value="B0">
+								Recondite
+							</option>
+							<option data-available-species="01234678" data-available-sec-species="01234678" value="B1">
+								Shadow Warrior
+							</option>
+							<option data-available-species="345" data-available-sec-species="012345678" value="B2">
+								Shaman
+							</option>
+							<option data-available-species="012345678" data-available-sec-species="012345678" value="B3">
+								Soldier
+							</option>
+							<option data-available-species="012345678" data-available-sec-species="012345678" value="B4">
+								Tech Expert
+							</option>
+							<option data-available-species="06" data-available-sec-species="016" data-story-arc="2" value="B5">
+								Vindicator
+							</option>
+						</select>
+					</div>
+					<label class="under-label" for="type">TYPE</label>
+					<!-- RESET BUTTON -->
+					<div title="Reset Options" class="char-attribute-button hidden-section" id="reset-button" style="right: -50px;">
+						<div>
+							R
+						</div>
+					</div>
+				</div>
+				<div class="char-attribute-connectors">
+					WHO
+				</div>
+			</div>
+			<!-- GENDER & FOCUS -->
+			<div class="char-attribute-row">
+				<div class="char-attribute-connectors" style="width:94px">
+					IDENTIFIES AS
+				</div>
+				<!-- GENDER -->
+				<div class="char-attribute" style="width:145px">
+					<div class="char-attribute-input-border">
+						<input class="input-line" id="gender">
+					</div>
+					<label class="under-label" for="gender">GENDER</label>
+				</div>
+				<div class="char-attribute-connectors" style="width:63px">
+					AND WHO
+				</div>
+				<!-- FOCUS -->
+				<div class="char-attribute" style="width:283px">
+					<div class="char-attribute-input-border">
+						<select id="focus">
+							<option value="" data-restricted-types="" data-restricted-species="">
+							</option>
+							<option value="A1" data-restricted-types="" data-restricted-species="">
+								Assists a Mad Genius
+							</option>
+							<option value="A2" data-restricted-types="A3A8B0" data-restricted-species="">
+								Awakens Psionic Powers
+							</option>
+							<option value="A3" data-restricted-types="" data-restricted-species="">
+								Battles Robots
+							</option>
+							<option value="A4" data-restricted-types="" data-restricted-species="">
+								Blows Stuff Up
+							</option>
+							<option value="A5" data-restricted-types="" data-restricted-species="">
+								Braves Precursor Ruins
+							</option>
+							<option value="A6" data-restricted-types="" data-restricted-species="">
+								Builds Robots
+							</option>
+							<option value="A7" data-restricted-types="" data-restricted-species="">
+								Calculates the Incalculable
+							</option>
+							<option value="A8" data-restricted-types="" data-restricted-species="">
+								Carries an Energy Bow
+							</option>
+							<option value="A9" data-restricted-types="A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" data-restricted-species="">
+								Changes the Nature of Things
+							</option>
+							<option value="B1" data-restricted-types="" data-restricted-species="">
+								Charges Right In
+							</option>
+							<option value="B2" data-restricted-types="" data-restricted-species="">
+								Charms the Unwary
+							</option>
+							<option value="B3" data-restricted-types="" data-restricted-species="">
+								Cloisters Away from Society
+							</option>
+							<option value="B4" data-restricted-types="" data-restricted-species="">
+								Collects Bounties
+							</option>
+							<option value="B5" data-restricted-types="" data-restricted-species="">
+								Commands Mental Powers
+							</option>
+							<option value="B6" data-restricted-types="" data-restricted-species="">
+								Conceals the Truth
+							</option>
+							<option value="B7" data-restricted-types="" data-restricted-species="">
+								Conducts Rocket Science
+							</option>
+							<option value="B8" data-restricted-types="" data-restricted-species="">
+								Conducts Weird Science
+							</option>
+							<option value="B9" data-restricted-types="" data-restricted-species="">
+								Controls Beasts
+							</option>
+							<option value="C1" data-restricted-types="" data-restricted-species="">
+								Crafts Unique Objects
+							</option>
+							<option value="C2" data-restricted-types="" data-restricted-species="">
+								Defends the Weak
+							</option>
+							<option value="C3" data-restricted-types="" data-restricted-species="">
+								Devotes Everything to the Cause
+							</option>
+							<option value="C4" data-restricted-types="" data-restricted-species="">
+								Doesn't Do Much
+							</option>
+							<option value="C5" data-restricted-types="" data-restricted-species="">
+								Embeds Crystals Into Their Skin
+							</option>
+							<option value="C6" data-restricted-types="" data-restricted-species="">
+								Employs Sex Appeal
+							</option>
+							<option value="C7" data-restricted-types="" data-restricted-species="">
+								Enjoys a Position of Power
+							</option>
+							<option value="C8" data-restricted-types="" data-restricted-species="">
+								Entertains
+							</option>
+							<option value="C9" data-restricted-types="" data-restricted-species="">
+								Excels Physically
+							</option>
+							<option value="D1" data-restricted-types="" data-restricted-species="">
+								Exists Partially Out of Phase
+							</option>
+							<option value="D2" data-restricted-types="B0" data-restricted-species="">
+								Experiences Savant Syndrome
+							</option>
+							<option value="D3" data-restricted-types="" data-restricted-species="">
+								Explores Dark Places
+							</option>
+							<option value="D4" data-restricted-types="" data-restricted-species="">
+								Explores Deep Waters
+							</option>
+							<option value="D5" data-restricted-types="" data-restricted-species="">
+								Fights Dirty
+							</option>
+							<option value="D6" data-restricted-types="" data-restricted-species="">
+								Fights for a Cause
+							</option>
+							<option value="D7" data-restricted-types="" data-restricted-species="">
+								Fights With Panache
+							</option>
+							<option value="D8" data-restricted-types="" data-restricted-species="">
+								Figures Things Out
+							</option>
+							<option value="D9" data-restricted-types="" data-restricted-species="">
+								Finds the Flaw in Things
+							</option>
+							<option value="E1" data-restricted-types="" data-restricted-species="">
+								Flies Like a Maniac
+							</option>
+							<option value="E2" data-restricted-types="" data-restricted-species="">
+								Forges a Bond
+							</option>
+							<option value="E3" data-restricted-types="" data-restricted-species="">
+								Fuses Flesh and Steel
+							</option>
+							<option value="E4" data-restricted-types="" data-restricted-species="">
+								Fuses Mind and Machine
+							</option>
+							<option value="E5" data-restricted-types="" data-restricted-species="">
+								Goes Berserk
+							</option>
+							<option value="E6" data-restricted-types="" data-restricted-species="">
+								Governs
+							</option>
+							<option value="E7" data-restricted-types="" data-restricted-species="">
+								Harnesses the Body's Rythms
+							</option>
+							<option value="E8" data-restricted-types="" data-restricted-species="">
+								Has More Money Than Sense
+							</option>
+							<option value="E9" data-restricted-types="" data-restricted-species="">
+								Hunts Aliens
+							</option>
+							<option value="F1" data-restricted-types="" data-restricted-species="">
+								Hunts Dangerous Beasts
+							</option>
+							<option value="F2" data-restricted-types="" data-restricted-species="">
+								Hunts Recondites
+							</option>
+							<option value="F3" data-restricted-types="" data-restricted-species="">
+								Hunts With Great Skill
+							</option>
+							<option value="F4" data-restricted-types="" data-restricted-species="">
+								Imparts Wisdom
+							</option>
+							<option value="F5" data-restricted-types="" data-restricted-species="">
+								Induces Hallucinations
+							</option>
+							<option value="F6" data-restricted-types="" data-restricted-species="">
+								Infiltrates
+							</option>
+							<option value="F7" data-restricted-types="" data-restricted-species="">
+								Interprets the Law
+							</option>
+							<option value="F8" data-restricted-types="A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" data-restricted-species="">
+								is Born of Flame
+							</option>
+							<option value="F9" data-restricted-types="" data-restricted-species="">
+								is Commissioned by the State
+							</option>
+							<option value="G1" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								is Cryokinetic
+							</option>
+							<option value="G2" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								is Electrokinetic
+							</option>
+							<option value="G3" data-restricted-types="" data-restricted-species="">
+								is Idolized by Millions
+							</option>
+							<option value="G4" data-restricted-types="" data-restricted-species="">
+								is Licensed to Carry
+							</option>
+							<option value="G5" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								is Pyrokinetic
+							</option>
+							<option value="G6" data-restricted-types="A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" data-restricted-species="">
+								is Stoneskined
+							</option>
+							<option value="G7" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								is the Eye of the Storm
+							</option>
+							<option value="G8" data-restricted-types="" data-restricted-species="">
+								Keeps the Peace
+							</option>
+							<option value="G9" data-restricted-types="" data-restricted-species="">
+								Knows Someone
+							</option>
+							<option value="H1" data-restricted-types="" data-restricted-species="">
+								Leads
+							</option>
+							<option value="H2" data-restricted-types="" data-restricted-species="">
+								Learns Quickly
+							</option>
+							<option value="H3" data-restricted-types="" data-restricted-species="">
+								Lifts Mountains
+							</option>
+							<option value="H4" data-restricted-types="" data-restricted-species="">
+								Likes to Break Things
+							</option>
+							<option value="H5" data-restricted-types="" data-restricted-species="">
+								Lives in the Wilderness
+							</option>
+							<option value="H6" data-restricted-types="" data-restricted-species="">
+								Looks for Trouble
+							</option>
+							<option value="H7" data-restricted-types="" data-restricted-species="">
+								Loves the Void
+							</option>
+							<option value="H8" data-restricted-types="" data-restricted-species="">
+								Makes Prophecy
+							</option>
+							<option value="H9" data-restricted-types="" data-restricted-species="">
+								Masters Defense
+							</option>
+							<option value="I1" data-restricted-types="" data-restricted-species="">
+								Masters Foot and Fist
+							</option>
+							<option value="I2" data-restricted-types="A0A1A2A3A4A5A6A7A9B1B3B4B5" data-restricted-species="">
+								Masters Clairvoyance
+							</option>
+							<option value="I3" data-restricted-types="A0A1A2A3A4A5A6A7A9B1B2B3B4B5" data-restricted-species="">
+								Masters Telekinesis
+							</option>
+							<option value="I4" data-restricted-types="" data-restricted-species="">
+								Masters Weaponry
+							</option>
+							<option value="I5" data-restricted-types="" data-restricted-species="">
+								Metes Out Justice
+							</option>
+							<option value="I6" data-restricted-types="" data-restricted-species="">
+								Mixes Unstable Concoctions
+							</option>
+							<option value="I7" data-restricted-types="" data-restricted-species="">
+								Moves Like a Cat
+							</option>
+							<option value="I8" data-restricted-types="" data-restricted-species="">
+								Moves Like the Wind
+							</option>
+							<option value="I9" data-restricted-types="" data-restricted-species="">
+								Murders
+							</option>
+							<option value="J1" data-restricted-types="" data-restricted-species="">
+								Needs No Weapon
+							</option>
+							<option value="J2" data-restricted-types="" data-restricted-species="">
+								Negotiates Matters of Life and Death
+							</option>
+							<option value="J3" data-restricted-types="" data-restricted-species="">
+								Never Says Die
+							</option>
+							<option value="J4" data-restricted-types="" data-restricted-species="">
+								Operates Undercover
+							</option>
+							<option value="J5" data-restricted-types="" data-restricted-species="">
+								Performs Feats of Strength
+							</option>
+							<option value="J6" data-restricted-types="" data-restricted-species="">
+								Pilots Starships
+							</option>
+							<option value="J7" data-restricted-types="" data-restricted-species="">
+								Pirates Starships
+							</option>
+							<option value="J8" data-restricted-types="" data-restricted-species="">
+								Plays By Their Own Rules
+							</option>
+							<option value="J9" data-restricted-types="" data-restricted-species="">
+								Plays Too Many Games
+							</option>
+							<option value="K1" data-restricted-types="" data-restricted-species="">
+								Plays Tricks
+							</option>
+							<option value="K2" data-restricted-types="" data-restricted-species="">
+								Processes Information
+							</option>
+							<option value="K3" data-restricted-types="" data-restricted-species="">
+								Protects the Weak
+							</option>
+							<option value="K4" data-restricted-types="" data-restricted-species="">
+								Provides Support
+							</option>
+							<option value="K5" data-restricted-types="" data-restricted-species="">
+								Pursues Physical Perfection
+							</option>
+							<option value="K6" data-restricted-types="" data-restricted-species="">
+								Rages
+							</option>
+							<option value="K7" data-restricted-types="" data-restricted-species="">
+								Reroutes Power
+							</option>
+							<option value="K8" data-restricted-types="" data-restricted-species="">
+								Revels in Trickery
+							</option>
+							<option value="K9" data-restricted-types="A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" data-restricted-species="">
+								Rides the Storm
+							</option>
+							<option value="L1" data-restricted-types="" data-restricted-species="">
+								Runs Away
+							</option>
+							<option value="L2" data-restricted-types="" data-restricted-species="">
+								Scavenges
+							</option>
+							<option value="L3" data-restricted-types="" data-restricted-species="">
+								Scores Points
+							</option>
+							<option value="L4" data-restricted-types="B0" data-restricted-species="">
+								Seeks Unity Through Oblivion
+							</option>
+							<option value="L5" data-restricted-types="B0" data-restricted-species="">
+								Sees the End Coming
+							</option>
+							<option value="L6" data-restricted-types="" data-restricted-species="">
+								Sells Trade Goods
+							</option>
+							<option value="L7" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B3B4B5" data-restricted-species="">
+								Separates Mind From Body
+							</option>
+							<option value="L8" data-restricted-types="" data-restricted-species="">
+								Serves in an Elite Military Squad
+							</option>
+							<option value="L9" data-restricted-types="" data-restricted-species="">
+								Shoots First
+							</option>
+							<option value="M1" data-restricted-types="" data-restricted-species="">
+								Slays Monsters
+							</option>
+							<option value="M2" data-restricted-types="" data-restricted-species="">
+								Solves Mysteries
+							</option>
+							<option value="M3" data-restricted-types="" data-restricted-species="">
+								Speaks with a Silver Tongue
+							</option>
+							<option value="M4" data-restricted-types="" data-restricted-species="">
+								Stands Like a Bastion
+							</option>
+							<option value="M5" data-restricted-types="" data-restricted-species="">
+								Stares Down Adversity
+							</option>
+							<option value="M6" data-restricted-types="" data-restricted-species="">
+								Steals
+							</option>
+							<option value="M7" data-restricted-types="" data-restricted-species="">
+								Talks to Machines
+							</option>
+							<option value="M8" data-restricted-types="" data-restricted-species="">
+								Targets Enemy Ships
+							</option>
+							<option value="M9" data-restricted-types="" data-restricted-species="">
+								Throws With Deadly Accuracy
+							</option>
+							<option value="N1" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="348">
+								Trains Other Recondites
+							</option>
+							<option value="N2" data-restricted-types="" data-restricted-species="">
+								Toys With Memory
+							</option>
+							<option value="N3" data-restricted-types="" data-restricted-species="">
+								Walks the Wasteland
+							</option>
+							<option value="N4" data-restricted-types="" data-restricted-species="">
+								Wanders
+							</option>
+							<option value="N5" data-restricted-types="" data-restricted-species="">
+								Was Foretold
+							</option>
+							<option value="N6" data-restricted-types="" data-restricted-species="">
+								Wears a Red Shirt
+							</option>
+							<option value="N7" data-restricted-types="" data-restricted-species="">
+								Wears Power Armour
+							</option>
+							<option value="N8" data-restricted-types="" data-restricted-species="">
+								Wields a Whip
+							</option>
+							<option value="N9" data-restricted-types="" data-restricted-species="">
+								Wields an Experimental Weapon
+							</option>
+							<option value="O1" data-restricted-types="" data-restricted-species="">
+								Wields Two Weapons at Once
+							</option>
+							<option value="O2" data-restricted-types="" data-restricted-species="">
+								Wonders
+							</option>
+							<option value="O3" data-restricted-types="" data-restricted-species="">
+								Works for a Living
+							</option>
+							<option value="O4" data-restricted-types="" data-restricted-species="34">
+								Works for the AEG
+							</option>
+							<option value="O5" data-restricted-types="" data-restricted-species="">
+								Works the Back Alleys
+							</option>
+							<option value="O6" data-restricted-types="" data-restricted-species="">
+								Works the System
+							</option>
+							<option value="O7" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								Worships Dark Beings
+							</option>
+							<option value="O8" data-restricted-types="" data-restricted-species="">
+								Would Rather Be Reading
+							</option>
+							<option value="O9" data-restricted-types="" data-restricted-species="">
+								Wrestles with Multiple Personalities
+							</option>
+						</select>
+					</div>
+					<label class="under-label" for="focus">FOCUS</label>
+				</div>
+			</div>
+			<!-- SECONDARY SPECIES, GENETIC VARIATION & SECONDARY FOCUS -->
+			<div class="char-attribute-row" style="padding-top:20px">
+				<!-- SECONDARY SPECIES -->
+				<div class="char-attribute hidden-section" id="hybrid-species" style="width:160px">
+					<div class="char-attribute-input-border">
+						<select id="secondary-species">
+							<option value="">
+							</option>
+							<option value="0">
+								Aeyan
+							</option>
+							<option value="1">
+								Erelan
+							</option>
+							<option data-story-arc="3" value="2">
+								Ewoche
+							</option>
+							<option value="3">
+								K'ohma
+							</option>
+							<option data-story-arc="2" value="4">
+								Megor
+							</option>
+							<option value="5">
+								Natix'huav
+							</option>
+							<option value="6">
+								Terran
+							</option>
+							<option data-story-arc="3" value="7">
+								Uisi
+							</option>
+							<option data-story-arc="2" value="8">
+								Zao
+							</option>
+						</select>
+					</div>
+					<label class="under-label" for="secondary-species">SECONDARY SPECIES</label>
+				</div>
+				<!-- GENETIC VARIATION -->
+				<div class="char-attribute hidden-section" id="genetic-variation" style="width:158px">
+					<div class="char-attribute-input-border">
+						<select id="variant">
+							<option value="">
+							</option>
+							<option value="0">
+								Acrod Tranckh
+							</option>
+							<option value="1">
+								Harod Tranckh
+							</option>
+							<option value="2">
+								Merod Tranckh
+							</option>
+							<option value="3">
+								Forim
+							</option>
+							<option value="4">
+								Viyun
+							</option>
+						</select>
+					</div>
+					<label class="under-label" for="focus">GENETIC VARIATION</label>
+				</div>
+				<!-- SECONDARY FOCUS -->
+				<div class="char-attribute hidden-section" id="second-focus" style="width:283px">
+					<div class="char-attribute-input-border">
+						<select id="secondary-focus">
+							<option value="" data-restricted-types="" data-restricted-species="">
+							</option>
+							<option value="A1" data-restricted-types="" data-restricted-species="">
+								Assists a Mad Genius
+							</option>
+							<option value="A2" data-restricted-types="A3A8B0" data-restricted-species="">
+								Awakens Psionic Powers
+							</option>
+							<option value="A3" data-restricted-types="" data-restricted-species="">
+								Battles Robots
+							</option>
+							<option value="A4" data-restricted-types="" data-restricted-species="">
+								Blows Stuff Up
+							</option>
+							<option value="A5" data-restricted-types="" data-restricted-species="">
+								Braves Precursor Ruins
+							</option>
+							<option value="A6" data-restricted-types="" data-restricted-species="">
+								Builds Robots
+							</option>
+							<option value="A7" data-restricted-types="" data-restricted-species="">
+								Calculates the Incalculable
+							</option>
+							<option value="A8" data-restricted-types="" data-restricted-species="">
+								Carries an Energy Bow
+							</option>
+							<option value="A9" data-restricted-types="A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" data-restricted-species="">
+								Changes the Nature of Things
+							</option>
+							<option value="B1" data-restricted-types="" data-restricted-species="">
+								Charges Right In
+							</option>
+							<option value="B2" data-restricted-types="" data-restricted-species="">
+								Charms the Unwary
+							</option>
+							<option value="B3" data-restricted-types="" data-restricted-species="">
+								Cloisters Away from Society
+							</option>
+							<option value="B4" data-restricted-types="" data-restricted-species="">
+								Collects Bounties
+							</option>
+							<option value="B5" data-restricted-types="" data-restricted-species="">
+								Commands Mental Powers
+							</option>
+							<option value="B6" data-restricted-types="" data-restricted-species="">
+								Conceals the Truth
+							</option>
+							<option value="B7" data-restricted-types="" data-restricted-species="">
+								Conducts Rocket Science
+							</option>
+							<option value="B8" data-restricted-types="" data-restricted-species="">
+								Conducts Weird Science
+							</option>
+							<option value="B9" data-restricted-types="" data-restricted-species="">
+								Controls Beasts
+							</option>
+							<option value="C1" data-restricted-types="" data-restricted-species="">
+								Crafts Unique Objects
+							</option>
+							<option value="C2" data-restricted-types="" data-restricted-species="">
+								Defends the Weak
+							</option>
+							<option value="C3" data-restricted-types="" data-restricted-species="">
+								Devotes Everything to the Cause
+							</option>
+							<option value="C4" data-restricted-types="" data-restricted-species="">
+								Doesn't Do Much
+							</option>
+							<option value="C5" data-restricted-types="" data-restricted-species="">
+								Embeds Crystals Into Their Skin
+							</option>
+							<option value="C6" data-restricted-types="" data-restricted-species="">
+								Employs Sex Appeal
+							</option>
+							<option value="C7" data-restricted-types="" data-restricted-species="">
+								Enjoys a Position of Power
+							</option>
+							<option value="C8" data-restricted-types="" data-restricted-species="">
+								Entertains
+							</option>
+							<option value="C9" data-restricted-types="" data-restricted-species="">
+								Excels Physically
+							</option>
+							<option value="D1" data-restricted-types="" data-restricted-species="">
+								Exists Partially Out of Phase
+							</option>
+							<option value="D2" data-restricted-types="B0" data-restricted-species="">
+								Experiences Savant Syndrome
+							</option>
+							<option value="D3" data-restricted-types="" data-restricted-species="">
+								Explores Dark Places
+							</option>
+							<option value="D4" data-restricted-types="" data-restricted-species="">
+								Explores Deep Waters
+							</option>
+							<option value="D5" data-restricted-types="" data-restricted-species="">
+								Fights Dirty
+							</option>
+							<option value="D6" data-restricted-types="" data-restricted-species="">
+								Fights for a Cause
+							</option>
+							<option value="D7" data-restricted-types="" data-restricted-species="">
+								Fights With Panache
+							</option>
+							<option value="D8" data-restricted-types="" data-restricted-species="">
+								Figures Things Out
+							</option>
+							<option value="D9" data-restricted-types="" data-restricted-species="">
+								Finds the Flaw in Things
+							</option>
+							<option value="E1" data-restricted-types="" data-restricted-species="">
+								Flies Like a Maniac
+							</option>
+							<option value="E3" data-restricted-types="" data-restricted-species="">
+								Fuses Flesh and Steel
+							</option>
+							<option value="E4" data-restricted-types="" data-restricted-species="">
+								Fuses Mind and Machine
+							</option>
+							<option value="E5" data-restricted-types="" data-restricted-species="">
+								Goes Berserk
+							</option>
+							<option value="E6" data-restricted-types="" data-restricted-species="">
+								Governs
+							</option>
+							<option value="E7" data-restricted-types="" data-restricted-species="">
+								Harnesses the Body's Rythms
+							</option>
+							<option value="E8" data-restricted-types="" data-restricted-species="">
+								Has More Money Than Sense
+							</option>
+							<option value="E9" data-restricted-types="" data-restricted-species="">
+								Hunts Aliens
+							</option>
+							<option value="F1" data-restricted-types="" data-restricted-species="">
+								Hunts Dangerous Beasts
+							</option>
+							<option value="F2" data-restricted-types="" data-restricted-species="">
+								Hunts Recondites
+							</option>
+							<option value="F3" data-restricted-types="" data-restricted-species="">
+								Hunts With Great Skill
+							</option>
+							<option value="F4" data-restricted-types="" data-restricted-species="">
+								Imparts Wisdom
+							</option>
+							<option value="F5" data-restricted-types="" data-restricted-species="">
+								Induces Hallucinations
+							</option>
+							<option value="F6" data-restricted-types="" data-restricted-species="">
+								Infiltrates
+							</option>
+							<option value="F7" data-restricted-types="" data-restricted-species="">
+								Interprets the Law
+							</option>
+							<option value="F8" data-restricted-types="A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" data-restricted-species="">
+								is Born of Flame
+							</option>
+							<option value="F9" data-restricted-types="" data-restricted-species="">
+								is Commissioned by the State
+							</option>
+							<option value="G1" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								is Cryokinetic
+							</option>
+							<option value="G2" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								is Electrokinetic
+							</option>
+							<option value="G3" data-restricted-types="" data-restricted-species="">
+								is Idolized by Millions
+							</option>
+							<option value="G4" data-restricted-types="" data-restricted-species="">
+								is Licensed to Carry
+							</option>
+							<option value="G5" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								is Pyrokinetic
+							</option>
+							<option value="G6" data-restricted-types="A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" data-restricted-species="">
+								is Stoneskined
+							</option>
+							<option value="G7" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								is the Eye of the Storm
+							</option>
+							<option value="G8" data-restricted-types="" data-restricted-species="">
+								Keeps the Peace
+							</option>
+							<option value="G9" data-restricted-types="" data-restricted-species="">
+								Knows Someone
+							</option>
+							<option value="H1" data-restricted-types="" data-restricted-species="">
+								Leads
+							</option>
+							<option value="H2" data-restricted-types="" data-restricted-species="">
+								Learns Quickly
+							</option>
+							<option value="H3" data-restricted-types="" data-restricted-species="">
+								Lifts Mountains
+							</option>
+							<option value="H4" data-restricted-types="" data-restricted-species="">
+								Likes to Break Things
+							</option>
+							<option value="H5" data-restricted-types="" data-restricted-species="">
+								Lives in the Wilderness
+							</option>
+							<option value="H6" data-restricted-types="" data-restricted-species="">
+								Looks for Trouble
+							</option>
+							<option value="H7" data-restricted-types="" data-restricted-species="">
+								Loves the Void
+							</option>
+							<option value="H8" data-restricted-types="" data-restricted-species="">
+								Makes Prophecy
+							</option>
+							<option value="H9" data-restricted-types="" data-restricted-species="">
+								Masters Defense
+							</option>
+							<option value="I1" data-restricted-types="" data-restricted-species="">
+								Masters Foot and Fist
+							</option>
+							<option value="I2" data-restricted-types="A0A1A2A3A4A5A6A7A9B1B3B4B5" data-restricted-species="">
+								Masters Clairvoyance
+							</option>
+							<option value="I3" data-restricted-types="A0A1A2A3A4A5A6A7A9B1B2B3B4B5" data-restricted-species="">
+								Masters Telekinesis
+							</option>
+							<option value="I4" data-restricted-types="" data-restricted-species="">
+								Masters Weaponry
+							</option>
+							<option value="I5" data-restricted-types="" data-restricted-species="">
+								Metes Out Justice
+							</option>
+							<option value="I6" data-restricted-types="" data-restricted-species="">
+								Mixes Unstable Concoctions
+							</option>
+							<option value="I7" data-restricted-types="" data-restricted-species="">
+								Moves Like a Cat
+							</option>
+							<option value="I8" data-restricted-types="" data-restricted-species="">
+								Moves Like the Wind
+							</option>
+							<option value="I9" data-restricted-types="" data-restricted-species="">
+								Murders
+							</option>
+							<option value="J1" data-restricted-types="" data-restricted-species="">
+								Needs No Weapon
+							</option>
+							<option value="J2" data-restricted-types="" data-restricted-species="">
+								Negotiates Matters of Life and Death
+							</option>
+							<option value="J3" data-restricted-types="" data-restricted-species="">
+								Never Says Die
+							</option>
+							<option value="J4" data-restricted-types="" data-restricted-species="">
+								Operates Undercover
+							</option>
+							<option value="J5" data-restricted-types="" data-restricted-species="">
+								Performs Feats of Strength
+							</option>
+							<option value="J6" data-restricted-types="" data-restricted-species="">
+								Pilots Starships
+							</option>
+							<option value="J7" data-restricted-types="" data-restricted-species="">
+								Pirates Starships
+							</option>
+							<option value="J8" data-restricted-types="" data-restricted-species="">
+								Plays By Their Own Rules
+							</option>
+							<option value="J9" data-restricted-types="" data-restricted-species="">
+								Plays Too Many Games
+							</option>
+							<option value="K1" data-restricted-types="" data-restricted-species="">
+								Plays Tricks
+							</option>
+							<option value="K2" data-restricted-types="" data-restricted-species="">
+								Processes Information
+							</option>
+							<option value="K3" data-restricted-types="" data-restricted-species="">
+								Protects the Weak
+							</option>
+							<option value="K4" data-restricted-types="" data-restricted-species="">
+								Provides Support
+							</option>
+							<option value="K5" data-restricted-types="" data-restricted-species="">
+								Pursues Physical Perfection
+							</option>
+							<option value="K6" data-restricted-types="" data-restricted-species="">
+								Rages
+							</option>
+							<option value="K7" data-restricted-types="" data-restricted-species="">
+								Reroutes Power
+							</option>
+							<option value="K8" data-restricted-types="" data-restricted-species="">
+								Revels in Trickery
+							</option>
+							<option value="K9" data-restricted-types="A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" data-restricted-species="">
+								Rides the Storm
+							</option>
+							<option value="L1" data-restricted-types="" data-restricted-species="">
+								Runs Away
+							</option>
+							<option value="L2" data-restricted-types="" data-restricted-species="">
+								Scavenges
+							</option>
+							<option value="L3" data-restricted-types="" data-restricted-species="">
+								Scores Points
+							</option>
+							<option value="L4" data-restricted-types="B0" data-restricted-species="">
+								Seeks Unity Through Oblivion
+							</option>
+							<option value="L5" data-restricted-types="B0" data-restricted-species="">
+								Sees the End Coming
+							</option>
+							<option value="L6" data-restricted-types="" data-restricted-species="">
+								Sells Trade Goods
+							</option>
+							<option value="L7" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B3B4B5" data-restricted-species="">
+								Separates Mind From Body
+							</option>
+							<option value="L8" data-restricted-types="" data-restricted-species="">
+								Serves in an Elite Military Squad
+							</option>
+							<option value="L9" data-restricted-types="" data-restricted-species="">
+								Shoots First
+							</option>
+							<option value="M1" data-restricted-types="" data-restricted-species="">
+								Slays Monsters
+							</option>
+							<option value="M2" data-restricted-types="" data-restricted-species="">
+								Solves Mysteries
+							</option>
+							<option value="M3" data-restricted-types="" data-restricted-species="">
+								Speaks with a Silver Tongue
+							</option>
+							<option value="M4" data-restricted-types="" data-restricted-species="">
+								Stands Like a Bastion
+							</option>
+							<option value="M5" data-restricted-types="" data-restricted-species="">
+								Stares Down Adversity
+							</option>
+							<option value="M6" data-restricted-types="" data-restricted-species="">
+								Steals
+							</option>
+							<option value="M7" data-restricted-types="" data-restricted-species="">
+								Talks to Machines
+							</option>
+							<option value="M8" data-restricted-types="" data-restricted-species="">
+								Targets Enemy Ships
+							</option>
+							<option value="M9" data-restricted-types="" data-restricted-species="">
+								Throws With Deadly Accuracy
+							</option>
+							<option value="N1" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="348">
+								Trains Other Recondites
+							</option>
+							<option value="N2" data-restricted-types="" data-restricted-species="">
+								Toys With Memory
+							</option>
+							<option value="N3" data-restricted-types="" data-restricted-species="">
+								Walks the Wasteland
+							</option>
+							<option value="N4" data-restricted-types="" data-restricted-species="">
+								Wanders
+							</option>
+							<option value="N5" data-restricted-types="" data-restricted-species="">
+								Was Foretold
+							</option>
+							<option value="N6" data-restricted-types="" data-restricted-species="">
+								Wears a Red Shirt
+							</option>
+							<option value="N7" data-restricted-types="" data-restricted-species="">
+								Wears Power Armour
+							</option>
+							<option value="N8" data-restricted-types="" data-restricted-species="">
+								Wields a Whip
+							</option>
+							<option value="N9" data-restricted-types="" data-restricted-species="">
+								Wields an Experimental Weapon
+							</option>
+							<option value="O1" data-restricted-types="" data-restricted-species="">
+								Wields Two Weapons at Once
+							</option>
+							<option value="O2" data-restricted-types="" data-restricted-species="">
+								Wonders
+							</option>
+							<option value="O3" data-restricted-types="" data-restricted-species="">
+								Works for a Living
+							</option>
+							<option value="O4" data-restricted-types="" data-restricted-species="34">
+								Works for the AEG
+							</option>
+							<option value="O5" data-restricted-types="" data-restricted-species="">
+								Works the Back Alleys
+							</option>
+							<option value="O6" data-restricted-types="" data-restricted-species="">
+								Works the System
+							</option>
+							<option value="O7" data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" data-restricted-species="">
+								Worships Dark Beings
+							</option>
+							<option value="O8" data-restricted-types="" data-restricted-species="">
+								Would Rather Be Reading
+							</option>
+							<option value="O9" data-restricted-types="" data-restricted-species="">
+								Wrestles with Multiple Personalities
+							</option>
+						</select>
+					</div>
+					<label class="under-label" for="secondary-focus">SECONDARY FOCUS</label>
+				</div>
+			</div>
+		</div>
+		<div id="spellbook-area">
+			<div class="spellbook-button">Abilities</div>
+		</div>
+	</div>
+	<div id="spellbook-background" class="invisible-section">
+		<div id="spellbook-wrapper">
+			<div id="spellbook-title">
+				<img src="images/ability.png" />
+				<h2>
+					Abilities
+				</h2>
+			</div>
+			<div class="spellbook-button">
+				Close
+			</div>
+			<div id="spell-list">
+			</div>
+		</div>
+	</div>
+</body>
+</html>
