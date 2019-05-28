@@ -11,6 +11,7 @@ body {
 	background-color: #212931;
 	text-align: left;
 	font-family: 'Lato', sans-serif;
+	overflow-x: hidden;
 	pointer-events: none;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -47,11 +48,17 @@ h2 {
     font-family: 'Oswald', sans-serif;
 	font-size: 35px;
     line-height: 1em;
-	margin: 0;
+	margin: 20px 0;
 }
-h3 {
+h3, h4 {
 	margin: 0;
 	font-weight: 400;
+	font-family: 'Oswald', sans-serif;
+}
+h4 {
+    font-size: 20px;
+    line-height: 20px;
+    font-variant: small-caps;
 }
 p {
 	margin-top: 0;
@@ -165,9 +172,6 @@ label.under-label {
 /*------------
 SPELLBOOK AREA
 ------------*/
-#spellbook-area {
-	padding: 15px;
-}
 .spellbook-button {
 	width: fit-content;
 	background: #6C501B;
@@ -177,6 +181,7 @@ SPELLBOOK AREA
 	cursor: pointer;
 	pointer-events: auto;
 	white-space: nowrap;
+	margin: 0 15px;
 }
 .spellbook-button:hover {
 	background: #7a5a1f;
@@ -265,20 +270,20 @@ SPELLBOOK
 	float:right;
 	display: inline-block;
 }
-.stats-left {
+.stats {
 	padding: 20px;
-	float: left;
+	display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
-.stats-right {
-	padding: 20px;
-	text-align: right;
-	float: right;
-}
-.stats-left:empty, .stats-right:empty {
+.stats:empty {
 	padding-top: 0!important;
 }
-.stats-right span, .stats-left span {
-	display: block;
+.stats span {
+	flex-basis: 50%;
+}
+.stats span:nth-child(even) {
+    text-align: right;
 }
 .spell-description {
 	padding: 0 20px;
@@ -287,6 +292,8 @@ SPELLBOOK
 .spell-origin {
 	color: #637180;
 	font-style: italic;
+	text-align: right;
+	margin-left: auto;
 }
 .required {
 	cursor: default;
@@ -317,14 +324,120 @@ SPELLBOOK
 .disabled-spell {
 	filter: grayscale(80%);
     opacity: 0.9;
-	pointer-events: none;
 	cursor: default;
+}
+.disabled-spell .spell-name {
+	background-color: #6C501B!important;
+	color: #FBFBFB!important;
+}
+/*---------
+SPELL LISTS
+---------*/
+#spellbook-area {
+	display: flex;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	padding: 15px 0 0 15px;
+}
+.spell-section {
+	display: none;
+	margin: 0 15px 15px 0;
+	width: 450px;
+    min-width: 260px;
+}
+.spell-section-bar {
+	height: 80px;
+	background: #6C501B;
+	border-radius: 0 0 0 20px;
+	width: 10px;
+	float:left;
+}
+.spell-section-wrap {
+	background: #6C501B;
+	padding: 3px;
+	border-radius: 0 20px 0 20px;
+	margin-left: 10px;
+}
+.spell-header {
+	margin: 0;
+	color: #212931;
+	background: #FBFBFB;
+    padding: 15px;
+	border-radius: 20px 20px 0 0;
+	text-transform: uppercase;
+	font-weight: 400;
+}
+.spell-list {
+	background: #FBFBFB;
+    color: #212931;
+	padding: 0 15px 10px 15px;
+	border-radius: 0 0 20px 20px;
+	display: flex;
+	flex-direction: column;
+}
+.list-spell {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+	padding: 0 5px 2px 5px;
+    border-bottom: 1px dashed #bdbddb;
+    white-space: nowrap;
+	cursor: help;
+	pointer-events: auto;
+}
+.list-spell:hover, .list-spell:active {
+	color: #6c501b;
+}
+.list-spell span:nth-child(n+2) {
+	padding-left: 20px;
+}
+.tooltip {
+    position: absolute;
+    background: #212931;
+    color: #FBFBFB;
+    padding: 10px;
+    width: 280px;
+    border: solid 1px #e6b83d;
+    border-radius: 3px;
+	display: none;
+	font-size: 14px;
+	line-height: 14px;
+	align-items: baseline;
+	z-index: 5;
+}
+.tooltip * {
+	margin: 2px 0;
+}
+.tooltip h4 {
+	color: #e6b83d;
+	width: 70%;
+}
+.tooltip *:nth-child(even):not(.spell-type-tooltip), .tooltip *:last-child  {
+	text-align: right;
+}
+.tooltip *:last-child {
+	color: #bdbddb;
+	font-style: italic;
+}
+.spell-tier-tooltip {
+	color: #bdbddb;
+}
+.spell-description-tooltip {
+	flex-basis: 100%;
+	margin: 5px 0;
+}
+.tooltip-visible {
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 /*-------
 LORE AREA
 -------*/
 #lore-area {
-	padding: 15px;
+	margin: 0 15px 15px 10px;
+    width: 450px;
+    min-width: 260px;
 }
 .lore-name {
 	background: #6C501B;
@@ -420,15 +533,10 @@ RESPONSIVE CSS
 	#spellbook-wrapper {
 		padding-left: 0;
 		padding-right: 0;
-	}
-	#spellbook-wrapper {
-		justify-content: space-around;
+		ustify-content: space-around;
 	}
 }
 @media only screen and (max-width: 450px) {
-	#spellbook-wrapper, #spell-list {
-		padding-top: 20px;
-	}
 	.spell {
 		margin: 0 -10px;
 		border-radius: 0;
