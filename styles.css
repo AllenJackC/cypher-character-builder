@@ -393,12 +393,12 @@ SPELL LISTS
 }
 .tooltip {
     position: absolute;
-    background: #212931;
+    background: rgba(33, 41, 49, 0.95);
     color: #FBFBFB;
     padding: 10px;
     width: 280px;
     border: solid 1px #e6b83d;
-    border-radius: 3px;
+    border-radius: 5px;
 	display: none;
 	font-size: 14px;
 	line-height: 14px;
