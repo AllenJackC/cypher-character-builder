@@ -668,7 +668,7 @@ function populateSpells() {
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if (( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['action-spell','enabler-spell','talent-spell','select-spell','items-spell'].includes(spellType)) || ( !spellRequired && spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && spellType == "passive-spell" )) {
+			if (( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['action-spell','enabler-spell','talent-spell','select-spell'].includes(spellType)) || ( !spellRequired && spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && spellType == "passive-spell" )) {
 				//Set the order of the spell in the flex-box by its Tier and name
 				var spellOrder = parseInt(String(2) + String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.charCodeAt(0)) - 64,2) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
 				//Check to see if these values exist to avoid
@@ -710,7 +710,7 @@ function populateSpells() {
 				} else {
 					$('#spell-list').append(
 						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
-						'<h3 class="spell-name" data-name="' + spellName + '">' +
+						'<h3 class="spell-name">' +
 						'<div class="spell-icon ' + spellType + '"></div>' +
 						spellName +
 						spellTier +
@@ -764,6 +764,84 @@ function populateSpells() {
 				if ( spellRequired ) {
 					$('#' + spellID).addClass('required');
 				}
+			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && spellType == "items-spell" ) {
+				//Set the order of the spell in the flex-box by its Tier and name
+				var spellOrder = parseInt(String(2) + String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.charCodeAt(0)) - 64,2) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
+				//Variables specific to items
+				var itemName = spellListDatabase[i].itemname;
+				var itemType = spellListDatabase[i].itemtype;
+				var itemValue = spellListDatabase[i].itemvalue;
+				var itemWeight = spellListDatabase[i].itemweight;
+				var itemDamage = spellListDatabase[i].itemdamage;
+				var itemArmour = spellListDatabase[i].itemarmour;
+				var itemLevel = spellListDatabase[i].itemlevel;
+				var itemDepletion = spellListDatabase[i].itemdepletion;
+				//Check to see if these values exist to avoid
+				//empty line breaks in the spell card
+				if ( spellTier == 0 ) {
+					spellTier = '<div class="spell-tier">BASELINE</div>';
+				} else {
+					spellTier = '<div class="spell-tier">TIER ' + spellTier + '</div>';
+				}
+				if ( itemValue !== "" ) {
+					itemValue = '<span class="item-value"><strong>Value: </strong>' + itemValue + '₡</span>';
+				}
+				if ( itemWeight !== "" ) {
+					itemWeight = '<span class="item-weight"><strong>Carry Weight: </strong>' + itemWeight + '</span>';
+				}
+				if ( itemDamage !== "" ) {
+					itemDamage = '<span class="item-damage"><strong>Damage: </strong>' + itemDamage + '</span>';
+				}
+				if ( itemArmour !== "" ) {
+					itemArmour = '<span class="item-armour"><strong>Armour: </strong>' + itemArmour + '</span>';
+				}
+				if ( itemLevel !== "" ) {
+					itemLevel = '<span class="item-level"><strong>Level: </strong>' + itemLevel + '</span>';
+				}
+				if ( itemDepletion !== "" ) {
+					itemDepletion = '<span class="item-depletion"><strong>Depletion: </strong>' + itemDepletion + '</span>';
+				}
+				//If the spell ID is already on the page, just change
+				//the origin name; otherwise, create a spell card
+				if ( $('#' + spellID).length > 0 ) {
+					$('#' + spellID + ' .spell-origin').text(spellOrigin);
+				} else {
+					$('#spell-list').append(
+						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
+						'<h3 class="spell-name" data-item-name="' + itemName + '" data-item-type="' + itemType + '">' +
+						'<div class="spell-icon ' + spellType + '"></div>' +
+						spellName +
+						spellTier +
+						'</h3>' +
+						'<div class="spell-border">' +
+						'<div class="stats">' +
+						itemLevel +
+						itemValue +
+						itemWeight +
+						'</div>' +
+						'<div class="spell-description">' +
+						spellDescription +
+						'</div>' +
+						'<div class="stats">' +
+						itemDamage +
+						itemArmour +
+						itemDepletion +
+						'<span class="spell-origin">' +
+						spellOrigin +
+						'</span>' +
+						'</div>' +
+						'</div>' +
+						'</div>'
+					);
+				}
+				//Push this spell to the spell list array
+				spellsList.push(parseInt(spellID));
+				//If this spell is marked as required, add the
+				//required class, which disables interaction but
+				//highlights the spell as automatically selected
+				if ( spellRequired ) {
+					$('#' + spellID).addClass('required');
+				}
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellType == "lore-spell" ) {
 				//Set the order of the spell in the flex-box by its name
 				var spellOrder = parseInt(String(parseInt(spellName.charCodeAt(0)) - 64) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
@@ -801,10 +879,10 @@ function populateSpells() {
 	//Reset the selected spell count based
 	//on the new selections made
 	selectedSpellCount = $('.selected').length;
-	populateSpellLists();
+	populateSpellLists(spellsList);
 }
 //Populate each individual spell list on the main character sheet
-function populateSpellLists() {
+function populateSpellLists(spellsList) {
 	var spells = $('.spell');
 	$('.list-spell').remove();
 	//Move each spell to their respective lists
@@ -846,9 +924,15 @@ function populateSpellLists() {
 					'</span>' +
 					'</div>'
 				);
-			} else if ( isItem ) {
-				$('#equipment-list').append(
-					'<tr class="list-item">' +
+			} else if ( isItem && $('.list-item[data-spellid="' + spellID + '"]').length <= 0 && $('#' + spellID + ' .spell-name').data('item-name') != "" ) {
+				var selectThisType;
+				switch ( thisSpell.children('.spell-name').data('item-type') ) {
+					case "Item":
+					selectThisType = "IT";
+					break;
+				}
+				var addedItem = 
+					'<tr class="list-item" data-spellid="' + spellID + '">' +
 					'<td>' +
 					'<select class="item-equip">' +
 					'<option selected>Stored</option>' +
@@ -857,10 +941,10 @@ function populateSpellLists() {
 					'</select>' +
 					'</td>' +
 					'<td contenteditable="true" class="item-name">' +
-					thisSpell.children('.spell-name').data('name') +
+					thisSpell.children('.spell-name').data('item-name') +
 					'</td>' +
 					'<td class="item-type-cell">' +
-					'<select class="item-type" data-placeholder="Type">' +
+					'<select class="item-type" data-placeholder=" ">' +
 					'<option></option>' +
 					'<option value="IT">Item</option>' +
 					'<option value="LW">Light Weapon</option>' +
@@ -872,23 +956,28 @@ function populateSpellLists() {
 					'</select>' +
 					'</td>' +
 					'<td contenteditable="true" class="item-cost">' +
+					$('.item-value', thisSpell).text().replace('Value: ','').replace('₡','') +
 					'</td>' +
 					'<td contenteditable="true" class="item-weight">' +
+					$('.item-weight', thisSpell).text().replace('Carry Weight: ','') +
 					'</td>' +
 					'<td class="remove-row-cell">' +
 					'<div class="remove-row">X</div>' +
 					'</td>' +
-					'</tr>'
-				);
+					'</tr>';
+				$(addedItem).insertAfter('#equipment-header-row');
 				$('.item-equip').chosen({
 					disable_search: true,
 					width: "78px"
 				});
 				$('.item-type').chosen({
 					disable_search: true,
-					placeholder_text_single: "Type",
+					placeholder_text_single: " ",
 					width: "123px"
 				});
+				var thisItem = $('.list-item[data-spellid="' + spellID + '"]');
+				$('.item-type', thisItem).val(selectThisType);
+				$('.item-type', thisItem).trigger('chosen:updated');
 			}
 		}
 	});
@@ -1005,7 +1094,7 @@ $(function() {
 	});
 	itemType.chosen({
 		disable_search: true,
-		placeholder_text_single: "Type",
+		placeholder_text_single: " ",
 		width: "123px"
 	});
 	//[H] button to show or hide secondary species dropdown and reset its value
@@ -1034,6 +1123,7 @@ $(function() {
 	});
 	//Reset button to reset all values and hide extra sections
 	resetBtn.click(function(){
+		descriptors.val('');
 		priSpecies.val('');
 		secSpecies.val('');
 		types.val('');
@@ -1044,6 +1134,7 @@ $(function() {
 		secFociSection.addClass('hidden-section');
 		resetSection.addClass('hidden-section');
 		genVariation.addClass('hidden-section');
+		descriptors.trigger('chosen:updated');
 		setStoryArc(2);
 		populateSpecies();
 		populateTypes();
@@ -1167,10 +1258,11 @@ $(function() {
 			tooltip.css('left', e.pageX - 30);
 		}
 	});
-	equipmentList.on('click', '.remove-row', function () {
-		$(this).closest('.list-item').remove();
-	});
-	$('#add-item').click( function () {
+	//Add item rows when clicking Add Item
+	//Remove item rows when clicking X, but
+	//add a new blank item if it's the last
+	//item in the row
+	function addItem() {
 		equipmentList.append(
 			'<tr class="list-item">' +
 			'<td>' +
@@ -1183,7 +1275,7 @@ $(function() {
 			'<td contenteditable="true" class="item-name">' +
 			'</td>' +
 			'<td class="item-type-cell">' +
-			'<select class="item-type" data-placeholder="Type">' +
+			'<select class="item-type" data-placeholder=" ">' +
 			'<option></option>' +
 			'<option value="IT">Item</option>' +
 			'<option value="LW">Light Weapon</option>' +
@@ -1209,8 +1301,17 @@ $(function() {
 		});
 		$('.item-type').chosen({
 			disable_search: true,
-			placeholder_text_single: "Type",
+			placeholder_text_single: " ",
 			width: "123px"
 		});
+	}
+	equipmentList.on('click', '.remove-row', function () {
+		$(this).closest('.list-item').remove();
+		if ( $('.list-item').length == 1 ) {
+			addItem();
+		}
+	});
+	$('#add-item').click( function () {
+		addItem();
 	});
 });

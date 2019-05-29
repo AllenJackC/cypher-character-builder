@@ -1457,9 +1457,9 @@
 					<h2 class="spell-header">Equipment</h2>
 					<table class= "spell-list" id="equipment-list">
 						<tbody>
-							<tr class="list-item">
+							<tr class="list-item" id="equipment-header-row">
 								<th>
-									STATUS
+									CURRENTLY
 								</th>
 								<th>
 									NAME
@@ -1485,7 +1485,7 @@
 								<td contenteditable="true" class="item-name">
 								</td>
 								<td class="item-type-cell">
-									<select class="item-type" data-placeholder="Type">
+									<select class="item-type" data-placeholder=" ">
 										<option></option>
 										<option value="IT">Item</option>
 										<option value="LW">Light Weapon</option>
@@ -1501,6 +1501,7 @@
 								<td contenteditable="true" class="item-weight">
 								</td>
 								<td class="remove-row-cell">
+									<div class="remove-row">X</div>
 								</td>
 							</tr>
 						</tbody>
