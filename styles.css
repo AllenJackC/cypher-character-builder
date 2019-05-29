@@ -1,4 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:700,900|Oswald:400,700');
+:root {
+	--white: #FBFBFB;
+	--black: #212931;
+	--black-translucent: #212931FA;
+	--light-grey: #B6B4B4;
+	--dark-grey: #375473;
+	--button: #6C501B;
+	--button-hover: #7A5A1F;
+	--button-active: #513C15;
+	--secondary-button: #BDBDDB;
+	--secondary-button-hover: #BDBDDB;
+	--secondary-button-active: #9C9CC9;
+	--selected: #E6B83D;
+	--selected-hover: #ECC96A;
+	--selected-active: #D4A31C;
+}
 /*------------
 ELEMENT RESETS
 -------------*/
@@ -7,8 +23,8 @@ body {
 	margin: 0;
 	width: 100%;
 	height: 100%;
-	color: #212931;
-	background-color: #212931;
+	color: var(--black);
+	background-color: var(--black);
 	text-align: left;
 	font-family: 'Lato', sans-serif;
 	overflow-x: hidden;
@@ -37,14 +53,14 @@ input, select {
 	width: calc( 100% - 1px );
 	padding: 6px;
 	border: none;
-	background-color: #FBFBFB;
-	color: #212931;
+	background-color: var(--white);
+	color: var(--black);
 }
 input {
 	padding: 8px 6px 6px 6px;
 }
 h2 {
-    color: #FBFBFB;
+    color: var(--white);
     font-family: 'Oswald', sans-serif;
 	font-size: 35px;
     line-height: 1em;
@@ -93,7 +109,7 @@ CHARACTER ATTRIBUTES
 /* Text in between inputs */
 .char-attribute-connectors {
 	line-height: 37px;
-	color: #FBFBFB;
+	color: var(--white);
 	font-family: 'Oswald', sans-serif;
 	white-space: nowrap;
 }
@@ -106,10 +122,10 @@ CHARACTER ATTRIBUTES
 	width: 100%;
 }
 .char-attribute-input-border {
-	background: #6C501B;
-	background: -moz-linear-gradient(top, #212931 0%, #6C501B 100%);
-	background: -webkit-linear-gradient(top, #212931 0%,#6C501B 100%);
-	background: linear-gradient(to bottom, #212931 0%,#6C501B 100%);
+	background: var(--button);
+	background: -moz-linear-gradient(top, var(--black) 0%,  var(--button) 100%);
+	background: -webkit-linear-gradient(top, var(--black) 0%, var(--button) 100%);
+	background: linear-gradient(to bottom, var(--black) 0%, var(--button) 100%);
 	padding: 4px;
 	width: 100%;
 }
@@ -117,8 +133,8 @@ CHARACTER ATTRIBUTES
 	width: calc( 100% - 12px)
 }
 label.under-label {
-	background: #6C501B;
-    color: #FBFBFB;
+	background: var(--button);
+    color: var(--white);
     min-width: fit-content;
     width: 20%;
     padding: 2px 25px 2px 5px;
@@ -137,9 +153,9 @@ label.under-label {
 	margin-bottom: -28px;
 }
 .char-attribute-button div {
-	background-color: #212931;
-	color: #bdbddb;
-	box-shadow: inset 0 0 0 1px #bdbddb;
+	background-color: var(--black);
+	color: var(--secondary-button);
+	box-shadow: inset 0 0 0 1px var(--secondary-button);
 	padding: 4px 4px 5px 4px;
     line-height: 9px;
     display: inline-flex;
@@ -148,34 +164,34 @@ label.under-label {
 	pointer-events: auto;
 }
 .char-attribute-button div:hover {
-	color: #dedeed;
-	box-shadow: inset 0 0 0 1px #dedeed;
+	color: var(--secondary-button-hover);
+	box-shadow: inset 0 0 0 1px var(--secondary-button-hover);
 }
 .char-attribute-button div:active {
-	color: #9c9cc9;
-	box-shadow: inset 0 0 0 1px #9c9cc9;
+	color: var(--secondary-button-active);
+	box-shadow: inset 0 0 0 1px var(--secondary-button-active);
 }
 #reset-button div {
 	padding: 4px 5px 5px 4px;
 }
 .clicked {
-    background-color: #6C501B!important;
-	color: #FBFBFB!important;
+    background-color: var(--button)!important;
+	color: var(--white)!important;
 	box-shadow: none!important;
 }
 .clicked:hover {
-	background: #7a5a1f!important;
+	background: var(--button-hover)!important;
 }
 .clicked:active {
-	background: #513c15!important;
+	background: var(--button-active)!important;
 }
 /*------------
 SPELLBOOK AREA
 ------------*/
 .spellbook-button {
 	width: fit-content;
-	background: #6C501B;
-    color: #FBFBFB;
+	background: var(--button);
+    color: var(--white);
     padding: 8px 20px;
     font-family: 'Oswald', sans-serif;
 	cursor: pointer;
@@ -184,10 +200,10 @@ SPELLBOOK AREA
 	margin: 0 15px;
 }
 .spellbook-button:hover {
-	background: #7a5a1f;
+	background: var(--button-hover);
 }
 .spellbook-button:active {
-	background: #513c15;
+	background: var(--button-hover);
 }
 /*--------
 SPELLBOOK
@@ -195,7 +211,7 @@ SPELLBOOK
 #spellbook-background {
 	width: 100%;
 	height: 100%;
-	background: rgba(33, 41, 49, 0.8);
+	background: var(--black-translucent);
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -230,8 +246,8 @@ SPELLBOOK
 	flex-direction: column;
 }
 .spell {
-	background-color: #FBFBFB;
-	color: #212931;
+	background-color: var(--white);
+	color: var(--black);
 	border-radius: 12px;
 	font-size: 13px;
 	line-height: 18px;
@@ -258,8 +274,8 @@ SPELLBOOK
 	background-image: url('images/lore.png');
 }
 .spell-name {
-	background-color: #6C501B;
-	color: #FBFBFB;
+	background-color: var(--button);
+	color: var(--white);
     font-family: 'Oswald', sans-serif;
     padding: 12px 15px 15px 15px;
     font-size: 21px;
@@ -290,7 +306,7 @@ SPELLBOOK
 	clear: both;
 }
 .spell-origin {
-	color: #637180;
+	color: var(--dark-grey);
 	font-style: italic;
 	text-align: right;
 	margin-left: auto;
@@ -300,26 +316,23 @@ SPELLBOOK
 	pointer-events: none;
 }
 .spell:hover .spell-name {
-	background: #7a5a1f;
+	background: var(--button-hover);
 }
 .spell:active .spell-name {
-	background: #513c15;
-}
-.selected:hover .spell-name {
-	background-color: #ecc96a;
-}
-.selected:active .spell-name {
-	background-color: #d4a31c;
+	background: var(--button-active);
 }
 .selected .spell-name, .required .spell-name {
-	background-color: #e6b83d;
-	color: #212931;
-}
-.selected .spell-border, .required .spell-border {
-	border-color: #e6b83d;
+	background-color: var(--selected);
+	color: var(--black);
 }
 .selected .spell-icon, .required .spell-icon {
 	filter: brightness(15%);
+}
+.selected:hover .spell-name {
+	background-color: var(--selected-hover);
+}
+.selected:active .spell-name {
+	background-color: var(--selected-active);
 }
 .disabled-spell {
 	filter: grayscale(80%);
@@ -327,8 +340,8 @@ SPELLBOOK
 	cursor: default;
 }
 .disabled-spell .spell-name {
-	background-color: #6C501B!important;
-	color: #FBFBFB!important;
+	background-color: var(--button)!important;
+	color: var(--white)!important;
 }
 /*---------
 SPELL LISTS
@@ -353,23 +366,23 @@ SPELL LISTS
 	float:left;
 }
 .spell-section-wrap {
-	background: #6C501B;
+	background: var(--button);
 	padding: 3px;
 	border-radius: 0 20px 0 20px;
 	margin-left: 10px;
 }
 .spell-header {
 	margin: 0;
-	color: #212931;
-	background: #FBFBFB;
+    color: var(--black);
+	background: var(--white);
     padding: 15px;
 	border-radius: 20px 20px 0 0;
 	text-transform: uppercase;
 	font-weight: 400;
 }
 .spell-list {
-	background: #FBFBFB;
-    color: #212931;
+	background: var(--white);
+    color: var(--black);
 	padding: 0 15px 10px 15px;
 	border-radius: 0 0 20px 20px;
 	display: flex;
@@ -380,24 +393,25 @@ SPELL LISTS
     justify-content: space-between;
     margin-bottom: 10px;
 	padding: 0 5px 2px 5px;
-    border-bottom: 1px dashed #bdbddb;
+    border-bottom: 1px dashed var(--secondary-button);
     white-space: nowrap;
 	cursor: help;
 	pointer-events: auto;
 }
 .list-spell:hover, .list-spell:active {
-	color: #6c501b;
+	color: var(--button);
+	border-color: var(--button);
 }
 .list-spell span:nth-child(n+2) {
 	padding-left: 20px;
 }
 .tooltip {
     position: absolute;
-    background: rgba(33, 41, 49, 0.95);
-    color: #FBFBFB;
+    background: var(--black-translucent);
+    color: var(--white);
     padding: 10px;
     width: 280px;
-    border: solid 1px #e6b83d;
+    border: solid 1px var(--selected);
     border-radius: 5px;
 	display: none;
 	font-size: 14px;
@@ -409,18 +423,22 @@ SPELL LISTS
 	margin: 2px 0;
 }
 .tooltip h4 {
-	color: #e6b83d;
+	color: var(--selected);
 	width: 70%;
 }
 .tooltip *:nth-child(even):not(.spell-type-tooltip), .tooltip *:last-child  {
 	text-align: right;
 }
 .tooltip *:last-child {
-	color: #bdbddb;
+	color: var(--light-grey);
 	font-style: italic;
 }
 .spell-tier-tooltip {
-	color: #bdbddb;
+	color: var(--light-grey);
+	width: 30%;
+}
+.spell-type-tooltip {
+	color: var(--secondary-button);
 }
 .spell-description-tooltip {
 	flex-basis: 100%;
@@ -440,10 +458,10 @@ LORE AREA
     min-width: 260px;
 }
 .lore-name {
-	background: #6C501B;
-    color: #FBFBFB;
+	background: var(--button);
+    color: var(--white);
     font-family: 'Oswald', sans-serif;
-        padding: 5px 10px 9px 10px;
+    padding: 5px 10px 9px 10px;
     font-size: 21px;
     line-height: 21px;
     white-space: nowrap;
@@ -456,26 +474,26 @@ LORE AREA
     position: absolute;
     right: 10px;
     top: 4px;
-    color: #bc8a2f;
+    color: var(--selected);
 	font-size: 17px;
 }
 .lore-name:hover {
-	background: #936c25;
+	background: var(--button-hover);
 }
 .lore-name:active {
-	background: #413010;
+	background: var(--button-active);
 }
 .lore-name:hover:after {
-    color: #d2a34b;
+    color: var(--selected-hover);
 }
 .lore-name:active:after {
-    color: #936c25;
+    color: var(--selected-active);
 }
 .expanded.lore-name:after {
 	content: "\25B2";
 }
 .lore-description {
-    background: #FBFBFB;
+    background: var(--white);
     padding: 10px;
     font-size: 14px;
     line-height: 18px;
@@ -486,11 +504,11 @@ CHOSEN.JS – CSS FIXES
 -------------------*/
 .chosen-single, .chosen-drop {
 	border-radius:0!important;
-	background: #FBFBFB!important;
-	color: #212931!important;
+	background:var(--white)!important;
+	color: var(--black)!important;
 }
 .chosen-default {
-	color: #4a5764!important;
+	color: var(--dark-grey)!important;
 	font-style: italic!important;
 }
 
