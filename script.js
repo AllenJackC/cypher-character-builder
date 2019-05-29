@@ -710,7 +710,7 @@ function populateSpells() {
 				} else {
 					$('#spell-list').append(
 						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
-						'<h3 class="spell-name">' +
+						'<h3 class="spell-name" data-name="' + spellName + '">' +
 						'<div class="spell-icon ' + spellType + '"></div>' +
 						spellName +
 						spellTier +
@@ -781,7 +781,7 @@ function populateSpells() {
 				}
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
-			}
+			} 
 		}
 	});
 	//Remove any spells that are not
@@ -809,11 +809,13 @@ function populateSpellLists() {
 	$('.list-spell').remove();
 	//Move each spell to their respective lists
 	spells.each( function() {
-		var spellID = $(this).attr('id');
-		var spellOrder = $(this).css('order');
+		var thisSpell = $(this);
+		var spellID = thisSpell.attr('id');
+		var spellOrder = thisSpell.css('order');
 		var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
 		var thisType = tooltip.children('.spell-type-tooltip').text();
-		if ( $(this).hasClass('required') || $(this).hasClass('selected') ) {
+		var isItem = $('.spell-icon', thisSpell).hasClass('items-spell');
+		if ( thisSpell.hasClass('required') || thisSpell.hasClass('selected') ) {
 			if ( thisType == "Enabler" ) {
 				$('#enablers-list').append(
 					'<div data-spellid="' + spellID + '" class="list-spell" style="order: ' + spellOrder + '">' +
@@ -844,6 +846,49 @@ function populateSpellLists() {
 					'</span>' +
 					'</div>'
 				);
+			} else if ( isItem ) {
+				$('#equipment-list').append(
+					'<tr class="list-item">' +
+					'<td>' +
+					'<select class="item-equip">' +
+					'<option selected>Stored</option>' +
+					'<option>Readied</option>' +
+					'<option>Equipped</option>' +
+					'</select>' +
+					'</td>' +
+					'<td contenteditable="true" class="item-name">' +
+					thisSpell.children('.spell-name').data('name') +
+					'</td>' +
+					'<td class="item-type-cell">' +
+					'<select class="item-type" data-placeholder="Type">' +
+					'<option></option>' +
+					'<option value="IT">Item</option>' +
+					'<option value="LW">Light Weapon</option>' +
+					'<option value="MW">Heavy Weapon</option>' +
+					'<option value="HW">Medium Weapon</option>' +
+					'<option value="LA">Light Armour</option>' +
+					'<option value="MA">Medium Armour</option>' +
+					'<option value="HA">Heavy Armour</option>' +
+					'</select>' +
+					'</td>' +
+					'<td contenteditable="true" class="item-cost">' +
+					'</td>' +
+					'<td contenteditable="true" class="item-weight">' +
+					'</td>' +
+					'<td class="remove-row-cell">' +
+					'<div class="remove-row">X</div>' +
+					'</td>' +
+					'</tr>'
+				);
+				$('.item-equip').chosen({
+					disable_search: true,
+					width: "78px"
+				});
+				$('.item-type').chosen({
+					disable_search: true,
+					placeholder_text_single: "Type",
+					width: "123px"
+				});
 			}
 		}
 	});
@@ -894,7 +939,6 @@ $(function() {
 	//Select elements inside the equipment section
 	var equipmentList = $('#equipment-list');
 	var itemEquip = $('.item-equip');
-	var itemClass = $('.item-class');
 	var itemType = $('.item-type');
 	//Set the initial character tier
 	var curTier = 1;
@@ -957,17 +1001,12 @@ $(function() {
 	});
 	itemEquip.chosen({
 		disable_search: true,
-		width: "90px"
-	});
-	itemClass.chosen({
-		disable_search: true,
-		placeholder_text_single: "Class",
-		width: "83px"
+		width: "78px"
 	});
 	itemType.chosen({
 		disable_search: true,
 		placeholder_text_single: "Type",
-		width: "84px"
+		width: "123px"
 	});
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridToggle.click(function(){
@@ -1129,18 +1168,9 @@ $(function() {
 		}
 	});
 	equipmentList.on('click', '.remove-row', function () {
-		var listItem = $(this).closest('.list-item');
-		var listRows = $('#equipment-list .list-item');
-		var listItemIndex = listRows.index(listItem);
-		console.log(listItemIndex);
-		var previousListItem = listRows.eq(listItemIndex - 1).children('.add-remove');
-		console.log(listRows.index(listRows.eq(listItemIndex - 1)));
-		previousListItem.append(
-			'<div class="add-row">+</div>'
-		);
-		listItem.remove();
+		$(this).closest('.list-item').remove();
 	});
-	equipmentList.on('click', '.add-row', function () {
+	$('#add-item').click( function () {
 		equipmentList.append(
 			'<tr class="list-item">' +
 			'<td>' +
@@ -1152,44 +1182,35 @@ $(function() {
 			'</td>' +
 			'<td contenteditable="true" class="item-name">' +
 			'</td>' +
-			'<td>' +
-			'<select class="item-class" data-placeholder="Class">' +
-			'<option></option>' +
-			'<option>Light</option>' +
-			'<option>Medium</option>' +
-			'<option>Heavy</option>' +
-			'</select>' +
+			'<td class="item-type-cell">' +
 			'<select class="item-type" data-placeholder="Type">' +
 			'<option></option>' +
-			'<option>Item</option>' +
-			'<option>Weapon</option>' +
-			'<option>Armour</option>' +
+			'<option value="IT">Item</option>' +
+			'<option value="LW">Light Weapon</option>' +
+			'<option value="MW">Heavy Weapon</option>' +
+			'<option value="HW">Medium Weapon</option>' +
+			'<option value="LA">Light Armour</option>' +
+			'<option value="MA">Medium Armour</option>' +
+			'<option value="HA">Heavy Armour</option>' +
 			'</select>' +
 			'</td>' +
 			'<td contenteditable="true" class="item-cost">' +
 			'</td>' +
 			'<td contenteditable="true" class="item-weight">' +
 			'</td>' +
-			'<td>' +
+			'<td class="remove-row-cell">' +
 			'<div class="remove-row">X</div>' +
-			'<div class="add-row">+</div>' +
 			'</td>' +
 			'</tr>'
 		);
 		$('.item-equip').chosen({
 			disable_search: true,
-			width: "90px"
-		});
-		$('.item-class').chosen({
-			disable_search: true,
-			placeholder_text_single: "Class",
-			width: "83px"
+			width: "78px"
 		});
 		$('.item-type').chosen({
 			disable_search: true,
 			placeholder_text_single: "Type",
-			width: "84px"
+			width: "123px"
 		});
-		$(this).remove();
 	});
 });

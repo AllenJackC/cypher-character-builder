@@ -383,6 +383,7 @@ SPELL LISTS
 	padding: 3px;
 	border-radius: 0 20px 0 20px;
 	margin-left: 10px;
+	position: relative;
 }
 .spell-header {
 	margin: 0;
@@ -442,6 +443,9 @@ SPELL LISTS
 	margin-right: 10px;
 	padding: 0 5px 1.5px 5px;
 }
+.item-type-cell .chosen-single span {
+	text-align: center;
+}
 .item-cost {
 	min-width: 70px;
 	margin-right: 10px;
@@ -464,33 +468,42 @@ SPELL LISTS
 .list-item .chosen-single > div {
 	display: none!important;
 }
-.add-row, .remove-row {
+.list-item .chosen-single span {
+	margin-right: 0!important;
+}
+.remove-row-cell {
+	width: 15px;
+}
+.remove-row {
 	color: var(--dark-grey);
 	display: inline-block;
 	padding: 3px;
 	cursor: pointer;
-	margin-left: 3px;
-}
-.add-row {
-	font-size: 25px;
-	line-height: 15px;
-}
-.remove-row {
-    font-size: 17px;
-    position: relative;
-    top: -2px;
-}
-.add-row:hover {
-	color: var(--selected-active);
 }
 .remove-row:hover {
 	color: var(--remove-hover);
 }
-.add-row:active {
-	color: var(--selected);
-}
 .remove-row:active {
 	color: var(--remove-active);
+}
+#add-item {
+	width: fit-content;
+    background: var(--button);
+    color: var(--white);
+    padding: 4px 10px;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+    pointer-events: auto;
+    white-space: nowrap;
+    position: absolute;
+    top: 20px;
+    right: 25px;
+}
+#add-item:hover {
+	background: var(--button-hover);
+}
+#add-item:active {
+	background: var(--button-active);
 }
 /*------
 TOOLTIPS
