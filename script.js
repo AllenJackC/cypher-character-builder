@@ -981,6 +981,14 @@ function populateSpellLists(spellsList) {
 			}
 		}
 	});
+	//Remove items if the associated spell was removed
+	$('.list-item').each(function() {
+		var spellID = parseInt($(this).data('spellid'));
+		var isBlank = isNaN(spellID);
+		if( $.inArray(spellID,spellsList) < 0 && spellsList != undefined && !isBlank ) {
+			$(this).remove();
+		}
+	});
 	//Show the spell list section if there are spells in the list, otherwise hide it
 	$('.spell-list').each(function() {
 		if ( $(this).is(':empty') ) {
