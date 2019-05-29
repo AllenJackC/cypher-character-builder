@@ -9,11 +9,13 @@
 	--button-hover: #7A5A1F;
 	--button-active: #513C15;
 	--secondary-button: #BDBDDB;
-	--secondary-button-hover: #BDBDDB;
+	--secondary-button-hover: #DEDEED;
 	--secondary-button-active: #9C9CC9;
 	--selected: #E6B83D;
 	--selected-hover: #ECC96A;
 	--selected-active: #D4A31C;
+	--remove-hover: #A73F16;
+	--remove-active: #D4501C;
 }
 /*------------
 ELEMENT RESETS
@@ -55,6 +57,9 @@ input, select {
 	border: none;
 	background-color: var(--white);
 	color: var(--black);
+	font-size: 13px;
+    line-height: 18px;
+	font-family: 'Lato', sans-serif;
 }
 input {
 	padding: 8px 6px 6px 6px;
@@ -270,8 +275,8 @@ SPELLBOOK
 .action-spell {
 	background-image: url('images/action.png');
 }
-.lore-spell {
-	background-image: url('images/lore.png');
+.items-spell {
+	background-image: url('images/items.png');
 }
 .spell-name {
 	background-color: var(--button);
@@ -352,11 +357,19 @@ SPELL LISTS
 	flex-wrap: wrap;
 	padding: 15px 0 0 15px;
 }
-.spell-section {
-	display: none;
+.spell-section, #equipment-section {
 	margin: 0 15px 15px 0;
 	width: 450px;
     min-width: 260px;
+}
+#equipment-section {
+	width: auto;
+}
+#equipment-list {
+	padding-bottom: 20px;
+}
+.spell-section {
+	display: none;
 }
 .spell-section-bar {
 	height: 80px;
@@ -390,12 +403,14 @@ SPELL LISTS
 }
 .list-spell {
     display: flex;
+	align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
 	padding: 0 5px 2px 5px;
+	font-size: 13px;
+	line-height: 18px;
     border-bottom: 1px dashed var(--secondary-button);
     white-space: nowrap;
-	cursor: help;
 	pointer-events: auto;
 }
 .list-spell:hover, .list-spell:active {
@@ -405,6 +420,81 @@ SPELL LISTS
 .list-spell span:nth-child(n+2) {
 	padding-left: 20px;
 }
+.list-item > td, .list-item > th {
+	font-family: 'Lato', sans-serif;
+	margin-bottom: 10px;
+	padding: 0 5px 2px 5px;
+	font-size: 13px;
+	line-height: 18px;
+    border-bottom: 1px dashed var(--secondary-button);
+    white-space: nowrap;
+	pointer-events: auto;
+}
+.list-item > td:last-child {
+	border-color: var(--white);
+}
+.list-item > th {
+	text-align: center;
+	border-bottom: 1px solid var(--black);
+}
+.item-name {
+	min-width: 120px;
+	margin-right: 10px;
+	padding: 0 5px 1.5px 5px;
+}
+.item-cost {
+	min-width: 70px;
+	margin-right: 10px;
+	padding: 0 5px 1.5px 5px;
+	text-align: right;
+}
+.item-cost:after {
+	content: '\20A1';
+	margin-left: 1px;
+}
+.item-weight {
+	padding: 0 5px 1.5px 5px;
+	min-width: 10px;
+	text-align: center;
+}
+.list-item .chosen-single {
+	border: 0!important;
+	box-shadow: none!important;
+}
+.list-item .chosen-single > div {
+	display: none!important;
+}
+.add-row, .remove-row {
+	color: var(--dark-grey);
+	display: inline-block;
+	padding: 3px;
+	cursor: pointer;
+	margin-left: 3px;
+}
+.add-row {
+	font-size: 25px;
+	line-height: 15px;
+}
+.remove-row {
+    font-size: 17px;
+    position: relative;
+    top: -2px;
+}
+.add-row:hover {
+	color: var(--selected-active);
+}
+.remove-row:hover {
+	color: var(--remove-hover);
+}
+.add-row:active {
+	color: var(--selected);
+}
+.remove-row:active {
+	color: var(--remove-active);
+}
+/*------
+TOOLTIPS
+------*/
 .tooltip {
     position: absolute;
     background: var(--black-translucent);
@@ -413,11 +503,16 @@ SPELL LISTS
     width: 280px;
     border: solid 1px var(--selected);
     border-radius: 5px;
-	display: none;
+	visibility: hidden;
+	opacity: 0;
 	font-size: 14px;
 	line-height: 14px;
 	align-items: baseline;
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 	z-index: 5;
+	transition: visibility 0.2s, opacity 0.1s linear;
 }
 .tooltip * {
 	margin: 2px 0;
@@ -426,12 +521,10 @@ SPELL LISTS
 	color: var(--selected);
 	width: 70%;
 }
-.tooltip *:nth-child(even):not(.spell-type-tooltip), .tooltip *:last-child  {
-	text-align: right;
-}
 .tooltip *:last-child {
 	color: var(--light-grey);
 	font-style: italic;
+	text-align: right;
 }
 .spell-tier-tooltip {
 	color: var(--light-grey);
@@ -439,15 +532,20 @@ SPELL LISTS
 }
 .spell-type-tooltip {
 	color: var(--secondary-button);
+	text-align: left!important;
 }
 .spell-description-tooltip {
 	flex-basis: 100%;
 	margin: 5px 0;
+	text-align: left!important;
+}
+.tooltip *:nth-child(even) {
+	text-align: right;
 }
 .tooltip-visible {
-	display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+	visibility: visible;
+	opacity: 1;
+	transition: opacity 0.1s linear, visibility 0s;
 }
 /*-------
 LORE AREA
@@ -506,6 +604,7 @@ CHOSEN.JS – CSS FIXES
 	border-radius:0!important;
 	background:var(--white)!important;
 	color: var(--black)!important;
+	line-height: 18px;
 }
 .chosen-default {
 	color: var(--dark-grey)!important;
