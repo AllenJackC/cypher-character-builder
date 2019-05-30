@@ -17,14 +17,40 @@
 	--remove-hover: #A73F16;
 	--remove-active: #D4501C;
 }
-/*------------
-ELEMENT RESETS
--------------*/
-body {
-	padding: 0;
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
 	margin: 0;
-	width: 100%;
-	height: 100%;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+body {
 	color: var(--black);
 	background-color: var(--black);
 	text-align: left;
@@ -52,20 +78,20 @@ input, select, div.chosen-container {
 	user-select: auto;
 }
 input, select {
-	width: calc( 100% - 1px );
+	width: calc( 100% - 1px);
 	padding: 3px 5px;
 	border: none;
 	background-color: var(--white);
 	color: var(--black);
 	font-size: 13px;
-    line-height: 18px;
+	line-height: 18px;
 	font-family: 'Lato', sans-serif;
 }
 h2 {
-    color: var(--white);
-    font-family: 'Oswald', sans-serif;
+	color: var(--white);
+	font-family: 'Oswald', sans-serif;
 	font-size: 35px;
-    line-height: 1em;
+	line-height: 1em;
 	margin: 20px 0;
 }
 h3, h4 {
@@ -74,9 +100,9 @@ h3, h4 {
 	font-family: 'Oswald', sans-serif;
 }
 h4 {
-    font-size: 20px;
-    line-height: 20px;
-    font-variant: small-caps;
+	font-size: 20px;
+	line-height: 20px;
+	font-variant: small-caps;
 }
 p {
 	margin-top: 0;
@@ -93,21 +119,19 @@ strong {
 .mobile {
 	display: none;
 }
-
 /*------------------
 CHARACTER ATTRIBUTES
 ------------------*/
-#char-attributes {
-	max-width: 660px;
+#character-attributes {
+	width: 660px;
 }
-.char-attribute-row {
+.row {
 	display: flex;
 	margin: 15px;
 }
-.char-attribute-row > div:nth-last-child(n+2){
+.row > div:nth-last-child(n+2) {
 	margin-right: 15px;
 }
-
 /* Text in between inputs */
 .char-attribute-connectors {
 	line-height: 37px;
@@ -115,34 +139,36 @@ CHARACTER ATTRIBUTES
 	font-family: 'Oswald', sans-serif;
 	white-space: nowrap;
 }
-
 /* Character attributes */
-.char-attribute {
+.character-attribute {
 	display: flex;
 	flex-wrap: wrap;
 	flex-shrink: 0;
 	width: 100%;
 }
-.char-attribute-input-border {
+.input-border {
 	background: var(--button);
-	background: -moz-linear-gradient(top, var(--black) 0%,  var(--button) 100%);
+	background: -moz-linear-gradient(top, var(--black) 0%, var(--button) 100%);
 	background: -webkit-linear-gradient(top, var(--black) 0%, var(--button) 100%);
 	background: linear-gradient(to bottom, var(--black) 0%, var(--button) 100%);
 	padding: 4px;
 	width: 100%;
 }
-.input-line {
+.character-attribute input {
 	width: calc( 100% - 12px)
 }
-label.under-label {
+.character-attribute label {
 	background: var(--button);
-    color: var(--white);
-    min-width: fit-content;
-    width: 20%;
-    padding: 2px 25px 2px 5px;
-    font-family: 'Oswald', sans-serif;
+	color: var(--white);
+	min-width: fit-content;
+	width: 20%;
+	padding: 2px 25px 2px 5px;
+	font-family: 'Oswald', sans-serif;
+	line-height: 1.5;
 }
-
+#descriptor {
+	width: 167px;
+}
 /* Buttons */
 .char-attribute-button {
 	height: 28px;
@@ -159,8 +185,8 @@ label.under-label {
 	color: var(--secondary-button);
 	box-shadow: inset 0 0 0 1px var(--secondary-button);
 	padding: 4px 4px 5px 4px;
-    line-height: 9px;
-    display: inline-flex;
+	line-height: 9px;
+	display: inline-flex;
 	font-size: 12px;
 	cursor: pointer;
 	pointer-events: auto;
@@ -177,7 +203,7 @@ label.under-label {
 	padding: 4px 5px 5px 4px;
 }
 .clicked {
-    background-color: var(--button)!important;
+	background-color: var(--button)!important;
 	color: var(--white)!important;
 	box-shadow: none!important;
 }
@@ -193,13 +219,14 @@ SPELLBOOK AREA
 .spellbook-button {
 	width: fit-content;
 	background: var(--button);
-    color: var(--white);
-    padding: 8px 20px;
-    font-family: 'Oswald', sans-serif;
+	color: var(--white);
+	padding: 8px 20px;
+	font-family: 'Oswald', sans-serif;
 	cursor: pointer;
 	pointer-events: auto;
 	white-space: nowrap;
 	margin: 0 15px;
+    line-height: 1.5;
 }
 .spellbook-button:hover {
 	background: var(--button-hover);
@@ -219,20 +246,20 @@ SPELLBOOK
 	left: 0;
 	z-index: 10;
 	overflow-y: auto;
-    pointer-events: auto;
+	pointer-events: auto;
 }
 #spellbook-wrapper {
 	display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
 	max-width: 800px;
 	margin: 0 auto;
 	pointer-events: none;
 	padding: 30px;
 }
 #spellbook-title {
-	display:flex;
+	display: flex;
 	align-items: center;
 }
 #spellbook-title img {
@@ -278,21 +305,21 @@ SPELLBOOK
 .spell-name {
 	background-color: var(--button);
 	color: var(--white);
-    font-family: 'Oswald', sans-serif;
-    padding: 12px 15px 15px 15px;
-    font-size: 21px;
-    line-height: 21px;
+	font-family: 'Oswald', sans-serif;
+	padding: 12px 15px 15px 15px;
+	font-size: 21px;
+	line-height: 21px;
 	border-radius: 8px 8px 0 0;
 }
 .spell-tier {
-	float:right;
+	float: right;
 	display: inline-block;
 }
 .stats {
 	padding: 20px;
 	display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+	justify-content: space-between;
+	flex-wrap: wrap;
 }
 .stats:empty {
 	padding-top: 0!important;
@@ -301,7 +328,7 @@ SPELLBOOK
 	flex-basis: 50%;
 }
 .stats span:nth-child(even) {
-    text-align: right;
+	text-align: right;
 }
 .spell-description {
 	padding: 0 20px;
@@ -338,7 +365,7 @@ SPELLBOOK
 }
 .disabled-spell {
 	filter: grayscale(80%);
-    opacity: 0.9;
+	opacity: 0.9;
 	cursor: default;
 }
 .disabled-spell .spell-name {
@@ -357,7 +384,7 @@ SPELL LISTS
 .spell-section, #equipment-section {
 	margin: 0 15px 15px 0;
 	width: 450px;
-    min-width: 260px;
+	min-width: 260px;
 }
 #equipment-section {
 	width: auto;
@@ -373,7 +400,7 @@ SPELL LISTS
 	background: #6C501B;
 	border-radius: 0 0 0 20px;
 	width: 10px;
-	float:left;
+	float: left;
 }
 .spell-section-wrap {
 	background: var(--button);
@@ -384,31 +411,31 @@ SPELL LISTS
 }
 .spell-header {
 	margin: 0;
-    color: var(--black);
+	color: var(--black);
 	background: var(--white);
-    padding: 15px;
+	padding: 15px;
 	border-radius: 20px 20px 0 0;
 	text-transform: uppercase;
 	font-weight: 400;
 }
 .spell-list {
 	background: var(--white);
-    color: var(--black);
+	color: var(--black);
 	padding: 0 15px 10px 15px;
 	border-radius: 0 0 20px 20px;
 	display: flex;
 	flex-direction: column;
 }
 .list-spell {
-    display: flex;
+	display: flex;
 	align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+	justify-content: space-between;
+	margin-bottom: 10px;
 	padding: 0 5px 2px 5px;
 	font-size: 13px;
 	line-height: 18px;
-    border-bottom: 1px dashed var(--secondary-button);
-    white-space: nowrap;
+	border-bottom: 1px dashed var(--secondary-button);
+	white-space: nowrap;
 	pointer-events: auto;
 }
 .list-spell:hover, .list-spell:active {
@@ -418,24 +445,24 @@ SPELL LISTS
 .list-spell span:nth-child(n+2) {
 	padding-left: 20px;
 }
-.list-item > td, .list-item > th {
+.list-item>td, .list-item>th {
 	font-family: 'Lato', sans-serif;
 	margin-bottom: 10px;
-	padding: 0 5px 2px 5px;
+	padding: 0 5px;
 	font-size: 13px;
-	line-height: 18px;
-    border-bottom: 1px dashed var(--secondary-button);
-    white-space: nowrap;
+	line-height: 20px;
+	border-bottom: 1px dashed var(--secondary-button);
+	white-space: nowrap;
 	pointer-events: auto;
 }
-.list-item > td:last-child {
+.list-item>td:last-child {
 	border-color: var(--white);
 }
-.list-item > th {
+.list-item>th {
 	text-align: center;
 	border-bottom: 1px solid var(--black);
 }
-.list-item > th:nth-child(2) {
+.list-item>th:nth-child(2) {
 	text-align: left;
 }
 .list-item .item-name {
@@ -466,7 +493,7 @@ SPELL LISTS
 	box-shadow: none!important;
 	padding: 0!important;
 }
-.list-item .chosen-single > div {
+.list-item .chosen-single>div {
 	display: none!important;
 }
 .list-item .chosen-single span {
@@ -489,16 +516,17 @@ SPELL LISTS
 }
 #add-item {
 	width: fit-content;
-    background: var(--button);
-    color: var(--white);
-    padding: 4px 10px;
-    font-family: 'Oswald', sans-serif;
-    cursor: pointer;
-    pointer-events: auto;
-    white-space: nowrap;
-    position: absolute;
-    top: 20px;
-    right: 25px;
+	background: var(--button);
+	color: var(--white);
+	padding: 4px 10px;
+	font-family: 'Oswald', sans-serif;
+	cursor: pointer;
+	pointer-events: auto;
+	white-space: nowrap;
+	position: absolute;
+	top: 20px;
+	right: 25px;
+	line-height: 1.5;
 }
 #add-item:hover {
 	background: var(--button-hover);
@@ -510,21 +538,21 @@ SPELL LISTS
 TOOLTIPS
 ------*/
 .tooltip {
-    position: absolute;
-    background: var(--black-translucent);
-    color: var(--white);
-    padding: 10px;
-    width: 280px;
-    border: solid 1px var(--selected);
-    border-radius: 5px;
+	position: absolute;
+	background: var(--black-translucent);
+	color: var(--white);
+	padding: 10px;
+	width: 280px;
+	border: solid 1px var(--selected);
+	border-radius: 5px;
 	visibility: hidden;
 	opacity: 0;
 	font-size: 14px;
 	line-height: 14px;
 	align-items: baseline;
 	display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+	flex-wrap: wrap;
+	justify-content: space-between;
 	z-index: 5;
 	transition: visibility 0.2s, opacity 0.1s linear;
 }
@@ -566,27 +594,27 @@ LORE AREA
 -------*/
 #lore-area {
 	margin: 0 15px 15px 10px;
-    width: 450px;
-    min-width: 260px;
+	width: 450px;
+	min-width: 260px;
 }
 .lore-name {
 	background: var(--button);
-    color: var(--white);
-    font-family: 'Oswald', sans-serif;
-    padding: 5px 10px 9px 10px;
-    font-size: 21px;
-    line-height: 21px;
-    white-space: nowrap;
+	color: var(--white);
+	font-family: 'Oswald', sans-serif;
+	padding: 5px 10px 9px 10px;
+	font-size: 21px;
+	line-height: 21px;
+	white-space: nowrap;
 	cursor: pointer;
 	pointer-events: auto;
 	position: relative;
 }
 .lore-name:after {
 	content: "\25BC";
-    position: absolute;
-    right: 10px;
-    top: 4px;
-    color: var(--selected);
+	position: absolute;
+	right: 10px;
+	top: 4px;
+	color: var(--selected);
 	font-size: 17px;
 }
 .lore-name:hover {
@@ -596,27 +624,27 @@ LORE AREA
 	background: var(--button-active);
 }
 .lore-name:hover:after {
-    color: var(--selected-hover);
+	color: var(--selected-hover);
 }
 .lore-name:active:after {
-    color: var(--selected-active);
+	color: var(--selected-active);
 }
 .expanded.lore-name:after {
 	content: "\25B2";
 }
 .lore-description {
-    background: var(--white);
-    padding: 10px;
-    font-size: 14px;
-    line-height: 18px;
+	background: var(--white);
+	padding: 10px;
+	font-size: 14px;
+	line-height: 18px;
 	display: none;
 }
 /*-------------------
 CHOSEN.JS – CSS FIXES
 -------------------*/
 .chosen-single, .chosen-drop {
-	border-radius:0!important;
-	background:var(--white)!important;
+	border-radius: 0!important;
+	background: var(--white)!important;
 	color: var(--black)!important;
 	line-height: 18px;
 }
@@ -624,12 +652,11 @@ CHOSEN.JS – CSS FIXES
 	color: var(--dark-grey)!important;
 	font-style: italic!important;
 }
-
 /*------------
 RESPONSIVE CSS
 ------------*/
 @media only screen and (max-width: 800px) {
-	.char-attribute, .char-attribute-connectors {
+	.character-attribute, .char-attribute-connectors {
 		width: 100%!important;
 		padding-bottom: 10px;
 	}
@@ -641,7 +668,7 @@ RESPONSIVE CSS
 		text-align: center;
 		margin: 0;
 	}
-	.char-attribute-row {
+	.row {
 		flex-wrap: wrap;
 		margin: 0;
 	}

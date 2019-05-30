@@ -559,7 +559,7 @@ function populateSpells() {
 	var curTier = 6;
 	//Get the values of all of the selection fields
 	//in the character attributes section
-	var descriptorVal = $('#descriptor').val();
+	var descriptorVal = $('#descriptor select').val();
 	var priSpeciesVal = $('#species').val();
 	var secSpeciesVal = $('#secondary-species').val();
 	var typeVal = $('#type').val();
@@ -621,7 +621,7 @@ function populateSpells() {
 			var spellOrigin;
 			switch ( curOption.charAt(0) ) {
 				case "D":
-				spellOrigin = $('#descriptor option[value="' + optionID + '"]').text();
+				spellOrigin = $('#descriptor select option[value="' + optionID + '"]').text();
 				break;
 				case "S":
 				if ( optionID.length === 2 ) {
@@ -1001,8 +1001,8 @@ function populateSpellLists(spellsList) {
 //Primary on load function
 $(function() {
 	//Select descriptor select field and options
-	var descriptors = $('#descriptor');
-	var descriptorsOptions = $('#descriptor option');
+	var descriptors = $('#descriptor select');
+	var descriptorsOptions = $('#descriptor select option');
 	//Select species select fields and options
 	var priSpecies = $('#species');
 	var secSpecies = $('#secondary-species');
