@@ -1029,7 +1029,7 @@ $(function() {
 	var resetSection = $('#reset-button');
 	var resetBtn = $('#reset-button div');
 	var spellList = $('#spell-list');
-	var spellButton = $('#wrapper .spellbook-button');
+	var spellButton = $('#main-wrapper .spellbook-button');
 	var spellModal = $('#spellbook-background');
 	var loreArea = $('#lore-area');
 	var spellLists = $('.spell-list');
