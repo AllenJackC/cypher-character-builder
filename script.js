@@ -39,7 +39,7 @@ function setStoryArc(arc) {
 		resetVisibility($(this));
 	});
 	$('option[data-story-arc]').each( function() {
-		if( $(this).attr('data-story-arc') >= arc) {
+		if( $(this).data('story-arc') >= arc) {
 			$(this).prop('hidden', true);
 			$(this).hide();
 		} else {
@@ -79,7 +79,7 @@ function populateSpecies() {
 	var typesOptions = $('#type option');
 	//Get the allowed species for the currently set type
 	var availPriSpecies = $('#type option:selected').attr('data-available-species');
-	var availSecSpecies = $('#type option:selected').attr('data-available-sec-species');
+	var availSecSpecies = $('#type option:selected').data('secondary-species');
 	//Get restricted species for the currently set foci
 	var resSpecies = "";
 	var resPriSpecies = $('#focus option:selected').attr('data-restricted-species');
@@ -155,7 +155,7 @@ function populateSpecies() {
 		typesOptions.each( function() {
 			var thisType = $(this).val();
 			var priSpeciesForType = $('#type option[value="' + thisType + '"]').attr('data-available-species');
-			var secSpeciesForType = $('#type option[value="' + thisType + '"]').attr('data-available-sec-species');
+			var secSpeciesForType = $('#type option[value="' + thisType + '"]').data('secondary-species');
 			if ( $.inArray(thisType,typeArray) < 0 ) {
 				priSpeciesArray.push(priSpeciesForType);
 				secSpeciesArray.push(secSpeciesForType);					
@@ -187,7 +187,7 @@ function populateSpecies() {
 		typesOptions.each( function() {
 			var thisType = $(this).val();
 			var priSpeciesForType = $('#type option[value="' + thisType + '"]').attr('data-available-species');
-			var secSpeciesForType = $('#type option[value="' + thisType + '"]').attr('data-available-sec-species');
+			var secSpeciesForType = $('#type option[value="' + thisType + '"]').data('secondary-species');
 			if ( $.inArray(thisType,typeArray) < 0 ) {
 				priSpeciesArray.push(priSpeciesForType);
 				secSpeciesArray.push(secSpeciesForType);					
@@ -286,7 +286,7 @@ function populateTypes() {
 		var resTypesArray = resTypes.match(/.{1,2}/g);
 		typesOptions.each( function() {
 			var thisType = $(this).val();
-			var availSecSpecies = $(this).attr('data-available-sec-species').split('');
+			var availSecSpecies = $(this).data('secondary-species').split('');
 			if( $.inArray(secSpeciesVal,availSecSpecies) < 0 || $.inArray(thisType,resTypesArray) > -1 ) {
 				$(this).prop('disabled', true);
 			} else {
@@ -299,7 +299,7 @@ function populateTypes() {
 		typesOptions.each( function() {
 			var thisType = $(this).val();
 			var availPriSpecies = $(this).attr('data-available-species').split('');
-			var availSecSpecies = $(this).attr('data-available-sec-species').split('');
+			var availSecSpecies = $(this).data('secondary-species').split('');
 			if( $.inArray(priSpeciesVal,availPriSpecies) < 0 || $.inArray(secSpeciesVal,availSecSpecies) < 0 || $.inArray(thisType,resTypesArray) > -1 ) {
 				$(this).prop('disabled', true);
 			} else {
@@ -315,14 +315,14 @@ function populateTypes() {
 	//If there is NO focus selected, but only the secondary species is selected
 	} else if ( resTypes == "" && priSpeciesBlank && !secSpeciesBlank ) {
 		typesOptions.each( function() {
-			var array = $(this).attr('data-available-sec-species').split('');
+			var array = $(this).data('secondary-species').split('');
 			resOpts($(this),array,false,secSpeciesVal);
 		});
 	//If there is NO focus selected, but both species are selected
 	} else if ( resTypes == "" && !priSpeciesBlank && !secSpeciesBlank ) {
 		typesOptions.each( function() {
 			var availPriSpecies = $(this).attr('data-available-species').split('');
-			var availSecSpecies = $(this).attr('data-available-sec-species').split('');
+			var availSecSpecies = $(this).data('secondary-species').split('');
 			if( $.inArray(priSpeciesVal,availPriSpecies) < 0 || $.inArray(secSpeciesVal,availSecSpecies) < 0 ) {
 				$(this).prop('disabled', true);
 			} else {
@@ -559,7 +559,7 @@ function populateSpells() {
 	var curTier = 6;
 	//Get the values of all of the selection fields
 	//in the character attributes section
-	var descriptorVal = $('#descriptor select').val();
+	var descriptorVal = $('#descriptor').val();
 	var priSpeciesVal = $('#species').val();
 	var secSpeciesVal = $('#secondary-species').val();
 	var typeVal = $('#type').val();
@@ -621,7 +621,7 @@ function populateSpells() {
 			var spellOrigin;
 			switch ( curOption.charAt(0) ) {
 				case "D":
-				spellOrigin = $('#descriptor select option[value="' + optionID + '"]').text();
+				spellOrigin = $('#descriptor option[value="' + optionID + '"]').text();
 				break;
 				case "S":
 				if ( optionID.length === 2 ) {
@@ -1001,8 +1001,8 @@ function populateSpellLists(spellsList) {
 //Primary on load function
 $(function() {
 	//Select descriptor select field and options
-	var descriptors = $('#descriptor select');
-	var descriptorsOptions = $('#descriptor select option');
+	var descriptors = $('#descriptor');
+	var descriptorsOptions = $('#descriptor option');
 	//Select species select fields and options
 	var priSpecies = $('#species');
 	var secSpecies = $('#secondary-species');
@@ -1025,7 +1025,8 @@ $(function() {
 	var genVariation = $('#genetic-variation');
 	var secFociSection = $('#second-focus');
 	var hybridSection = $('#hybrid-species');
-	var hybridToggle = $('#hybrid-button div');
+	var hybridButton = $('#hybrid-button div');
+	var hybridTooltip = $('#hybrid-tooltip');
 	var resetSection = $('#reset-button');
 	var resetBtn = $('#reset-button div');
 	var spellList = $('#spell-list');
@@ -1106,7 +1107,7 @@ $(function() {
 		width: "123px"
 	});
 	//[H] button to show or hide secondary species dropdown and reset its value
-	hybridToggle.click(function(){
+	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
 		$(this).toggleClass('clicked');
 		hybridSection.toggleClass('hidden-section');
@@ -1246,16 +1247,15 @@ $(function() {
 		} else if ( fromLeft > windowWidth - (tooltip.width() + 10) ) {
 			fromLeft = windowWidth - (tooltip.width() + 10);
 		}
-		tooltip.addClass('tooltip-visible');
+		tooltip.addClass('visible');
 		tooltip.css('top', e.pageY - (tooltip.height() + 25));
 		tooltip.css('left', fromLeft);
 		isHovering = true;
-		
 	});
 	spellLists.on('mouseleave', '.list-spell', function(e) {
 		var spellID = $(this).data('spellid');
 		var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
-		tooltip.removeClass('tooltip-visible');
+		tooltip.removeClass('visible');
 		isHovering = false;
 	});
 	spellLists.on('mousemove', '.list-spell', function(e){
@@ -1265,6 +1265,22 @@ $(function() {
 			tooltip.css('top', e.pageY - (tooltip.height() + 25));
 			tooltip.css('left', e.pageX - 30);
 		}
+	});
+	hybridButton.hover( function(e){
+		if ( hybridButton.hasClass('clicked') === false ) {
+			var fromLeft = e.pageX - 35;
+			var windowWidth = $(window).width();
+			if ( fromLeft < 10 ) {
+				fromLeft = 10;
+			} else if ( fromLeft > windowWidth - (hybridTooltip.width() + 10) ) {
+				fromLeft = windowWidth - (hybridTooltip.width() + 10);
+			}
+			hybridTooltip.addClass('visible');
+			hybridTooltip.css('top', e.pageY - (hybridTooltip.height() + 45));
+			hybridTooltip.css('left', fromLeft);
+		}
+	}, function() {
+		hybridTooltip.removeClass('visible');
 	});
 	//Add item rows when clicking Add Item
 	//Remove item rows when clicking X, but
