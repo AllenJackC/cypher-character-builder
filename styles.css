@@ -127,28 +127,28 @@ CHARACTER ATTRIBUTES
 #character-attributes {
 	width: 660px;
 }
-.row {
+#character-attributes .row {
 	display: flex;
 	margin: 15px;
 }
-.row > div:nth-last-child(n+2) {
+#character-attributes .row > div:nth-last-child(n+2) {
 	margin-right: 15px;
 }
 /* Text in between inputs */
-.connector {
+#character-attributes .connector {
 	line-height: 37px;
 	color: var(--white);
 	font-family: 'Oswald', sans-serif;
 	white-space: nowrap;
 }
 /* Character attributes */
-.attribute {
+#character-attributes .attribute {
 	display: flex;
 	flex-wrap: wrap;
 	flex-shrink: 0;
 	width: 100%;
 }
-.attribute .border {
+#character-attributes .attribute .border {
 	background: var(--button);
 	background: -moz-linear-gradient(top, var(--black) 0%, var(--button) 100%);
 	background: -webkit-linear-gradient(top, var(--black) 0%, var(--button) 100%);
@@ -156,10 +156,10 @@ CHARACTER ATTRIBUTES
 	padding: 4px;
 	width: 100%;
 }
-.attribute input {
+#character-attributes .attribute input {
 	width: calc( 100% - 12px)
 }
-.attribute label {
+#character-attributes .attribute label {
 	background: var(--button);
 	color: var(--white);
 	font-family: 'Oswald', sans-serif;
@@ -168,14 +168,26 @@ CHARACTER ATTRIBUTES
 	padding: 2px 25px 2px 5px;
 	width: 20%;
 }
-.attribute:nth-child(2) {
+#character-attributes .row:nth-child(2) .attribute:nth-child(2) {
 	width: 167px;
 }
-.attribute:nth-child(3) {
+#character-attributes .row:nth-child(2) .attribute:nth-child(3), #character-attributes .row:nth-child(3) .attribute:nth-child(2) {
 	width: 145px;
 }
-.attribute:nth-child(4) {
+#character-attributes .row:nth-child(2) .attribute:nth-child(4) {
 	width: 190px;
+}
+#character-attributes .row:nth-child(3) .attribute:nth-child(4) {
+	width: 300px;
+}
+#character-attributes #extra-attributes .attribute:nth-child(1) {
+	width: 160px;
+}
+#character-attributes #extra-attributes .attribute:nth-child(2) {
+	width: 150px;
+}
+#character-attributes #extra-attributes .attribute:nth-child(3) {
+	width: 292px;
 }
 /* Buttons */
 .secondary-button {
@@ -209,6 +221,9 @@ CHARACTER ATTRIBUTES
 }
 #reset-button div {
 	padding: 4px 5px 5px 4px;
+}
+#reset-button {
+	right: -50px;
 }
 .clicked {
 	background-color: var(--button)!important;
@@ -545,7 +560,7 @@ SPELL LISTS
 /*------
 TOOLTIPS
 ------*/
-.tooltip, #hybrid-tooltip {
+.tooltip, #hybrid-tooltip, #reset-tooltip {
 	position: absolute;
 	background: var(--black-translucent);
 	color: var(--white);
@@ -564,7 +579,7 @@ TOOLTIPS
 	z-index: 5;
 	transition: visibility 0.2s, opacity 0.1s linear;
 }
-.tooltip *, #hybrid-tooltip * {
+.tooltip *, #hybrid-tooltip *, #reset-tooltip * {
 	margin: 2px 0;
 }
 .tooltip .spell-origin {
@@ -580,7 +595,7 @@ TOOLTIPS
 	color: var(--secondary-button);
 	text-align: left!important;
 }
-#hybrid-tooltip .description, .spell-description-tooltip {
+#hybrid-tooltip .description, .spell-description-tooltip, #reset-tooltip .description {
 	flex-basis: 100%;
 	margin: 5px 0;
 	text-align: left!important;
