@@ -117,7 +117,7 @@ strong {
 .mobile {
 	display: none;
 }
-#main-wrapper {
+#main {
 	height: 100%;
 	width: 100%;
 }
@@ -135,20 +135,20 @@ CHARACTER ATTRIBUTES
 	margin-right: 15px;
 }
 /* Text in between inputs */
-.char-attribute-connectors {
+.connector {
 	line-height: 37px;
 	color: var(--white);
 	font-family: 'Oswald', sans-serif;
 	white-space: nowrap;
 }
 /* Character attributes */
-.character-attribute {
+.attribute {
 	display: flex;
 	flex-wrap: wrap;
 	flex-shrink: 0;
 	width: 100%;
 }
-.character-attribute .border {
+.attribute .border {
 	background: var(--button);
 	background: -moz-linear-gradient(top, var(--black) 0%, var(--button) 100%);
 	background: -webkit-linear-gradient(top, var(--black) 0%, var(--button) 100%);
@@ -156,10 +156,10 @@ CHARACTER ATTRIBUTES
 	padding: 4px;
 	width: 100%;
 }
-.character-attribute input {
+.attribute input {
 	width: calc( 100% - 12px)
 }
-.character-attribute label {
+.attribute label {
 	background: var(--button);
 	color: var(--white);
 	font-family: 'Oswald', sans-serif;
@@ -168,14 +168,17 @@ CHARACTER ATTRIBUTES
 	padding: 2px 25px 2px 5px;
 	width: 20%;
 }
-.character-attribute:nth-child(2) {
+.attribute:nth-child(2) {
 	width: 167px;
 }
-.character-attribute:nth-child(3) {
+.attribute:nth-child(3) {
 	width: 145px;
 }
+.attribute:nth-child(4) {
+	width: 190px;
+}
 /* Buttons */
-.char-attribute-button {
+.secondary-button {
 	height: 28px;
 	display: flex;
 	justify-content: flex-end;
@@ -185,7 +188,7 @@ CHARACTER ATTRIBUTES
 	top: -28px;
 	margin-bottom: -28px;
 }
-.char-attribute-button div {
+.secondary-button div {
 	background-color: var(--black);
 	color: var(--secondary-button);
 	box-shadow: inset 0 0 0 1px var(--secondary-button);
@@ -196,11 +199,11 @@ CHARACTER ATTRIBUTES
 	cursor: pointer;
 	pointer-events: auto;
 }
-.char-attribute-button div:hover {
+.secondary-button div:hover {
 	color: var(--secondary-button-hover);
 	box-shadow: inset 0 0 0 1px var(--secondary-button-hover);
 }
-.char-attribute-button div:active {
+.secondary-button div:active {
 	color: var(--secondary-button-active);
 	box-shadow: inset 0 0 0 1px var(--secondary-button-active);
 }
@@ -597,6 +600,8 @@ LORE AREA
 	margin: 0 15px 15px 10px;
 	width: 450px;
 	min-width: 260px;
+	display: flex;
+    flex-direction: column;
 }
 .lore-name {
 	background: var(--button);
@@ -666,14 +671,14 @@ CHOSEN.JS – CSS FIXES
 RESPONSIVE CSS
 ------------*/
 @media only screen and (max-width: 800px) {
-	.character-attribute, .char-attribute-connectors {
+	.attribute, .connector {
 		width: 100%!important;
 		padding-bottom: 10px;
 	}
 	.chosen-container {
 		width: 100%!important;
 	}
-	.char-attribute-connectors {
+	.connector {
 		line-height: 18px;
 		text-align: center;
 		margin: 0;
@@ -682,10 +687,10 @@ RESPONSIVE CSS
 		flex-wrap: wrap;
 		margin: 0;
 	}
-	.char-attribute-button {
+	.secondary-button {
 		right: 0!important;
 	}
-	#main-wrapper {
+	#main {
 		flex-direction: column;
 		align-items: center;
 		padding: 30px;

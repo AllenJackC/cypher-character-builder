@@ -35,7 +35,7 @@ function resOpts(target,array,conditional,otherTar) {
 }
 //Disable or enable options based on current story arc
 function setStoryArc(arc) {
-	$('#species option, #secondary-species option').each( function() {
+	$('#species option, #secondary-species option, #types option').each( function() {
 		resetVisibility($(this));
 	});
 	$('option[data-story-arc]').each( function() {
@@ -76,10 +76,10 @@ function populateSpecies() {
 	var priSpeciesVal = priSpecies.val();
 	var secSpeciesVal = secSpecies.val();
 	//Select all of the options for types
-	var typesOptions = $('#type option');
+	var typesOptions = $('#types option');
 	//Get the allowed species for the currently set type
-	var availPriSpecies = $('#type option:selected').attr('data-available-species');
-	var availSecSpecies = $('#type option:selected').data('secondary-species');
+	var availPriSpecies = $('#types option:selected').attr('data-available-species');
+	var availSecSpecies = $('#types option:selected').data('secondary-species');
 	//Get restricted species for the currently set foci
 	var resSpecies = "";
 	var resPriSpecies = $('#focus option:selected').attr('data-restricted-species');
@@ -154,8 +154,8 @@ function populateSpecies() {
 		var secSpeciesArray = [];
 		typesOptions.each( function() {
 			var thisType = $(this).val();
-			var priSpeciesForType = $('#type option[value="' + thisType + '"]').attr('data-available-species');
-			var secSpeciesForType = $('#type option[value="' + thisType + '"]').data('secondary-species');
+			var priSpeciesForType = $('#types option[value="' + thisType + '"]').attr('data-available-species');
+			var secSpeciesForType = $('#types option[value="' + thisType + '"]').data('secondary-species');
 			if ( $.inArray(thisType,typeArray) < 0 ) {
 				priSpeciesArray.push(priSpeciesForType);
 				secSpeciesArray.push(secSpeciesForType);					
@@ -186,8 +186,8 @@ function populateSpecies() {
 		var secSpeciesArray = [];
 		typesOptions.each( function() {
 			var thisType = $(this).val();
-			var priSpeciesForType = $('#type option[value="' + thisType + '"]').attr('data-available-species');
-			var secSpeciesForType = $('#type option[value="' + thisType + '"]').data('secondary-species');
+			var priSpeciesForType = $('#types option[value="' + thisType + '"]').attr('data-available-species');
+			var secSpeciesForType = $('#types option[value="' + thisType + '"]').data('secondary-species');
 			if ( $.inArray(thisType,typeArray) < 0 ) {
 				priSpeciesArray.push(priSpeciesForType);
 				secSpeciesArray.push(secSpeciesForType);					
@@ -220,16 +220,10 @@ function populateSpecies() {
 	}
 	//Disable the currently selected primary or secondary species based on the
 	//respective selection in the other field, stopping users from double dipping
-	if ( priSpeciesVal !== "" ) {
-		$('#secondary-species option[value=' + priSpeciesVal + ']').prop('disabled', true);
-	}
-	if ( secSpeciesVal !== "" ) {
-		$('#species option[value=' + secSpeciesVal + ']').prop('disabled', true);
-	}
+	if ( priSpeciesVal ) $('#secondary-species option[value=' + priSpeciesVal + ']').prop('disabled', true);
+	if ( secSpeciesVal ) $('#species option[value=' + secSpeciesVal + ']').prop('disabled', true);
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
-	//Also fix issue with species field disabling itself if its value is 3 for some reason
 	hideOpts(speciesOptions);
-	$('#species').removeAttr('disabled');
 	//Trigger an update of the contents of both species select fields
 	priSpecies.trigger('chosen:updated');
 	secSpecies.trigger('chosen:updated');
@@ -249,9 +243,9 @@ function populateTypes() {
 	var priSpeciesBlank = priSpeciesVal === "" || priSpeciesVal === null;
 	var secSpeciesBlank = secSpeciesVal === "" || secSpeciesVal === null;
 	//Select the type select field
-	var types = $('#type');
+	var types = $('#types');
 	//Select the options under the type select field
-	var typesOptions = $('#type option');
+	var typesOptions = $('#types option');
 	//Reset disabled status of types before making changes
 	typesOptions.each( function() {
 		$(this).removeAttr('disabled');
@@ -334,9 +328,9 @@ function populateTypes() {
 	//type if the correct genetic variation is selected
 	if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
 		if ( genVariationVal == 2 || genVariationVal === null || genVariationVal === "" ) {
-			$('#type option[value="A3"]').prop('disabled', false);
+			$('#types option[value="A3"]').prop('disabled', false);
 		} else {
-			$('#type option[value="A3"]').prop('disabled', true);
+			$('#types option[value="A3"]').prop('disabled', true);
 		}
 	}
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
@@ -350,7 +344,7 @@ function populateFoci() {
 	var priFoci = $('#focus');
 	var secFoci = $('#secondary-focus');
 	//Get the value of the current type
-	var typeVal = $('#type').val();
+	var typeVal = $('#types').val();
 	//Get the value of the current species select fields
 	var priSpeciesVal = $('#species').val();
 	var secSpeciesVal = $('#secondary-species').val();
@@ -503,7 +497,7 @@ function populateVariants() {
 	var priSpeciesVal = $('#species').val();
 	var secSpeciesVal = $('#secondary-species').val();
 	//Get current type value
-	var typeVal = $('#type').val();
+	var typeVal = $('#types').val();
 	//Select genetic variation select field and options
 	var variants = $('#variant');
 	var variantsOptions = $('#variant option');
@@ -562,7 +556,7 @@ function populateSpells() {
 	var descriptorVal = $('#descriptor').val();
 	var priSpeciesVal = $('#species').val();
 	var secSpeciesVal = $('#secondary-species').val();
-	var typeVal = $('#type').val();
+	var typeVal = $('#types').val();
 	var priFocusVal = $('#focus').val();
 	var secFocusVal = $('#secondary-focus').val();
 	var variantVal = $('#variant').val();
@@ -646,7 +640,7 @@ function populateSpells() {
 				}
 				break;
 				case "T":
-				spellOrigin = $('#type option[value="' + optionID + '"]').text();
+				spellOrigin = $('#types option[value="' + optionID + '"]').text();
 				break;
 				case "F":
 				if ( $('#focus').val() != "E2" ) {
@@ -1010,8 +1004,8 @@ $(function() {
 	var secSpeciesOptions = $('#secondary-species option');
 	var speciesOptions = $('#species option, #secondary-species option');
 	//Select types select field and options
-	var types = $('#type');
-	var typesOptions = $('#type option');
+	var types = $('#types');
+	var typesOptions = $('#types option');
 	//Select foci select fields and options
 	var priFoci = $('#focus');
 	var secFoci = $('#secondary-focus');
@@ -1030,7 +1024,7 @@ $(function() {
 	var resetSection = $('#reset-button');
 	var resetBtn = $('#reset-button div');
 	var spellList = $('#spell-list');
-	var spellButton = $('#main-wrapper .spellbook-button');
+	var spellButton = $('#main .spellbook-button');
 	var spellModal = $('#spellbook-background');
 	var loreArea = $('#lore-area');
 	var spellLists = $('.spell-list');
@@ -1139,7 +1133,6 @@ $(function() {
 		priFoci.val('');
 		secFoci.val('');
 		variants.val('');
-		$('.spell, .lore').remove();
 		secFociSection.addClass('hidden-section');
 		resetSection.addClass('hidden-section');
 		genVariation.addClass('hidden-section');
@@ -1149,6 +1142,7 @@ $(function() {
 		populateTypes();
 		populateFoci();
 		populateVariants();
+		populateSpells();
 	});
 	//Populate relevant lists each time the select list is interacted
 	//with, populate spells, and show the reset button

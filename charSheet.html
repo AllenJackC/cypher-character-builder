@@ -42,14 +42,14 @@
 	<div id="warning" style="padding: 10px; background: red; color: white;text-align:center">
 		❗ PLEASE WAIT WHILE THE DATABASE PULLS ❗
 	</div>
-	<div id="main-wrapper">
+	<div id="main">
 		<!--======================
         BASIC CHARACTER ATTRIBUTES
         =======================-->
 		<div id="character-attributes">
 			<!-- NAME -->
 			<div class="row">
-				<div class="character-attribute">
+				<div class="attribute">
 					<div class="border">
 						<input id="name">
 					</div>
@@ -58,12 +58,12 @@
 			</div>
 			<!-- DESCRIPTOR, SPECIES & TYPE -->
 			<div class="row">
-				<div class="char-attribute-connectors">IS A</div>
+				<div class="connector">IS A</div>
 				<!-- DESCRIPTOR -->
-				<div class="character-attribute">
+				<div class="attribute">
 					<div class="border">
 						<select id="descriptor">
-							<option value=""></option>
+							<option></option>
 							<option value="A1">Abrasive</option>
 							<option value="A2">Addicted</option>
 							<option value="A3">Adroit</option>
@@ -188,10 +188,10 @@
 					<label for="descriptor">DESCRIPTOR</label>
 				</div>
 				<!-- SPECIES -->
-				<div class="character-attribute">
+				<div class="attribute">
 					<div class="border">
 						<select id="species">
-							<option value=""></option>
+							<option></option>
 							<option value="0">Aeyan</option>
 							<option value="1">Erelan</option>
 							<option data-story-arc="3" value="2">Ewoche</option>
@@ -205,7 +205,7 @@
 					</div>
 					<label for="species">SPECIES</label>
 					<!-- HYBRID TOGGLE -->
-					<div class="char-attribute-button" id="hybrid-button">
+					<div class="secondary-button" id="hybrid-button">
 						<div>H</div>
 					</div>
 					<div id="hybrid-tooltip">
@@ -216,9 +216,9 @@
 					</div>
 				</div>
 				<!-- TYPE -->
-				<div class="character-attribute" style="width:190px">
+				<div class="attribute">
 					<div class="border">
-						<select id="type">
+						<select id="types">
 							<option data-secondary-species="" data-available-species="" value=""></option>
 							<option data-secondary-species="012345678" data-available-species="012345678" value="A0">Citizen</option>
 							<option data-secondary-species="016" data-available-species="016" value="A1">Divine Cleric</option>
@@ -238,31 +238,31 @@
 							<option data-secondary-species="016" data-available-species="06" data-story-arc="2" value="B5">Vindicator</option>
 						</select>
 					</div>
-					<label for="type">TYPE</label>
+					<label for="types">TYPE</label>
 					<!-- RESET BUTTON -->
-					<div class="char-attribute-button hidden-section" id="reset-button" style="right: -50px;" title="Reset Options">
+					<div class="secondary-button hidden-section" id="reset-button" style="right: -50px;" title="Reset Options">
 						<div>R</div>
 					</div>
 				</div>
-				<div class="char-attribute-connectors desktop">WHO</div>
-				<div class="char-attribute-connectors mobile">WHO IDENTIFIES AS</div>
+				<div class="connector desktop">WHO</div>
+				<div class="connector mobile">WHO IDENTIFIES AS</div>
 			</div>
 			<!-- GENDER & FOCUS -->
 			<div class="row">
-				<div class="char-attribute-connectors desktop" style="width:94px">
+				<div class="connector desktop" style="width:94px">
 					IDENTIFIES AS
 				</div>
 				<!-- GENDER -->
-				<div class="character-attribute" style="width:145px">
+				<div class="attribute" style="width:145px">
 					<div class="border">
 						<input id="gender">
 					</div><label for="gender">GENDER</label>
 				</div>
-				<div class="char-attribute-connectors" style="width:63px">
+				<div class="connector" style="width:63px">
 					AND WHO
 				</div>
 				<!-- FOCUS -->
-				<div class="character-attribute" style="width:283px">
+				<div class="attribute" style="width:283px">
 					<div class="border">
 						<select id="focus">
 							<option data-restricted-species="" data-restricted-types="" value=""></option>
@@ -408,7 +408,7 @@
 			<!-- SECONDARY SPECIES, GENETIC VARIATION & SECONDARY FOCUS -->
 			<div class="row" style="padding-top:20px">
 				<!-- SECONDARY SPECIES -->
-				<div class="character-attribute hidden-section" id="hybrid-species" style="width:160px">
+				<div class="attribute hidden-section" id="hybrid-species" style="width:160px">
 					<div class="border">
 						<select id="secondary-species">
 							<option value=""></option>
@@ -425,7 +425,7 @@
 					</div><label for="secondary-species">SECONDARY SPECIES</label>
 				</div>
 				<!-- GENETIC VARIATION -->
-				<div class="character-attribute hidden-section" id="genetic-variation" style="width:158px">
+				<div class="attribute hidden-section" id="genetic-variation" style="width:158px">
 					<div class="border">
 						<select id="variant">
 							<option value=""></option>
@@ -438,7 +438,7 @@
 					</div><label for="focus">GENETIC VARIATION</label>
 				</div>
 				<!-- SECONDARY FOCUS -->
-				<div class="character-attribute hidden-section" id="second-focus" style="width:283px">
+				<div class="attribute hidden-section" id="second-focus" style="width:283px">
 					<div class="border">
 						<select id="secondary-focus">
 							<option data-restricted-species="" data-restricted-types="" value=""></option>
