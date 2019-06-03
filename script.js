@@ -920,12 +920,12 @@ function populateSpellLists(spellsList) {
 				$(addedItem).insertAfter('#equipment table tr:first-child');
 				$('.equip').chosen({
 					disable_search: true,
-					width: "78px"
+					width: "82px"
 				});
 				$('.type-select').chosen({
 					disable_search: true,
 					placeholder_text_single: " ",
-					width: "123px"
+					width: "130px"
 				});
 				var thisItem = $('.item-row[data-spellid="' + spellID + '"]');
 				$('.type-select', thisItem).val(selectThisType);
@@ -1019,8 +1019,8 @@ $(function() {
 	var spellLists = $('.hotbars');
 	//Select elements inside the equipment section
 	var equipmentList = $('#equipment table');
-	var itemEquip = $('.equip');
-	var itemType = $('.type-select');
+	var itemEquip = $('#equipment .equip select');
+	var itemType = $('#equipment .type select');
 	//Set the initial character tier
 	var curTier = 1;
 	//Setup spell list database
@@ -1086,7 +1086,6 @@ $(function() {
 	});
 	itemType.chosen({
 		disable_search: true,
-		placeholder_text_single: " ",
 		width: "123px"
 	});
 	//[H] button to show or hide secondary species dropdown and reset its value
@@ -1308,44 +1307,46 @@ $(function() {
 	//item in the row
 	function addItem() {
 		equipmentList.append(
-			'<tr class="item-row">' +
-			'<td>' +
-			'<select class="equip">' +
-			'<option selected>Stashed</option>' +
-			'<option>Readied</option>' +
-			'<option>Equipped</option>' +
-			'</select>' +
+			'<tr>' +
+			'<td class="arrow"></td>' +
+			'<td class="equip">' +
+				'<select>' +
+					'<option selected value="S">Stashed</option>' +
+					'<option value="R">Readied</option>' +
+					'<option value="E">Equipped</option>' +
+				'</select>' +
 			'</td>' +
-			'<td contenteditable="true" class="name">' +
+			'<td class="name">' +
+				'<div contenteditable="true"></div>' +
 			'</td>' +
 			'<td class="type">' +
-			'<select class="type-select" data-placeholder=" ">' +
-			'<option></option>' +
-			'<option value="IT">Item</option>' +
-			'<option value="LW">Light Weapon</option>' +
-			'<option value="MW">Heavy Weapon</option>' +
-			'<option value="HW">Medium Weapon</option>' +
-			'<option value="LA">Light Armour</option>' +
-			'<option value="MA">Medium Armour</option>' +
-			'<option value="HA">Heavy Armour</option>' +
-			'</select>' +
+				'<select>' +
+					'<option selected value="IT">Item</option>' +
+					'<option value="LW">Light Weapon</option>' +
+					'<option value="MW">Heavy Weapon</option>' +
+					'<option value="HW">Medium Weapon</option>' +
+					'<option value="LA">Light Armour</option>' +
+					'<option value="MA">Medium Armour</option>' +
+					'<option value="HA">Heavy Armour</option>' +
+				'</select>' +
 			'</td>' +
-			'<td contenteditable="true" class="value">' +
+			'<td class="value">' +
+				'<div contenteditable="true">0</div>' +
+				'<div>&#8353;</div>' +
 			'</td>' +
-			'<td contenteditable="true" class="weight">' +
+			'<td class="weight">' +
+				'<div contenteditable="true">0</div>' +
+				'<div> slots</div>' +
 			'</td>' +
-			'<td class="delete-row">' +
-			'<div class="remove-row">X</div>' +
-			'</td>' +
-			'</tr>'
+			'<td class="delete">DELETE</td>' +
+		'</tr>'
 		);
-		$('.equip').chosen({
+		$('#equipment .equip select').chosen({
 			disable_search: true,
 			width: "78px"
 		});
-		$('.type-select').chosen({
+		$('#equipment .type select').chosen({
 			disable_search: true,
-			placeholder_text_single: " ",
 			width: "123px"
 		});
 	}
@@ -1357,5 +1358,8 @@ $(function() {
 	});
 	$('#add-item').click( function () {
 		addItem();
+	});
+	$('#equipment td').click( function() {
+		$('div:first-child', this).focus();
 	});
 });

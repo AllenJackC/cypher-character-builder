@@ -618,9 +618,9 @@
 			<div class="hotbars" id="talents"></div>
 		</div>
 		<div id="equipment">
-			<div class="modal-header">
+			<div class="header">
 				<div class="header">
-					<img src="images/item.png">
+					<img src="images/items.png">
 					<h2>Inventory</h2>
 				</div>
 				<div class="button" id="add-item">
@@ -629,14 +629,17 @@
 			</div>
 			<table>
 				<tbody>
-					<tr class="item-row">
+					<tr>
+						<th></th>
 						<th>STATE</th>
 						<th>NAME</th>
 						<th>TYPE</th>
 						<th>VALUE</th>
 						<th>WEIGHT</th>
+						<th></th>
 					</tr>
-					<tr class="item-row">
+					<tr>
+						<td class="arrow"></td>
 						<td class="equip">
 							<select>
 								<option selected value="S">Stashed</option>
@@ -644,11 +647,12 @@
 								<option value="E">Equipped</option>
 							</select>
 						</td>
-						<td class="name" contenteditable="true"></td>
+						<td class="name">
+							<div contenteditable="true"></div>
+						</td>
 						<td class="type">
-							<select data-placeholder="">
-								<option></option>
-								<option value="IT">Item</option>
+							<select>
+								<option selected value="IT">Item</option>
 								<option value="LW">Light Weapon</option>
 								<option value="MW">Heavy Weapon</option>
 								<option value="HW">Medium Weapon</option>
@@ -657,11 +661,15 @@
 								<option value="HA">Heavy Armour</option>
 							</select>
 						</td>
-						<td class="value" contenteditable="true"></td>
-						<td class="weight" contenteditable="true"></td>
-						<td class="delete-row">
-							<div>X</div>
+						<td class="value">
+							<div contenteditable="true">0</div>
+							<div>&#8353;</div>
 						</td>
+						<td class="weight">
+							<div contenteditable="true">0</div>
+							<div> slots</div>
+						</td>
+						<td class="delete">DELETE</td>
 					</tr>
 				</tbody>
 			</table>
