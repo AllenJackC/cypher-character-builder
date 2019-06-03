@@ -31,8 +31,8 @@
 	<meta content="images/mstile-144x144.png" name="msapplication-TileImage">
 	<meta content="images/browserconfig.xml" name="msapplication-config">
 	<meta content="#212931" name="theme-color">
-	<link href="styles.css" rel="stylesheet" type="text/css">
 	<link href="plugins/chosen.min.css" rel="stylesheet" type="text/css">
+	<link href="styles.css" rel="stylesheet" type="text/css">
 	<script src="libs/jquery-3.3.1.min.js" type="text/javascript"></script>
 	<script src="plugins/chosen.jquery.min.js" type="text/javascript"></script>
 	<script src="plugins/tabletop.min.js" type="text/javascript"></script>
@@ -49,7 +49,7 @@
 		<div id="character-attributes">
 			<!-- NAME -->
 			<div class="row">
-				<div class="attribute">
+				<div class="attribute last-column">
 					<div class="border">
 						<input id="name">
 					</div>
@@ -60,7 +60,7 @@
 			<div class="row">
 				<div class="connector">IS A</div>
 				<!-- DESCRIPTOR -->
-				<div class="attribute">
+				<div class="attribute" style="width: 160px">
 					<div class="border">
 						<select id="descriptor">
 							<option></option>
@@ -188,7 +188,7 @@
 					<label for="descriptor">DESCRIPTOR</label>
 				</div>
 				<!-- SPECIES -->
-				<div class="attribute">
+				<div class="attribute" style="width: 140px">
 					<div class="border">
 						<select id="species">
 							<option></option>
@@ -216,7 +216,7 @@
 					</div>
 				</div>
 				<!-- TYPE -->
-				<div class="attribute">
+				<div class="attribute" style="width: 165px">
 					<div class="border">
 						<select id="types">
 							<option></option>
@@ -250,16 +250,15 @@
 						</span>
 					</div>
 				</div>
-				<div class="connector desktop">WHO</div>
-				<div class="connector mobile">WHO IDENTIFIES AS</div>
+				<div class="connector last-column">WHO</div>
 			</div>
 			<!-- GENDER & FOCUS -->
-			<div class="row">
-				<div class="connector desktop">
+			<div class="row last-row" id="gender-focus">
+				<div class="connector">
 					IDENTIFIES AS
 				</div>
 				<!-- GENDER -->
-				<div class="attribute">
+				<div class="attribute" style="width: 153px">
 					<div class="border">
 						<input id="gender">
 					</div>
@@ -269,7 +268,7 @@
 					AND WHO
 				</div>
 				<!-- FOCUS -->
-				<div class="attribute">
+				<div class="attribute last-column" style="width: 240px">
 					<div class="border">
 						<select id="foci">
 							<option></option>
@@ -414,9 +413,10 @@
 				</div>
 			</div>
 			<!-- SECONDARY SPECIES, GENETIC VARIATION & SECONDARY FOCUS -->
-			<div class="row hidden-section" id="extra-attributes">
-				<!-- SECONDARY SPECIES -->
-				<div class="attribute hidden-section" id="hybrid-species">
+			<div class="hidden-section" id="extra-attributes-header">ADDITIONAL ATTRIBUTES</div>
+			<div class="row last-row hidden-section" id="extra-attributes">
+			<!-- SECONDARY SPECIES -->
+				<div class="attribute hidden-section" id="hybrid-species"  style="width: 157px">
 					<div class="border">
 						<select id="secondary-species">
 							<option></option>
@@ -434,9 +434,9 @@
 					<label for="secondary-species">SECONDARY SPECIES</label>
 				</div>
 				<!-- GENETIC VARIATION -->
-				<div class="attribute hidden-section" id="genetic-variation">
+				<div class="attribute hidden-section" id="genetic-variation" style="width: 150px">
 					<div class="border">
-						<select id="variant">
+						<select id="genetic-variants">
 							<option></option>
 							<option value="0">Acrod Tranckh</option>
 							<option value="1">Harod Tranckh</option>
@@ -445,10 +445,10 @@
 							<option value="4">Viyun</option>
 						</select>
 					</div>
-					<label for="variant">GENETIC VARIATION</label>
+					<label for="genetic-variants">GENETIC VARIATION</label>
 				</div>
 				<!-- SECONDARY FOCUS -->
-				<div class="attribute hidden-section" id="second-focus">
+				<div class="attribute last-column hidden-section" id="second-focus" style="width: 240px">
 					<div class="border">
 						<select id="secondary-foci">
 							<option></option>
@@ -592,101 +592,122 @@
 				</div>
 			</div>
 		</div>
-		<!--===================
-        SPELLBOOK & SPELL LISTS
-        ====================-->
-		<div class="spellbook-button">
-			Abilities
+		<!--=======
+        SPELL LISTS
+        ========-->
+		<div id="buttons">
+			<div class="button" id="open-spellbook">
+				Abilities
+			</div>
+			<div class="button" id="open-archives">
+				Lore
+			</div>
 		</div>
-		<div id="spellbook-area">
-			<div class="spell-section">
-				<div class="spell-section-bar"></div>
-				<div class="spell-section-wrap">
-					<h2 class="spell-header">Actions</h2>
-					<div class="spell-list" id="actions-list"></div>
+		<div class="spells">
+			<div class="header">
+				<img src="images/actions-enablers.png">
+				<h2>Actions & Enablers</h2>
+			</div>
+			<div class="hotbars" id="actions"></div>
+		</div>
+		<div class="spells">
+			<div class="header">
+				<img src="images/talent.png">
+				<h2>Talents</h2>
+			</div>
+			<div class="hotbars" id="talents"></div>
+		</div>
+		<div id="equipment">
+			<div class="modal-header">
+				<div class="header">
+					<img src="images/item.png">
+					<h2>Inventory</h2>
+				</div>
+				<div class="button" id="add-item">
+					Add Item
 				</div>
 			</div>
-			<div class="spell-section">
-				<div class="spell-section-bar"></div>
-				<div class="spell-section-wrap">
-					<h2 class="spell-header">Enablers</h2>
-					<div class="spell-list" id="enablers-list"></div>
-				</div>
-			</div>
-			<div class="spell-section">
-				<div class="spell-section-bar"></div>
-				<div class="spell-section-wrap">
-					<h2 class="spell-header">Talents</h2>
-					<div class="spell-list" id="talents-list"></div>
-				</div>
-			</div>
-			<div id="equipment-section">
-				<div class="spell-section-bar"></div>
-				<div class="spell-section-wrap">
-					<h2 class="spell-header">Equipment</h2>
-					<table class="spell-list" id="equipment-list">
-						<tbody>
-							<tr class="list-item" id="equipment-header-row"><th>CURRENTLY</th>
-								<th>NAME</th>
-								<th>TYPE</th>
-								<th>VALUE</th>
-								<th>WEIGHT</th>
-							</tr>
-							<tr class="list-item"><td>
-									<select class="item-equip">
-									<option selected value="S">		Stored
-									</option>
-									<option value="R">		Readied
-									</option>
-									<option value="E">		Equipped
-									</option>
-								</select></td>
-								<td class="item-name" contenteditable="true"></td>
-								<td class="item-type-cell"><select class="item-type" data-placeholder="">	<option>
-									</option>
-									<option value="IT">		Item
-									</option>
-									<option value="LW">		Light Weapon
-									</option>
-									<option value="MW">		Heavy Weapon
-									</option>
-									<option value="HW">		Medium Weapon
-									</option>
-									<option value="LA">		Light Armour
-									</option>
-									<option value="MA">		Medium Armour
-									</option>
-									<option value="HA">		Heavy Armour
-									</option>
-								</select></td>
-								<td class="item-cost" contenteditable="true"></td>
-								<td class="item-weight" contenteditable="true"></td>
-								<td class="remove-row-cell">	<div class="remove-row">		X
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<div id="add-item">
-						Add Item
-					</div>
-				</div>
-			</div>
-			<div id="lore-area"></div>
+			<table>
+				<tbody>
+					<tr class="item-row">
+						<th>STATE</th>
+						<th>NAME</th>
+						<th>TYPE</th>
+						<th>VALUE</th>
+						<th>WEIGHT</th>
+					</tr>
+					<tr class="item-row">
+						<td class="equip">
+							<select>
+								<option selected value="S">Stashed</option>
+								<option value="R">Readied</option>
+								<option value="E">Equipped</option>
+							</select>
+						</td>
+						<td class="name" contenteditable="true"></td>
+						<td class="type">
+							<select data-placeholder="">
+								<option></option>
+								<option value="IT">Item</option>
+								<option value="LW">Light Weapon</option>
+								<option value="MW">Heavy Weapon</option>
+								<option value="HW">Medium Weapon</option>
+								<option value="LA">Light Armour</option>
+								<option value="MA">Medium Armour</option>
+								<option value="HA">Heavy Armour</option>
+							</select>
+						</td>
+						<td class="value" contenteditable="true"></td>
+						<td class="weight" contenteditable="true"></td>
+						<td class="delete-row">
+							<div>X</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
-	<div class="invisible-section" id="spellbook-background">
-		<div id="spellbook-wrapper">
-			<div id="spellbook-title">
+	<div class="modal-background hidden-section">
+		<div class="modal">
+			<div class="modal-header">
+			<div class="header">
 				<img src="images/ability.png">
 				<h2>Abilities</h2>
 			</div>
-			<div class="spellbook-button">
+			<div id="close-spellbook" class="button">
 				Close
 			</div>
-			<div id="spell-list"></div>
+			</div>
+			<div id="spellbook">
+				<div class="filters">
+					<div class="button clicked" id="required">Perquisite</div>
+					<div class="button clicked" id="enabled">Enabled</div>
+					<div class="button clicked" id="available">Available</div>
+				</div>
+				<span class="placeholder">Nothing yet! Select character attributes to view abilities.</span>
+			</div>
 		</div>
 	</div>
-	<!--<div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>-->
+	<div class="modal-background hidden-section">
+		<div class="modal">
+			<div class="modal-header">
+			<div class="header">
+				<img src="images/lore.png">
+				<h2>Lore</h2>
+			</div>
+			<div id="close-archives" class="button">
+				Close
+			</div>
+			</div>
+			<div id="archives">
+				<div class="filters">
+					<div class="button clicked" id="required">Perquisite</div>
+					<div class="button clicked" id="enabled">Enabled</div>
+					<div class="button clicked" id="available">Available</div>
+				</div>
+				<span class="placeholder">Nothing yet! Select your species or type to view lore.</span>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
