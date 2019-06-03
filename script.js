@@ -1,42 +1,37 @@
+var descriptors;
+var descriptorsOptions;
+var priSpecies;
+var priSpeciesOptions;
+var secSpecies;
+var secSpeciesOptions;
+var speciesOptions;
+var types;
+var typesOptions;
+var elementalistType;
+var genderFocusRow;
+var priFoci;
+var priFociOptions;
+var secFoci;
+var secFociOptions;
+var fociOptions;
+var extraAttributes;
+var variantsSection;
+var variants;
+var variantsOptions;
+var curTier;
 var spellListDatabase = [];
-var availSpellCount = 4;
-var selectedSpellCount = 0;
-//Function for adding leading zeros, if needed
-function leadZeros(num, places) {
-  var zero = places - num.toString().length + 1;
-  return Array(+(zero > 0 && zero)).join("0") + num;
-}
-//Remove hidden and disabled attributes on target
-function resetVisibility(target) {
-	target.removeAttr('hidden');
-	target.removeAttr('disabled');
-}
-//Function to enable and disable options based on variables
-function resOpts(target,array,conditional,otherTar) {
-	var targetVal;
-	if ( otherTar === undefined ) {
-		targetVal = target.val();
-	} else {
-		targetVal = otherTar;
-	}
-	if ( !conditional ) {
-		if( $.inArray(targetVal,array) < 0 ) {
-			target.prop('disabled', true);
-		} else {
-			target.prop('disabled', false);
-		}
-	} else {
-		if( $.inArray(targetVal,array) > -1 ) {
-			target.prop('disabled', true);
-		} else {
-			target.prop('disabled', false);
-		}
-	}
+var availSpellCount;
+var selectedSpellCount;
+//Add leading zeros to number strings
+function leadZeros(number,places) {
+  var zero = places - number.toString().length + 1;
+  return Array(+(zero > 0 && zero)).join("0") + number;
 }
 //Disable or enable options based on current story arc
 function setStoryArc(arc) {
-	$('#species option, #secondary-species option, #types option').each( function() {
-		resetVisibility($(this));
+	speciesOptions.add(typesOptions).each( function() {
+		$(this).removeAttr('hidden');
+		$(this).removeAttr('disabled');
 	});
 	$('option[data-arc]').each( function() {
 		if( $(this).data('arc') >= arc) {
@@ -48,8 +43,32 @@ function setStoryArc(arc) {
 		}
 	});
 }
+//Hide any options that are marked as 'hidden' by the startup story arc function
+function hideOptions(options) {
+	options.each( function() {
+		var isHidden = $(this)[0].hasAttribute('hidden');
+		if( isHidden ) {
+			$(this).hide();
+		} else {
+			$(this).show();
+		}		
+	});
+}
+//Enable and disable options based on variables
+function disableOptions(target,array,conditional,otherTarget) {
+	var targetVal;
+	if ( otherTarget ) targetVal = otherTarget;
+	else targetVal = target.val();
+	if ( !conditional ) {
+		if( $.inArray(targetVal,array) < 0 ) target.prop('disabled', true);
+		else target.prop('disabled', false);
+	} else {
+		if( $.inArray(targetVal,array) > -1 ) target.prop('disabled', true);
+		else target.prop('disabled', false);
+	}
+}
 //Sort select field options function
-function sortOpts(field,options) {
+function sortOptions(field,options) {
 	options.sort(function(a,b) {
 		if ( a.text.toLowerCase() > b.text.toLowerCase() ) return 1;
 		else if ( a.text.toLowerCase() < b.text.toLowerCase() ) return -1;
@@ -57,64 +76,30 @@ function sortOpts(field,options) {
 	});
 	field.empty().append(options).val('');
 }
-//Function to hide any options that are marked as 'hidden' by the startup story arc function
-function hideOpts(optGroup) {
-	optGroup.each( function() {
-		var isHidden = $(this)[0].hasAttribute('hidden');
-		if( isHidden === true ) {
-			$(this).hide();
-		} else {
-			$(this).show();
-		}		
-	});
-}
 //Populate the contents of the species dropdown lists
 function populateSpecies() {
-	//Select the species select fields and get their current value
-	var priSpecies = $('#species');
-	var secSpecies = $('#secondary-species');
 	var priSpeciesVal = priSpecies.val();
 	var secSpeciesVal = secSpecies.val();
-	//Select all of the options for types
-	var typesOptions = $('#types option');
-	//Get the allowed species for the currently set type
 	var availPriSpecies = $('#types option:selected').data('primary-species');
 	var availSecSpecies = $('#types option:selected').data('secondary-species');
-	//Get restricted species for the currently set foci
 	var resSpecies = "";
 	var resPriSpecies = $('#foci option:selected').data('restricted-species');
 	var resSecSpecies = $('#secondary-foci option:selected').data('restricted-species');
-	//Get restricted types for the currently set foci
 	var resTypes = "";
 	var resPriTypes = $('#foci option:selected').data('restricted-types');
 	var resSecTypes = $('#secondary-foci option:selected').data('restricted-types');
-	//Select the options for each species select field
-	var priSpeciesOptions = $('#species option');
-	var secSpeciesOptions = $('#secondary-species option');
-	//Selector for both options
-	var speciesOptions = $('#species option, #secondary-species option');
-	//Reset disabled status of species before making changes
+	//Reset disabled status of all species options before making changes
 	speciesOptions.each( function() {
 		$(this).removeAttr('disabled');
 	});
 	//If a secondary focus is selected and has restricted species,
 	//restrict species based on that secondary focus
-	if ( resSecSpecies ) {
-		resSpecies = resSecSpecies;
-	} else {
-		resSpecies = resPriSpecies;
-	}
+	if ( resSecSpecies ) resSpecies = resSecSpecies;
+	else resSpecies = resPriSpecies;
 	//If a secondary focus is selected and has restricted types,
 	//restrict types based on that secondary focus
-	if ( resSecTypes ) {
-		resTypes = resSecTypes;
-	} else {
-		resTypes = resPriTypes;
-	}
-	//Check if either a focus or a type (or both) are selected,then
-	//restrict available species based on the selections (since all
-	//species have both primary and secondary available species, only
-	//only need to check for existence of primary species)
+	if ( resSecTypes ) resTypes = resSecTypes;
+	else resTypes = resPriTypes;
 	//If the type is selected, and there's no restrictions based on the selected focus
 	if ( availPriSpecies && !resSpecies ) {
 		var priArray = String(availPriSpecies);
@@ -122,10 +107,10 @@ function populateSpecies() {
 		if ( priArray ) priArray = priArray.split('');
 		if ( secArray ) secArray = secArray.split('');
 		priSpeciesOptions.each( function() {
-			resOpts($(this),priArray,false);				
+			disableOptions($(this),priArray,false);			
 		});
 		secSpeciesOptions.each( function() {
-			resOpts($(this),secArray,false);				
+			disableOptions($(this),secArray,false);				
 		});
 	//If the type is selected, and the selected focus has species restrictions
 	} else if ( availPriSpecies && resSpecies ) {
@@ -137,19 +122,13 @@ function populateSpecies() {
 		if ( speciesArray ) speciesArray = speciesArray.split('');	
 		priSpeciesOptions.each( function() {
 			var thisSpecies = $(this).val();
-			if( $.inArray(thisSpecies,priArray) < 0 || $.inArray(thisSpecies,speciesArray) > -1 ) {
-				$(this).prop('disabled', true);
-			} else {
-				$(this).prop('disabled', false);
-			}								
+			if ( $.inArray(thisSpecies,priArray) < 0 || $.inArray(thisSpecies,speciesArray) > -1 ) $(this).prop('disabled', true);
+			else $(this).prop('disabled', false);								
 		});
 		secSpeciesOptions.each( function() {
 			var thisSpecies = $(this).val();
-			if( $.inArray(thisSpecies,secArray) < 0 || $.inArray(thisSpecies,speciesArray) > -1 ) {
-				$(this).prop('disabled', true);
-			} else {
-				$(this).prop('disabled', false);
-			}								
+			if ( $.inArray(thisSpecies,secArray) < 0 || $.inArray(thisSpecies,speciesArray) > -1 ) $(this).prop('disabled', true);
+			else $(this).prop('disabled', false);
 		});
 	//If the type is NOT selected, and the selected focus has species and type restrictions
 	} else if ( !availPriSpecies && resSpecies && resTypes ) {
@@ -172,11 +151,8 @@ function populateSpecies() {
 		secSpeciesArray = secSpeciesArray.join('').split('');
 		priSpeciesOptions.each( function() {
 			var thisSpecies = $(this).val();
-			if( $.inArray(thisSpecies,priSpeciesArray) < 0 || $.inArray(thisSpecies,speciesArray) > -1 ) {
-				$(this).prop('disabled', true);
-			} else {
-				$(this).prop('disabled', false);
-			}								
+			if( $.inArray(thisSpecies,priSpeciesArray) < 0 || $.inArray(thisSpecies,speciesArray) > -1 ) $(this).prop('disabled', true);
+			else $(this).prop('disabled', false);						
 		});
 		secSpeciesOptions.each( function() {
 			var thisSpecies = $(this).val();
@@ -204,70 +180,50 @@ function populateSpecies() {
 		priSpeciesArray = priSpeciesArray.join('').split('');
 		secSpeciesArray = secSpeciesArray.join('').split('');
 		priSpeciesOptions.each( function() {
-			var thisSpecies = $(this).val();
-			if( $.inArray(thisSpecies,priSpeciesArray) < 0 ) {
-				$(this).prop('disabled', true);
-			} else {
-				$(this).prop('disabled', false);
-			}								
+			disableOptions($(this),priSpeciesArray,false);							
 		});
 		secSpeciesOptions.each( function() {
-			var thisSpecies = $(this).val();
-			if( $.inArray(thisSpecies,secSpeciesArray) < 0 ) {
-				$(this).prop('disabled', true);
-			} else {
-				$(this).prop('disabled', false);
-			}								
+			disableOptions($(this),secSpeciesArray,false);								
 		});
 	//If the type is NOT selected, and the selected focus has species restrictions but no type restrictions
 	} else if ( !availPriSpecies && resSpecies && !resTypes ) {
 		var array = resSpecies;
 		if ( array ) array = array.split('');
 		speciesOptions.each( function() {
-			resOpts($(this),array,true);				
+			disableOptions($(this),array,true);				
 		});
 	}
 	//Disable the currently selected primary or secondary species based on the
 	//respective selection in the other field, stopping users from double dipping
 	if ( priSpeciesVal ) $('#secondary-species option[value=' + priSpeciesVal + ']').prop('disabled', true);
 	if ( secSpeciesVal ) $('#species option[value=' + secSpeciesVal + ']').prop('disabled', true);
-	//Do not display any options thate marked as 'hidden' by the startup story arc function
-	hideOpts(speciesOptions);
+	//Do not display any options that are marked as 'hidden' by the startup story arc function
+	hideOptions(speciesOptions);
 	//Trigger an update of the contents of both species select fields
 	priSpecies.trigger('chosen:updated');
 	secSpecies.trigger('chosen:updated');
 }
 //Populate the contents of the type dropdown list
 function populateTypes() {
-	//Get the value of the current species select fields
-	var priSpeciesVal = $('#species').val();
-	var secSpeciesVal = $('#secondary-species').val();
-	//Get restricted types for the currently set foci
+	var priSpeciesVal = priSpecies.val();
+	var secSpeciesVal = secSpecies.val();
 	var resTypes = "";
 	var resPriTypes = $('#foci option:selected').data('restricted-types');
 	var resSecTypes = $('#secondary-foci option:selected').data('restricted-types');
-	//Get value of the current genetic variation
-	var genVariationVal = $('#genetic-variants').val();
-	//Select the type select field
-	var types = $('#types');
-	//Select the options under the type select field
-	var typesOptions = $('#types option');
+	var variantVal = variants.val();
 	//Reset disabled status of types before making changes
 	typesOptions.each( function() {
 		$(this).removeAttr('disabled');
 	});
 	//If a secondary focus is selected and has restricted types,
 	//restrict types based on that secondary focus
-	if ( resSecTypes ) {
-		resTypes = resSecTypes;
-	} else {
-		resTypes = resPriTypes;
-	}
+	if ( resSecTypes ) resTypes = resSecTypes;
+	else resTypes = resPriTypes;
 	//If there is a focus selected and no species selected
 	if ( resTypes && !priSpeciesVal && !secSpeciesVal ) {
 		var array = resTypes.match(/.{1,2}/g);
 		typesOptions.each( function() {
-			resOpts($(this),array,true);
+			disableOptions($(this),array,true);
 		});
 	//If there is a focus selected and a primary species selected, but no secondary species
 	} else if ( resTypes && priSpeciesVal && !secSpeciesVal ) {
@@ -315,14 +271,14 @@ function populateTypes() {
 		typesOptions.each( function() {
 			var array = String($(this).data('primary-species'));
 			if ( array ) { array = array.split(''); }
-			resOpts($(this),array,false,priSpeciesVal);
+			disableOptions($(this),array,false,priSpeciesVal);
 		});
 	//If there is NO focus selected, but only the secondary species is selected
 	} else if ( !resTypes && !priSpeciesVal && secSpeciesVal ) {
 		typesOptions.each( function() {
 			var array = String($(this).data('secondary-species'));
 			if ( array ) { array = array.split(''); }
-			resOpts($(this),array,false,secSpeciesVal);
+			disableOptions($(this),array,false,secSpeciesVal);
 		});
 	//If there is NO focus selected, but both species are selected
 	} else if ( !resTypes && priSpeciesVal && secSpeciesVal ) {
@@ -341,29 +297,23 @@ function populateTypes() {
 	//If a Terrans are selected, only show the Elementalist
 	//type if the correct genetic variation is selected
 	if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
-		if ( genVariationVal == 2 || !genVariationVal ) {
-			$('#types option[value="A3"]').prop('disabled', false);
+		if ( variantVal == 2 || !variantVal ) {
+			elementalistType.prop('disabled', false);
 		} else {
-			$('#types option[value="A3"]').prop('disabled', true);
+			elementalistType.prop('disabled', true);
 		}
 	}
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
-	hideOpts(typesOptions);
+	hideOptions(typesOptions);
 	//Trigger an update of the contents	
 	types.trigger('chosen:updated');
 }
 //Populate the contents of the focus dropdown lists
 function populateFoci() {
-	//Select the primary and secondary foci select fields
-	var priFoci = $('#foci');
-	var secFoci = $('#secondary-foci');
-	//Get the value of the current type
-	var typeVal = $('#types').val();
-	//Get the value of the current species select fields
-	var priSpeciesVal = $('#species').val();
-	var secSpeciesVal = $('#secondary-species').val();
-	//Get value of the current genetic variation
-	var genVariationVal = $('#genetic-variants').val();
+	var typeVal = types.val();
+	var priSpeciesVal = priSpecies.val();
+	var secSpeciesVal = secSpecies.val();
+	var variantVal = variants.val();
 	//Select the options under the two focus select fields
 	var fociOptions = $('#foci option, #secondary-foci option');
 	//Reset disabled status of foci before making changes
@@ -376,7 +326,7 @@ function populateFoci() {
 			var resSpecies = String($(this).data('restricted-species'));
 			if ( resSpecies ) {
 				var speciesArray = resSpecies.split('');
-				resOpts($(this),speciesArray,true,priSpeciesVal);
+				disableOptions($(this),speciesArray,true,priSpeciesVal);
 			}
 		});
 	//If the type is NOT selected, and only the secondary species is selected	
@@ -385,7 +335,7 @@ function populateFoci() {
 			var resSpecies = String($(this).data('restricted-species'));
 			if ( resSpecies ) {
 				var speciesArray = resSpecies.split('');
-				resOpts($(this),speciesArray,true,secSpeciesVal);
+				disableOptions($(this),speciesArray,true,secSpeciesVal);
 			}
 		});
 	//If the type is NOT selected, and both species are selected
@@ -416,10 +366,10 @@ function populateFoci() {
 				}
 			} else if ( resTypes && !resSpecies ) {
 				var typesArray = resTypes.match(/.{1,2}/g);
-				resOpts($(this),typesArray,true,typeVal);
+				disableOptions($(this),typesArray,true,typeVal);
 			} else if ( !resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
-				resOpts($(this),speciesArray,true,priSpeciesVal);
+				disableOptions($(this),speciesArray,true,priSpeciesVal);
 			}
 		});
 	//If the type is selected, and only the secondary species is selected
@@ -437,10 +387,10 @@ function populateFoci() {
 				}
 			} else if ( resTypes && !resSpecies ) {
 				var typesArray = resTypes.match(/.{1,2}/g);
-				resOpts($(this),typesArray,true,typeVal);
+				disableOptions($(this),typesArray,true,typeVal);
 			} else if ( !resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
-				resOpts($(this),speciesArray,true,secSpeciesVal);
+				disableOptions($(this),speciesArray,true,secSpeciesVal);
 			}
 		});
 	//If the type is selected, and both species are selected
@@ -458,7 +408,7 @@ function populateFoci() {
 				}
 			} else if ( resTypes && !resSpecies ) {
 				var typesArray = resTypes.match(/.{1,2}/g);
-				resOpts($(this),typesArray,true,typeVal);
+				disableOptions($(this),typesArray,true,typeVal);
 			} else if ( !resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
 				if( $.inArray(priSpeciesVal,speciesArray) > -1 || $.inArray(secSpeciesVal,speciesArray) > -1 ) {
@@ -474,17 +424,15 @@ function populateFoci() {
 			var resTypes = $(this).data('restricted-types');
 			if ( resTypes ) {
 				var typesArray = resTypes.match(/.{1,2}/g);
-				resOpts($(this),typesArray,true,typeVal);
+				disableOptions($(this),typesArray,true,typeVal);
 			}
 		});
 	}
 	//If a Terrans are selected, only show Elementalist
 	//foci if the correct genetic variation is selected
 	if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
-		if ( genVariationVal == 2 || !genVariationVal ) {
+		if ( variantVal != 2 && variantVal ) {
 			fociOptions.each( function() {
-				//If A3 is not in the restricted list, hide it
-				//If there is 
 				var resTypes = $(this).data('restricted-types');
 				if ( resTypes == "A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" ) {
 					$(this).prop('disabled', true);
@@ -495,25 +443,16 @@ function populateFoci() {
 		}
 	}
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
-	hideOpts(fociOptions);
+	hideOptions(fociOptions);
 	//Trigger an update of the contents
 	priFoci.trigger('chosen:updated');
 	secFoci.trigger('chosen:updated');
 }
 //Populate the contents of the genetic variations dropdown list for Terrans
 function populateVariants() {
-	//Select species select fields and options
-	var priSpeciesVal = $('#species').val();
-	var secSpeciesVal = $('#secondary-species').val();
-	//Get current type value
-	var typeVal = $('#types').val();
-	//Select genetic variation select field and options
-	var variants = $('#genetic-variants');
-	var variantsOptions = $('#genetic-variants option');
-	//Select genetic variation section
-	var extraAttributes = $('#extra-attributes, #extra-attributes-header');
-	var genVariation = $('#genetic-variation');
-	//Get restricted types for the currently set foci
+	var priSpeciesVal = priSpecies.val();
+	var secSpeciesVal = secSpecies.val();
+	var typeVal = types.val();
 	var resTypes = "";
 	var resPriTypes = $('#foci option:selected').data('restricted-types');
 	var resSecTypes = $('#secondary-foci option:selected').data('restricted-types');
@@ -525,78 +464,60 @@ function populateVariants() {
 	});
 	//If a secondary focus is selected and has restricted types,
 	//restrict types based on that secondary focus
-	if ( resSecTypes ) {
-		resTypes = resSecTypes;
-	} else {
-		resTypes = resPriTypes;
-	}
+	if ( resSecTypes ) resTypes = resSecTypes;
+	else resTypes = resPriTypes;
 	//If user picks Terran, show genetic variations
 	if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
 		extraAttributes.removeClass('hidden-section');
-		genVariation.removeClass('hidden-section');
+		variantsSection.removeClass('hidden-section');
 		$('#gender-focus').removeClass('last-row');
 	} else {
 		variants.val('');
-		genVariation.addClass('hidden-section');
+		variantsSection.addClass('hidden-section');
 		if ( extraAttributes.children(':visible').length == 0 ) {
 			extraAttributes.addClass('hidden-section');
-			$('#gender-focus').addClass('last-row');
+			genderFocusRow.addClass('last-row');
 		}
 	}
 	//If the currently selected type or focus has to do with Elementalist
 	//disabled all genetic variations exception for the one
 	if ( resTypes ) {
 		var typesArray = resTypes.match(/.{1,2}/g);
-		if( $.inArray("A3",typesArray) < 0 ) {
-			resFocus = true;
-		} else {
-			resFocus = false;
-		}
+		if( $.inArray("A3",typesArray) < 0 ) resFocus = true;
+		else resFocus = false;
 	}
 	if ( typeVal == "A3" || resFocus ) {
 		variantsOptions.each( function() {
-			var thisVariant = $(this).val();
-			if ( thisVariant != 2 ) {
-				$(this).prop('disabled', true);
-			}
+			if ( $(this).val() != 2 ) $(this).prop('disabled', true);
 		});
 	}
 	variants.trigger('chosen:updated');
 }
 //Populate the spell list based on the currently selected options
 function populateSpells() {
-	//Get the current tier (currently placeholder)
-	var curTier = 6;
-	//Get the values of all of the selection fields
-	//in the character attributes section
-	var descriptorVal = $('#descriptor').val();
-	var priSpeciesVal = $('#species').val();
-	var secSpeciesVal = $('#secondary-species').val();
-	var typeVal = $('#types').val();
-	var priFocusVal = $('#foci').val();
-	var secFocusVal = $('#secondary-foci').val();
-	var variantVal = $('#genetic-variants').val();
-	//Blank arrays for active character attributes and
-	//for the currently active spells
-	var selOptions = [];
+	var descriptorVal = descriptors.val();
+	var priSpeciesVal = priSpecies.val();
+	var secSpeciesVal = secSpecies.val();
+	var typeVal = types.val();
+	var priFocusVal = priFoci.val();
+	var secFocusVal = secFoci.val();
+	var variantVal = variants.val();
+	var selectedAttributes = [];
 	var spellsList = [];
+	console.log(spellListDatabase);
 	//If the value of the field is not blank,
 	//add it to the array to look for spells
-	if ( descriptorVal ) selOptions.push("D" + descriptorVal);
-	if ( priSpeciesVal && !secSpeciesVal ) {
-		selOptions.push("S" + priSpeciesVal);
-	} else if ( !priSpeciesVal && secSpeciesVal ) {
-		selOptions.push("S" + secSpeciesVal);
-	} else if ( priSpeciesVal && secSpeciesVal ) {
-		selOptions.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
-	}
-	if ( typeVal ) selOptions.push("T" + typeVal);
-	if ( priFocusVal ) selOptions.push("F" + priFocusVal);
-	if ( secFocusVal ) selOptions.push("F" + secFocusVal);
-	if ( variantVal ) selOptions.push("V" + variantVal);
+	if ( descriptorVal ) selectedAttributes.push("D" + descriptorVal);
+	if ( priSpeciesVal && !secSpeciesVal ) selectedAttributes.push("S" + priSpeciesVal);
+	else if ( !priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + secSpeciesVal);
+	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
+	if ( typeVal ) selectedAttributes.push("T" + typeVal);
+	if ( priFocusVal ) selectedAttributes.push("F" + priFocusVal);
+	if ( secFocusVal ) selectedAttributes.push("F" + secFocusVal);
+	if ( variantVal ) selectedAttributes.push("V" + variantVal);
 	//Run through each field in the character attributes section
 	//to retrieve any spells associated with that attribute
-	$.each(selOptions, function(index,curOption) {
+	$.each(selectedAttributes, function(index,curOption) {
 		for (var i = 0; i < spellListDatabase.length; i++) {
 			//Set the order of the spell in the flex-box by its Tier and name
 			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.charCodeAt(0)) - 64,2) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
@@ -606,7 +527,8 @@ function populateSpells() {
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
 			var spellRequired = spellListDatabase[i].required.includes("TRUE");
-			var spellType = '<img src="images/"' + spellListDatabase[i].type.toLowerCase() + '.png">';
+			var typeCheck = spellListDatabase[i].type;
+			var spellType = '<img src="images/"' + typeCheck.toLowerCase() + '.png">';
 			var spellDescription = spellListDatabase[i].description;
 			var spellCost = spellListDatabase[i].cost;
 			var spellCasttime = spellListDatabase[i].casttime;
@@ -615,18 +537,10 @@ function populateSpells() {
 			var spellCooldown = spellListDatabase[i].cooldown;
 			var spellDamage = spellListDatabase[i].damage;
 			var spellOrigin;
-			if ( spellTier == 0 ) {
-				spellTier = '<div class="tier">Baseline</div>';
-			} else {
-				spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-			}
 			switch ( curOption.charAt(0) ) {
-				//Descriptor spells
 				case "D":
-				spellOrigin = $('#descriptor option[value="' + optionID + '"]').text();
+				spellOrigin = $('#descriptors option[value="' + optionID + '"]').text();
 				break;
-				//Species spells. Check to see if two species are selected,
-				//then sort their IDs since database only has one instance
 				case "S":
 				if ( optionID.length === 2 ) {
 					var priSpeciesID;
@@ -640,34 +554,23 @@ function populateSpells() {
 					}
 					optionID = priSpeciesID + secSpeciesID;
 					curOption = "S" + optionID;
-					if ( spellListDatabase[i]["S" + priSpeciesID] == "TRUE" ) {
-						spellOrigin = $('#species option[value="' + priSpeciesID + '"]').text();
-					} else if ( spellListDatabase[i]["S" + secSpeciesID] == "TRUE" ) {
-						spellOrigin = $('#secondary-species option[value="' + secSpeciesID + '"]').text();
-					}
+					if ( spellListDatabase[i]["S" + priSpeciesID] == "TRUE" ) spellOrigin = $('#species option[value="' + priSpeciesID + '"]').text();
+					else if ( spellListDatabase[i]["S" + secSpeciesID] == "TRUE" ) spellOrigin = $('#secondary-species option[value="' + secSpeciesID + '"]').text();
 				} else {
 					spellOrigin = $('#species option[value="' + optionID + '"]').text();
 				}
 				break;
-				//Type spells
 				case "T":
 				spellOrigin = $('#types option[value="' + optionID + '"]').text();
 				break;
-				//Focus spells. If 'Forges a Bond' is selected,
-				//use secondary foci for any spell that isn'table
-				//from 'Forges a Bond'
 				case "F":
-				if ( $('#foci').val() != "E2" ) {
+				if ( priFoci.val() != "E2" ) {
 					spellOrigin = $('#foci option[value="' + optionID + '"]').text();
 				} else {
-					if ( spellListDatabase[i]["FE2"] == "TRUE" ) {
-						spellOrigin = $('#foci option[value="' + optionID + '"]').text();
-					} else {
-						spellOrigin = $('#secondary-foci option[value="' + optionID + '"]').text();
-					}
+					if ( spellListDatabase[i]["FE2"] == "TRUE" ) spellOrigin = $('#foci option[value="' + optionID + '"]').text();
+					else spellOrigin = $('#secondary-foci option[value="' + optionID + '"]').text();
 				}
 				break;
-				//Variant spells
 				case "V":
 				spellOrigin = $('#foci option[value="' + optionID + '"]').text();
 				break;
@@ -678,9 +581,11 @@ function populateSpells() {
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if (( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['action-spell','enabler-spell','talent-spell','select-spell'].includes(spellType)) || ( !spellRequired && spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && spellType == "passive-spell" )) {
+			if (( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Enabler','Talent','Select'].includes(typeCheck)) || ( !spellRequired && spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Passive" )) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
+				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
+				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( spellCost ) spellCost = '<span><strong>Cost: </strong>' + spellCost + '</span>';
 				if ( spellDuration ) spellDuration = '<span><strong>Duration: </strong>' + spellDuration + '</span>';
 				if ( spellCasttime ) spellCasttime = '<span><strong>Requires: </strong>' + spellCasttime + '</span>';
@@ -690,7 +595,7 @@ function populateSpells() {
 				//If the spell ID is already on the page, just change
 				//the origin name; otherwise, create a spell card
 				if ( $('#' + spellID).length > 0 ) {
-					$('#' + spellID + ' .spell-origin').text(spellOrigin);
+					$('#' + spellID + ' .origin').text(spellOrigin);
 				} else {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
@@ -981,30 +886,27 @@ function populateSpellLists(spellsList) {
 }
 //Primary on load function
 $(function() {
-	//Select descriptor select field and options
-	var descriptors = $('#descriptor');
-	var descriptorsOptions = $('#descriptor option');
-	//Select species select fields and options
-	var priSpecies = $('#species');
-	var secSpecies = $('#secondary-species');
-	var priSpeciesOptions = $('#species option');
-	var secSpeciesOptions = $('#secondary-species option');
-	var speciesOptions = $('#species option, #secondary-species option');
-	//Select types select field and options
-	var types = $('#types');
-	var typesOptions = $('#types option');
-	//Select foci select fields and options
-	var priFoci = $('#foci');
-	var secFoci = $('#secondary-foci');
-	var priFociOptions = $('#foci option');
-	var secFociOptions = $('#secondary-foci option');
-	var fociOptions = $('#foci option, #secondary-foci option');
-	//Select genetic variation select field and options
-	var variants = $('#genetic-variants');
-	var variantsOptions = $('#genetic-variants option');
+	descriptors = $('#descriptors');
+	descriptorsOptions = $('#descriptors option');
+	priSpecies = $('#species');
+	secSpecies = $('#secondary-species');
+	priSpeciesOptions = $('#species option');
+	secSpeciesOptions = $('#secondary-species option');
+	speciesOptions = $('#species option, #secondary-species option');
+	types = $('#types');
+	typesOptions = $('#types option');
+	elementalistType = $('#types option[value="A3"]');
+	genderFocusRow = $('#gender-focus');
+	priFoci = $('#foci');
+	secFoci = $('#secondary-foci');
+	priFociOptions = $('#foci option');
+	secFociOptions = $('#secondary-foci option');
+	fociOptions = $('#foci option, #secondary-foci option');
+	extraAttributes = $('#extra-attributes, #extra-attributes-header');
+	variantsSection = $('#genetic-variation');
+	variants = $('#genetic-variants');
+	variantsOptions = $('#genetic-variants option');
 	//Toggle sections and buttons
-	var extraAttributes = $('#extra-attributes, #extra-attributes-header');
-	var genVariation = $('#genetic-variation');
 	var secFociSection = $('#second-focus');
 	var hybridSection = $('#hybrid-species');
 	var hybridButton = $('#hybrid-button div');
@@ -1021,8 +923,10 @@ $(function() {
 	var equipmentList = $('#equipment table');
 	var itemEquip = $('#equipment .equip select');
 	var itemType = $('#equipment .type select');
-	//Set the initial character tier
-	var curTier = 1;
+	//Initial variables
+	curTier = 6;
+	availSpellCount = 4;
+	selectedSpellCount = 0;
 	//Setup spell list database
 	Tabletop.init({
 		key: 'https://docs.google.com/spreadsheets/d/133J5k_1XfoPxFiWuVXcztwIunjamNA7YGTh11zS0U_M/edit?usp=sharing',
@@ -1038,43 +942,43 @@ $(function() {
 	//Toggle spell headers on load
 	populateSpellLists();
 	//Sort and then setup chosen.js dropdowns
-	sortOpts(descriptors,descriptorsOptions);
+	sortOptions(descriptors,descriptorsOptions);
 	descriptors.chosen({
 		no_results_text: "No results found.",
 		placeholder_text_single: "Select a descriptor",
 		width: "100%"
 	});
-	sortOpts(priSpecies,priSpeciesOptions);
+	sortOptions(priSpecies,priSpeciesOptions);
 	priSpecies.chosen({
 		no_results_text: "No results found.",
 		placeholder_text_single: "Select a species",
 		width: "100%"
 	});
-	sortOpts(secSpecies,secSpeciesOptions);
+	sortOptions(secSpecies,secSpeciesOptions);
 	secSpecies.chosen({
 		no_results_text: "No results found.",
 		placeholder_text_single: "Select a species",
 		width: "100%"
 	});
-	sortOpts(types,typesOptions);
+	sortOptions(types,typesOptions);
 	types.chosen({
 		no_results_text: "No results found.",
 		placeholder_text_single: "Select a type",
 		width: "100%"
 	});
-	sortOpts(priFoci,priFociOptions);
+	sortOptions(priFoci,priFociOptions);
 	priFoci.chosen({
 		no_results_text: "No results found.",
 		placeholder_text_single: "Select a focus",
 		width: "100%"
 	});
-	sortOpts(secFoci,secFociOptions);
+	sortOptions(secFoci,secFociOptions);
 	secFoci.chosen({
 		no_results_text: "No results found.",
 		placeholder_text_single: "Select a focus",
 		width: "100%"
 	});
-	sortOpts(variants,variantsOptions);
+	sortOptions(variants,variantsOptions);
 	variants.chosen({
 		no_results_text: "No results found.",
 		placeholder_text_single: "Select a variation",
@@ -1101,7 +1005,7 @@ $(function() {
 		//If the Hybrid button is clicked and terran is not the primary species,
 		//hide the genetic variation field
 		if ( priSpeciesVal != 6 ) {
-			genVariation.addClass('hidden-section');
+			variantsSection.addClass('hidden-section');
 			variants.val('');
 			if ( extraAttributes.children(':visible').length == 0 ) {
 				extraAttributes.addClass('hidden-section');
@@ -1130,7 +1034,7 @@ $(function() {
 		variants.val('');
 		secFociSection.addClass('hidden-section');
 		resetSection.addClass('hidden-section');
-		genVariation.addClass('hidden-section');
+		variantsSection.addClass('hidden-section');
 		descriptors.trigger('chosen:updated');
 		setStoryArc(2);
 		populateSpecies();
@@ -1159,7 +1063,7 @@ $(function() {
 		populateSpecies();
 		populateFoci();
 		populateVariants();
-		populateSpells();
+		//populateSpells();
 		spellbookButton.text(availSpellCount - selectedSpellCount + ' Abilities Available');
 	});
 	$('#foci, #secondary-foci').on('change', function() {
