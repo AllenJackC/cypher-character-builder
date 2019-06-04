@@ -504,7 +504,6 @@ function populateSpells() {
 	var variantVal = variants.val();
 	var selectedAttributes = [];
 	var spellsList = [];
-	console.log(spellListDatabase);
 	//If the value of the field is not blank,
 	//add it to the array to look for spells
 	if ( descriptorVal ) selectedAttributes.push("D" + descriptorVal);
@@ -519,16 +518,16 @@ function populateSpells() {
 	//to retrieve any spells associated with that attribute
 	$.each(selectedAttributes, function(index,curOption) {
 		for (var i = 0; i < spellListDatabase.length; i++) {
-			//Set the order of the spell in the flex-box by its Tier and name
-			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.charCodeAt(0)) - 64,2) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
 			//Define variables for the current spell
 			var spellName = spellListDatabase[i].name;
 			var spellTier = spellListDatabase[i].tier;
+			//Set the order of the spell in the flex-box by its Tier and name
+			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.charCodeAt(0)) - 64,2) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
 			var spellRequired = spellListDatabase[i].required.includes("TRUE");
 			var typeCheck = spellListDatabase[i].type;
-			var spellType = '<img src="images/"' + typeCheck.toLowerCase() + '.png">';
+			var spellType = '<img src="images/' + typeCheck.toLowerCase() + '.png">';
 			var spellDescription = spellListDatabase[i].description;
 			var spellCost = spellListDatabase[i].cost;
 			var spellCasttime = spellListDatabase[i].casttime;
@@ -577,7 +576,6 @@ function populateSpells() {
 				default:
 				spellOrigin = "";
 			}
-			spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
@@ -592,10 +590,11 @@ function populateSpells() {
 				if ( spellRange ) spellRange = '<span><strong>Range: </strong>' + spellRange + '</span>';
 				if ( spellCooldown ) spellCooldown = '<span><strong>Cooldown: </strong>' + spellCooldown + '</span>';
 				if ( spellDamage ) spellDamage = '<span><strong>Damage: </strong>' + spellDamage + '</span>';
+				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
 				//the origin name; otherwise, create a spell card
 				if ( $('#' + spellID).length > 0 ) {
-					$('#' + spellID + ' .origin').text(spellOrigin);
+					$('#' + spellID + ' .origin span').text(spellOrigin);
 				} else {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
@@ -625,15 +624,10 @@ function populateSpells() {
 						'</div>'
 					);
 				}
+				if ( spellRequired ) $('#' + spellID).addClass('required');
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
-				//If this spell is marked as required, add the
-				//required class, which disables interaction but
-				//highlights the spell as automatically selected
-				if ( spellRequired ) {
-					$('#' + spellID).addClass('required');
-				}
-			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && spellType == "items-spell" ) {
+			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" ) {
 				//Variables specific to items
 				var itemName = spellListDatabase[i].itemname;
 				var itemType = spellListDatabase[i].itemtype;
@@ -645,37 +639,28 @@ function populateSpells() {
 				var itemDepletion = spellListDatabase[i].itemdepletion;
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
-				if ( itemValue !== "" ) {
-					itemValue = '<span class="item-value"><strong>Value: </strong>' + itemValue + '₡</span>';
-				}
-				if ( itemWeight !== "" ) {
-					itemWeight = '<span class="weight"><strong>Carry Weight: </strong>' + itemWeight + '</span>';
-				}
-				if ( itemDamage !== "" ) {
-					itemDamage = '<span class="item-damage"><strong>Damage: </strong>' + itemDamage + '</span>';
-				}
-				if ( itemArmour !== "" ) {
-					itemArmour = '<span class="item-armour"><strong>Armour: </strong>' + itemArmour + '</span>';
-				}
-				if ( itemLevel !== "" ) {
-					itemLevel = '<span class="item-level"><strong>Level: </strong>' + itemLevel + '</span>';
-				}
-				if ( itemDepletion !== "" ) {
-					itemDepletion = '<span class="item-depletion"><strong>Depletion: </strong>' + itemDepletion + '</span>';
-				}
+				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
+				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( itemValue ) itemValue = '<span><strong>Value: </strong>' + itemValue + '₡</span>';
+				if ( itemWeight ) itemWeight = '<span><strong>Carry Weight: </strong>' + itemWeight + '</span>';
+				if ( itemDamage ) itemDamage = '<span><strong>Damage: </strong>' + itemDamage + '</span>';
+				if ( itemArmour ) itemArmour = '<span><strong>Armour: </strong>' + itemArmour + '</span>';
+				if ( itemLevel ) itemLevel = '<span><strong>Level: </strong>' + itemLevel + '</span>';
+				if ( itemDepletion ) itemDepletion = '<span><strong>Depletion: </strong>' + itemDepletion + '</span>';
+				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
 				//the origin name; otherwise, create a spell card
 				if ( $('#' + spellID).length > 0 ) {
-					$('#' + spellID + ' .spell-origin').text(spellOrigin);
+					$('#' + spellID + ' .origin span').text(spellOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell" data-name="' + itemName + '" data-type-select="' + itemType + '" style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
 						'<div class="header">' +
 						'<h3>' +
-						'<div class="icon ' + spellType + '"></div>' +
+						spellType +
 						spellName +
 						'</h3>' +
-						'<div class="tier">' + spellTier + '</div>' +
+						spellTier +
 						'</div>' +
 						'<div class="details">' +
 						'<div class="stats">' +
@@ -690,33 +675,30 @@ function populateSpells() {
 						itemDamage +
 						itemArmour +
 						itemDepletion +
-						'<span class="origin">' +
 						spellOrigin +
-						'</span>' +
 						'</div>' +
 						'</div>' +
 						'</div>'
 					);
 				}
+				if ( spellRequired ) $('#' + spellID).addClass('required');
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
-				//If this spell is marked as required, add the
-				//required class, which disables interaction but
-				//highlights the spell as automatically selected
-				if ( spellRequired ) {
-					$('#' + spellID).addClass('required');
-				}
-			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellType == "lore-spell" ) {
+			} else if ( spellListDatabase[i][curOption] == "TRUE" && typeCheck == "Lore" ) {
 				//Set the order of the spell in the flex-box by its name
-				var spellOrder = parseInt(String(parseInt(spellName.charCodeAt(0)) - 64) + leadZeros(parseInt(spellName.charCodeAt(1)) - 97,2));
 				if ( $('#' + spellID).length <= 0 ) {
-					$('#lore-area').append(
+					$('#archives').append(
 						'<div id="' + spellID + '" class="lore" style="order: ' + spellOrder + '">' +
-						'<h3 class="lore-name">' +
+						'<div class="header">' +
+						'<h3>' +
+						spellType +
 						spellName +
 						'</h3>' +
-						'<div class="lore-description">' +
+						'</div>' +
+						'<div class="details">' +
+						'<div class="description">' +
 						spellDescription +
+						'</div>' +
 						'</div>' +
 						'</div>'
 					);
@@ -734,10 +716,15 @@ function populateSpells() {
 			$(this).remove();
 		}
 	});
-	$('.tooltip').each( function() {
-		var spellID = parseInt($(this).data('spellid'));
-		if( $.inArray(spellID,spellsList) < 0 ) {
-			$(this).remove();
+	//Hide placeholder if there are spells or lore,
+	//and show the filters in the spellbook
+	$('.modal').each( function() {
+		if ( $(this).find('.spell').length != 0 || $(this).find('.lore').length != 0 ) {
+			$(this).find('.placeholder').addClass('hidden-section');
+			$(this).find('.filters').removeClass('hidden-section');
+		} else {
+			$(this).find('.placeholder').removeClass('hidden-section');
+			$(this).find('.filters').addClass('hidden-section');
 		}
 	});
 	//Reset the selected spell count based
@@ -747,9 +734,10 @@ function populateSpells() {
 }
 //Populate each individual spell list on the main character sheet
 function populateSpellLists(spellsList) {
-	var spells = $('.spell');
-	$('.list-spell').remove();
+	//Remove all spells from current view since there's nothing to save about them
+	$('.spell-list .spell').remove();
 	//Move each spell to their respective lists
+	
 	spells.each( function() {
 		var thisSpell = $(this);
 		var spellID = thisSpell.attr('id');
@@ -881,6 +869,12 @@ function populateSpellLists(spellsList) {
 			$(this).parent('.spells').hide();
 		} else {
 			$(this).parent('.spells').show();
+		}
+	});
+	$('.tooltip').each( function() {
+		var spellID = parseInt($(this).data('spellid'));
+		if( $.inArray(spellID,spellsList) < 0 ) {
+			$(this).remove();
 		}
 	});
 }
@@ -1063,7 +1057,7 @@ $(function() {
 		populateSpecies();
 		populateFoci();
 		populateVariants();
-		//populateSpells();
+		populateSpells();
 		spellbookButton.text(availSpellCount - selectedSpellCount + ' Abilities Available');
 	});
 	$('#foci, #secondary-foci').on('change', function() {
