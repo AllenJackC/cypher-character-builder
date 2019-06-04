@@ -18,10 +18,41 @@ var extraAttributes;
 var variantsSection;
 var variants;
 var variantsOptions;
+var secFociSection;
+var hybridSection;
+var hybridButton;
+var hybridTooltip;
+var resetSection;
+var resetButton;
+var resetTooltip;
+var spellBook;
+var spellbookButton;
+var loreButton;
+var modalBackground;
+var spellHotbars;
+var inventoryList;
+var curArc;
 var curTier;
-var spellListDatabase = [];
+var spellListDatabase;
 var availSpellCount;
 var selectedSpellCount;
+var isHovering;
+//Check to see if user is currently using a touch device
+function isTouchDevice() {
+  var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+  var mq = function(query) {
+    return window.matchMedia(query).matches;
+  }
+
+  if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+    return true;
+  }
+
+  // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+  // https://git.io/vznFH
+  var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+  return mq(query);
+}
 //Add leading zeros to number strings
 function leadZeros(number,places) {
   var zero = places - number.toString().length + 1;
@@ -75,6 +106,17 @@ function sortOptions(field,options) {
 		else return 0
 	});
 	field.empty().append(options).val('');
+}
+//Populate all of the active item select fields
+function populateInventorySelect() {
+	$('#equipment .equip select').chosen({
+		disable_search: true,
+		width: "78px"
+	});
+	$('#equipment .type select').chosen({
+		disable_search: true,
+		width: "123px"
+	});
 }
 //Populate the contents of the species dropdown lists
 function populateSpecies() {
@@ -590,11 +632,12 @@ function populateSpells() {
 				if ( spellRange ) spellRange = '<span><strong>Range: </strong>' + spellRange + '</span>';
 				if ( spellCooldown ) spellCooldown = '<span><strong>Cooldown: </strong>' + spellCooldown + '</span>';
 				if ( spellDamage ) spellDamage = '<span><strong>Damage: </strong>' + spellDamage + '</span>';
+				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
 				//the origin name; otherwise, create a spell card
 				if ( $('#' + spellID).length > 0 ) {
-					$('#' + spellID + ' .origin span').text(spellOrigin);
+					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
@@ -630,7 +673,6 @@ function populateSpells() {
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" ) {
 				//Variables specific to items
 				var itemName = spellListDatabase[i].itemname;
-				var itemType = spellListDatabase[i].itemtype;
 				var itemValue = spellListDatabase[i].itemvalue;
 				var itemWeight = spellListDatabase[i].itemweight;
 				var itemDamage = spellListDatabase[i].itemdamage;
@@ -647,11 +689,12 @@ function populateSpells() {
 				if ( itemArmour ) itemArmour = '<span><strong>Armour: </strong>' + itemArmour + '</span>';
 				if ( itemLevel ) itemLevel = '<span><strong>Level: </strong>' + itemLevel + '</span>';
 				if ( itemDepletion ) itemDepletion = '<span><strong>Depletion: </strong>' + itemDepletion + '</span>';
+				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
 				//the origin name; otherwise, create a spell card
 				if ( $('#' + spellID).length > 0 ) {
-					$('#' + spellID + ' .origin span').text(spellOrigin);
+					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
@@ -685,13 +728,11 @@ function populateSpells() {
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && typeCheck == "Lore" ) {
-				//Set the order of the spell in the flex-box by its name
 				if ( $('#' + spellID).length <= 0 ) {
 					$('#archives').append(
 						'<div id="' + spellID + '" class="lore" style="order: ' + spellOrder + '">' +
 						'<div class="header">' +
 						'<h3>' +
-						spellType +
 						spellName +
 						'</h3>' +
 						'</div>' +
@@ -712,9 +753,7 @@ function populateSpells() {
 	//in the active spell list array
 	$('.spell, .lore').each( function() {
 		var spellID = parseInt($(this).attr('id'));
-		if( $.inArray(spellID,spellsList) < 0 ) {
-			$(this).remove();
-		}
+		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
 	});
 	//Hide placeholder if there are spells or lore,
 	//and show the filters in the spellbook
@@ -730,152 +769,221 @@ function populateSpells() {
 	//Reset the selected spell count based
 	//on the new selections made
 	selectedSpellCount = $('.selected').length;
+	//If filters were enabled, honor the filters
+	//for any newly added spells
+	filterButtons.each( function() {
+		var spellState = $(this).attr('id');
+		if ( $(this).hasClass('clicked') === false ) {
+			if ( spellState != "available" ) $('#spellbook .spell.' + spellState).hide();
+			else $('#spellbook .spell').not('.required, .selected').hide();
+		}
+	});
 	populateSpellLists(spellsList);
 }
 //Populate each individual spell list on the main character sheet
 function populateSpellLists(spellsList) {
-	//Remove all spells from current view since there's nothing to save about them
-	$('.spell-list .spell').remove();
 	//Move each spell to their respective lists
-	
-	spells.each( function() {
-		var thisSpell = $(this);
-		var spellID = thisSpell.attr('id');
-		var spellOrder = thisSpell.css('order');
-		var spellType = $('.spell-icon', thisSpell).attr('class').replace('spell-icon ','');
-		var spellName = thisSpell.data('name');
-		var spellCost = $('.spell-cost', thisSpell).data('cost');
-		if ( thisSpell.hasClass('required') || thisSpell.hasClass('selected') ) {
-			if ( spellType == "enabler-spell" || spellType == "action-spell" ) {
-				$('#actions-enablers').append(
-					'<div data-spellid="' + spellID + '" class="list-spell" style="order: ' + spellOrder + '">' +
-					'<div class="list-spell-wrapper">' +
-					'<span>' +
-					spellName +
-					'</span>' +
-					'<span>' +
-					spellCost +
-					'</span>' +
-					'</div>' +
-					'</div>'
-				);
-			} else if ( spellType == "talent-spell" ) {
-				$('#talents').append(
-					'<div data-spellid="' + spellID + '" class="list-spell" style="order: ' + spellOrder + '">' +
-					'<div class="list-spell-wrapper">' +
-					'<span>' +
-					spellName +
-					'</span>' +
-					'</div>' +
-					'</div>'
-				);
-			} else if ( spellType == "items-spell" && $('.item-row[data-spellid="' + spellID + '"]').length <= 0 && $('#' + spellID + ' .spell-name').data('name') != "" ) {
-				var selectThisType;
-				switch ( thisSpell.children('.spell-name').data('type-select') ) {
-					case "Item":
-					selectThisType = "IT";
-					break;
+	$('#spellbook .spell').each( function() {
+		var spellID = $(this).attr('id');
+		var spellOrder = $(this).css('order');
+		var spellOrigin = $('.origin', this).text();
+		var isEnabled = $(this).hasClass('required') || $(this).hasClass('selected');
+		for (var i = 0; i < spellListDatabase.length; i++) {
+			if ( spellListDatabase[i].id === spellID && isEnabled ) {
+				var spellName = spellListDatabase[i].name;
+				var tooltipName;
+				var itemName = spellListDatabase[i].itemname;
+				var spellTier = spellListDatabase[i].tier;
+				var spellType = spellListDatabase[i].type;
+				var spellTooltip = spellListDatabase[i].tooltip;
+				var spellCasttime = spellListDatabase[i].casttime;
+				var spellDuration = spellListDatabase[i].duration;
+				var spellRange = spellListDatabase[i].range;
+				var spellCooldown = spellListDatabase[i].cooldown;
+				var spellDamage = spellListDatabase[i].damage;
+				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
+				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( spellName ) tooltipName = '<h4 class="name">' + spellName + '</h4>';
+				if ( spellDuration ) spellDuration = "<span>Lasts " + spellDuration + "</span>";
+				if ( spellRange ) spellRange = "<span>" + spellRange + " range</span>";
+				if ( spellCasttime ) spellCasttime = "<span>" + spellCasttime + "</span>";
+				if ( spellDuration ) spellDuration = "<span>" + spellDuration + "</span>";
+				if ( spellCooldown ) spellCooldown = "<span>" + spellCooldown + "</span>";
+				//Action & enabler spell hotbars & tooltips
+				if ( spellType == "Action" || spellType == "Enabler" ) {
+					var spellCost = spellListDatabase[i].cost;
+					$('#actions-enablers').append(
+						'<div data-spellid="' + spellID + '" class="spell" style="order: ' + (String(spellOrder) + String(0)) + '">' +
+						'<div class="wrapper">' +
+						'<span>' +
+						spellName +
+						'</span>' +
+						'<span>' +
+						spellCost +
+						'</span>' +
+						'</div>' +
+						'</div>' +
+						'<div data-spellid="' + spellID + '" class="tooltip" style="order: ' + (String(spellOrder) + String(1)) + '">' +
+						tooltipName + 
+						spellTier +
+						'<span>' +
+						spellCost +
+						'</span>' +
+						spellCasttime +
+						spellRange +
+						spellDuration +
+						spellCooldown +
+						'<span class="description">' +
+						spellTooltip +
+						'</span>' +
+						'<span class="type">' + 
+						spellType +
+						'</span>' +
+						'<span class="origin">' +
+						spellOrigin +
+						'</span>' +
+						'</div>'
+					);
+				//Talent spell hotbars & tooltips
+				} else if ( spellType == "Talent" ) {
+					$('#talents').append(
+						'<div data-spellid="' + spellID + '" class="spell" style="order: ' + (String(spellOrder) + String(0)) + '">' +
+						'<div class="wrapper">' +
+						'<span>' +
+						spellName +
+						'</span>' +
+						'</div>' +
+						'</div>' +
+						'<div data-spellid="' + spellID + '" class="tooltip" style="order: ' + (String(spellOrder) + String(1)) + '">' +
+						'<h4 class="name">' +
+						spellName +
+						'</h4>' + 
+						'<span class="tier">' +
+						spellTier +
+						'</span>' +
+						'<span>' +
+						spellRange +
+						'</span>' +
+						'<span>' +
+						spellCasttime +
+						'</span>' +
+						'<span>' +
+						spellDuration +
+						'</span>' +
+						'<span>' +
+						spellCooldown +
+						'</span>' +
+						'<span class="description">' +
+						spellTooltip +
+						'</span>' +
+						'<span class="type">' + 
+						spellType +
+						'</span>' +
+						'<span class="origin">' +
+						spellOrigin +
+						'</span>' +
+						'</div>'
+					);
+				//Add items to the iventory list
+				} else if ( spellType == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 && itemName ) {
+					var itemType = spellListDatabase[i].itemtype;
+					var itemValue = spellListDatabase[i].itemvalue;
+					var itemWeight = spellListDatabase[i].itemweight;
+					var slotNumber = "slots";
+					var itemDamage = spellListDatabase[i].itemdamage;
+					var itemArmour = spellListDatabase[i].itemarmour;
+					var itemLevel = spellListDatabase[i].itemlevel;
+					var itemDepletion = spellListDatabase[i].itemdepletion;
+					var selectThisType;
+					if ( itemWeight == 1 ) slotNumber = "slot";
+					switch ( itemType ) {
+						case "Item":
+						selectThisType = "IT";
+						break;
+						case "Light Weapon":
+						selectThisType = "LW";
+						break;
+						case "Medium Weapon":
+						selectThisType = "MW";
+						break;
+						case "Heavy Weapon":
+						selectThisType = "HW";
+						break;
+						case "Light Armour":
+						selectThisType = "LA";
+						break;
+						case "Medium Armour":
+						selectThisType = "MA";
+						break;
+						case "Heavy Armour":
+						selectThisType = "HA";
+						break;
+					}
+					var addItem = 
+						'<tr data-spellid="' + spellID + '">' +
+						'<td class="arrow"></td>' +
+						'<td class="equip">' +
+						'<select>' +
+						'<option selected value="S">Stashed</option>' +
+						'<option value="R">Readied</option>' +
+						'<option value="E">Equipped</option>' +
+						'</select>' +
+						'</td>' +
+						'<td class="name">' +
+						'<div contenteditable="true">' +
+						itemName +
+						'</div>' +
+						'</td>' +
+						'<td class="type">' +
+						'<select>' +
+						'<option></option>' +
+						'<option selected value="IT">Item</option>' +
+						'<option value="LW">Light Weapon</option>' +
+						'<option value="MW">Heavy Weapon</option>' +
+						'<option value="HW">Medium Weapon</option>' +
+						'<option value="LA">Light Armour</option>' +
+						'<option value="MA">Medium Armour</option>' +
+						'<option value="HA">Heavy Armour</option>' +
+						'</select>' +
+						'</td>' +
+						'<td class="value">' +
+						'<div contenteditable="true">' +
+						itemValue +
+						'</div>' +
+						'<div>&#8353;</div>' +
+						'</td>' +
+						'<td class="weight">' +
+						'<div contenteditable="true">' +
+						itemWeight +
+						'</div>' +
+						'<div>' +
+						slotNumber +
+						'</div>' +
+						'</td>' +
+						'<td class="delete">DELETE</td>' +
+						'</td>' +
+						'</tr>';
+					$(addItem).insertAfter('#equipment table tr:first-child');
+					populateInventorySelect();
+					var thisItem = $('#equipment table tr[data-spellid="' + spellID + '"]');
+					$('.type select', thisItem).val(selectThisType);
+					$('.type select', thisItem).trigger('chosen:updated');
 				}
-				var addedItem = 
-					'<tr class="item-row" data-spellid="' + spellID + '">' +
-					'<td>' +
-					'<select class="equip">' +
-					'<option selected>Stashed</option>' +
-					'<option>Readied</option>' +
-					'<option>Equipped</option>' +
-					'</select>' +
-					'</td>' +
-					'<td contenteditable="true" class="name">' +
-					thisSpell.children('.spell-name').data('name') +
-					'</td>' +
-					'<td class="type">' +
-					'<select class="type-select" data-placeholder=" ">' +
-					'<option></option>' +
-					'<option value="IT">Item</option>' +
-					'<option value="LW">Light Weapon</option>' +
-					'<option value="MW">Heavy Weapon</option>' +
-					'<option value="HW">Medium Weapon</option>' +
-					'<option value="LA">Light Armour</option>' +
-					'<option value="MA">Medium Armour</option>' +
-					'<option value="HA">Heavy Armour</option>' +
-					'</select>' +
-					'</td>' +
-					'<td contenteditable="true" class="value">' +
-					$('.item-value', thisSpell).text().replace('Value: ','').replace('₡','') +
-					'</td>' +
-					'<td contenteditable="true" class="weight">' +
-					$('.weight', thisSpell).text().replace('Carry Weight: ','') +
-					'</td>' +
-					'<td class="delete-row">' +
-					'<div class="remove-row">X</div>' +
-					'</td>' +
-					'</tr>';
-				$(addedItem).insertAfter('#equipment table tr:first-child');
-				$('.equip').chosen({
-					disable_search: true,
-					width: "82px"
-				});
-				$('.type-select').chosen({
-					disable_search: true,
-					placeholder_text_single: " ",
-					width: "130px"
-				});
-				var thisItem = $('.item-row[data-spellid="' + spellID + '"]');
-				$('.type-select', thisItem).val(selectThisType);
-				$('.type-select', thisItem).trigger('chosen:updated');
-			}
-			//TOOLTIPS
-			if ( ['action-spell','enabler-spell','talent-spell'].includes(spellType) ) {
-				if ( spellCost ) spellCost = spellCost.replace('<strong>Cost: </strong>','');
-				$('#main').append(
-					'<div data-spellid="' + spellID + '" class="tooltip">' +
-					'<h4 class="name">' +
-					spellName +
-					'</h4>' + 
-					'<span class="tier">' +
-					spellTier +
-					'</span>' +
-					'<span>' +
-					spellCost +
-					'</span>' +
-					tooltipRange +
-					tooltipCasttime +
-					tooltipDuration +
-					tooltipCooldown +
-					'<span class="description">' +
-					spellTooltip +
-					'</span>' +
-					'<span class="type">' + 
-					tooltipType +
-					'</span>' +
-					'<span>' +
-					spellOrigin +
-					'</span>' +
-					'</div>'
-				);
 			}
 		}
 	});
-	//Remove items if the associated spell was removed
-	$('.item-row').each(function() {
+	//Remove any items or spells not in the current spelllist
+	$('.spell-list .spell, #equipment tr, .tooltip').each( function() {
 		var spellID = parseInt($(this).data('spellid'));
-		if( $.inArray(spellID,spellsList) < 0 && spellsList && spellID ) {
-			$(this).remove();
-		}
+		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
 	});
 	//Show the spell list section if there are spells in the list, otherwise hide it
 	$('.hotbars').each(function() {
-		if ( $(this).is(':empty') ) {
-			$(this).parent('.spells').hide();
-		} else {
-			$(this).parent('.spells').show();
-		}
+		if ( $(this).is(':empty') ) $(this).parent('.spell-list').addClass('hidden-section');
+		else $(this).parent('.spell-list').removeClass('hidden-section');
 	});
-	$('.tooltip').each( function() {
-		var spellID = parseInt($(this).data('spellid'));
-		if( $.inArray(spellID,spellsList) < 0 ) {
-			$(this).remove();
-		}
+	$('.hotbars .spell').draggabilly({
+		containment: '.hotbars'
 	});
 }
 //Primary on load function
@@ -884,6 +992,7 @@ $(function() {
 	descriptorsOptions = $('#descriptors option');
 	priSpecies = $('#species');
 	secSpecies = $('#secondary-species');
+	species = $('#species, #secondary-species');
 	priSpeciesOptions = $('#species option');
 	secSpeciesOptions = $('#secondary-species option');
 	speciesOptions = $('#species option, #secondary-species option');
@@ -900,25 +1009,24 @@ $(function() {
 	variantsSection = $('#genetic-variation');
 	variants = $('#genetic-variants');
 	variantsOptions = $('#genetic-variants option');
-	//Toggle sections and buttons
-	var secFociSection = $('#second-focus');
-	var hybridSection = $('#hybrid-species');
-	var hybridButton = $('#hybrid-button div');
-	var hybridTooltip = $('#hybrid-tooltip');
-	var resetSection = $('#reset-button');
-	var resetButton = $('#reset-button div');
-	var resetTooltip = $('#reset-tooltip');
-	var spellList = $('#spellbook');
-	var spellbookButton = $('#open-spellbook');
-	var spellModal = $('#spellbook-background');
-	var loreArea = $('#lore-area');
-	var spellLists = $('.hotbars');
-	//Select elements inside the equipment section
-	var equipmentList = $('#equipment table');
-	var itemEquip = $('#equipment .equip select');
-	var itemType = $('#equipment .type select');
+	secFociSection = $('#second-focus');
+	hybridSection = $('#hybrid-species');
+	hybridButton = $('#hybrid-button div');
+	hybridTooltip = $('#hybrid-tooltip');
+	resetSection = $('#reset-button');
+	resetButton = $('#reset-button div');
+	resetTooltip = $('#reset-tooltip');
+	spellBook = $('#spellbook');
+	spellbookButton = $('#open-spellbook');
+	filterButtons = $('#spellbook .filters .button');
+	loreButton = $('#open-archives');
+	spellModal = $('#spellbook-background');
+	spellHotbars = $('.hotbars');
+	inventoryList = $('#equipment table');
 	//Initial variables
+	curArc = 2;
 	curTier = 6;
+	spellListDatabase = [];
 	availSpellCount = 4;
 	selectedSpellCount = 0;
 	//Setup spell list database
@@ -931,10 +1039,8 @@ $(function() {
 		},
 		simpleSheet: true
 	});
-	//Temprorary story arc initial setting
-	setStoryArc(2);
-	//Toggle spell headers on load
-	populateSpellLists();
+	//Set story arc to hide elements not in current arc
+	setStoryArc(curArc);
 	//Sort and then setup chosen.js dropdowns
 	sortOptions(descriptors,descriptorsOptions);
 	descriptors.chosen({
@@ -978,36 +1084,28 @@ $(function() {
 		placeholder_text_single: "Select a variation",
 		width: "100%"
 	});
-	itemEquip.chosen({
-		disable_search: true,
-		width: "78px"
-	});
-	itemType.chosen({
-		disable_search: true,
-		width: "123px"
-	});
+	//Populate inventory select dropdowns
+	populateInventorySelect();
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
 		$(this).toggleClass('clicked');
 		extraAttributes.removeClass('hidden-section');
-		$('#gender-focus').removeClass('last-row');
+		genderFocusRow.removeClass('last-row');
 		hybridSection.toggleClass('hidden-section');
 		if ( extraAttributes.children(':visible').length == 0 ) extraAttributes.addClass('hidden-section');
-		//Reset value of secondary species field
 		secSpecies.val('');	
 		//If the Hybrid button is clicked and terran is not the primary species,
-		//hide the genetic variation field
+		//hide and reset the genetic variation field
 		if ( priSpeciesVal != 6 ) {
 			variantsSection.addClass('hidden-section');
 			variants.val('');
 			if ( extraAttributes.children(':visible').length == 0 ) {
 				extraAttributes.addClass('hidden-section');
-				$('#gender-focus').addClass('last-row');
+				genderFocusRow.addClass('last-row');
 			}
 		}
-		//Repopulate all of the fields after cliking the toggle, since disabling it
-		//changes the criteria
+		//Repopulate all of the fields after cliking the toggle
 		populateSpecies();
 		populateTypes();
 		populateFoci();
@@ -1018,7 +1116,10 @@ $(function() {
 		}
 	});
 	//Reset button to reset all values and hide extra sections
+	//Does not affect hybrid toggle
 	resetButton.click(function(){
+		availSpellCount = 4;
+		selectedSpellCount = 0;
 		descriptors.val('');
 		priSpecies.val('');
 		secSpecies.val('');
@@ -1030,12 +1131,15 @@ $(function() {
 		resetSection.addClass('hidden-section');
 		variantsSection.addClass('hidden-section');
 		descriptors.trigger('chosen:updated');
-		setStoryArc(2);
+		setStoryArc(curArc);
 		populateSpecies();
 		populateTypes();
 		populateFoci();
 		populateVariants();
 		populateSpells();
+		loreButton.text('Lore');
+		spellbookButton.text('Abilities');
+		filterButtons.addClass('clicked');
 		if ( extraAttributes.children(':visible').length == 0 ) extraAttributes.addClass('hidden-section');
 	});
 	//Populate relevant lists each time the select list is interacted
@@ -1044,13 +1148,14 @@ $(function() {
 		resetSection.removeClass('hidden-section');
 		populateSpells();
 	});
-	$('#species, #secondary-species').on('change', function() {
+	species.on('change', function() {
 		resetSection.removeClass('hidden-section');
 		populateSpecies();
 		populateTypes();
 		populateFoci();
 		populateVariants();
 		populateSpells();
+		loreButton.text('New Lore');
 	});
 	types.on('change', function() {
 		resetSection.removeClass('hidden-section');
@@ -1059,6 +1164,7 @@ $(function() {
 		populateVariants();
 		populateSpells();
 		spellbookButton.text(availSpellCount - selectedSpellCount + ' Abilities Available');
+		loreButton.text('New Lore');
 	});
 	$('#foci, #secondary-foci').on('change', function() {
 		var curFocus = priFoci.val();
@@ -1071,7 +1177,7 @@ $(function() {
 			secFoci.val('');
 			if ( extraAttributes.children(':visible').length == 0 ) {
 				extraAttributes.addClass('hidden-section');
-				$('#gender-focus').addClass('last-row');
+				genderFocusRow.addClass('last-row');
 			}
 		}
 		resetSection.removeClass('hidden-section');
@@ -1088,123 +1194,125 @@ $(function() {
 		populateSpells();
 	});
 	//Highlight spells and keep track of spell count
-	spellList.on('click', '.spell', function() {
+	spellBook.on('click', '.spell', function() {
 		if ( $(this).hasClass('required') == false && $(this).hasClass('selected') == false && selectedSpellCount < availSpellCount ) {
 			$(this).addClass('selected');
 			++selectedSpellCount;
+			if ( $('#spellbook .filters #selected').hasClass('clicked') == false ) {
+				$(this).slideToggle(500);
+			}
 		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
 			$(this).removeClass('selected');
 			--selectedSpellCount;
+			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) {
+				$(this).slideToggle(500);
+			}
 		}
 		if ( selectedSpellCount === availSpellCount ) {
-			$('.spell:not(.selected, .required)').addClass('disabled');
+			$('#spellbook .spell:not(.selected, .required)').addClass('disabled');
+			$('#spellbook .filters #available').html('<div></div>&#10;Disabled');
 		} else {
-			$('.spell').removeClass('disabled');
+			$('#spellbook .spell').removeClass('disabled');
+			$('#spellbook .filters #available').html('<div></div>&#10;Available');
 		}
-		if ( availSpellCount - selectedSpellCount === 0 ) {
-			spellbookButton.text('Abilities');
-		} else if ( availSpellCount - selectedSpellCount === 1 ) {
-			spellbookButton.text(availSpellCount - selectedSpellCount + ' Ability Available'); 
-		} else {
-			spellbookButton.text(availSpellCount - selectedSpellCount + ' Abilities Available'); 
-		}
+		if ( availSpellCount - selectedSpellCount === 0 ) spellbookButton.text('Abilities');
+		else if ( availSpellCount - selectedSpellCount === 1 ) spellbookButton.text(availSpellCount - selectedSpellCount + ' Ability Available');
+		else spellbookButton.text(availSpellCount - selectedSpellCount + ' Abilities Available'); 
 		populateSpellLists();
 	});
-	//Show spellbook modal on click
-	$('#open-spellbook, #close-spellbook, #spellbook-background, #spellbook-wrapper').click( function(e) {
+	//Show modals on click
+	$('#buttons .button, .modal-background, .modal, .modal-header .button').click( function(e) {
 		if(e.target !== e.currentTarget) return;
-		if ( spellModal.hasClass('modal-background') ) {
-			spellModal.removeClass('modal-background');
-			$('body').css('overflow-y','hidden');
+		var modal;
+		if ( $(this).attr('id') ) {
+			modal = $(this).attr('id').replace('open-','')
+			modal = $('#' + modal).closest('.modal-background');
+		} else if ( $(this).hasClass('close') || $(this).hasClass('modal') ) {
+			modal = $(this).closest('.modal-background');
 		} else {
-			spellModal.addClass('modal-background');
+			modal = $(this);
+		}
+		if ( modal.hasClass('visible') ) {
+			modal.removeClass('visible');
 			$('body').css('overflow-y','auto');
+		} else {
+			modal.addClass('visible');
+			$('body').css('overflow-y','hidden');
 		}
+		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
 	});
-	//Toggle lore accordions on lore name click
-	loreArea.on('click', '.lore-name', function() {
-		var thisLore = $(this).parent('.lore').children('.lore-description');
-		$('.lore-name').not(this).removeClass('expanded');
-		$('.lore-description:visible').not(thisLore).slideToggle(500);
-		$(this).toggleClass('expanded');
-		thisLore.slideToggle(500);
+	filterButtons.click( function() {
+		var spellState = $(this).attr('id');
+		if ( spellState != "available" ) $('#spellbook .spell.' + spellState).slideToggle(500);
+		else $('#spellbook .spell').not('.required, .selected').slideToggle(500);
+		$(this).toggleClass('clicked');
 	});
-	//Show tooltips on hover and keep it with mouse
-	var isHovering;
-	spellLists.on('mouseenter', '.list-spell', function(e) {
-		var spellID = $(this).data('spellid');
-		var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
-		var fromLeft = e.pageX - 30;
-		var windowWidth = $(window).width();
-		if ( fromLeft < 10 ) {
-			fromLeft = 10;
-		} else if ( fromLeft > windowWidth - (tooltip.width() + 30) ) {
-			fromLeft = windowWidth - (tooltip.width() + 30);
-		}
-		tooltip.addClass('visible');
-		tooltip.css('top', e.pageY - (tooltip.height() + 45));
-		tooltip.css('left', fromLeft);
-		isHovering = true;
-	});
-	spellLists.on('mouseleave', '.list-spell', function(e) {
-		var spellID = $(this).data('spellid');
-		var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
-		tooltip.removeClass('visible');
-		isHovering = false;
-	});
-	spellLists.on('mousemove', '.list-spell', function(e){
-		var spellID = $(this).data('spellid');
-		var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
-		var fromLeft = e.pageX - 30;
-		var windowWidth = $(window).width();
-		if ( fromLeft < 10 ) {
-			fromLeft = 10;
-		} else if ( fromLeft > windowWidth - (tooltip.width() + 30) ) {
-			fromLeft = windowWidth - (tooltip.width() + 30);
-		}
-		if ( isHovering ) {
-			tooltip.css('top', e.pageY - (tooltip.height() + 45));
+	//Show tooltips on hover when using a mouse
+	//Show tooltips on click when using touch
+	if ( isTouchDevice() ) {
+		spellHotbars.on('click', '.spell', function() {
+			var spellID = $(this).data('spellid');
+			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
+			tooltip.slideToggle(500);
+		});
+	} else {
+		function tooltipPosition(targetElement,tooltip) {
+			var fromLeft = targetElement.pageX - 20;
+			var windowWidth = $(window).width();
+			if ( fromLeft < 10 ) fromLeft = 10;
+			else if ( fromLeft > windowWidth - (tooltip.width() + 30) ) fromLeft = windowWidth - (tooltip.width() + 30);
+			tooltip.css('top', targetElement.pageY - (tooltip.height() + 25));
 			tooltip.css('left', fromLeft);
+			if ( !isHovering ) tooltip.addClass('visible');
 		}
-	});
-	hybridButton.hover( function(e){
-		if ( hybridButton.hasClass('clicked') === false ) {
-			var fromLeft = e.pageX - 35;
-			var windowWidth = $(window).width();
-			if ( fromLeft < 10 ) {
-				fromLeft = 10;
-			} else if ( fromLeft > windowWidth - (hybridTooltip.width() + 30) ) {
-				fromLeft = windowWidth - (hybridTooltip.width() + 30);
+		spellHotbars.on('mouseenter', '.spell', function(targetElement) {
+			var spellID = $(this).data('spellid');
+			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
+			tooltipPosition(targetElement,tooltip);
+		});
+		spellHotbars.on('mouseleave', '.spell', function(targetElement) {
+			var spellID = $(this).data('spellid');
+			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
+			tooltip.removeClass('visible');
+			isHovering = false;
+		});
+		spellHotbars.on('mousemove', '.spell', function(targetElement){
+			var spellID = $(this).data('spellid');
+			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
+			isHovering = true;
+			tooltipPosition(targetElement,tooltip);
+		});
+		hybridButton.hover( function(targetElement){
+			if ( hybridButton.hasClass('clicked') === false ) {
+				tooltipPosition(targetElement,hybridTooltip);
 			}
-			hybridTooltip.addClass('visible');
-			hybridTooltip.css('top', e.pageY - (hybridTooltip.height() + 45));
-			hybridTooltip.css('left', fromLeft);
-		}
-	}, function() {
-		hybridTooltip.removeClass('visible');
-	});
-	resetButton.hover( function(e){
-		if ( resetButton.hasClass('clicked') === false ) {
-			var fromLeft = e.pageX - 35;
-			var windowWidth = $(window).width();
-			if ( fromLeft < 10 ) {
-				fromLeft = 10;
-			} else if ( fromLeft > windowWidth - (resetTooltip.width() + 30) ) {
-				fromLeft = windowWidth - (resetTooltip.width() + 30);
+		}, function() {
+			isHovering = false;
+			hybridTooltip.removeClass('visible');
+		});
+		hybridButton.mousemove( function(targetElement){
+			if ( hybridButton.hasClass('clicked') === false ) {
+				isHovering = true;
+				tooltipPosition(targetElement,hybridTooltip);
 			}
-			resetTooltip.addClass('visible');
-			resetTooltip.css('top', e.pageY - (resetTooltip.height() + 45));
-			resetTooltip.css('left', fromLeft);
-		}
-	}, function() {
-		resetTooltip.removeClass('visible');
-	});
+		});
+		resetButton.hover( function(targetElement){
+			tooltipPosition(targetElement,resetTooltip);
+		}, function() {
+			isHovering = false;
+			resetTooltip.removeClass('visible');
+		});
+		resetButton.mousemove( function(targetElement){
+			isHovering = true;
+			tooltipPosition(targetElement,resetTooltip);
+		});
+	}
 	//Add item rows when clicking Add Item
 	//Remove item rows when clicking X, but
 	//add a new blank item if it's the last
 	//item in the row
 	function addItem() {
-		equipmentList.append(
+		inventoryList.append(
 			'<tr>' +
 			'<td class="arrow"></td>' +
 			'<td class="equip">' +
@@ -1234,21 +1342,14 @@ $(function() {
 			'</td>' +
 			'<td class="weight">' +
 				'<div contenteditable="true">0</div>' +
-				'<div> slots</div>' +
+				'<div>slots</div>' +
 			'</td>' +
 			'<td class="delete">DELETE</td>' +
 		'</tr>'
 		);
-		$('#equipment .equip select').chosen({
-			disable_search: true,
-			width: "78px"
-		});
-		$('#equipment .type select').chosen({
-			disable_search: true,
-			width: "123px"
-		});
+		populateInventorySelect();
 	}
-	equipmentList.on('click', '.remove-row', function () {
+	inventoryList.on('click', '.remove-row', function () {
 		$(this).closest('.item-row').remove();
 		if ( $('.item-row').length == 1 ) {
 			addItem();
@@ -1257,7 +1358,13 @@ $(function() {
 	$('#add-item').click( function () {
 		addItem();
 	});
+	//Focus input fields when clicking on outter cells
 	$('#equipment td').click( function() {
 		$('div:first-child', this).focus();
+	});
+	//Update slots text in carry weight to reflect amount of slots
+	$('#equipment .weight div:first-child').keyup(function() {
+		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
+		else $(this).parent('.weight').children('div:last-child').text('slots');
 	});
 });

@@ -36,6 +36,7 @@
 	<script src="libs/jquery-3.3.1.min.js" type="text/javascript"></script>
 	<script src="plugins/chosen.jquery.min.js" type="text/javascript"></script>
 	<script src="plugins/tabletop.min.js" type="text/javascript"></script>
+	<script src="plugins/draggabilly.pkgd.min.js" type="text/javascript"></script>
 	<script src="script.js" type="text/javascript"></script>
 </head>
 <body>
@@ -46,6 +47,10 @@
 		<!--======================
         BASIC CHARACTER ATTRIBUTES
         =======================-->
+		<div id="title">
+			<h1>Immortal Freedom</h1>
+			<h5>a <a target="_blank" href="http://cypher-system.com">Cypher System</a> homebrew campaign character sheet</h5>
+		</div>
 		<div id="character-attributes">
 			<!-- NAME -->
 			<div class="row">
@@ -258,7 +263,7 @@
 					IDENTIFIES AS
 				</div>
 				<!-- GENDER -->
-				<div class="attribute" style="width: 153px">
+				<div class="attribute" style="width: 144px">
 					<div class="border">
 						<input id="gender">
 					</div>
@@ -268,7 +273,7 @@
 					AND WHO
 				</div>
 				<!-- FOCUS -->
-				<div class="attribute last-column" style="width: 240px">
+				<div class="attribute last-column" style="width: 249px">
 					<div class="border">
 						<select id="foci">
 							<option></option>
@@ -416,7 +421,7 @@
 			<div class="hidden-section" id="extra-attributes-header">ADDITIONAL ATTRIBUTES</div>
 			<div class="row last-row hidden-section" id="extra-attributes">
 			<!-- SECONDARY SPECIES -->
-				<div class="attribute hidden-section" id="hybrid-species"  style="width: 157px">
+				<div class="attribute hidden-section" id="hybrid-species"  style="width: 153px">
 					<div class="border">
 						<select id="secondary-species">
 							<option></option>
@@ -434,7 +439,7 @@
 					<label for="secondary-species">SECONDARY SPECIES</label>
 				</div>
 				<!-- GENETIC VARIATION -->
-				<div class="attribute hidden-section" id="genetic-variation" style="width: 150px">
+				<div class="attribute hidden-section" id="genetic-variation" style="width: 145px">
 					<div class="border">
 						<select id="genetic-variants">
 							<option></option>
@@ -448,7 +453,7 @@
 					<label for="genetic-variants">GENETIC VARIATION</label>
 				</div>
 				<!-- SECONDARY FOCUS -->
-				<div class="attribute last-column hidden-section" id="second-focus" style="width: 240px">
+				<div class="attribute last-column hidden-section" id="second-focus" style="width: 249px">
 					<div class="border">
 						<select id="secondary-foci">
 							<option></option>
@@ -603,14 +608,14 @@
 				Lore
 			</div>
 		</div>
-		<div class="spell-list">
+		<div class="spell-list hidden-section">
 			<div class="header">
 				<img src="images/actions-enablers.png">
 				<h2>Actions & Enablers</h2>
 			</div>
-			<div class="hotbars" id="actions"></div>
+			<div class="hotbars" id="actions-enablers"></div>
 		</div>
-		<div class="spell-list">
+		<div class="spell-list hidden-section">
 			<div class="header">
 				<img src="images/talent.png">
 				<h2>Talents</h2>
@@ -675,40 +680,49 @@
 			</table>
 		</div>
 	</div>
-	<div class="modal-background hidden-section">
+	<div class="modal-background">
 		<div class="modal">
 			<div class="modal-header">
-			<div class="header">
-				<img src="images/ability.png">
-				<h2>Abilities</h2>
-			</div>
-			<div id="close-spellbook" class="button">
-				Close
-			</div>
+				<div class="header">
+					<img src="images/ability.png">
+					<h2>Abilities</h2>
+				</div>
+				<div class="close button">
+					Close
+				</div>
 			</div>
 			<div id="spellbook">
 				<div class="filters hidden-section">
-					<div class="button clicked" id="required">Perquisite</div>
-					<div class="button clicked" id="enabled">Enabled</div>
-					<div class="button clicked" id="available">Available</div>
+					<div class="button clicked" id="required">
+						<div></div>
+						Perquisite
+					</div>
+					<div class="button clicked" id="selected">
+						<div></div>
+						Selected
+					</div>
+					<div class="button clicked" id="available">
+						<div></div>
+						Available
+					</div>
 				</div>
 				<span class="placeholder">Nothing yet! Select character attributes to view abilities.</span>
 			</div>
 		</div>
 	</div>
-	<div class="modal-background hidden-section">
+	<div class="modal-background">
 		<div class="modal">
 			<div class="modal-header">
-			<div class="header">
-				<img src="images/lore.png">
-				<h2>Lore</h2>
-			</div>
-			<div id="close-archives" class="button">
-				Close
-			</div>
+				<div class="header">
+					<img src="images/lore.png">
+					<h2>Lore</h2>
+				</div>
+				<div class="close button">
+					Close
+				</div>
 			</div>
 			<div id="archives">
-				<span class="placeholder">Nothing yet! Select your species or type to view lore.</span>
+				<span class="placeholder">Nothing yet! Select your Species or Type to view lore.</span>
 			</div>
 		</div>
 	</div>
