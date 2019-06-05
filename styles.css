@@ -282,6 +282,9 @@ strong {
 	padding-left: 0;
 	text-align: right;
 }
+#equipment td.equip select, .gu-mirror td.equip select {
+	min-width: 85px;
+}
 #equipment td.name, .gu-mirror td.name {
 	order: 1;
 	text-align: left;
@@ -294,6 +297,9 @@ strong {
 }
 #equipment td.type, .gu-mirror td.type {
 	text-align: left;
+}
+#equipment td.type select, .gu-mirror td.type select {
+	min-width: 130px;
 }
 #equipment td.value, .gu-mirror td.value {
 	text-align: right;
@@ -512,6 +518,7 @@ strong {
 	display: flex;
 	flex-direction: column;
 	margin-top: 10px;
+	position: relative;
 }
 .spell-list .spell, .gu-mirror.spell {
 	cursor: move;
@@ -519,7 +526,7 @@ strong {
 	margin-right: 0;
 	padding: 0;
 	pointer-events: auto;
-	transition: all 0.2s;
+	transition: padding 0.2s linear,  margin 0.2s linear;
 }
 .spell-list .spell .wrapper, .gu-mirror.spell .wrapper {
 	align-items: baseline;
@@ -679,8 +686,66 @@ div:focus {
 	color: var(--white)!important;
 }
 @media (hover: none) {
-	#hybrid-tooltip, #reset-tooltip, .tooltip {
+	h4 {
+		color: var(--button);
+		font-size: 18px;
+	}
+	#hybrid-tooltip, #reset-tooltip {
 		display: none;
+	}
+	.hotbars, .hotbars .spell {
+		transition: width 0.2s linear;
+	}
+	.spell-list {
+		flex-basis: calc(50% - 30px);
+	}
+	.tooltip {
+		background: var(--background-white);
+		color: var(--text-black);
+		display: none;
+		flex-wrap: wrap;
+		font-size: 14px;
+		justify-content: space-between;
+		line-height: 1.5em;
+		margin: 0 auto;
+		padding: 25px 15px 15px 15px;
+		position: relative;
+		top: -10px;
+		transition: width 0.2s linear;
+		z-index: -1;
+	}
+	.tooltip > * {
+		flex-basis: calc(50% - 4px);
+		margin: 0 2px;
+	}
+	.tooltip span:nth-child(even) {
+		text-align: right;
+	}
+	.tooltip .name {
+		flex-basis: calc(70% - 4px);
+		margin-bottom: 2px;
+	}
+	.tooltip .tier {
+		color: var(--dark-grey);
+		flex-basis: calc(30% - 4px);
+		text-align: right;
+		margin-bottom: 2px;
+	}
+	.tooltip .description {
+		flex-basis: 100%;
+		margin: 5px 2px;
+		text-align: left!important;
+	}
+	.tooltip .type {
+		color: var(--secondary-button-active);
+		flex-basis: calc(50% - 4px);
+		text-align: left!important;
+	}
+	.tooltip .origin {
+		color: var(--dark-grey);
+		font-style: italic;
+		flex-basis: calc(50% - 4px);
+		text-align: right;
 	}
 }
 /* Desktop tooltip CSS */
@@ -882,7 +947,7 @@ div:focus {
 		text-align: center;
 	}
 	.spell, .lore {
-		margin: 0;
+		margin: 0!important;
 	}
 	.spell .details, .lore .details {
 		padding: 30px;
