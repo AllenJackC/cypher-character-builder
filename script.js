@@ -1098,26 +1098,28 @@ $(function() {
 	dragula([document.getElementById('actions-enablers')], {
 		direction: 'vertical'
 	}).on('drag', function(el,source) {
-		source.style.display = "block";
+		//source.style.display = "block";
+		el.style.order = "";
 	}).on('drop', function(el,target,source,sibling) {
 		var newOrder;
 		var beforeLast = target.children.length - 2;
 		if ( sibling ) newOrder = parseInt(sibling.style.order) - 1;
 		else newOrder = parseInt(target.children[beforeLast].style.order) + 1;
 		el.style.order = newOrder;
-		source.removeAttribute('style');
+		//source.removeAttribute('style');
 	});
 	dragula([document.getElementById('talents')], {
 		direction: 'vertical'
 	}).on('drag', function(el,source) {
-		source.style.display = "block";
+		//source.style.display = "block";
+		el.style.order = "";
 	}).on('drop', function(el,target,source,sibling) {
 		var newOrder;
 		var beforeLast = target.children.length - 2;
 		if ( sibling ) newOrder = parseInt(sibling.style.order) - 1;
 		else newOrder = parseInt(target.children[beforeLast].style.order) + 1;
 		el.style.order = newOrder;
-		source.removeAttribute('style');
+		//source.removeAttribute('style');
 	});
 	dragula([inventoryBody], {
 		direction: 'vertical'
@@ -1250,6 +1252,7 @@ $(function() {
 				$(this).slideToggle(500);
 			}
 		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
+			$('.hotbars .spell[data-spellid="' + $(this).attr('id') + '"]').remove();
 			$(this).removeClass('selected');
 			--selectedSpellCount;
 			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) {

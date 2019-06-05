@@ -292,6 +292,8 @@ strong {
 	white-space: normal;
 }
 #equipment td.name > div, .gu-mirror td.name > div {
+	border-bottom: dashed 1px var(--button);
+	margin-bottom: -1px;
 	min-width: 100px;
 	width: 100%!important;
 }
@@ -305,6 +307,8 @@ strong {
 	text-align: right;
 }
 #equipment td.value > div:first-child, .gu-mirror td.value > div:first-child {
+	border-bottom: dashed 1px var(--button);
+	margin-bottom: -1px;	
 	min-width: 30px;
 }
 #equipment td.value > div:last-child, .gu-mirror td.value > div:last-child {
@@ -316,6 +320,8 @@ strong {
 	text-align: right;
 }
 #equipment td.weight > div:first-child, .gu-mirror td.weight > div:first-child {
+	border-bottom: dashed 1px var(--button);
+	margin-bottom: -1px;	
 	min-width: 20px;
 }
 #equipment td.weight > div:last-child, .gu-mirror td.weight > div:last-child {
@@ -515,7 +521,7 @@ strong {
 	color: var(--white);
 }
 .hotbars {
-	display: flex;
+	display: block;
 	flex-direction: column;
 	margin-top: 10px;
 	position: relative;
@@ -614,8 +620,6 @@ input:focus, select:focus {
 }
 div:focus {
 	outline: none;
-	border-bottom: dashed 1px var(--button);
-	margin-bottom: -1px;
 }
 .visible {
     opacity: 1!important;
@@ -875,12 +879,16 @@ div:focus {
 		cursor: grabbing;
 	}
 	#equipment td.name > div, .gu-mirror td.name > div {
+		border-bottom: dashed 1px var(--selected);
 		cursor: text;
 		font-weight: 700;
 		font-variant: small-caps;
 		font-size: 18px;
+		margin-bottom: -1px;
 	}
 	#equipment td.value div:first-child, .gu-mirror td.value div:first-child, #equipment td.weight div:first-child, .gu-mirror td.weight div:first-child {
+		border-bottom: dashed 1px var(--button);
+		margin-bottom: -1px;
 		min-width: 0;
 	}
 	#equipment .chosen-container, #equipment .chosen-single, #equipment .chosen-single span, #equipment .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop {
