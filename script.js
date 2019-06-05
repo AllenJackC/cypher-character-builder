@@ -1091,6 +1091,10 @@ $(function() {
 		//$('.hotbars .spell[data-spellid="' + spellID + '"]').css('order','unset');
 		$('.hotbars .spell[data-spellid="' + spellID + '"]').parent().children('.spell').css('order','1');
 	};
+	function setFlex(e) {
+		var hotbar = e.getAttribute('id');
+		$('#' + hotbar).css('display','flex');
+	};
 	dragula([document.getElementById('actions-enablers')], {
 		direction: 'vertical',
 		invalid: function (el, handle) {
@@ -1100,7 +1104,7 @@ $(function() {
 		source.style.display = "block";
 		setOrder(el);
 	}).on('drop', function(el,target,source,sibling) {
-		source.style.display = "flex";
+		setFlex(source);
 	});
 	dragula([document.getElementById('talents')], {
 		direction: 'vertical',
@@ -1111,7 +1115,7 @@ $(function() {
 		source.style.display = "block";
 		setOrder(el);
 	}).on('drop', function(el,target,source,sibling) {
-		source.style.display = "flex";
+		setFlex(source);
 	});
 	dragula([inventoryBody], {
 		direction: 'vertical'
