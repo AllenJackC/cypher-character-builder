@@ -81,6 +81,7 @@ h2 {
 	font-weight: 400;
 	line-height: 1em;
 	margin: 0 9% 0 7px;
+	white-space: nowrap;
 }
 h3 {
     font-family: var(--header-font);
@@ -115,11 +116,9 @@ h5 a, h5 a:visited {
 }
 a:hover, h5 a:hover {
 	color: var(--selected);
-	text-decoration: underline solid var(--selected);
 }
 a:active, h5 a:active {
 	color: var(--selected-active);
-	text-decoration: underline solid var(--selected-active);
 }
 input, select {
 	background: var(--background-white);
@@ -200,8 +199,9 @@ strong {
 	border-spacing: 0 5px;
 	border-collapse: separate;
 	padding-left: 6px;
+	width: 100%;
 }
-#equipment tr, #equipment td {
+#equipment tr, #equipment td, tr.gu-mirror, tr.gu-mirror td {
 	font-family: var(--body-font);
 	font-size: 0;
 	line-height: 0;
@@ -209,13 +209,14 @@ strong {
 	text-align: center;
 	white-space: nowrap;
 }
-#equipment tr {
+#equipment tr, tr.gu-mirror {
 	background: var(--background-white);
 	color: var(--text-black);
 }
 #equipment tr:first-child {
 	background: none;
 	color: var(--white);
+	width: 100%;
 }
 #equipment tr:first-child th {
 	background: none;
@@ -224,22 +225,22 @@ strong {
     line-height: 18px;
 	padding: 0 5px;
 }
-#equipment td {
+#equipment td, .gu-mirror td {
 	order: 2;
 	padding: 0 5px;;
 	pointer-events: auto;
 	vertical-align: middle;
 }
-#equipment td > div {
+#equipment td > div, .gu-mirror td > div {
 	display: inline-block;
 	font-size: 14px;
     height: 18px;
     line-height: 18px;
 }
-#equipment .chosen-container {
+#equipment .chosen-container, .gu-mirror .chosen-container {
 	width: fit-content!important;
 }
-#equipment .chosen-single {
+#equipment .chosen-single, .gu-mirror .chosen-single {
 	border: 0!important;
 	box-shadow: none!important;
 	height: 18px;
@@ -247,28 +248,29 @@ strong {
 	padding: 0!important;
 	width: fit-content;
 }
-#equipment .chosen-single span {
+#equipment .chosen-single span, .gu-mirror .chosen-single span {
 	margin-right: 0!important;
 	text-align: center;
 	width: fit-content;
 }
-#equipment .chosen-single > div {
+#equipment .chosen-single > div, .gu-mirror .chosen-single > div {
 	display: none!important;
 }
-#equipment .chosen-drop {
+#equipment .chosen-drop, .gu-mirror .chosen-drop {
 	text-align: left;
 	width: fit-content;
 }
-#equipment td.arrow:before {
+#equipment td.arrow:before, .gu-mirror td.arrow:before {
 	color: var(--background-white);
     content: '\0025B6';
+	cursor: move;
 	font-size: 40px;
     left: -43px;
     position: absolute;
     top: 50%;
     transition: all 0.2s linear;
 }
-#equipment td.arrow {
+#equipment td.arrow, .gu-mirror td.arrow {
 	border-color: transparent transparent transparent var(--black);
 	border-style: solid;
 	border-width: 18px 0 18px 31.2px;
@@ -276,54 +278,55 @@ strong {
 	position: relative;
 	width: 0;
 }
-#equipment td.equip {
+#equipment td.equip, .gu-mirror td.equip {
 	padding-left: 0;
 	text-align: right;
 }
-#equipment td.name {
+#equipment td.name, .gu-mirror td.name {
 	order: 1;
 	text-align: left;
 	width: 100%;
 	white-space: normal;
 }
-#equipment td.name div {
+#equipment td.name > div, .gu-mirror td.name > div {
 	min-width: 100px;
 	width: 100%!important;
 }
-#equipment td.type {
+#equipment td.type, .gu-mirror td.type {
 	text-align: left;
 }
-#equipment td.value {
+#equipment td.value, .gu-mirror td.value {
 	text-align: right;
 }
-#equipment td.value > div:first-child {
+#equipment td.value > div:first-child, .gu-mirror td.value > div:first-child {
 	min-width: 30px;
 }
-#equipment td.value > div:last-child {
+#equipment td.value > div:last-child, .gu-mirror td.value > div:last-child {
 	width: fit-content;
 	padding-left: 4px;
 }
-#equipment td.weight {
+#equipment td.weight, .gu-mirror td.weight {
 	padding: 0 12px;
 	text-align: right;
 }
-#equipment td.value > div:first-child {
+#equipment td.weight > div:first-child, .gu-mirror td.weight > div:first-child {
 	min-width: 20px;
 }
-#equipment td.weight > div:last-child {
+#equipment td.weight > div:last-child, .gu-mirror td.weight > div:last-child {
 	width: fit-content;
 	padding-left: 4px;
 }
-#equipment td.delete {
+#equipment td.delete, .gu-mirror td.delete {
 	background: var(--black);
     border-color: transparent transparent transparent var(--background-white);
     border-style: solid;
     border-width: 18px 0 18px 12px;
     height: 0;
+	pointer-events: none;
     position: relative;
     width: 0;
 }
-#equipment td.delete:after {
+#equipment td.delete:after, .gu-mirror td.delete:after {
     background: var(--text-black);
     color: var(--background-white);
 	content: 'X';
@@ -332,6 +335,7 @@ strong {
     font-size: 24px;
     font-weight: 900;
     line-height: 24px;
+	pointer-events: auto;
     position: absolute;
 	right: 7px;
     top: -12px;
@@ -509,15 +513,15 @@ strong {
 	flex-direction: column;
 	margin-top: 10px;
 }
-.spell-list .spell {
-	cursor: help;
+.spell-list .spell, .gu-mirror.spell {
+	cursor: move;
 	margin-bottom: 2px;
 	margin-right: 0;
 	padding: 0;
 	pointer-events: auto;
 	transition: all 0.2s;
 }
-.spell-list .spell .wrapper {
+.spell-list .spell .wrapper, .gu-mirror.spell .wrapper {
 	align-items: baseline;
 	background: var(--button);
 	color: var(--white);
@@ -779,7 +783,7 @@ div:focus {
 		flex-wrap: wrap;
 		justify-content: space-between;
 	}
-	#equipment tr {
+	#equipment tr, tr.gu-mirror {
 		display: flex;
 		flex-basis: 48%;
 		flex-direction: column;
@@ -788,25 +792,36 @@ div:focus {
 	#equipment tr:hover td.name {
 		background: var(--button-hover);
 	}
-	#equipment td {
+	#equipment td, tr.gu-mirror td {
 		display: block;
 		padding: 10px!important;
 		text-align: center!important;
 		width: auto!important;
 	}
-	#equipment td.name {
+	#equipment td.equip, #equipment td.type, #equipment td.value, .gu-mirror td.weight, .gu-mirror td.equip, .gu-mirror td.type, .gu-mirror td.value, .gu-mirror td.weight {
+		border-bottom: 1px solid var(--secondary-button);
+	}
+	#equipment td.name, .gu-mirror td.name {
+		cursor: move;
 		background: var(--button);
 		color: var(--white);
 	}
-	#equipment td.name div {
+	#equipment td.name:active {
+		cursor: grabbing;
+	}
+	#equipment td.name > div, .gu-mirror td.name > div {
+		cursor: text;
 		font-weight: 700;
 		font-variant: small-caps;
 		font-size: 18px;
 	}
-	#equipment .chosen-container, #equipment .chosen-single, #equipment .chosen-single span, #equipment .chosen-drop {
+	#equipment td.value div:first-child, .gu-mirror td.value div:first-child, #equipment td.weight div:first-child, .gu-mirror td.weight div:first-child {
+		min-width: 0;
+	}
+	#equipment .chosen-container, #equipment .chosen-single, #equipment .chosen-single span, #equipment .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop {
 		width: 100%!important;
 	}
-	#equipment td.delete {
+	#equipment td.delete, .gu-mirror td.delete {
 		background: var(--white);
 		border: 0;
 		color: var(--remove-active);
@@ -818,15 +833,12 @@ div:focus {
 		width: auto;
 	}
 	#equipment td.delete:hover {
-		color: var(--white);
+		color: var(--black);
 		background: var(--remove-hover);
 	}
 	#equipment td.delete:active {
-		color: var(--white);
+		color: var(--black);
 		background: var(--remove-active);
-	}
-	#equipment .delete:after {
-		display: none;
 	}
 	#spellbook, #archives {
 		margin: 15px 0 0 0;
@@ -846,7 +858,7 @@ div:focus {
 		padding-bottom: 10px;
 		width: 100%!important;
 	}
-	.connector, #extra-attributes-header, #equipment table tr:first-child, #equipment .arrow {
+	.connector, #extra-attributes-header, #equipment table tr:first-child, #equipment .arrow, .gu-mirror .arrow, #equipment .delete:after, .gu-mirror .delete:after {
 		display: none;
 	}
 	.secondary-button {

@@ -31,6 +31,7 @@ var loreButton;
 var modalBackground;
 var spellHotbars;
 var inventoryList;
+var inventoryBody;
 var curArc;
 var curTier;
 var spellListDatabase;
@@ -810,7 +811,7 @@ function populateSpellLists(spellsList) {
 				if ( spellDuration ) spellDuration = "<span>" + spellDuration + "</span>";
 				if ( spellCooldown ) spellCooldown = "<span>" + spellCooldown + "</span>";
 				//Action & enabler spell hotbars & tooltips
-				if ( spellType == "Action" || spellType == "Enabler" ) {
+				if ( (spellType == "Action" || spellType == "Enabler") && ($('#actions-enablers .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
 					var spellCost = spellListDatabase[i].cost;
 					$('#actions-enablers').append(
 						'<div data-spellid="' + spellID + '" class="spell" style="order: ' + (String(spellOrder) + String(0)) + '">' +
@@ -845,7 +846,7 @@ function populateSpellLists(spellsList) {
 						'</div>'
 					);
 				//Talent spell hotbars & tooltips
-				} else if ( spellType == "Talent" ) {
+				} else if ( spellType == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
 					$('#talents').append(
 						'<div data-spellid="' + spellID + '" class="spell" style="order: ' + (String(spellOrder) + String(0)) + '">' +
 						'<div class="wrapper">' +
@@ -982,9 +983,6 @@ function populateSpellLists(spellsList) {
 		if ( $(this).is(':empty') ) $(this).parent('.spell-list').addClass('hidden-section');
 		else $(this).parent('.spell-list').removeClass('hidden-section');
 	});
-	$('.hotbars .spell').draggabilly({
-		containment: '.hotbars'
-	});
 }
 //Primary on load function
 $(function() {
@@ -1023,6 +1021,7 @@ $(function() {
 	spellModal = $('#spellbook-background');
 	spellHotbars = $('.hotbars');
 	inventoryList = $('#equipment table');
+	inventoryBody = $('#equipment tbody')[0];
 	//Initial variables
 	curArc = 2;
 	curTier = 6;
@@ -1085,7 +1084,38 @@ $(function() {
 		width: "100%"
 	});
 	//Populate inventory select dropdowns
+	//and initate drag and drop
 	populateInventorySelect();
+	function setOrder(e) {
+		var spellID = e.getAttribute('data-spellid');
+		//$('.hotbars .spell[data-spellid="' + spellID + '"]').css('order','unset');
+		$('.hotbars .spell[data-spellid="' + spellID + '"]').parent().children('.spell').css('order','1');
+	};
+	dragula([document.getElementById('actions-enablers')], {
+		direction: 'vertical',
+		invalid: function (el, handle) {
+			return el.classList.contains('tooltip');
+		}
+	}).on('drag', function(el,source) {
+		source.style.display = "block";
+		setOrder(el);
+	}).on('drop', function(el,target,source,sibling) {
+		source.style.display = "flex";
+	});
+	dragula([document.getElementById('talents')], {
+		direction: 'vertical',
+		invalid: function (el, handle) {
+			return el.classList.contains('tooltip');
+		}
+	}).on('drag', function(el,source) {
+		source.style.display = "block";
+		setOrder(el);
+	}).on('drop', function(el,target,source,sibling) {
+		source.style.display = "flex";
+	});
+	dragula([inventoryBody], {
+		direction: 'vertical'
+	});
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
@@ -1349,14 +1379,15 @@ $(function() {
 		);
 		populateInventorySelect();
 	}
-	inventoryList.on('click', '.remove-row', function () {
-		$(this).closest('.item-row').remove();
-		if ( $('.item-row').length == 1 ) {
+	inventoryList.on('click', '.delete', function () {
+		$(this).closest('tr').remove();
+		if ( $('#equipment tr').length == 1 ) {
 			addItem();
 		}
 	});
 	$('#add-item').click( function () {
 		addItem();
+		enableSortableInventory()
 	});
 	//Focus input fields when clicking on outter cells
 	$('#equipment td').click( function() {
