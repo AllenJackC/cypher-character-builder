@@ -1095,31 +1095,51 @@ $(function() {
 	//Populate inventory select dropdowns
 	//and initate drag and drop
 	populateInventorySelect();
+	function setOrder(shadow,el) {
+		var newOrder;
+		if ( shadow ) {
+			var floatingHotbar = $('.hotbars .gu-transit');
+			var nextHotbar = floatingHotbar.next();
+			var prevHotbar = floatingHotbar.prev();
+			if ( parseInt(nextHotbar.css('order')) > parseInt(prevHotbar.css('order')) ) {
+				newOrder = parseInt(prevHotbar.css('order')) + 1;
+			} else {
+				newOrder = parseInt(nextHotbar.css('order'));
+			}
+			floatingHotbar.css('order',newOrder);
+		} else {
+			var spellID = el.getAttribute("data-spellid");
+			var movedHotbar = $('.hotbars .spell[data-spellid="' + spellID + '"]');
+			var prevHotbar = movedHotbar.prev();
+			var nextHotbar = movedHotbar.next();
+			if ( prevHotbar && nextHotbar ) {
+				if ( movedHotbar.css('order') == prevHotbar.css('order') ) newOrder = parseInt(prevHotbar.css('order')) + 1;
+				else newOrder = parseInt(nextHotbar.css('order')) - 1;
+			} else if ( !prevHotbar && nextHotbar ) {
+				newOrder = parseInt(nextHotbar.css('order')) - 1;
+			} else if ( prevHotbar && !nextHotbar ) {
+				newOrder = parseInt(prevHotbar.css('order')) + 1;
+			}
+			movedHotbar.css('order',newOrder);
+		}
+	}
 	dragula([document.getElementById('actions-enablers')], {
 		direction: 'vertical'
-	}).on('drag', function(el,source) {
-		//source.style.display = "block";
-		el.style.order = "";
+	}).on('shadow', function(el,container,source) {
+		var shadow = true;
+		setOrder(shadow,el);
 	}).on('drop', function(el,target,source,sibling) {
-		var newOrder;
-		var beforeLast = target.children.length - 2;
-		if ( sibling ) newOrder = parseInt(sibling.style.order) - 1;
-		else newOrder = parseInt(target.children[beforeLast].style.order) + 1;
-		el.style.order = newOrder;
-		//source.removeAttribute('style');
+		var shadow = false;
+		setOrder(shadow,el);
 	});
 	dragula([document.getElementById('talents')], {
 		direction: 'vertical'
-	}).on('drag', function(el,source) {
-		//source.style.display = "block";
-		el.style.order = "";
+	}).on('shadow', function(el,container,source) {
+		var shadow = true;
+		setOrder(shadow,el);
 	}).on('drop', function(el,target,source,sibling) {
-		var newOrder;
-		var beforeLast = target.children.length - 2;
-		if ( sibling ) newOrder = parseInt(sibling.style.order) - 1;
-		else newOrder = parseInt(target.children[beforeLast].style.order) + 1;
-		el.style.order = newOrder;
-		//source.removeAttribute('style');
+		var shadow = false;
+		setOrder(shadow,el);
 	});
 	dragula([inventoryBody], {
 		direction: 'vertical'
