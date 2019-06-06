@@ -1138,10 +1138,16 @@ $(function() {
 		}
 		movedHotbar.data('spell-order',newOrder);
 	}
+	function checkSkills() {
+		if ( skillList.children('.spell').length === 0 ) addSkill();
+	}
 	dragula([document.getElementById('skills')], {
-		direction: 'vertical'
+		direction: 'vertical',
+		removeOnSpill: true
 	}).on('drag', function(el,source) {
 		el.style.display = "flex";
+	}).on('remove', function(el,container,source) {
+		checkSkills();
 	});
 	dragula([document.getElementById('actions-enablers')], {
 		direction: 'vertical'
@@ -1297,18 +1303,11 @@ $(function() {
 			'</select>' +
 			'</div>' +
 			'</div>' +
-			'<div class="delete">X</div>' +
 			'</div>' +
 			'</div>'
 		);
 		populateSkillsSelect();
 	}
-	skillList.on('click', '.delete', function () {
-		$(this).closest('.spell').remove();
-		if ( $('#skills .spell').length == 0 ) {
-			addSkill();
-		}
-	});
 	addSkillButton.click( function () {
 		addSkill();
 	});

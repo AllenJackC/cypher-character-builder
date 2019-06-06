@@ -425,24 +425,6 @@ strong {
 	display:none;
 	font-size: 14px;
 }
-#skill-list .delete {
-	background: var(--remove-active);
-    color: var(--white);
-	cursor: pointer;
-    font-family: monospace;
-	font-size: 18px;
-	font-weight: 900;
-	height: 100%;
-	left: 100%;
-    line-height: 32px;
-	max-height: 34.4px;
-	overflow: hidden;
-	position: absolute;
-    text-align: center;
-	transition: visibility 0.3s, width 0.2s linear;
-	visibility: hidden;
-    width: 0;
-}
 #skill-list .chosen-single, .gu-mirror .proficiency .chosen-single {
 	background: transparent!important;
 	border-color: transparent!important;
@@ -791,13 +773,6 @@ div:focus {
 #skill-list .spell:hover .name, #skill-list .spell:hover .inability {
 	border-color: var(--black)!important;
 }
-#skill-list .spell:hover .delete, #skill-list .spell:focus .delete {
-	visibility: visible;
-	width: 25px;
-}
-#skill-list .delete:hover, #skill-list .delete:active {
-	background: var(--remove);
-}
 #equipment tr:hover td.arrow:before, #artifacts tr:hover td.arrow:before {
 	color: var(--selected);
 	left: -40px;
@@ -1095,6 +1070,9 @@ div:focus {
 	}
 	#selected {
 		margin: 10px;
+	}
+	tr.gu-mirror td {	
+		width: calc(100% - 20px)!important;
 	}
 	.row {
 		flex-direction: column;
