@@ -16,6 +16,7 @@
 	--selected: #E6B83D;
 	--selected-hover: #ECC96A;
 	--selected-active: #D4A31C;
+	--remove: #EF4B39;
 	--remove-hover: #F7A399;
 	--remove-active: #F37668;
 	--body-font: 'Roboto Condensed', sans-serif;
@@ -50,6 +51,40 @@ blockquote:before, blockquote:after, q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+/* Scrollbar CSS */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--button);
+  border: 0;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--button-hover);
+}
+::-webkit-scrollbar-thumb:active {
+  background: var(--button-active);
+}
+::-webkit-scrollbar-track {
+  background: var(--text-black);
+  border: 0;
+  border-radius: 0;
+}
+::-webkit-scrollbar-track:hover {
+  background: var(--light-grey);
+}
+::-webkit-scrollbar-track:active {
+  background: var(--background-white);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 body {
 	color: var(--text-black);
@@ -187,21 +222,21 @@ strong {
 #buttons .button:last-child {
 	margin-right: 0;
 }
-#equipment, .spell-list {
+#equipment, #artifacts, #skill-list, .spell-list {
 	flex-grow: 1;
 	margin: 15px 15px 10px 15px;
 }
-#equipment > .header {
+#equipment > .header, #artifacts > .header {
 	justify-content: space-between;
 	margin-bottom: 10px;
 }
-#equipment table {
+#equipment table, #artifacts table {
 	border-spacing: 0 5px;
 	border-collapse: separate;
 	padding-left: 6px;
 	width: 100%;
 }
-#equipment tr, #equipment td, tr.gu-mirror, tr.gu-mirror td {
+#equipment tr, #equipment td, #artifacts tr, #artifacts td, tr.gu-mirror, tr.gu-mirror td {
 	font-family: var(--body-font);
 	font-size: 0;
 	line-height: 0;
@@ -209,38 +244,38 @@ strong {
 	text-align: center;
 	white-space: nowrap;
 }
-#equipment tr, tr.gu-mirror {
+#equipment tr, #artifacts tr, tr.gu-mirror {
 	background: var(--background-white);
 	color: var(--text-black);
 }
-#equipment tr:first-child {
+#equipment tr:first-child, #artifacts tr:first-child {
 	background: none;
 	color: var(--white);
 	width: 100%;
 }
-#equipment tr:first-child th {
+#equipment tr:first-child th, #artifacts tr:first-child th {
 	background: none;
 	color: var(--white);
 	font-size: 14px;
     line-height: 18px;
 	padding: 0 5px;
 }
-#equipment td, .gu-mirror td {
-	order: 2;
+#equipment td, #artifacts td, .gu-mirror td {
+	order: 3;
 	padding: 0 5px;;
 	pointer-events: auto;
 	vertical-align: middle;
 }
-#equipment td > div, .gu-mirror td > div {
+#equipment td > div, #artifacts td > div, .gu-mirror td > div {
 	display: inline-block;
 	font-size: 14px;
     height: 18px;
     line-height: 18px;
 }
-#equipment .chosen-container, .gu-mirror .chosen-container {
+#equipment .chosen-container, .gu-mirror .chosen-container, #skill-list .chosen-container {
 	width: fit-content!important;
 }
-#equipment .chosen-single, .gu-mirror .chosen-single {
+#equipment .chosen-single, #skill-list .chosen-single, .gu-mirror .chosen-single {
 	border: 0!important;
 	box-shadow: none!important;
 	height: 18px;
@@ -248,19 +283,19 @@ strong {
 	padding: 0!important;
 	width: fit-content;
 }
-#equipment .chosen-single span, .gu-mirror .chosen-single span {
+#equipment .chosen-single span, #skill-list .chosen-single span, .gu-mirror .chosen-single span {
 	margin-right: 0!important;
 	text-align: center;
 	width: fit-content;
 }
-#equipment .chosen-single > div, .gu-mirror .chosen-single > div {
+#equipment .chosen-single > div, #skill-list .chosen-single > div, .gu-mirror .chosen-single > div {
 	display: none!important;
 }
-#equipment .chosen-drop, .gu-mirror .chosen-drop {
+#equipment .chosen-drop, #skill-list .chosen-drop, .gu-mirror .chosen-drop {
 	text-align: left;
 	width: fit-content;
 }
-#equipment td.arrow:before, .gu-mirror td.arrow:before {
+#equipment td.arrow:before, #artifacts td.arrow:before, .gu-mirror td.arrow:before {
 	color: var(--background-white);
     content: '\0025B6';
 	cursor: move;
@@ -270,7 +305,7 @@ strong {
     top: 50%;
     transition: all 0.2s linear;
 }
-#equipment td.arrow, .gu-mirror td.arrow {
+#equipment td.arrow, #artifacts td.arrow, .gu-mirror td.arrow {
 	border-color: transparent transparent transparent var(--black);
 	border-style: solid;
 	border-width: 18px 0 18px 31.2px;
@@ -285,20 +320,31 @@ strong {
 #equipment td.equip select, .gu-mirror td.equip select {
 	min-width: 85px;
 }
-#equipment td.name, .gu-mirror td.name {
+#equipment td.name, #artifacts td.name, .gu-mirror td.name {
 	order: 1;
 	text-align: left;
-	width: 100%;
 	white-space: normal;
 }
-#equipment td.name > div, .gu-mirror td.name > div {
+#artifacts td.effect, .gu-mirror td.effect {
+	order: 2;
+	text-align: left;
+	white-space: normal;
+}
+#artifacts td.level > div:first-child, #artifacts td.depletion > div:first-child, #artifacts td.effect > div:first-child, .gu-mirror td.level > div:first-child, .gu-mirror td.depletion > div:first-child, .gu-mirror td.effect > div:first-child {
+	border: 0!important;
+	display: none;
+	margin-right: 10px;
+}
+#artifacts td.level > div:last-child, #artifacts td.depletion > div:last-child, .gu-mirror td.level > div:last-child, .gu-mirror td.depletion > div:last-child {
+	border-bottom: dashed 1px var(--button);
+	margin-bottom: -1px;
+	width: 100%;
+}
+#equipment td.name > div, #artifacts td.name > div, #artifacts td.effect > div:last-child, .gu-mirror td.name > div:last-child, .gu-mirror td.effect > div:last-child {
 	border-bottom: dashed 1px var(--button);
 	margin-bottom: -1px;
 	min-width: 100px;
 	width: 100%!important;
-}
-#equipment td.type, .gu-mirror td.type {
-	text-align: left;
 }
 #equipment td.type select, .gu-mirror td.type select {
 	min-width: 130px;
@@ -309,26 +355,26 @@ strong {
 #equipment td.value > div:first-child, .gu-mirror td.value > div:first-child {
 	border-bottom: dashed 1px var(--button);
 	margin-bottom: -1px;	
-	min-width: 30px;
+	min-width: 5px;
 }
 #equipment td.value > div:last-child, .gu-mirror td.value > div:last-child {
 	width: fit-content;
 	padding-left: 4px;
 }
-#equipment td.weight, .gu-mirror td.weight {
+#equipment td.weight, #artifacts td.weight, .gu-mirror td.weight {
 	padding: 0 12px;
 	text-align: right;
 }
-#equipment td.weight > div:first-child, .gu-mirror td.weight > div:first-child {
+#equipment td.weight > div:first-child, #artifacts td.weight > div:first-child, .gu-mirror td.weight > div:first-child {
 	border-bottom: dashed 1px var(--button);
 	margin-bottom: -1px;	
-	min-width: 20px;
+	min-width: 5px;
 }
-#equipment td.weight > div:last-child, .gu-mirror td.weight > div:last-child {
+#equipment td.weight > div:last-child, #artifacts td.weight > div:last-child, .gu-mirror td.weight > div:last-child {
 	width: fit-content;
 	padding-left: 4px;
 }
-#equipment td.delete, .gu-mirror td.delete {
+#equipment td.delete, #artifacts td.delete, .gu-mirror td.delete {
 	background: var(--black);
     border-color: transparent transparent transparent var(--background-white);
     border-style: solid;
@@ -338,7 +384,7 @@ strong {
     position: relative;
     width: 0;
 }
-#equipment td.delete:after, .gu-mirror td.delete:after {
+#equipment td.delete:after, #artifacts td.delete:after, .gu-mirror td.delete:after {
     background: var(--text-black);
     color: var(--background-white);
 	content: 'X';
@@ -352,6 +398,60 @@ strong {
 	right: 7px;
     top: -12px;
     width: 20px;
+}
+#skill-list > .header {
+	justify-content: space-between;
+}
+#skill-list .spell {
+	display: flex;
+}
+#skill-list .name, #skill-list .inability, .gu-mirror div.name, .gu-mirror div.inability {
+	border-bottom: 1px dashed var(--button);
+	cursor: text;
+	flex-grow: 1;
+	margin-bottom: -1px;
+	margin-right: 5px;
+	min-height: 16px;
+	pointer-events: auto;
+	white-space: normal;
+}
+#skill-list .proficiency, .gu-mirror .proficiency {
+	align-items: center;
+	display: flex;
+	font-size: 14px;
+	min-height: 16px;
+}
+#skill-list .proficiency div:first-child, #skill-list .proficiency .inability, .gu-mirror .proficiency div:first-child, .gu-mirror .proficiency .inability  {
+	display:none;
+	font-size: 14px;
+}
+#skill-list .delete {
+	background: var(--remove-active);
+    color: var(--white);
+	cursor: pointer;
+    font-family: monospace;
+	font-size: 18px;
+	font-weight: 900;
+	height: 100%;
+	left: 100%;
+    line-height: 32px;
+	max-height: 34.4px;
+	overflow: hidden;
+	position: absolute;
+    text-align: center;
+	transition: visibility 0.3s, width 0.2s linear;
+	visibility: hidden;
+    width: 0;
+}
+#skill-list .chosen-single, .gu-mirror .proficiency .chosen-single {
+	background: transparent!important;
+	border-color: transparent!important;
+	color: var(--white)!important;
+}
+#skill-list .chosen-drop, #skill-list .chosen-results, #skill-list select, .gu-mirror .proficiency .chosen-drop, .gu-mirror .proficiency .chosen-results, .gu-mirror .proficiency select {
+	background: var(--button)!important;
+	border-color: var(--button)!important;
+	color: var(--white)!important;
 }
 #spellbook, #archives {
 	display: flex;
@@ -429,6 +529,31 @@ strong {
 #selected {
 	margin: 0 10px;
 }
+.gu-mirror td.effect, .gu-mirror td.name {
+	text-align: left;
+	white-space: normal;
+}
+tr.gu-mirror {
+	display: flex;
+	align-items: center;
+}
+.gu-mirror td {
+	display: block;
+	flex-basis: 0;
+	flex-grow: 1;
+}
+.gu-mirror td.arrow, .gu-mirror td.delete {
+	flex-grow: unset;
+}
+.content-column {
+	align-items: flex-start;
+	display: flex;
+	flex-basis: 0;
+    flex-grow: 1;
+	flex-wrap: wrap;
+	height: 100%;
+	justify-content: flex-start;
+}
 .row {
 	display: flex;
 	margin-bottom: 15px;
@@ -466,11 +591,18 @@ strong {
 	font-size: 14px!important;
 	pointer-events: auto;
 }
-.chosen-single, .chosen-drop {
+.chosen-single, .chosen-drop, .chosen-results {
 	background: var(--background-white)!important;
 	border-color: var(--black-translucent)!important;
 	border-radius: 0!important;
     color: var(--text-black)!important;
+}
+.chosen-results::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+.chosen-results::-webkit-scrollbar-track {
+  background: var(--white-background);
 }
 .chosen-default { 
 	color: var(--dark-grey)!important;
@@ -521,12 +653,10 @@ strong {
 	color: var(--white);
 }
 .hotbars {
-	display: flex;
-	flex-direction: column;
 	margin-top: 10px;
 	position: relative;
 }
-.spell-list .spell, .gu-mirror.spell {
+.spell-list .spell, .gu-mirror.spell, #skill-list .spell {
 	cursor: move;
 	margin-bottom: 2px;
 	margin-right: 0;
@@ -534,7 +664,7 @@ strong {
 	pointer-events: auto;
 	transition: padding 0.2s linear,  margin 0.2s linear;
 }
-.spell-list .spell .wrapper, .gu-mirror.spell .wrapper {
+.spell-list .spell .wrapper, .gu-mirror.spell .wrapper, #skill-list .spell .wrapper {
 	align-items: baseline;
 	background: var(--button);
 	color: var(--white);
@@ -543,6 +673,10 @@ strong {
 	padding: 5px 10px;
 	pointer-events: none;
 	white-space: nowrap;
+}
+#skill-list .spell .wrapper, .gu-mirror.spell .wrapper {
+	align-items: center;
+	flex-grow: 1;
 }
 .modal-background {
 	background: var(--black-translucent);
@@ -644,18 +778,34 @@ div:focus {
 	background: var(--button-active);
 	box-shadow: none;
 }
-.spell-list .spell:hover .wrapper, .spell-list .spell:active .wrapper {
+.spell-list .spell:hover .wrapper, .spell-list .spell:active .wrapper, #skill-list .spell:hover .wrapper, #skill-list .spell:active .wrapper {
 	background: var(--selected);
 	color: var(--black);
 }
-#equipment tr:hover td.arrow:before {
+#skill-list .spell:hover .chosen-single, #skill-list .spell:hover .chosen-drop, #skill-list .spell:hover .chosen-results, #skill-list .spell:hover select {
+	background: var(--selected)!important;
+	border-color: var(--selected)!important;
+	color: var(--black)!important;
+	outline-color: var(--selected)!important;
+}
+#skill-list .spell:hover .name, #skill-list .spell:hover .inability {
+	border-color: var(--black)!important;
+}
+#skill-list .spell:hover .delete, #skill-list .spell:focus .delete {
+	visibility: visible;
+	width: 25px;
+}
+#skill-list .delete:hover, #skill-list .delete:active {
+	background: var(--remove);
+}
+#equipment tr:hover td.arrow:before, #artifacts tr:hover td.arrow:before {
 	color: var(--selected);
 	left: -40px;
 }
-#equipment .delete:hover:after {
+#equipment .delete:hover:after, #artifacts .delete:hover:after {
 	color: var(--remove-hover);
 }
-#equipment .delete:active:after {
+#equipment .delete:active:after, #artifacts .delete:active:after  {
 	color: var(--remove-active);
 }
 #spellbook .spell:hover .header {
@@ -817,6 +967,15 @@ div:focus {
 	}
 }
 /* Responsive CSS */
+@media only screen and (max-width: 1024px) {
+	#character-attributes {
+		margin: 15px auto 10px;
+	}
+	.content-column {
+		flex-basis: 100%;
+		width: 100%;
+	}
+}
 @media only screen and (max-width: 637px) {
 	h5 {
 		margin: 0 15px;
@@ -832,69 +991,80 @@ div:focus {
 		padding: 0;
 		width: auto;
 	}
-	#character-attributes, #equipment {
+	#character-attributes, #equipment, #artifacts {
 		width: calc(100% - 30px);
 		max-width: unset;
 	}
 	#buttons {
 		margin-top: 5px;
 	}
-	#equipment .header {
+	#equipment > .header, #artifacts > .header {
 		margin-bottom: 3%;
 	}
-	#equipment table {
+	#equipment table, #artifacts table {
 		border-spacing: 0;
 		padding: 0;
 		width: 100%;
 	}
-	#equipment tbody {
+	#equipment tbody, #artifacts tbody  {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 	}
-	#equipment tr, tr.gu-mirror {
+	#equipment tr, #artifacts tr, tr.gu-mirror {
 		display: flex;
 		flex-basis: 48%;
 		flex-direction: column;
 		margin-bottom: 4%;
 	}
-	#equipment tr:hover td.name {
+	#equipment tr:hover td.name, #artifacts tr:hover td.name {
 		background: var(--button-hover);
 	}
-	#equipment td, tr.gu-mirror td {
+	#equipment td, #artifacts td, tr.gu-mirror td {
 		display: block;
 		padding: 10px!important;
 		text-align: center!important;
 		width: auto!important;
 	}
-	#equipment td.equip, #equipment td.type, #equipment td.value, .gu-mirror td.weight, .gu-mirror td.equip, .gu-mirror td.type, .gu-mirror td.value, .gu-mirror td.weight {
+	#equipment td.equip, #equipment td.type, #equipment td.value, #artifacts td.effect, #artifacts td.level, #artifacts td.depletion, .gu-mirror td.weight, .gu-mirror td.equip, .gu-mirror td.type, .gu-mirror td.value, .gu-mirror td.weight, .gu-mirror td.effect, .gu-mirror td.level, .gu-mirror td.depletion {
+		align-items: center;
 		border-bottom: 1px solid var(--secondary-button);
+		display: flex;
+		justify-content: center;
 	}
-	#equipment td.name, .gu-mirror td.name {
+	#artifacts td.effect div:last-child, .gu-mirror td.effect div:last-child {
+		text-align: left;
+		width: auto!important;
+	}
+	#artifacts td.level div:last-child, #artifacts td.depletion div:last-child, .gu-mirror td.level div:last-child, .gu-mirror td.depletion div:last-child {
+		min-width: 10px;
+		width: auto!important;		
+	}
+	#equipment td.name, #artifacts td.name, .gu-mirror td.name {
 		cursor: move;
 		background: var(--button);
 		color: var(--white);
 	}
-	#equipment td.name:active {
+	#equipment td.name:active, #artifacts td.name:active {
 		cursor: grabbing;
 	}
-	#equipment td.name > div, .gu-mirror td.name > div {
+	#equipment td.name > div, #artifacts td.name > div, .gu-mirror td.name > div {
 		border-bottom: dashed 1px var(--selected);
 		cursor: text;
 		font-weight: 700;
 		font-variant: small-caps;
 		font-size: 18px;
 		margin-bottom: -1px;
+		width: 100%;
 	}
-	#equipment td.value div:first-child, .gu-mirror td.value div:first-child, #equipment td.weight div:first-child, .gu-mirror td.weight div:first-child {
-		border-bottom: dashed 1px var(--button);
-		margin-bottom: -1px;
+	#equipment td.value div:first-child, .gu-mirror td.value div:first-child, #equipment td.weight div:first-child, #artifacts td.weight div:first-child, .gu-mirror td.weight div:first-child {
+		border-bottom: 1px solid var(--secondary-button);
 		min-width: 0;
 	}
-	#equipment .chosen-container, #equipment .chosen-single, #equipment .chosen-single span, #equipment .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop {
+	#equipment .chosen-container, #equipment .chosen-single, #equipment .chosen-single span, #equipment .chosen-drop, #artifacts .chosen-container, #artifacts .chosen-single, #artifacts .chosen-single span, #artifacts .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop {
 		width: 100%!important;
 	}
-	#equipment td.delete, .gu-mirror td.delete {
+	#equipment td.delete, #artifacts td.delete, .gu-mirror td.delete {
 		background: var(--white);
 		border: 0;
 		color: var(--remove-active);
@@ -903,15 +1073,22 @@ div:focus {
 		font-weight: 700;
 		height: 18px;
 		line-height: 18px;
+		pointer-events: auto;
 		width: auto;
 	}
-	#equipment td.delete:hover {
+	#equipment td.delete:hover, #artifacts td.delete:hover {
 		color: var(--black);
 		background: var(--remove-hover);
 	}
-	#equipment td.delete:active {
+	#equipment td.delete:active, #artifacts td.delete:active {
 		color: var(--black);
 		background: var(--remove-active);
+	}
+	#artifacts td.effect > div:first-child, #artifacts td.depletion > div:first-child, #artifacts td.level > div:first-child, .gu-mirror td.effect > div:first-child, .gu-mirror td.depletion > div:first-child, .gu-mirror td.level > div:first-child  {
+		display: block;
+	}
+	#skill-list .name {
+		font-size: 14px;
 	}
 	#spellbook, #archives {
 		margin: 15px 0 0 0;
@@ -931,13 +1108,13 @@ div:focus {
 		padding-bottom: 10px;
 		width: 100%!important;
 	}
-	.connector, #extra-attributes-header, #equipment table tr:first-child, #equipment .arrow, .gu-mirror .arrow, #equipment .delete:after, .gu-mirror .delete:after {
+	.connector, #extra-attributes-header, #equipment table tr:first-child, #equipment .arrow, #artifacts table tr:first-child, #artifacts .arrow, .gu-mirror .arrow, #equipment .delete:after, #artifacts .delete:after, .gu-mirror .delete:after {
 		display: none;
 	}
 	.secondary-button {
 		right: 0!important;
 	}
-	.spell-list {
+	.spell-list, #skill-list {
 		width: calc(100% - 30px);
 	}
 	.modal {
