@@ -182,7 +182,6 @@ function populateInventorySelect() {
 function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
-	if ( !itemName ) itemName = "";
 	if ( !itemValue ) itemValue = "0";
 	if ( !itemWeight ) itemWeight = "0";
 	if ( !slotNumber ) slotNumber = "slots";
@@ -258,6 +257,22 @@ function addArtifact(spellID,itemLevel,itemName,itemEffect,itemDepletion,itemWei
 		'</tr>';
 	if ( spellID ) $(artifactToAdd).insertAfter('#artifacts table tr:first-child');
 	else artifactsList.append(artifactToAdd);
+}
+//Add a blank artifact, unless variables are parsed
+function addNote(spellID,note) {
+	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
+	else spellID = "";
+	if ( !note ) note = "";
+	var noteToAdd =
+		'<tr class="item"' + spellID + '>' +
+			'<td class="arrow"></td>' +
+			'<td class="note">' +
+				'<img class="pin" src="images/note-pin.png" />' +
+				'<div class="editable" contenteditable="true">' + note + '</div>' +
+			'</td>' +
+		'</tr>';
+	if ( spellID ) $(noteToAdd).insertAfter('#notes table tr:first-child');
+	else notesList.append(noteToAdd);
 }
 //Populate the contents of the species dropdown lists
 function populateSpecies() {
@@ -813,6 +828,7 @@ function populateSpells() {
 				spellsList.push(parseInt(spellID));
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" ) {
 				//Variables specific to items
+				var hideThis = "";
 				var itemName = spellListDatabase[i].itemname;
 				var itemValue = spellListDatabase[i].itemvalue;
 				var itemWeight = spellListDatabase[i].itemweight;
@@ -823,6 +839,7 @@ function populateSpells() {
 				spellType = '<img src="images/items.png">';
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
+				if ( spellName == "<hide>" ) hideThis = " hidden-spell";
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( itemValue ) itemValue = '<span><strong>Value: </strong>' + itemValue + '₡</span>';
@@ -839,7 +856,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + '" style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									spellType +
@@ -999,7 +1016,7 @@ function populateSpellLists() {
 						'</div>'
 					);
 				//Add items to the iventory list
-				} else if ( typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 && itemName ) {
+				} else if ( typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var itemType = spellListDatabase[i].itemtype;
 					var itemValue = spellListDatabase[i].itemvalue;
 					var itemWeight = spellListDatabase[i].itemweight;
@@ -1039,16 +1056,19 @@ function populateSpellLists() {
 						}
 						addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType);
 						populateInventorySelect();
-						var thisItem = $('#equipment table tr[data-spellid="' + spellID + '"]');
+						var thisItem = $('#equipment tr[data-spellid="' + spellID + '"]');
 						$('.type select', thisItem).val(selectThisType);
 						$('.type select', thisItem).trigger('chosen:updated');
 					}
+				} else if ( typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+					var note = spellListDatabase[i].description;
+					addNote(spellID,note);
 				}
 			}
 		}
 	});
 	//Remove any items or spells not in the current spelllist
-	$('.spell-list .spell, #equipment tr, .tooltip').each( function() {
+	$('.spell-list .spell, .item-list tr, .tooltip').each( function() {
 		var spellID = parseInt($(this).data('spellid'));
 		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
 	});
@@ -1201,9 +1221,9 @@ $(function() {
 	});
 	dragula([notesBody], {
 		direction: 'vertical',
-		//removeOnSpill: true
+		removeOnSpill: true
 	}).on('remove', function(el,container,source) {
-		//if ( container.children.length === 1 ) addNote();
+		if ( container.children.length === 1 ) addNote();
 	});
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
@@ -1338,6 +1358,7 @@ $(function() {
 	addSkillButton.click( function() { addSkill(); });
 	addItemButton.click( function() { addItem(); });
 	addArtifactButton.click( function() { addArtifact(); });
+	addNoteButton.click( function() { addNote(); });
 	//Update slots text in carry weight to reflect amount of slots
 	$('td.weight .editable').keyup(function() {
 		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
@@ -1356,7 +1377,8 @@ $(function() {
 				$(this).slideToggle(500);
 			}
 		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
-			$('.hotbars .spell[data-spellid="' + $(this).attr('id') + '"]').remove();
+			$('.spell-list .spell[data-spellid="' + $(this).attr('id') + '"]').remove();
+			$('.item-list tr[data-spellid="' + $(this).attr('id') + '"]').remove();
 			$(this).removeClass('selected');
 			--selectedSpellCount;
 			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) {

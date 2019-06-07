@@ -421,11 +421,11 @@ div.proficiency {
 #spellbook .stats {
 	display: flex;
 	flex-wrap: wrap;
-	padding-top: 15px;
+	margin-top: 15px;
 }
 #spellbook .spell .stats:first-child {
-	padding-top: 0;
-	padding-bottom: 15px;
+	margin-top: 0;
+	margin-bottom: 15px;
 }
 #spellbook .stats span {
 	flex-basis: calc( 50% - 10px );
@@ -725,6 +725,21 @@ tr.gu-mirror {
 .lore .description {
 	flex-basis: 100%;
 }
+.hidden-spell {
+	height: 0;
+	margin: 0!important;
+	opacity: 0;
+	visibility: hidden;
+	width: 0;
+}
+.details ul {
+	margin: 15px 0;
+}
+.details li {
+	background: url('images/list-icon.png') no-repeat 0 3px transparent;
+	margin-left: 25px;
+    padding-left: 30px;
+}
 /* States */
 input:focus, select:focus {
 	outline: var(--button) auto 5px;
@@ -976,16 +991,16 @@ tr.gu-mirror:hover .editable {
 		flex-wrap: wrap;
 		justify-content: space-between;
 	}
-	tr {
+	tr {		
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 		border-radius: 0 0 5px 5px;
+		cursor: move;
 		display: flex;
 		flex-basis: 48%;
 		flex-direction: column;
 		margin-bottom: 4%;
 	}
-
 	td {
 		border-radius: 0;
 		display: block;
@@ -997,7 +1012,6 @@ tr.gu-mirror:hover .editable {
 		display: block;
 	}
 	td.name {
-		cursor: move;
 		background: var(--button);
 		color: var(--white);
 	}
@@ -1017,11 +1031,13 @@ tr.gu-mirror:hover .editable {
 		width: 100%;
 	}
 	td.effect .editable {
+		cursor: text;
 		min-width: 100px;
 		text-align: left;
 		width: auto!important;
 	}
 	td.level .editable, td.depletion .editable, td.value .editable, td.weight .editable {
+		cursor: text;
 		min-width: 10px;
 		width: auto!important;		
 	}
@@ -1043,6 +1059,10 @@ tr.gu-mirror:hover .editable {
 	}
 	#buttons {
 		margin-top: 5px;
+	}
+	#notes tr {
+		flex-basis: 100%;
+		margin-bottom: 10px;
 	}
 	#spellbook, #archives {
 		margin: 15px 0 0 0;
@@ -1094,13 +1114,13 @@ tr.gu-mirror:hover .editable {
 		width: 95px;
 		text-align: center;
 	}
-	.spell, .lore {
+	#spellbook .spell, #archives .lore, .details li {
 		margin: 0!important;
 	}
-	.spell .details, .lore .details {
+	#spellbook .details, #archives .details {
 		padding: 30px;
 	}
-	.spell .header, .lore .header {
+	#spellbook .spell .header, #archives .lore .header {
 		padding: 12px 30px 15px;
 	}
 	.gu-mirror td {
