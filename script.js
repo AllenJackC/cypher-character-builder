@@ -43,6 +43,9 @@ var inventoryBody;
 var addArtifactButton;
 var artifactsList;
 var artifactsBody;
+var addNoteButton;
+var notesList;
+var notesBody;
 var curArc;
 var curTier;
 var spellListDatabase;
@@ -1102,6 +1105,9 @@ $(function() {
 	addArtifactButton = $('#add-artifact');
 	artifactsList = $('#artifacts table');
 	artifactsBody = $('#artifacts tbody')[0];
+	addNoteButton = $('#add-note');
+	notesList = $('#notes table');
+	notesBody = $('#notes tbody')[0];
 	//Initial variables
 	curArc = 2;
 	curTier = 6;
@@ -1192,6 +1198,12 @@ $(function() {
 		removeOnSpill: true
 	}).on('remove', function(el,container,source) {
 		if ( container.children.length === 1 ) addArtifact();
+	});
+	dragula([notesBody], {
+		direction: 'vertical',
+		//removeOnSpill: true
+	}).on('remove', function(el,container,source) {
+		//if ( container.children.length === 1 ) addNote();
 	});
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){

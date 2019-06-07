@@ -241,6 +241,15 @@ td.arrow {
 	position: relative;
 	width: 0;
 }
+img.pin {
+	cursor: move;
+	display: none;
+    height: 24px;
+	left: -12px;
+    position: absolute;
+    top: -12px;
+	width: 24px;
+}
 td.note {
 	border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -984,6 +993,9 @@ tr.gu-mirror:hover .editable {
 		text-align: center!important;
 		width: calc(100% - 20px)!important;
 	}
+	img.pin {
+		display: block;
+	}
 	td.name {
 		cursor: move;
 		background: var(--button);
@@ -1112,5 +1124,8 @@ tr.gu-mirror:hover .editable {
 	}
 	td.name:active {
 		cursor: grabbing;
+	}
+	img.pin:hover {
+		filter: brightness (80%);
 	}
 }
