@@ -607,7 +607,7 @@
 		<div class="content-column">
 			<!-- Skills -->
 			<div id="skill-list">
-				<div class="header">
+				<div class="list-header">
 					<div class="header">
 						<img src="images/skills.png">
 						<h2>Skills</h2>
@@ -619,9 +619,10 @@
 				<div class="hotbars" id="skills">
 					<div class="spell">
 						<div class="wrapper">
+							<div class="handle">&#9776;</div>
 							<div class="name" contenteditable="true"></div>
 							<div class="proficiency">
-								<div>+</div>
+								<div class="plus-symbol">+</div>
 								<div class="inability" contenteditable="true">1</div>
 								<select>
 									<option value="I">Inability</option>
@@ -637,7 +638,7 @@
 		</div>
 		<!-- Actions & Enablers -->
 		<div class="spell-list hidden-section">
-			<div class="header">
+			<div class="list-header">
 				<img src="images/actions-enablers.png">
 				<h2>Actions & Enablers</h2>
 			</div>
@@ -645,15 +646,15 @@
 		</div>
 		<!-- Talents -->
 		<div class="spell-list hidden-section">
-			<div class="header">
+			<div class="list-header">
 				<img src="images/talent.png">
 				<h2>Talents</h2>
 			</div>
 			<div class="hotbars" id="talents"></div>
 		</div>
 		<!-- Inventory -->
-		<div id="equipment">
-			<div class="header">
+		<div class="item-list" id="equipment">
+			<div class="list-header">
 				<div class="header">
 					<img src="images/items.png">
 					<h2>Inventory</h2>
@@ -671,9 +672,8 @@
 						<th>TYPE</th>
 						<th>VALUE</th>
 						<th>WEIGHT</th>
-						<th></th>
 					</tr>
-					<tr>
+					<tr class="item">
 						<td class="arrow"></td>
 						<td class="equip">
 							<select>
@@ -683,7 +683,7 @@
 							</select>
 						</td>
 						<td class="name">
-							<div contenteditable="true"></div>
+							<div class="editable" contenteditable="true"></div>
 						</td>
 						<td class="type">
 							<select>
@@ -697,20 +697,19 @@
 							</select>
 						</td>
 						<td class="value">
-							<div contenteditable="true">0</div>
-							<div>&#8353;</div>
+							<div class="editable" contenteditable="true">0</div>
+							<div class="credits"> &#8353;</div>
 						</td>
 						<td class="weight">
-							<div contenteditable="true">0</div>
-							<div> slots</div>
+							<div class="editable" contenteditable="true">0</div>
+							<div class="slots"> slots</div>
 						</td>
-						<td class="delete">DELETE</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<div id="artifacts">
-			<div class="header">
+		<div class="item-list" id="artifacts">
+			<div class="list-header">
 				<div class="header">
 					<img src="images/artifact.png">
 					<h2>Artifacts</h2>
@@ -728,30 +727,53 @@
 						<th>EFFECT</th>
 						<th>DEPLETION</th>
 						<th>WEIGHT</th>
-						<th></th>
 					</tr>
-					<tr>
+					<tr class="item">
 						<td class="arrow"></td>
 						<td class="level">
-							<div>Level:</div>
-							<div contenteditable="true">1</div>
+							<div class="mobile-label">Level:</div>
+							<div class="editable" contenteditable="true">1</div>
 						</td>
 						<td class="name">
-							<div contenteditable="true"></div>
+							<div class="editable" contenteditable="true"></div>
 						</td>
 						<td class="effect">
-							<div>Effect:</div>
-							<div contenteditable="true"></div>
+							<div class="mobile-label">Effect:</div>
+							<div class="editable" contenteditable="true"></div>
 						</td>
 						<td class="depletion">
-							<div>Depletion:</div>
-							<div contenteditable="true"></div>
+							<div class="mobile-label">Depletion:</div>
+							<div class="editable" contenteditable="true"></div>
 						</td>
 						<td class="weight">
-							<div contenteditable="true">0</div>
-							<div> slots</div>
+							<div class="editable" contenteditable="true">0</div>
+							<div class="slots"> slots</div>
 						</td>
-						<td class="delete">DELETE</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="item-list" id="notes">
+			<div class="list-header">
+				<div class="header">
+					<img src="images/note.png">
+					<h2>Notes</h2>
+				</div>
+				<div class="button" id="add-note">
+					Add Note
+				</div>
+			</div>
+			<table>
+				<tbody>
+					<tr>
+						<th></th>
+						<th></th>
+					</tr>
+					<tr class="item">
+						<td class="arrow"></td>
+						<td class="note">
+							<div class="editable" contenteditable="true"></div>
+						</td>
 					</tr>
 				</tbody>
 			</table>

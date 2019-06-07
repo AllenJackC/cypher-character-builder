@@ -40,6 +40,9 @@ var spellHotbars;
 var addItemButton;
 var inventoryList;
 var inventoryBody;
+var addArtifactButton;
+var artifactsList;
+var artifactsBody;
 var curArc;
 var curTier;
 var spellListDatabase;
@@ -83,6 +86,19 @@ function setStoryArc(arc) {
 		}
 	});
 }
+//Reset spell counters to their default value when selecting or deselecting spells
+function resetAbilityCounters() {
+	if ( selectedSpellCount === availSpellCount ) {
+		$('#spellbook .spell:not(.selected, .required)').addClass('disabled');
+		$('#spellbook .filters #available').html('<div></div>&#10;Disabled');
+	} else {
+		$('#spellbook .spell').removeClass('disabled');
+		$('#spellbook .filters #available').html('<div></div>&#10;Available');
+	}
+	if ( availSpellCount - selectedSpellCount === 0 ) spellbookButton.text('Abilities');
+	else if ( availSpellCount - selectedSpellCount === 1 ) spellbookButton.text(availSpellCount - selectedSpellCount + ' Ability Available');
+	else spellbookButton.text(availSpellCount - selectedSpellCount + ' Abilities Available');
+}
 //Hide any options that are marked as 'hidden' by the startup story arc function
 function hideOptions(options) {
 	options.each( function() {
@@ -116,6 +132,38 @@ function sortOptions(field,options) {
 	});
 	field.empty().append(options).val('');
 }
+//Populate all of the active skill select fields
+function populateSkillsSelect() {
+	$('#skills .proficiency select').chosen({
+		disable_search: true,
+		width: "100px"
+	});
+}
+//Add a blank skill, unless variables are parsed
+function addSkill(skillName,inabilityNumber) {
+	if ( !skillName ) skillName = "";
+	if ( !inabilityNumber ) inabilityNumber = "1";
+	skillList.append(
+		'<div class="spell">' +
+			'<div class="wrapper">' +
+				'<div class="handle">&#9776;</div>' +
+				'<div class="name" contenteditable="true">' + skillName + '</div>' +
+				'<div class="proficiency">' +
+					'<div class="plus-symbol">+</div>' +
+					'<div class="inability" contenteditable="true">' + inabilityNumber + '</div>' +
+						'<select>' +
+							'<option value="I">Inability</option>' +
+							'<option selected value="P">Practiced</option>' +
+							'<option value="T">Trained</option>' +
+							'<option value="S">Specialized</option>' +
+						'</select>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>'
+	);
+	populateSkillsSelect();
+}
 //Populate all of the active item select fields
 function populateInventorySelect() {
 	$('#equipment .equip select').chosen({
@@ -127,12 +175,86 @@ function populateInventorySelect() {
 		width: "123px"
 	});
 }
-//Populate all of the active skill select fields
-function populateSkillsSelect() {
-	$('#skills .proficiency select').chosen({
-		disable_search: true,
-		width: "100px"
-	});
+//Add a blank item, unless variables are parsed
+function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType) {
+	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
+	else spellID = "";
+	if ( !itemName ) itemName = "";
+	if ( !itemValue ) itemValue = "0";
+	if ( !itemWeight ) itemWeight = "0";
+	if ( !slotNumber ) slotNumber = "slots";
+	var itemToAdd =
+		'<tr class="item"' + spellID + '>' +
+			'<td class="arrow"></td>' +
+			'<td class="equip">' +
+				'<select>' +
+					'<option selected value="S">Stashed</option>' +
+					'<option value="R">Readied</option>' +
+					'<option value="E">Equipped</option>' +
+				'</select>' +
+			'</td>' +
+			'<td class="name">' +
+				'<div class="editable" contenteditable="true">' + itemName + '</div>' +
+			'</td>' +
+			'<td class="type">' +
+				'<select>' +
+					'<option selected value="IT">Item</option>' +
+					'<option value="LW">Light Weapon</option>' +
+					'<option value="MW">Heavy Weapon</option>' +
+					'<option value="HW">Medium Weapon</option>' +
+					'<option value="LA">Light Armour</option>' +
+					'<option value="MA">Medium Armour</option>' +
+					'<option value="HA">Heavy Armour</option>' +
+				'</select>' +
+			'</td>' +
+			'<td class="value">' +
+				'<div class="editable" contenteditable="true">' + itemValue + '</div>' +
+				'<div class="credits">&#8353;</div>' +
+			'</td>' +
+			'<td class="weight">' +
+				'<div class="editable" contenteditable="true">' + itemWeight + '</div>' +
+				'<div class="slots">' + slotNumber + '</div>' +
+			'</td>' +
+		'</tr>';
+	if ( spellID ) $(itemToAdd).insertAfter('#equipment table tr:first-child')
+	else inventoryList.append(itemToAdd);
+	populateInventorySelect();
+}
+//Add a blank artifact, unless variables are parsed
+function addArtifact(spellID,itemLevel,itemName,itemEffect,itemDepletion,itemWeight,slotNumber) {
+	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
+	else spellID = "";
+	if ( !itemLevel ) itemLevel = "1";
+	if ( !itemName ) itemName = "";
+	if ( !itemEffect ) itemEffect = "";
+	if ( !itemDepletion ) itemDepletion = "";
+	if ( !itemWeight ) itemWeight = "0";
+	if ( !slotNumber ) slotNumber = "slots";
+	var artifactToAdd =
+		'<tr class="item"' + spellID + '>' +
+			'<td class="arrow"></td>' +
+			'<td class="level">' +
+				'<div class="mobile-label">Level:</div>' +
+				'<div class="editable" contenteditable="true">' + itemLevel + '</div>' +
+			'</td>' +
+			'<td class="name">' +
+				'<div class="editable" contenteditable="true">' + itemName + '</div>' +
+			'</td>' +
+			'<td class="effect">' +
+				'<div class="mobile-label">Effect:</div>' +
+				'<div class="editable" contenteditable="true">' + itemEffect + '</div>' +
+			'</td>' +
+			'<td class="depletion">' +
+				'<div class="mobile-label">Depletion:</div>' +
+				'<div class="editable" contenteditable="true">' + itemDepletion + '</div>' +
+			'</td>' +
+			'<td class="weight">' +
+				'<div class="editable" contenteditable="true">' + itemWeight + '</div>' +
+				'<div class="slots">' + slotNumber + '</div>' +
+			'</td>' +
+		'</tr>';
+	if ( spellID ) $(artifactToAdd).insertAfter('#artifacts table tr:first-child');
+	else artifactsList.append(artifactToAdd);
 }
 //Populate the contents of the species dropdown lists
 function populateSpecies() {
@@ -637,7 +759,7 @@ function populateSpells() {
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if (( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Enabler','Talent','Select'].includes(typeCheck)) || ( !spellRequired && spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Passive" )) {
+			if (( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Enabler','Talent','Select','Note'].includes(typeCheck)) || ( !spellRequired && spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Passive" )) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
@@ -657,29 +779,29 @@ function populateSpells() {
 				} else {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
-						'<div class="header">' +
-						'<h3>' +
-						spellType +
-						spellName +
-						'</h3>' +
-						spellTier +
-						'</div>' +
-						'<div class="details">' +
-						'<div class="stats">' +
-						spellCost +
-						spellDuration +
-						spellCasttime +
-						spellRange +
-						spellCooldown +
-						'</div>' +
-						'<div class="description">' +
-						spellDescription +
-						'</div>' +
-						'<div class="stats">' +
-						spellDamage +
-						spellOrigin +
-						'</div>' +
-						'</div>' +
+							'<div class="header">' +
+								'<h3>' +
+									spellType +
+									spellName +
+								'</h3>' +
+								spellTier +
+								'</div>' +
+							'<div class="details">' +
+								'<div class="stats">' +
+									spellCost +
+									spellDuration +
+									spellCasttime +
+									spellRange +
+									spellCooldown +
+								'</div>' +
+								'<div class="description">' +
+									spellDescription +
+								'</div>' +
+								'<div class="stats">' +
+									spellDamage +
+									spellOrigin +
+								'</div>' +
+							'</div>' +
 						'</div>'
 					);
 				}
@@ -689,17 +811,13 @@ function populateSpells() {
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" ) {
 				//Variables specific to items
 				var itemName = spellListDatabase[i].itemname;
-				var itemType = spellListDatabase[i].itemtype;
 				var itemValue = spellListDatabase[i].itemvalue;
 				var itemWeight = spellListDatabase[i].itemweight;
 				var itemDamage = spellListDatabase[i].itemdamage;
 				var itemArmour = spellListDatabase[i].itemarmour;
 				var itemLevel = spellListDatabase[i].itemlevel;
 				var itemDepletion = spellListDatabase[i].itemdepletion;
-				//Change the icon depending on the item type
-				if ( itemType != "Item" ) {
-					spellType = '<img src="images/' + itemType.toLowerCase() + '.png">';
-				}
+				spellType = '<img src="images/items.png">';
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
@@ -719,29 +837,29 @@ function populateSpells() {
 				} else {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
-						'<div class="header">' +
-						'<h3>' +
-						spellType +
-						spellName +
-						'</h3>' +
-						spellTier +
-						'</div>' +
-						'<div class="details">' +
-						'<div class="stats">' +
-						itemLevel +
-						itemValue +
-						itemWeight +
-						'</div>' +
-						'<div class="description">' +
-						spellDescription +
-						'</div>' +
-						'<div class="stats">' +
-						itemDamage +
-						itemArmour +
-						itemDepletion +
-						spellOrigin +
-						'</div>' +
-						'</div>' +
+							'<div class="header">' +
+								'<h3>' +
+									spellType +
+									spellName +
+								'</h3>' +
+							spellTier +
+							'</div>' +
+							'<div class="details">' +
+								'<div class="stats">' +
+									itemLevel +
+									itemValue +
+									itemWeight +
+								'</div>' +
+								'<div class="description">' +
+									spellDescription +
+								'</div>' +
+								'<div class="stats">' +
+									itemDamage +
+									itemArmour +
+									itemDepletion +
+									spellOrigin +
+								'</div>' +
+							'</div>' +
 						'</div>'
 					);
 				}
@@ -752,16 +870,16 @@ function populateSpells() {
 				if ( $('#' + spellID).length <= 0 ) {
 					$('#archives').append(
 						'<div id="' + spellID + '" class="lore" style="order: ' + spellOrder + '">' +
-						'<div class="header">' +
-						'<h3>' +
-						spellName +
-						'</h3>' +
-						'</div>' +
-						'<div class="details">' +
-						'<div class="description">' +
-						spellDescription +
-						'</div>' +
-						'</div>' +
+							'<div class="header">' +
+								'<h3>' +
+									spellName +
+								'</h3>' +
+								'</div>' +
+							'<div class="details">' +
+								'<div class="description">' +
+									spellDescription +
+								'</div>' +
+							'</div>' +
 						'</div>'
 					);
 				}
@@ -806,17 +924,18 @@ function populateSpellLists() {
 	//Move each spell to their respective lists
 	$('#spellbook .spell').each( function() {
 		var spellID = $(this).attr('id');
-		var spellOrder = String($(this).css('order'));
-		var spellOrigin = $('.origin', this).text();
+		var spellOrigin = '<span class="origin">' + $('.origin', this).text() + '</span>';
 		var isEnabled = $(this).hasClass('required') || $(this).hasClass('selected');
 		for (var i = 0; i < spellListDatabase.length; i++) {
 			if ( spellListDatabase[i].id === spellID && isEnabled ) {
 				var spellName = spellListDatabase[i].name;
-				var tooltipName;
+				var tooltipName = '<h4 class="name">' + spellName + '</h4>';
+				spellName = '<span>' + spellName + '</span>';
 				var itemName = spellListDatabase[i].itemname;
 				var spellTier = spellListDatabase[i].tier;
-				var spellType = spellListDatabase[i].type;
-				var spellTooltip = spellListDatabase[i].tooltip;
+				var typeCheck = spellListDatabase[i].type;
+				var spellType = '<span class="type">' + typeCheck + '</span>';
+				var spellTooltip = '<span class="description">' + spellListDatabase[i].tooltip + '</span>';
 				var spellCasttime = spellListDatabase[i].casttime;
 				var spellDuration = spellListDatabase[i].duration;
 				var spellRange = spellListDatabase[i].range;
@@ -824,93 +943,60 @@ function populateSpellLists() {
 				var spellDamage = spellListDatabase[i].damage;
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-				if ( spellName ) tooltipName = '<h4 class="name">' + spellName + '</h4>';
 				if ( spellDuration ) spellDuration = "<span>Lasts " + spellDuration + "</span>";
 				if ( spellRange ) spellRange = "<span>" + spellRange + " range</span>";
 				if ( spellCasttime ) spellCasttime = "<span>" + spellCasttime + "</span>";
 				if ( spellDuration ) spellDuration = "<span>" + spellDuration + "</span>";
 				if ( spellCooldown ) spellCooldown = "<span>" + spellCooldown + "</span>";
 				//Action & enabler spell hotbars & tooltips
-				if ( (spellType == "Action" || spellType == "Enabler") && ($('#actions-enablers .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
-					var spellCost = spellListDatabase[i].cost;
+				if ( (typeCheck == "Action" || typeCheck == "Enabler") && ($('#actions-enablers .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
+					var spellCost = '<span>' + spellListDatabase[i].cost + '</span>';
 					actionsEnablersSection.append(
 						'<div data-spellid="' + spellID + '" class="spell">' +
-						'<div class="wrapper">' +
-						'<span>' +
-						spellName +
-						'</span>' +
-						'<span>' +
-						spellCost +
-						'</span>' +
-						'</div>' +
+							'<div class="wrapper">' +
+								spellName +
+								spellCost +
+							'</div>' +
 						'</div>'
 					);
 					actionsEnablersSection.after(
 						'<div data-spellid="' + spellID + '" class="tooltip">' +
-						tooltipName + 
-						spellTier +
-						'<span>' +
-						spellCost +
-						'</span>' +
-						spellCasttime +
-						spellRange +
-						spellDuration +
-						spellCooldown +
-						'<span class="description">' +
-						spellTooltip +
-						'</span>' +
-						'<span class="type">' + 
-						spellType +
-						'</span>' +
-						'<span class="origin">' +
-						spellOrigin +
-						'</span>' +
+							tooltipName + 
+							spellTier +
+							spellCost +
+							spellCasttime +
+							spellRange +
+							spellDuration +
+							spellCooldown +
+							spellTooltip + 
+							spellType +
+							spellOrigin +
 						'</div>'
 					);
 				//Talent spell hotbars & tooltips
-				} else if ( spellType == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( typeCheck == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
 					talentsSection.append(
 						'<div data-spellid="' + spellID + '" class="spell">' +
-						'<div class="wrapper">' +
-						'<span>' +
-						spellName +
-						'</span>' +
-						'</div>' +
+							'<div class="wrapper">' +
+								spellName +
+							'</div>' +
 						'</div>'
 					);
 					talentsSection.after(
 						'<div data-spellid="' + spellID + '" class="tooltip">' +
-						'<h4 class="name">' +
-						spellName +
-						'</h4>' + 
-						'<span class="tier">' +
-						spellTier +
-						'</span>' +
-						'<span>' +
-						spellRange +
-						'</span>' +
-						'<span>' +
-						spellCasttime +
-						'</span>' +
-						'<span>' +
-						spellDuration +
-						'</span>' +
-						'<span>' +
-						spellCooldown +
-						'</span>' +
-						'<span class="description">' +
-						spellTooltip +
-						'</span>' +
-						'<span class="type">' + 
-						spellType +
-						'</span>' +
-						'<span class="origin">' +
-						spellOrigin +
-						'</span>' +
+							tooltipName + 
+							spellTier +
+							spellCasttime +
+							spellRange +
+							spellDuration +
+							spellCooldown +
+							spellTooltip + 
+							spellType +
+							spellOrigin +
 						'</div>'
 					);
 				//Add items to the iventory list
-				} else if ( spellType == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 && itemName ) {
+				} else if ( typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 && itemName ) {
 					var itemType = spellListDatabase[i].itemtype;
 					var itemValue = spellListDatabase[i].itemvalue;
 					var itemWeight = spellListDatabase[i].itemweight;
@@ -919,9 +1005,10 @@ function populateSpellLists() {
 					var itemArmour = spellListDatabase[i].itemarmour;
 					var itemLevel = spellListDatabase[i].itemlevel;
 					var itemDepletion = spellListDatabase[i].itemdepletion;
+					var itemEffect = spellListDatabase[i].itemeffect;
 					if ( itemWeight == 1 ) slotNumber = "slot &nbsp;";
 					if ( itemType == "Artifact" ) {
-						
+						addArtifact(spellID,itemLevel,itemName,itemEffect,itemDepletion,itemWeight,slotNumber);
 					} else {
 						var selectThisType;
 						switch ( itemType ) {
@@ -947,51 +1034,7 @@ function populateSpellLists() {
 							selectThisType = "HA";
 							break;
 						}
-						var addItem = 
-							'<tr data-spellid="' + spellID + '">' +
-							'<td class="arrow"></td>' +
-							'<td class="equip">' +
-							'<select>' +
-							'<option selected value="S">Stashed</option>' +
-							'<option value="R">Readied</option>' +
-							'<option value="E">Equipped</option>' +
-							'</select>' +
-							'</td>' +
-							'<td class="name">' +
-							'<div contenteditable="true">' +
-							itemName +
-							'</div>' +
-							'</td>' +
-							'<td class="type">' +
-							'<select>' +
-							'<option></option>' +
-							'<option selected value="IT">Item</option>' +
-							'<option value="LW">Light Weapon</option>' +
-							'<option value="MW">Heavy Weapon</option>' +
-							'<option value="HW">Medium Weapon</option>' +
-							'<option value="LA">Light Armour</option>' +
-							'<option value="MA">Medium Armour</option>' +
-							'<option value="HA">Heavy Armour</option>' +
-							'</select>' +
-							'</td>' +
-							'<td class="value">' +
-							'<div contenteditable="true">' +
-							itemValue +
-							'</div>' +
-							'<div>&#8353;</div>' +
-							'</td>' +
-							'<td class="weight">' +
-							'<div contenteditable="true">' +
-							itemWeight +
-							'</div>' +
-							'<div>' +
-							slotNumber +
-							'</div>' +
-							'</td>' +
-							'<td class="delete">DELETE</td>' +
-							'</td>' +
-							'</tr>';
-						$(addItem).insertAfter('#equipment table tr:first-child');
+						addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType);
 						populateInventorySelect();
 						var thisItem = $('#equipment table tr[data-spellid="' + spellID + '"]');
 						$('.type select', thisItem).val(selectThisType);
@@ -1056,6 +1099,8 @@ $(function() {
 	addItemButton = $('#add-item');
 	inventoryList = $('#equipment table');
 	inventoryBody = $('#equipment tbody')[0];
+	addArtifactButton = $('#add-artifact');
+	artifactsList = $('#artifacts table');
 	artifactsBody = $('#artifacts tbody')[0];
 	//Initial variables
 	curArc = 2;
@@ -1122,32 +1167,13 @@ $(function() {
 	//and initate drag and drop
 	populateInventorySelect();
 	populateSkillsSelect();
-	function setOrder(el) {
-		var newOrder;
-		var spellID = el.getAttribute("data-spellid");
-		var movedHotbar = $('.hotbars .spell[data-spellid="' + spellID + '"]');
-		var prevHotbar = movedHotbar.prev();
-		var nextHotbar = movedHotbar.next();
-		if ( prevHotbar && nextHotbar ) {
-			if ( movedHotbar.data('spell-order') == prevHotbar.data('spell-order') ) newOrder = parseInt(prevHotbar.data('spell-order')) + 1;
-			else newOrder = parseInt(nextHotbar.data('spell-order')) - 1;
-		} else if ( !prevHotbar && nextHotbar ) {
-			newOrder = parseInt(nextHotbar.data('spell-order')) - 1;
-		} else if ( prevHotbar && !nextHotbar ) {
-			newOrder = parseInt(prevHotbar.data('spell-order')) + 1;
-		}
-		movedHotbar.data('spell-order',newOrder);
-	}
-	function checkSkills() {
-		if ( skillList.children('.spell').length === 0 ) addSkill();
-	}
 	dragula([document.getElementById('skills')], {
 		direction: 'vertical',
 		removeOnSpill: true
 	}).on('drag', function(el,source) {
 		el.style.display = "flex";
 	}).on('remove', function(el,container,source) {
-		checkSkills();
+		if ( container.children.length === 0 ) addSkill();
 	});
 	dragula([document.getElementById('actions-enablers')], {
 		direction: 'vertical'
@@ -1156,10 +1182,16 @@ $(function() {
 		direction: 'vertical'
 	});
 	dragula([inventoryBody], {
-		direction: 'vertical'
+		direction: 'vertical',
+		removeOnSpill: true
+	}).on('remove', function(el,container,source) {
+		if ( container.children.length === 1 ) addItem();
 	});
 	dragula([artifactsBody], {
-		direction: 'vertical'
+		direction: 'vertical',
+		removeOnSpill: true
+	}).on('remove', function(el,container,source) {
+		if ( container.children.length === 1 ) addArtifact();
 	});
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
@@ -1232,18 +1264,6 @@ $(function() {
 		populateSpells();
 		loreButton.text('New Lore');
 	});
-	function resetAbilityCounters() {
-		if ( selectedSpellCount === availSpellCount ) {
-			$('#spellbook .spell:not(.selected, .required)').addClass('disabled');
-			$('#spellbook .filters #available').html('<div></div>&#10;Disabled');
-		} else {
-			$('#spellbook .spell').removeClass('disabled');
-			$('#spellbook .filters #available').html('<div></div>&#10;Available');
-		}
-		if ( availSpellCount - selectedSpellCount === 0 ) spellbookButton.text('Abilities');
-		else if ( availSpellCount - selectedSpellCount === 1 ) spellbookButton.text(availSpellCount - selectedSpellCount + ' Ability Available');
-		else spellbookButton.text(availSpellCount - selectedSpellCount + ' Abilities Available');
-	}
 	types.on('change', function() {
 		resetSection.removeClass('hidden-section');
 		populateSpecies();
@@ -1287,29 +1307,33 @@ $(function() {
 		if ( thisVal === "I" ) inabilityFields.show();
 		else inabilityFields.hide();
 	});
-	function addSkill() {
-		skillList.append(
-			'<div class="spell">' +
-			'<div class="wrapper">' +
-			'<div class="name" contenteditable="true"></div>' +
-			'<div class="proficiency">' +
-			'<div>+</div>' +
-			'<div class="inability" contenteditable="true">1</div>' +
-			'<select>' +
-			'<option value="I">Inability</option>' +
-			'<option selected value="P">Practiced</option>' +
-			'<option value="T">Trained</option>' +
-			'<option value="S">Specialized</option>' +
-			'</select>' +
-			'</div>' +
-			'</div>' +
-			'</div>' +
-			'</div>'
-		);
-		populateSkillsSelect();
-	}
-	addSkillButton.click( function () {
-		addSkill();
+	//Filter inputs for level, weight and value fields
+	$('.item-list').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable', function(e){
+		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
+        var isCursorMoveOrDeleteAction = ([46,8,37,38,39,40].indexOf(e.keyCode) != -1);
+        var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >=96 && e.keyCode <= 105);
+        var vKey = 86, cKey = 67,aKey = 65;
+        switch(true){
+            case isCursorMoveOrDeleteAction:
+            case isModifierkeyPressed == false && isNumKeyPressed:
+            case (e.metaKey || e.ctrlKey) && ([vKey,cKey,aKey].indexOf(e.keyCode) != -1):
+                break;
+            default:
+                e.preventDefault();
+        }
+	})
+	//Add skills and items when respective button is clicked
+	addSkillButton.click( function() { addSkill(); });
+	addItemButton.click( function() { addItem(); });
+	addArtifactButton.click( function() { addArtifact(); });
+	//Update slots text in carry weight to reflect amount of slots
+	$('td.weight .editable').keyup(function() {
+		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
+		else $(this).parent('.weight').children('div:last-child').text('slots');
+	});
+	//Focus editable div fields when clicking on outter cells
+	$('td').click( function() {
+		$('editable', this).focus();
 	});
 	//Highlight spells and keep track of spell count
 	spellBook.on('click', '.spell', function() {
@@ -1376,10 +1400,15 @@ $(function() {
 				hotbar.css('width',hotbarWidth);
 				tooltip.appendTo(hotbar);
 				tooltip.css('width', hotbarWidth - 40);
-				tooltip.slideToggle(500, function() {
-					if ($(this).is(':visible')) $(this).css('display', 'flex');
-					hotbar.css('width','');
-					tooltip.css('width', hotbar.width() - 40 );
+				tooltip.slideToggle({
+						duration: 500, 
+						start: function() {
+							$(this).css('display', 'flex');
+						},
+						done: function() {
+							hotbar.css('width','');
+							$(this).css('width', hotbar.width() - 40 );
+						}
 				});
 			}
 		});
@@ -1440,64 +1469,4 @@ $(function() {
 			tooltipPosition(targetElement,resetTooltip);
 		});
 	}
-	//Add item rows when clicking Add Item
-	//Remove item rows when clicking X, but
-	//add a new blank item if it's the last
-	//item in the row
-	function addItem() {
-		inventoryList.append(
-			'<tr>' +
-			'<td class="arrow"></td>' +
-			'<td class="equip">' +
-				'<select>' +
-					'<option selected value="S">Stashed</option>' +
-					'<option value="R">Readied</option>' +
-					'<option value="E">Equipped</option>' +
-				'</select>' +
-			'</td>' +
-			'<td class="name">' +
-				'<div contenteditable="true"></div>' +
-			'</td>' +
-			'<td class="type">' +
-				'<select>' +
-					'<option selected value="IT">Item</option>' +
-					'<option value="LW">Light Weapon</option>' +
-					'<option value="MW">Heavy Weapon</option>' +
-					'<option value="HW">Medium Weapon</option>' +
-					'<option value="LA">Light Armour</option>' +
-					'<option value="MA">Medium Armour</option>' +
-					'<option value="HA">Heavy Armour</option>' +
-				'</select>' +
-			'</td>' +
-			'<td class="value">' +
-				'<div contenteditable="true">0</div>' +
-				'<div>&#8353;</div>' +
-			'</td>' +
-			'<td class="weight">' +
-				'<div contenteditable="true">0</div>' +
-				'<div>slots</div>' +
-			'</td>' +
-			'<td class="delete">DELETE</td>' +
-			'</tr>'
-		);
-		populateInventorySelect();
-	}
-	inventoryList.on('click', '.delete', function () {
-		$(this).closest('tr').remove();
-		if ( $('#equipment tr').length == 1 ) {
-			addItem();
-		}
-	});
-	addItemButton.click( function () {
-		addItem();
-	});
-	//Focus input fields when clicking on outter cells
-	$('#equipment td').click( function() {
-		$('div:first-child', this).focus();
-	});
-	//Update slots text in carry weight to reflect amount of slots
-	$('#equipment .weight div:first-child').keyup(function() {
-		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
-		else $(this).parent('.weight').children('div:last-child').text('slots');
-	});
 });

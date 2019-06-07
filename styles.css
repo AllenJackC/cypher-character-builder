@@ -189,6 +189,128 @@ label {
 strong {
 	font-weight: 700;
 }
+table {
+	border-spacing: 0 5px;
+	border-collapse: separate;
+	padding-left: 6px;
+	width: 100%;
+}
+tr, td {
+	font-family: var(--body-font);
+	font-size: 0;
+	line-height: 0;
+	position: relative;
+	text-align: center;
+	white-space: nowrap;
+}
+tr.item, tr.gu-mirror {
+	background: var(--background-white);
+	border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+	color: var(--text-black);
+}
+th {
+	background: none;
+	color: var(--white);
+	font-size: 14px;
+    line-height: 18px;
+	padding: 0 5px;
+}
+td {
+	order: 3;
+	padding: 5px;
+	pointer-events: auto;
+	vertical-align: middle;
+}
+td.arrow:before {
+	color: var(--background-white);
+    content: '\0025B6';
+	cursor: move;
+	font-size: 40px;
+    left: -43px;
+    position: absolute;
+    top: 0;
+    transition: all 0.2s linear;
+}
+td.arrow {
+	border-color: transparent transparent transparent var(--black);
+	border-style: solid;
+	border-width: 18px 0 18px 31.2px;
+	height: 0;
+	padding: 0 10px 0 0;
+	position: relative;
+	width: 0;
+}
+td.note {
+	border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+	padding-right: 15px;
+	text-align: left;
+	width: 100%;
+}
+td.note .editable {
+	text-align: left;
+	white-space: normal;
+	width: 100%;
+}	
+td.equip {
+	padding-left: 0;
+	text-align: right;
+}
+td.equip select {
+	min-width: 85px;
+}
+td.name {
+	order: 1;
+	white-space: normal;
+	width: 50%;
+}
+td.effect {
+	order: 2;
+	white-space: normal;
+	width: 50%;
+}
+td.type select {
+	min-width: 130px;
+}
+td.value {
+	text-align: right;
+}
+td.weight {
+	border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+	padding: 0 15px 0 12px;
+	text-align: right;
+}
+td > div {
+	display: inline-block;
+	font-size: 14px;
+    height: 18px;
+    line-height: 18px;
+}
+div.handle {
+	flex-grow: 0;
+	overflow: hidden;
+	max-width: 0;
+	order: 0;
+	transition: max-width 0.2s linear;
+	width: 24px;
+}
+div.name, div.inability {
+	border-bottom: 1px dashed var(--button);
+	cursor: text;
+	flex-grow: 1;
+	margin-bottom: -1px;
+	margin-right: 5px;
+	min-height: 16px;
+	pointer-events: auto;
+	white-space: normal;
+}
+div.proficiency {
+	align-items: center;
+	display: flex;
+	min-height: 16px;
+}
 #title {
 	margin: 15px auto 10px;
 }
@@ -222,60 +344,14 @@ strong {
 #buttons .button:last-child {
 	margin-right: 0;
 }
-#equipment, #artifacts, #skill-list, .spell-list {
+#skill-list, .item-list, .spell-list {
 	flex-grow: 1;
 	margin: 15px 15px 10px 15px;
 }
-#equipment > .header, #artifacts > .header {
-	justify-content: space-between;
-	margin-bottom: 10px;
-}
-#equipment table, #artifacts table {
-	border-spacing: 0 5px;
-	border-collapse: separate;
-	padding-left: 6px;
-	width: 100%;
-}
-#equipment tr, #equipment td, #artifacts tr, #artifacts td, tr.gu-mirror, tr.gu-mirror td {
-	font-family: var(--body-font);
-	font-size: 0;
-	line-height: 0;
-	position: relative;
-	text-align: center;
-	white-space: nowrap;
-}
-#equipment tr, #artifacts tr, tr.gu-mirror {
-	background: var(--background-white);
-	color: var(--text-black);
-}
-#equipment tr:first-child, #artifacts tr:first-child {
-	background: none;
-	color: var(--white);
-	width: 100%;
-}
-#equipment tr:first-child th, #artifacts tr:first-child th {
-	background: none;
-	color: var(--white);
-	font-size: 14px;
-    line-height: 18px;
-	padding: 0 5px;
-}
-#equipment td, #artifacts td, .gu-mirror td {
-	order: 3;
-	padding: 0 5px;;
-	pointer-events: auto;
-	vertical-align: middle;
-}
-#equipment td > div, #artifacts td > div, .gu-mirror td > div {
-	display: inline-block;
-	font-size: 14px;
-    height: 18px;
-    line-height: 18px;
-}
-#equipment .chosen-container, .gu-mirror .chosen-container, #skill-list .chosen-container {
+#skill-list .chosen-container, .item-list .chosen-container, .gu-mirror .chosen-container {
 	width: fit-content!important;
 }
-#equipment .chosen-single, #skill-list .chosen-single, .gu-mirror .chosen-single {
+#skill-list .chosen-single, .item-list .chosen-single, .gu-mirror .chosen-single {
 	border: 0!important;
 	box-shadow: none!important;
 	height: 18px;
@@ -283,157 +359,17 @@ strong {
 	padding: 0!important;
 	width: fit-content;
 }
-#equipment .chosen-single span, #skill-list .chosen-single span, .gu-mirror .chosen-single span {
+#skill-list .chosen-single span, .item-list .chosen-single span, .gu-mirror .chosen-single span {
 	margin-right: 0!important;
 	text-align: center;
 	width: fit-content;
 }
-#equipment .chosen-single > div, #skill-list .chosen-single > div, .gu-mirror .chosen-single > div {
+#skill-list .chosen-single > div, .item-list .chosen-single > div, .gu-mirror .chosen-single > div {
 	display: none!important;
 }
-#equipment .chosen-drop, #skill-list .chosen-drop, .gu-mirror .chosen-drop {
+#skill-list .chosen-drop, .item-list .chosen-drop,  .gu-mirror .chosen-drop {
 	text-align: left;
 	width: fit-content;
-}
-#equipment td.arrow:before, #artifacts td.arrow:before, .gu-mirror td.arrow:before {
-	color: var(--background-white);
-    content: '\0025B6';
-	cursor: move;
-	font-size: 40px;
-    left: -43px;
-    position: absolute;
-    top: 50%;
-    transition: all 0.2s linear;
-}
-#equipment td.arrow, #artifacts td.arrow, .gu-mirror td.arrow {
-	border-color: transparent transparent transparent var(--black);
-	border-style: solid;
-	border-width: 18px 0 18px 31.2px;
-	height: 0;
-	position: relative;
-	width: 0;
-}
-#equipment td.equip, .gu-mirror td.equip {
-	padding-left: 0;
-	text-align: right;
-}
-#equipment td.equip select, .gu-mirror td.equip select {
-	min-width: 85px;
-}
-#equipment td.name, #artifacts td.name, .gu-mirror td.name {
-	order: 1;
-	text-align: left;
-	white-space: normal;
-}
-#artifacts td.effect, .gu-mirror td.effect {
-	order: 2;
-	text-align: left;
-	white-space: normal;
-}
-#artifacts td.level > div:first-child, #artifacts td.depletion > div:first-child, #artifacts td.effect > div:first-child, .gu-mirror td.level > div:first-child, .gu-mirror td.depletion > div:first-child, .gu-mirror td.effect > div:first-child {
-	border: 0!important;
-	display: none;
-	margin-right: 10px;
-}
-#artifacts td.level > div:last-child, #artifacts td.depletion > div:last-child, .gu-mirror td.level > div:last-child, .gu-mirror td.depletion > div:last-child {
-	border-bottom: dashed 1px var(--button);
-	margin-bottom: -1px;
-	width: 100%;
-}
-#equipment td.name > div, #artifacts td.name > div, #artifacts td.effect > div:last-child, .gu-mirror td.name > div:last-child, .gu-mirror td.effect > div:last-child {
-	border-bottom: dashed 1px var(--button);
-	margin-bottom: -1px;
-	min-width: 100px;
-	width: 100%!important;
-}
-#equipment td.type select, .gu-mirror td.type select {
-	min-width: 130px;
-}
-#equipment td.value, .gu-mirror td.value {
-	text-align: right;
-}
-#equipment td.value > div:first-child, .gu-mirror td.value > div:first-child {
-	border-bottom: dashed 1px var(--button);
-	margin-bottom: -1px;	
-	min-width: 5px;
-}
-#equipment td.value > div:last-child, .gu-mirror td.value > div:last-child {
-	width: fit-content;
-	padding-left: 4px;
-}
-#equipment td.weight, #artifacts td.weight, .gu-mirror td.weight {
-	padding: 0 12px;
-	text-align: right;
-}
-#equipment td.weight > div:first-child, #artifacts td.weight > div:first-child, .gu-mirror td.weight > div:first-child {
-	border-bottom: dashed 1px var(--button);
-	margin-bottom: -1px;	
-	min-width: 5px;
-}
-#equipment td.weight > div:last-child, #artifacts td.weight > div:last-child, .gu-mirror td.weight > div:last-child {
-	width: fit-content;
-	padding-left: 4px;
-}
-#equipment td.delete, #artifacts td.delete, .gu-mirror td.delete {
-	background: var(--black);
-    border-color: transparent transparent transparent var(--background-white);
-    border-style: solid;
-    border-width: 18px 0 18px 12px;
-    height: 0;
-	pointer-events: none;
-    position: relative;
-    width: 0;
-}
-#equipment td.delete:after, #artifacts td.delete:after, .gu-mirror td.delete:after {
-    background: var(--text-black);
-    color: var(--background-white);
-	content: 'X';
-    cursor: pointer;
-    font-family: monospace;
-    font-size: 24px;
-    font-weight: 900;
-    line-height: 24px;
-	pointer-events: auto;
-    position: absolute;
-	right: 7px;
-    top: -12px;
-    width: 20px;
-}
-#skill-list > .header {
-	justify-content: space-between;
-}
-#skill-list .spell {
-	display: flex;
-}
-#skill-list .name, #skill-list .inability, .gu-mirror div.name, .gu-mirror div.inability {
-	border-bottom: 1px dashed var(--button);
-	cursor: text;
-	flex-grow: 1;
-	margin-bottom: -1px;
-	margin-right: 5px;
-	min-height: 16px;
-	pointer-events: auto;
-	white-space: normal;
-}
-#skill-list .proficiency, .gu-mirror .proficiency {
-	align-items: center;
-	display: flex;
-	font-size: 14px;
-	min-height: 16px;
-}
-#skill-list .proficiency div:first-child, #skill-list .proficiency .inability, .gu-mirror .proficiency div:first-child, .gu-mirror .proficiency .inability  {
-	display:none;
-	font-size: 14px;
-}
-#skill-list .chosen-single, .gu-mirror .proficiency .chosen-single {
-	background: transparent!important;
-	border-color: transparent!important;
-	color: var(--white)!important;
-}
-#skill-list .chosen-drop, #skill-list .chosen-results, #skill-list select, .gu-mirror .proficiency .chosen-drop, .gu-mirror .proficiency .chosen-results, .gu-mirror .proficiency select {
-	background: var(--button)!important;
-	border-color: var(--button)!important;
-	color: var(--white)!important;
 }
 #spellbook, #archives {
 	display: flex;
@@ -441,14 +377,6 @@ strong {
 	flex-direction: column;
 	flex-wrap: wrap;
 	margin: 15px 15px 0 15px;
-}
-#spellbook .placeholder, #archives .placeholder {
-	color: var(--white);
-	font-family: var(--header-font);
-    font-size: 25px;
-    line-height: 1em;
-	padding: 10% 30px;
-    text-align: center;
 }
 #spellbook .spell {
 	cursor: pointer;
@@ -461,7 +389,7 @@ strong {
 	justify-content: space-between;
 	padding: 12px 15px 15px 15px;
 }
-#spellbook .spell .tier {
+#spellbook .tier {
     font-family: var(--header-font);
     font-size: 24px;
 	font-weight: 400;
@@ -475,13 +403,13 @@ strong {
 	position: relative;
     top: 1px;
 }
-#spellbook .spell .details {
+#spellbook .details {
 	background: var(--background-white);
 	box-shadow: inset 0 0 0 3px var(--white);
 	color: var(--text-black);
 	padding: 15px;
 }
-#spellbook .spell .stats {
+#spellbook .stats {
 	display: flex;
 	flex-wrap: wrap;
 	padding-top: 15px;
@@ -490,18 +418,18 @@ strong {
 	padding-top: 0;
 	padding-bottom: 15px;
 }
-#spellbook .spell .stats span {
+#spellbook .stats span {
 	flex-basis: calc( 50% - 10px );
 	padding-right: 10px;
 }
-#spellbook .spell .stats span:nth-child(even), #spellbook .spell .origin {
+#spellbook .stats span:nth-child(even), #spellbook .origin {
 	padding-right: 0;
 	text-align: right;
 }
-#spellbook .spell .description, .lore .description {
+#spellbook .description, #archives .description {
 	flex-basis: 100%;
 }
-#spellbook .spell .origin {
+#spellbook .origin {
 	color: var(--dark-grey);
 	font-style: italic;
 }
@@ -511,9 +439,63 @@ strong {
 #selected {
 	margin: 0 10px;
 }
-.gu-mirror td.effect, .gu-mirror td.name {
-	text-align: left;
-	white-space: normal;
+.list-header  {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 15px;
+}
+.spell-list .list-header {
+	justify-content: flex-start;
+}
+.mobile-label {
+	border: 0!important;
+	display: none;
+	margin-right: 10px;
+}
+.editable {
+	border-bottom: dashed 1px var(--background-white);
+	cursor: text;
+	height: 100%;
+	margin-bottom: -1px;
+	min-width: 7px;
+}
+.name .editable, .effect .editable {
+	width: 100%;
+}
+.depletion .editable {
+	min-width: 20px;
+}
+.credits {
+	width: fit-content;
+	padding-left: 4px;
+}
+.slots {
+	width: fit-content;
+	padding-left: 4px;
+}
+.wrapper {
+	flex-basis: 100%;
+}
+.plus-symbol, .inability  {
+	display: none;
+}
+.proficiency .chosen-single {
+	background: transparent!important;
+	border-color: transparent!important;
+	color: var(--white)!important;
+}
+.proficiency .chosen-drop, .proficiency .chosen-results, .proficiency select {
+	background: var(--button)!important;
+	border-color: var(--button)!important;
+	color: var(--white)!important;
+}
+.placeholder {
+	color: var(--white);
+	font-family: var(--header-font);
+    font-size: 25px;
+    line-height: 1em;
+	padding: 10% 30px;
+    text-align: center;
 }
 tr.gu-mirror {
 	display: flex;
@@ -521,11 +503,12 @@ tr.gu-mirror {
 }
 .gu-mirror td {
 	display: block;
-	flex-basis: 0;
 	flex-grow: 1;
+	order: 0;
 }
-.gu-mirror td.arrow, .gu-mirror td.delete {
+.gu-mirror td.arrow {
 	flex-grow: unset;
+	align-self: stretch;
 }
 .content-column {
 	align-items: flex-start;
@@ -635,30 +618,33 @@ tr.gu-mirror {
 	color: var(--white);
 }
 .hotbars {
-	margin-top: 10px;
+	margin-top: 15px;
 	position: relative;
 }
-.spell-list .spell, .gu-mirror.spell, #skill-list .spell {
+.hotbars .spell, .gu-mirror.spell {
 	cursor: move;
+	display: flex;
+	flex-wrap: wrap;
 	margin-bottom: 2px;
 	margin-right: 0;
 	padding: 0;
 	pointer-events: auto;
 	transition: padding 0.2s linear,  margin 0.2s linear;
 }
-.spell-list .spell .wrapper, .gu-mirror.spell .wrapper, #skill-list .spell .wrapper {
-	align-items: baseline;
+.spell .chosen-container {
+	font-size: 16px!important;
+}
+.spell .wrapper {
+	align-items: center;
 	background: var(--button);
 	color: var(--white);
 	display: flex;
+	flex-basis: 100%;
+	flex-grow: 1;
 	justify-content: space-between;
 	padding: 5px 10px;
 	pointer-events: none;
 	white-space: nowrap;
-}
-#skill-list .spell .wrapper, .gu-mirror.spell .wrapper {
-	align-items: center;
-	flex-grow: 1;
 }
 .modal-background {
 	background: var(--black-translucent);
@@ -712,7 +698,7 @@ tr.gu-mirror {
 	align-items: center;
 	display: flex;
 }
-.header img {
+.header img, .list-header img {
 	height: 36px;
 	width: 36px;
 }
@@ -737,51 +723,14 @@ input:focus, select:focus {
 div:focus {
 	outline: none;
 }
-.visible {
-    opacity: 1!important;
-	visibility: visible!important;
-}
-.hidden-section {
-	display: none!important;
-}
-.secondary-button > div:hover {
-	box-shadow: inset 0 0 0 1px var(--secondary-button-hover);
-	color: var(--secondary-button-hover);
-}
-.secondary-button > div:active {
-	box-shadow: inset 0 0 0 1px var(--secondary-button-active);
-	color: var(--secondary-button-active);
-}
-.secondary-button .clicked:hover, .button:hover, .spell:hover .header {
-	background: var(--button-hover);
-	box-shadow: none;
-}
-.secondary-button .clicked:active, .button:active, .spell:active .header {
-	background: var(--button-active);
-	box-shadow: none;
-}
-.spell-list .spell:hover .wrapper, .spell-list .spell:active .wrapper, #skill-list .spell:hover .wrapper, #skill-list .spell:active .wrapper {
-	background: var(--selected);
-	color: var(--black);
-}
-#skill-list .spell:hover .chosen-single, #skill-list .spell:hover .chosen-drop, #skill-list .spell:hover .chosen-results, #skill-list .spell:hover select {
-	background: var(--selected)!important;
-	border-color: var(--selected)!important;
-	color: var(--black)!important;
-	outline-color: var(--selected)!important;
-}
-#skill-list .spell:hover .name, #skill-list .spell:hover .inability {
-	border-color: var(--black)!important;
-}
-#equipment tr:hover td.arrow:before, #artifacts tr:hover td.arrow:before {
+tr:hover td.arrow:before {
 	color: var(--selected);
-	left: -40px;
 }
-#equipment .delete:hover:after, #artifacts .delete:hover:after {
-	color: var(--remove-hover);
+tr:hover .editable {
+	border-color: var(--text-black);
 }
-#equipment .delete:active:after, #artifacts .delete:active:after  {
-	color: var(--remove-active);
+tr.gu-mirror:hover .editable {
+	border-color: var(--background-white);
 }
 #spellbook .spell:hover .header {
 	background: var(--button-hover);
@@ -814,6 +763,54 @@ div:focus {
 	background: var(--button)!important;
 	color: var(--white)!important;
 }
+.visible {
+    opacity: 1!important;
+	visibility: visible!important;
+}
+.hidden-section {
+	display: none!important;
+}
+.secondary-button > div:hover {
+	box-shadow: inset 0 0 0 1px var(--secondary-button-hover);
+	color: var(--secondary-button-hover);
+}
+.secondary-button > div:active {
+	box-shadow: inset 0 0 0 1px var(--secondary-button-active);
+	color: var(--secondary-button-active);
+}
+.secondary-button .clicked:hover, .button:hover, .spell:hover .header {
+	background: var(--button-hover);
+	box-shadow: none;
+}
+.secondary-button .clicked:active, .button:active, .spell:active .header {
+	background: var(--button-active);
+	box-shadow: none;
+}
+.spell-list .spell:hover .wrapper, .spell-list .spell:active .wrapper, #skill-list .spell:hover .wrapper, #skill-list .spell:active .wrapper {
+	background: var(--selected);
+	color: var(--black);
+}
+.spell:hover .chosen-single, .spell:hover .chosen-drop, .spell:hover .chosen-results, .spell:hover select {
+	background: var(--selected)!important;
+	border-color: var(--selected)!important;
+	color: var(--black)!important;
+	outline-color: var(--selected)!important;
+}
+.gu-mirror:hover .proficiency .chosen-single, .gu-mirror:hover .proficiency .chosen-drop, .gu-mirror:hover .proficiency .chosen-results, .gu-mirror:hover .proficiency select {
+	background: var(--button)!important;
+	border-color: var(--button)!important;
+	color: var(--white)!important;
+	outline-color: var(--button)!important;
+}
+.spell:hover div.name, .spell:hover div.inability {
+	border-color: var(--black);
+}
+.gu-mirror:hover div.name, .gu-mirror:hover div.inability {
+	border-color: var(--button);
+}
+.spell:hover div.handle, .gu-mirror div.handle {
+	max-width: 24px;
+}
 @media (hover: none) {
 	h4 {
 		color: var(--button);
@@ -837,6 +834,7 @@ div:focus {
 		justify-content: space-between;
 		line-height: 1.5em;
 		margin: 0 auto;
+		overflow: hidden;
 		padding: 25px 15px 15px 15px;
 		position: relative;
 		top: -10px;
@@ -879,7 +877,12 @@ div:focus {
 }
 /* Desktop tooltip CSS */
 @media (hover: hover) {
-	.spell-list .spell:hover, .spell-list .spell:active {
+	#hybrid-tooltip > *, #reset-tooltip > * {
+		flex-basis: 100%;
+		margin: 2px;
+		text-align: left!important;
+	}
+	.hotbars .spell:hover, .hotbars .spell:active {
 		margin-right: -5px;
 		padding-left: 5px;
 	}
@@ -905,11 +908,6 @@ div:focus {
 	.tooltip > * {
 		flex-basis: calc(50% - 4px);
 		margin: 0 2px;
-	}
-	#hybrid-tooltip > *, #reset-tooltip > * {
-		flex-basis: 100%;
-		margin: 2px;
-		text-align: left!important;
 	}
 	.tooltip span:nth-child(even) {
 		text-align: right;
@@ -959,72 +957,46 @@ div:focus {
 	label {
 		width: fit-content;
 	}
-	#main {
-		align-items: center;
-		flex-direction: column;
-		margin: 15px;
-		padding: 0;
-		width: auto;
-	}
-	#character-attributes, #equipment, #artifacts {
-		width: calc(100% - 30px);
-		max-width: unset;
-	}
-	#buttons {
-		margin-top: 5px;
-	}
-	#equipment > .header, #artifacts > .header {
-		margin-bottom: 3%;
-	}
-	#equipment table, #artifacts table {
+	table {
 		border-spacing: 0;
 		padding: 0;
 		width: 100%;
 	}
-	#equipment tbody, #artifacts tbody  {
+	tbody  {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 	}
-	#equipment tr, #artifacts tr, tr.gu-mirror {
+	tr {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		border-radius: 0 0 5px 5px;
 		display: flex;
 		flex-basis: 48%;
 		flex-direction: column;
 		margin-bottom: 4%;
 	}
-	#equipment tr:hover td.name, #artifacts tr:hover td.name {
-		background: var(--button-hover);
-	}
-	#equipment td, #artifacts td, tr.gu-mirror td {
+
+	td {
+		border-radius: 0;
 		display: block;
 		padding: 10px!important;
 		text-align: center!important;
-		width: auto!important;
+		width: calc(100% - 20px)!important;
 	}
-	#equipment td.equip, #equipment td.type, #equipment td.value, #artifacts td.effect, #artifacts td.level, #artifacts td.depletion, .gu-mirror td.weight, .gu-mirror td.equip, .gu-mirror td.type, .gu-mirror td.value, .gu-mirror td.weight, .gu-mirror td.effect, .gu-mirror td.level, .gu-mirror td.depletion {
+	td.name {
+		cursor: move;
+		background: var(--button);
+		color: var(--white);
+	}
+	td.equip, td.type, td.value, td.effect, td.level, td.depletion, td.weight {
 		align-items: center;
 		border-bottom: 1px solid var(--secondary-button);
 		display: flex;
 		justify-content: center;
 	}
-	#artifacts td.effect div:last-child, .gu-mirror td.effect div:last-child {
-		text-align: left;
-		width: auto!important;
-	}
-	#artifacts td.level div:last-child, #artifacts td.depletion div:last-child, .gu-mirror td.level div:last-child, .gu-mirror td.depletion div:last-child {
-		min-width: 10px;
-		width: auto!important;		
-	}
-	#equipment td.name, #artifacts td.name, .gu-mirror td.name {
-		cursor: move;
-		background: var(--button);
-		color: var(--white);
-	}
-	#equipment td.name:active, #artifacts td.name:active {
-		cursor: grabbing;
-	}
-	#equipment td.name > div, #artifacts td.name > div, .gu-mirror td.name > div {
-		border-bottom: dashed 1px var(--selected);
+	td.name .editable {
+		border-bottom: dashed 1px var(--button);
 		cursor: text;
 		font-weight: 700;
 		font-variant: small-caps;
@@ -1032,38 +1004,33 @@ div:focus {
 		margin-bottom: -1px;
 		width: 100%;
 	}
-	#equipment td.value div:first-child, .gu-mirror td.value div:first-child, #equipment td.weight div:first-child, #artifacts td.weight div:first-child, .gu-mirror td.weight div:first-child {
-		border-bottom: 1px solid var(--secondary-button);
-		min-width: 0;
+	td.effect .editable {
+		min-width: 100px;
+		text-align: left;
+		width: auto!important;
 	}
-	#equipment .chosen-container, #equipment .chosen-single, #equipment .chosen-single span, #equipment .chosen-drop, #artifacts .chosen-container, #artifacts .chosen-single, #artifacts .chosen-single span, #artifacts .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop {
-		width: 100%!important;
+	td.level .editable, td.depletion .editable, td.value .editable, td.weight .editable {
+		min-width: 10px;
+		width: auto!important;		
 	}
-	#equipment td.delete, #artifacts td.delete, .gu-mirror td.delete {
-		background: var(--white);
-		border: 0;
-		color: var(--remove-active);
-		cursor: pointer;
-		font-size: 14px;
-		font-weight: 700;
-		height: 18px;
-		line-height: 18px;
-		pointer-events: auto;
+	td.weight {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		border-radius: 0 0 5px 5px;
+	}
+	#main {
+		align-items: center;
+		flex-direction: column;
+		margin: 15px;
+		padding: 0;
 		width: auto;
 	}
-	#equipment td.delete:hover, #artifacts td.delete:hover {
-		color: var(--black);
-		background: var(--remove-hover);
+	#character-attributes, .item-list {
+		width: calc(100% - 30px);
+		max-width: unset;
 	}
-	#equipment td.delete:active, #artifacts td.delete:active {
-		color: var(--black);
-		background: var(--remove-active);
-	}
-	#artifacts td.effect > div:first-child, #artifacts td.depletion > div:first-child, #artifacts td.level > div:first-child, .gu-mirror td.effect > div:first-child, .gu-mirror td.depletion > div:first-child, .gu-mirror td.level > div:first-child  {
-		display: block;
-	}
-	#skill-list .name {
-		font-size: 14px;
+	#buttons {
+		margin-top: 5px;
 	}
 	#spellbook, #archives {
 		margin: 15px 0 0 0;
@@ -1071,8 +1038,14 @@ div:focus {
 	#selected {
 		margin: 10px;
 	}
-	tr.gu-mirror td {	
-		width: calc(100% - 20px)!important;
+	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop {
+		width: 100%!important;
+	}
+	.mobile-label {
+		display: block;
+	}
+	.list-header {
+		margin-bottom: 3%;
 	}
 	.row {
 		flex-direction: column;
@@ -1086,7 +1059,7 @@ div:focus {
 		padding-bottom: 10px;
 		width: 100%!important;
 	}
-	.connector, #extra-attributes-header, #equipment table tr:first-child, #equipment .arrow, #artifacts table tr:first-child, #artifacts .arrow, .gu-mirror .arrow, #equipment .delete:after, #artifacts .delete:after, .gu-mirror .delete:after {
+	.connector, #extra-attributes-header, table tr:first-child, td.arrow {
 		display: none;
 	}
 	.secondary-button {
@@ -1117,5 +1090,27 @@ div:focus {
 	}
 	.spell .header, .lore .header {
 		padding: 12px 30px 15px;
+	}
+	.gu-mirror td {
+		order: 3;
+	}
+	.gu-mirror td.name {
+		order: 1;
+	}
+	.gu-mirror td.level {
+		order: 2;
+	}
+	/* States */
+	tr:hover td.name .editable {
+		border-color: var(--selected);
+	}
+	tr.gu-mirror:hover td.name .editable {
+		border-color: var(--button-hover);
+	}
+	tr:hover td.name {
+		background: var(--button-hover);
+	}
+	td.name:active {
+		cursor: grabbing;
 	}
 }
