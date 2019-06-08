@@ -1261,6 +1261,14 @@ $(function() {
 						$(this).slideToggle(200);
 					});
 			firstDrag = true;
+		}).on('cancel', function(el,container,source) {
+			skillsDeleteSpace.stop().animate({
+						'height' : '34px'
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
 		});
 	skillsDrake;
 	var itemsDrake = dragula([inventoryBody[0], itemsDeleteSpace[0]],
@@ -1302,6 +1310,14 @@ $(function() {
 			} else {
 				inventoryList.removeAttr('style');
 			}
+			itemsDeleteSpace.stop().animate({
+						'height' : defaultContainerHeight
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
+		}).on('cancel', function(el,container,source) {
 			itemsDeleteSpace.stop().animate({
 						'height' : defaultContainerHeight
 					}, 100, function() {
@@ -1357,6 +1373,14 @@ $(function() {
 						$(this).slideToggle(200);
 					});
 			firstDrag = true;
+		}).on('cancel', function(el,container,source) {
+			artifactsDeleteSpace.stop().animate({
+						'height' : defaultContainerHeight
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
 		});
 	artifactsDrake;
 	var notesDrake = dragula([notesBody[0], notesDeleteSpace[0]],
@@ -1395,6 +1419,14 @@ $(function() {
 			} else {
 				notesList.removeAttr('style');
 			}
+			notesDeleteSpace.stop().animate({
+						'height' : '36px'
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
+		}).on('cancel', function(el,container,source) {
 			notesDeleteSpace.stop().animate({
 						'height' : '36px'
 					}, 100, function() {

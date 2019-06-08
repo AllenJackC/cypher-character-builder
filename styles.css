@@ -453,6 +453,32 @@ div.proficiency {
 #selected {
 	margin: 0 10px;
 }
+#footer {
+	color: var(--light-grey);
+    font-size: 12px;
+    line-height: 1.5em;
+    margin: 30px;
+	text-align: center;
+}
+#footer a {
+	color: var(--secondary-button);
+}
+#footer a:hover {
+	color: var(--secondary-button-hover);
+}
+#footer a:active {
+	color: var(--secondary-button-active);
+}
+#footer-links {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 0 auto;
+	max-width: 400px;
+}
+#footer-links a {
+	margin: 0 5px;
+}
 .list-header  {
 	display: flex;
 	justify-content: space-between;
