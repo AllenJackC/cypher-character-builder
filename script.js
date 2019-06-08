@@ -29,6 +29,7 @@ var resetButton;
 var resetTooltip;
 var addSkillButton;
 var skillList;
+var skillsDeleteSpace;
 var spellBook;
 var spellbookButton;
 var loreButton;
@@ -40,18 +41,31 @@ var spellHotbars;
 var addItemButton;
 var inventoryList;
 var inventoryBody;
+var itemsDeleteSpace;
 var addArtifactButton;
 var artifactsList;
 var artifactsBody;
+var artifactsDeleteSpace;
 var addNoteButton;
 var notesList;
 var notesBody;
+var notesDeleteSpace;
 var curArc;
 var curTier;
 var spellListDatabase;
 var availSpellCount;
 var selectedSpellCount;
+var firstDrag = true;
+var containerHeight;
+var defaultContainerHeight;
 var isHovering;
+//Check if an integer is even
+function isEven(value) {
+	if (value%2 == 0)
+		return true;
+	else
+		return false;
+}
 //Check to see if user is currently using a touch device
 function isTouchDevice() {
   var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
@@ -182,6 +196,7 @@ function populateInventorySelect() {
 function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
+	if ( !itemName ) itemName = "";
 	if ( !itemValue ) itemValue = "0";
 	if ( !itemWeight ) itemWeight = "0";
 	if ( !slotNumber ) slotNumber = "slots";
@@ -1111,6 +1126,7 @@ $(function() {
 	resetTooltip = $('#reset-tooltip');
 	addSkillButton = $('#add-skill');
 	skillList = $('#skill-list #skills');
+	skillsDeleteSpace = $('#skill-list .delete-space');
 	spellBook = $('#spellbook');
 	spellbookButton = $('#open-spellbook');
 	filterButtons = $('#spellbook .filters .button');
@@ -1121,13 +1137,16 @@ $(function() {
 	spellHotbars = $('.spell-list .hotbars');
 	addItemButton = $('#add-item');
 	inventoryList = $('#equipment table');
-	inventoryBody = $('#equipment tbody')[0];
+	inventoryBody = $('#equipment tbody');
+	itemsDeleteSpace = $('#equipment .delete-space');
 	addArtifactButton = $('#add-artifact');
 	artifactsList = $('#artifacts table');
-	artifactsBody = $('#artifacts tbody')[0];
+	artifactsBody = $('#artifacts tbody');
+	artifactsDeleteSpace = $('#artifacts .delete-space');
 	addNoteButton = $('#add-note');
 	notesList = $('#notes table');
-	notesBody = $('#notes tbody')[0];
+	notesBody = $('#notes tbody');
+	notesDeleteSpace = $('#notes .delete-space');
 	//Initial variables
 	curArc = 2;
 	curTier = 6;
@@ -1193,38 +1212,198 @@ $(function() {
 	//and initate drag and drop
 	populateInventorySelect();
 	populateSkillsSelect();
-	dragula([document.getElementById('skills')], {
-		direction: 'vertical',
-		removeOnSpill: true
-	}).on('drag', function(el,source) {
-		el.style.display = "flex";
-	}).on('remove', function(el,container,source) {
-		if ( container.children.length === 0 ) addSkill();
-	});
-	dragula([document.getElementById('actions-enablers')], {
-		direction: 'vertical'
-	});
-	dragula([document.getElementById('talents')], {
-		direction: 'vertical'
-	});
-	dragula([inventoryBody], {
-		direction: 'vertical',
-		removeOnSpill: true
-	}).on('remove', function(el,container,source) {
-		if ( container.children.length === 1 ) addItem();
-	});
-	dragula([artifactsBody], {
-		direction: 'vertical',
-		removeOnSpill: true
-	}).on('remove', function(el,container,source) {
-		if ( container.children.length === 1 ) addArtifact();
-	});
-	dragula([notesBody], {
-		direction: 'vertical',
-		removeOnSpill: true
-	}).on('remove', function(el,container,source) {
-		if ( container.children.length === 1 ) addNote();
-	});
+	dragula([actionsEnablersSection[0]]);
+	dragula([talentsSection[0]]);
+	var skillsDrake = dragula([skillList[0], skillsDeleteSpace[0]], {
+			accepts: function(el,target,source,sibling) {
+				if ( el.hasAttribute("data-spellid") && target.classList.contains('delete-space') ) return false;
+				else return true;
+			}
+		}).on('drag', function(el,source) {
+			el.style.display = "flex";
+			skillsDeleteSpace.slideToggle(150);
+			if ( firstDrag ) {
+				firstDrag = false;
+				containerHeight = skillList.height();
+			}
+		}).on('shadow', function(el,container,source) {
+			if ( container.classList.contains('delete-space') ) {
+				skillsDeleteSpace.stop().animate({
+					'height' : $('.gu-transit').css('height')
+				}, 150);
+				skillList.css('height', containerHeight);
+			} else {
+				skillsDeleteSpace.stop().animate({
+					'height' : '34px'
+				}, 150);
+				skillList.css('height', '');
+			}
+		}).on('drop', function(el,target,source,sibling) {
+			if ( target.classList.contains('delete-space') ) {
+				if ( source.children.length === 0 ) {
+						addSkill();
+						skillList.removeAttr('style');
+				} else {
+					skillList.stop().animate({
+						'height' : containerHeight - skillsDeleteSpace.height()
+					}, 300, function() {
+						$(this).removeAttr('style');
+					});
+				}
+				skillsDrake.remove();
+			} else {
+				skillList.removeAttr('style');
+			}
+			skillsDeleteSpace.stop().animate({
+						'height' : '34px'
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
+		});
+	skillsDrake;
+	var itemsDrake = dragula([inventoryBody[0], itemsDeleteSpace[0]],
+		).on('drag', function(el,source) {
+			itemsDeleteSpace.slideToggle(150);
+			if ( firstDrag ) firstDrag = false;
+			if ( inventoryBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
+			else defaultContainerHeight = "194px";
+		}).on('shadow', function(el,container,source) {
+			if ( container.classList.contains('delete-space') ) {
+				itemsDeleteSpace.stop().animate({
+					'height' : $('.gu-transit').css('height')
+				}, 150);
+				if ( inventoryBody.children('tr:first-child').is(':visible') ) {
+					inventoryList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
+				} else {
+					if ( !isEven(inventoryBody.children().length) ) inventoryList.css('padding-bottom', $('.gu-transit').outerHeight(true));
+					else inventoryList.css('padding-bottom', $('.gu-transit').outerHeight(true)- 194);
+				}
+			} else {
+				itemsDeleteSpace.stop().animate({
+					'height' : defaultContainerHeight
+				}, 150);
+				inventoryList.css('padding-bottom', '');
+			}
+		}).on('drop', function(el,target,source,sibling) {
+			if ( target.classList.contains('delete-space') ) {
+				if ( source.children.length === 1 ) {
+						addItem();
+						inventoryList.removeAttr('style');
+				} else {
+					inventoryList.stop().animate({
+						'padding-bottom' : '0'
+					}, 300, function() {
+						$(this).removeAttr('style');
+					});
+				}
+				itemsDrake.remove();
+			} else {
+				inventoryList.removeAttr('style');
+			}
+			itemsDeleteSpace.stop().animate({
+						'height' : defaultContainerHeight
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
+		});
+	itemsDrake;
+	var artifactsDrake = dragula([artifactsBody[0], artifactsDeleteSpace[0]],
+		).on('drag', function(el,source) {
+			artifactsDeleteSpace.slideToggle(150);
+			if ( firstDrag ) firstDrag = false;
+			if ( artifactsBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
+			else defaultContainerHeight = "194px";
+		}).on('shadow', function(el,container,source) {
+			if ( container.classList.contains('delete-space') ) {
+				artifactsDeleteSpace.stop().animate({
+					'height' : $('.gu-transit').css('height')
+				}, 150);
+				if ( artifactsBody.children('tr:first-child').is(':visible') ) {
+					artifactsList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
+				} else {
+					if ( !isEven(artifactsBody.children().length) ) artifactsList.css('padding-bottom', $('.gu-transit').outerHeight(true));
+					else artifactsList.css('padding-bottom', $('.gu-transit').outerHeight(true)- 194);
+				}
+			} else {
+				artifactsDeleteSpace.stop().animate({
+					'height' : defaultContainerHeight
+				}, 150);
+				artifactsList.css('padding-bottom', '');
+			}
+		}).on('drop', function(el,target,source,sibling) {
+			if ( target.classList.contains('delete-space') ) {
+				if ( source.children.length === 1 ) {
+						addArtifact();
+						artifactsList.removeAttr('style');
+				} else {
+					artifactsList.stop().animate({
+						'padding-bottom' : '0'
+					}, 300, function() {
+						$(this).removeAttr('style');
+					});
+				}
+				artifactsDrake.remove();
+			} else {
+				artifactsList.removeAttr('style');
+			}
+			artifactsDeleteSpace.stop().animate({
+						'height' : defaultContainerHeight
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
+		});
+	artifactsDrake;
+	var notesDrake = dragula([notesBody[0], notesDeleteSpace[0]],
+		).on('drag', function(el,source) {
+			notesDeleteSpace.slideToggle(150);
+			if ( firstDrag ) firstDrag = false;
+		}).on('shadow', function(el,container,source) {
+			if ( container.classList.contains('delete-space') ) {
+				notesDeleteSpace.stop().animate({
+					'height' : $('.gu-transit').css('height')
+				}, 150);
+				if ( notesBody.children('tr:first-child').is(':visible') ) {
+					notesList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
+				} else {
+					notesList.css('padding-bottom', $('.gu-transit').outerHeight(true));
+				}
+			} else {
+				notesDeleteSpace.stop().animate({
+					'height' : '36px'
+				}, 150);
+				notesList.css('padding-bottom', '');
+			}
+		}).on('drop', function(el,target,source,sibling) {
+			if ( target.classList.contains('delete-space') ) {
+				if ( source.children.length === 1 ) {
+						addNote();
+						notesList.removeAttr('style');
+				} else {
+					notesList.stop().animate({
+						'padding-bottom' : '0'
+					}, 300, function() {
+						$(this).removeAttr('style');
+					});
+				}
+				notesDrake.remove();
+			} else {
+				notesList.removeAttr('style');
+			}
+			notesDeleteSpace.stop().animate({
+						'height' : '36px'
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
+		});
+	notesDrake;
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
@@ -1340,11 +1519,11 @@ $(function() {
 		else inabilityFields.hide();
 	});
 	//Filter inputs for level, weight and value fields
-	$('.item-list').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable', function(e){
+	$('.item-list, #skill-list').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .inability', function(e){
 		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
-        var isCursorMoveOrDeleteAction = ([46,8,37,38,39,40].indexOf(e.keyCode) != -1);
+        var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
         var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >=96 && e.keyCode <= 105);
-        var vKey = 86, cKey = 67,aKey = 65;
+        var vKey = 86, cKey = 67, aKey = 65;
         switch(true){
             case isCursorMoveOrDeleteAction:
             case isModifierkeyPressed == false && isNumKeyPressed:

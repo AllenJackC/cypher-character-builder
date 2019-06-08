@@ -73,7 +73,7 @@ table {
   background: var(--button-active);
 }
 ::-webkit-scrollbar-track {
-  background: var(--text-black);
+  background: var(--background-white);
   border: 0;
   border-radius: 0;
 }
@@ -115,7 +115,6 @@ h2 {
 	font-size: 35px;
 	font-weight: 400;
 	line-height: 1em;
-	margin: 0 9% 0 7px;
 	white-space: nowrap;
 }
 h3 {
@@ -305,6 +304,10 @@ div.handle {
 	transition: max-width 0.2s linear;
 	width: 24px;
 }
+div.name {
+	margin-left: 10px;
+	width: 100%;
+}
 div.name, div.inability {
 	border-bottom: 1px dashed var(--button);
 	cursor: text;
@@ -319,6 +322,7 @@ div.proficiency {
 	align-items: center;
 	display: flex;
 	min-height: 16px;
+	min-width: fit-content;
 }
 #title {
 	margin: 15px auto 10px;
@@ -404,6 +408,7 @@ div.proficiency {
 	font-weight: 400;
 	line-height: 1em;
 	text-transform: uppercase;
+	white-space: nowrap;
 }
 #spellbook .spell img {
 	height: 24px;
@@ -452,6 +457,9 @@ div.proficiency {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 15px;
+}
+.list-header .header {
+	padding-right: 25px;
 }
 .spell-list .list-header {
 	justify-content: flex-start;
@@ -655,6 +663,29 @@ tr.gu-mirror {
 	pointer-events: none;
 	white-space: nowrap;
 }
+.delete-space {
+	border: 3px dashed var(--secondary-button);
+    color: var(--secondary-button);
+	display: none;
+    font-weight: 900;
+	height: 36px;
+	margin-top: 10px;
+	overflow: hidden;
+	pointer-events: auto;
+	position: relative;
+}
+#skill-list .delete-space {
+	height: 34px;
+}
+.delete-space:after {
+	content: 'DROP HERE TO REMOVE';
+	line-height: 34px;
+	left: 0;
+    position: absolute;
+	text-align: center;
+	top: 0;
+    width: 100%;
+}
 .modal-background {
 	background: var(--black-translucent);
 	height: 100%;
@@ -708,6 +739,7 @@ tr.gu-mirror {
 	display: flex;
 }
 .header img, .list-header img {
+	margin-right: 9%;
 	height: 36px;
 	width: 36px;
 }
@@ -739,6 +771,9 @@ tr.gu-mirror {
 	background: url('images/list-icon.png') no-repeat 0 3px transparent;
 	margin-left: 25px;
     padding-left: 30px;
+}
+.hotbars .spell .wrapper span:first-child {
+	white-space: normal;
 }
 /* States */
 input:focus, select:focus {
@@ -1067,9 +1102,6 @@ tr.gu-mirror:hover .editable {
 	#spellbook, #archives {
 		margin: 15px 0 0 0;
 	}
-	#selected {
-		margin: 10px;
-	}
 	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop {
 		width: 100%!important;
 	}
@@ -1077,7 +1109,7 @@ tr.gu-mirror:hover .editable {
 		display: block;
 	}
 	.list-header {
-		margin-bottom: 3%;
+		margin-bottom: 15px;
 	}
 	.row {
 		flex-direction: column;
@@ -1100,6 +1132,9 @@ tr.gu-mirror:hover .editable {
 	.spell-list, #skill-list {
 		width: calc(100% - 30px);
 	}
+	.hotbars .spell {
+		font-size: 14px!important;
+	}
 	.modal {
 		padding: 0;
 		width: auto;
@@ -1108,9 +1143,11 @@ tr.gu-mirror:hover .editable {
 		padding: 15px;
 	}
 	.filters {
+		flex-wrap: wrap;
 		justify-content: center;
 	}
 	.filters .button {
+		margin: 10px;
 		width: 95px;
 		text-align: center;
 	}
@@ -1122,6 +1159,14 @@ tr.gu-mirror:hover .editable {
 	}
 	#spellbook .spell .header, #archives .lore .header {
 		padding: 12px 30px 15px;
+	}
+	.item-list:not(#notes) .delete-space {
+		height: 194px;
+		margin: 0 auto;
+		width: 50%;
+	}
+	.item-list:not(#notes) .delete-space:after {
+		line-height: 194px;
 	}
 	.gu-mirror td {
 		order: 3;
@@ -1147,5 +1192,33 @@ tr.gu-mirror:hover .editable {
 	}
 	img.pin:hover {
 		filter: brightness (80%);
+	}
+}
+@media only screen and (max-width: 400px) {
+	.list-header .button, .header .button {
+		color: transparent;
+		overflow: hidden;
+		padding-right: 0;
+		padding-left: 0;
+		position: relative;
+		width: 40px;
+	}
+	.list-header .button:after, .header .button:after {
+		color: var(--white);
+		content: '+';
+		font-size: 45px;
+		font-weight: 900;
+		left: 0;
+		line-height: 40px;
+		position: absolute;
+		text-align: center;
+		top: 0;
+		width: 40px;
+	}
+	.item-list tr {
+		flex-basis: 100%;
+	}
+	.item-list:not(#notes) .delete-space {
+		width: 100%;
 	}
 }
