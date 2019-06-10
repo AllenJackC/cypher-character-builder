@@ -38,6 +38,10 @@ var spellsList;
 var actionsEnablersSection;
 var talentsSection;
 var spellHotbars;
+var addCyberwareButton;
+var cyberwareList;
+var cyberwareBody;
+var cyberwareDeleteSpace;
 var addItemButton;
 var inventoryList;
 var inventoryBody;
@@ -182,15 +186,70 @@ function addSkill(skillName,inabilityNumber) {
 	populateSkillsSelect();
 }
 //Populate all of the active item select fields
+function populateCyberwareSelect() {
+	$('#cyberware .type select').chosen({
+		disable_search: true
+	});
+	$('#cyberware .location select').chosen({
+		disable_search: true,
+		placeholder_text_single: "Select a location"
+	});
+}
+//Populate all of the active item select fields
 function populateInventorySelect() {
 	$('#equipment .equip select').chosen({
-		disable_search: true,
-		width: "78px"
+		disable_search: true
 	});
 	$('#equipment .type select').chosen({
-		disable_search: true,
-		width: "123px"
+		disable_search: true
 	});
+}
+//Add a blank cyberware, unless variables are parsed
+function addCyberware(spellID,cyberwareFunction,cyberwareValue,essenceCost) {
+	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
+	else spellID = "";
+	if ( !cyberwareFunction ) cyberwareFunction = "";
+	if ( !cyberwareValue ) cyberwareValue = "0";
+	if ( !essenceCost ) essenceCost = "0";
+	var cyberwareToAdd =
+		'<tr class="item"' + spellID + '>' +
+			'<td class="arrow mobile-handle"></td>' +
+			'<td class="location">' +
+				'<select>' +
+					'<option></option>' +
+					'<option value="H">Head</option>' +
+					'<option value="S">Skin</option>' +
+					'<option value="C">Core</option>' +
+					'<option value="A">Arm</option>' +
+					'<option value="L">Leg</option>' +
+				'</select>' +
+			'</td>' +
+			'<td class="function mobile-handle">' +
+				'<div class="editable mobile-handle" contenteditable="true">' + cyberwareFunction + '</div>' +
+			'</td>' +
+			'<td class="type">' +
+				'<select>' +
+					'<option selected value="ST">Increased Stat</option>' +
+					'<option value="LW">Light Weapon</option>' +
+					'<option value="MW">Heavy Weapon</option>' +
+					'<option value="HW">Medium Weapon</option>' +
+					'<option value="EA">Extra Ability</option>' +
+					'<option value="ES">Extra Skill</option>' +
+					'<option value="SP">Special</option>' +
+				'</select>' +
+			'</td>' +
+			'<td class="value">' +
+				'<div class="editable" contenteditable="true">' + cyberwareValue + '</div>' +
+				'<div class="credits"> &#8353;</div>' +
+			'</td>' +
+			'<td class="cost">' +
+				'<div class="editable" contenteditable="true">' + essenceCost + '</div>' +
+				'<div class="essence"> Essence</div>' +
+			'</td>' +
+		'</tr>'
+	if ( spellID ) $(cyberwareToAdd).insertAfter('#cyberware table tr:first-child')
+	else cyberwareList.append(cyberwareToAdd);
+	populateCyberwareSelect();
 }
 //Add a blank item, unless variables are parsed
 function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType) {
@@ -202,7 +261,7 @@ function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType
 	if ( !slotNumber ) slotNumber = "slots";
 	var itemToAdd =
 		'<tr class="item"' + spellID + '>' +
-			'<td class="arrow"></td>' +
+			'<td class="arrow mobile-handle"></td>' +
 			'<td class="equip">' +
 				'<select>' +
 					'<option selected value="S">Stashed</option>' +
@@ -210,8 +269,8 @@ function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType
 					'<option value="E">Equipped</option>' +
 				'</select>' +
 			'</td>' +
-			'<td class="name">' +
-				'<div class="editable" contenteditable="true">' + itemName + '</div>' +
+			'<td class="name mobile-handle">' +
+				'<div class="editable mobile-handle" contenteditable="true">' + itemName + '</div>' +
 			'</td>' +
 			'<td class="type">' +
 				'<select>' +
@@ -249,13 +308,13 @@ function addArtifact(spellID,itemLevel,itemName,itemEffect,itemDepletion,itemWei
 	if ( !slotNumber ) slotNumber = "slots";
 	var artifactToAdd =
 		'<tr class="item"' + spellID + '>' +
-			'<td class="arrow"></td>' +
+			'<td class="arrow mobile-handle"></td>' +
 			'<td class="level">' +
 				'<div class="mobile-label">Level:</div>' +
 				'<div class="editable" contenteditable="true">' + itemLevel + '</div>' +
 			'</td>' +
-			'<td class="name">' +
-				'<div class="editable" contenteditable="true">' + itemName + '</div>' +
+			'<td class="name mobile-handle">' +
+				'<div class="editable mobile-handle" contenteditable="true">' + itemName + '</div>' +
 			'</td>' +
 			'<td class="effect">' +
 				'<div class="mobile-label">Effect:</div>' +
@@ -280,9 +339,9 @@ function addNote(spellID,note) {
 	if ( !note ) note = "";
 	var noteToAdd =
 		'<tr class="item"' + spellID + '>' +
-			'<td class="arrow"></td>' +
+			'<td class="arrow mobile-handle"></td>' +
 			'<td class="note">' +
-				'<img class="pin" src="images/note-pin.png" />' +
+				'<img class="pin mobile-handle" src="images/note-pin.png" />' +
 				'<div class="editable" contenteditable="true">' + note + '</div>' +
 			'</td>' +
 		'</tr>';
@@ -844,14 +903,15 @@ function populateSpells() {
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" ) {
 				//Variables specific to items
 				var hideThis = "";
-				var itemName = spellListDatabase[i].itemname;
+				var itemType = spellListDatabase[i].itemtype;
 				var itemValue = spellListDatabase[i].itemvalue;
 				var itemWeight = spellListDatabase[i].itemweight;
 				var itemDamage = spellListDatabase[i].itemdamage;
 				var itemArmour = spellListDatabase[i].itemarmour;
 				var itemLevel = spellListDatabase[i].itemlevel;
 				var itemDepletion = spellListDatabase[i].itemdepletion;
-				spellType = '<img src="images/items.png">';
+				if ( itemType == "Artifact" ) spellType = '<img src="images/artifact.png">';
+				else spellType = '<img src="images/items.png">';					
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellName == "<hide>" ) hideThis = " hidden-spell";
@@ -892,6 +952,63 @@ function populateSpells() {
 									itemDamage +
 									itemArmour +
 									itemDepletion +
+									spellOrigin +
+								'</div>' +
+							'</div>' +
+						'</div>'
+					);
+				}
+				if ( spellRequired ) $('#' + spellID).addClass('required');
+				//Push this spell to the spell list array
+				spellsList.push(parseInt(spellID));
+			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Cyberware" ) {
+				//Variables specific to cyberware
+				var essenceCost = spellListDatabase[i].itemweight;
+				var cyberwareLocation = spellListDatabase[i].itemtype;
+				var cyberwareValue = spellListDatabase[i].itemvalue;
+				var cyberwareDamage = spellListDatabase[i].itemdamage;
+				var cyberwareArmour = spellListDatabase[i].itemarmour;
+				var cyberwareType = spellListDatabase[i].itemlevel;
+				spellType = '<img src="images/cyberware.png">';					
+				//Check to see if these values exist to avoid
+				//empty line breaks in the spell card
+				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
+				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( essenceCost ) essenceCost = '<span><strong>Essence Cost: </strong>' + essenceCost + ' Essence</span>';
+				if ( cyberwareValue ) cyberwareValue = '<span><strong>Value: </strong>' + cyberwareValue + '₡</span>';
+				if ( cyberwareDamage ) cyberwareDamage = '<span><strong>Damage: </strong>' + cyberwareDamage + '</span>';
+				if ( cyberwareArmour ) cyberwareArmour = '<span><strong>Armour: </strong>' + cyberwareArmour + '</span>';
+				if ( cyberwareType ) cyberwareType = '<span><strong>Type: </strong>' + cyberwareType + '</span>';
+				if ( cyberwareLocation ) cyberwareLocation = '<span><strong>Location: </strong>' + cyberwareLocation + '</span>';
+				var newOrigin = spellOrigin;
+				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
+				//If the spell ID is already on the page, just change
+				//the origin name; otherwise, create a spell card
+				if ( $('#' + spellID).length > 0 ) {
+					$('#' + spellID + ' .origin').text(newOrigin);
+				} else {
+					$('#spellbook').append(
+						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
+							'<div class="header">' +
+								'<h3>' +
+									spellType +
+									spellName +
+								'</h3>' +
+							spellTier +
+							'</div>' +
+							'<div class="details">' +
+								'<div class="stats">' +
+									cyberwareLocation +
+									cyberwareType +
+									essenceCost +
+									cyberwareValue +
+								'</div>' +
+								'<div class="description">' +
+									spellDescription +
+								'</div>' +
+								'<div class="stats">' +
+									cyberwareDamage +
+									cyberwareArmour +
 									spellOrigin +
 								'</div>' +
 							'</div>' +
@@ -1070,11 +1187,65 @@ function populateSpellLists() {
 							break;
 						}
 						addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType);
-						populateInventorySelect();
 						var thisItem = $('#equipment tr[data-spellid="' + spellID + '"]');
 						$('.type select', thisItem).val(selectThisType);
 						$('.type select', thisItem).trigger('chosen:updated');
 					}
+				} else if ( typeCheck == "Cyberware" && $('#cyberware tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+					var essenceCost = spellListDatabase[i].itemweight;
+					var cyberwareLocation = spellListDatabase[i].itemtype;
+					var cyberwareFunction = spellListDatabase[i].itemeffect;
+					var cyberwareValue = spellListDatabase[i].itemvalue;
+					var cyberwareType = spellListDatabase[i].itemlevel;
+					var selectThisType;
+					var selectThisLocation;
+					switch ( cyberwareType ) {
+						case "Light Weapon":
+						selectThisType = "LW";
+						break;
+						case "Medium Weapon":
+						selectThisType = "MW";
+						break;
+						case "Heavy Weapon":
+						selectThisType = "HW";
+						break;
+						case "Extra Ability":
+						selectThisType = "EA";
+						break;
+						case "Extra Skill":
+						selectThisType = "ES";
+						break;
+						case "Special":
+						selectThisType = "SP";
+						break;
+						default:
+						selectThisType = "ST";
+					}
+					switch ( cyberwareLocation ) {
+						case "Head":
+						selectThisLocation = "H";
+						break;
+						case "Skin":
+						selectThisLocation = "S";
+						break;
+						case "Core":
+						selectThisLocation = "C";
+						break;
+						case "Arm":
+						selectThisLocation = "A";
+						break;
+						case "Leg":
+						selectThisLocation = "L";
+						break;
+						default:
+						selectThisLocation = "";
+					}
+					addCyberware(spellID,cyberwareFunction,cyberwareValue,essenceCost);
+					var thisCyberware = $('#cyberware tr[data-spellid="' + spellID + '"]');
+					$('.type select', thisCyberware).val(selectThisType);
+					$('.location select', thisCyberware).val(selectThisLocation);
+					$('.type select', thisCyberware).trigger('chosen:updated');
+					$('.location select', thisCyberware).trigger('chosen:updated');
 				} else if ( typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
 					addNote(spellID,note);
@@ -1135,6 +1306,10 @@ $(function() {
 	actionsEnablersSection = $('#actions-enablers');
 	talentsSection = $('#talents');
 	spellHotbars = $('.spell-list .hotbars');
+	addCyberwareButton = $('#add-cyberware');
+	cyberwareList = $('#cyberware table');
+	cyberwareBody = $('#cyberware tbody');
+	cyberwareDeleteSpace = $('#cyberware .delete-space');
 	addItemButton = $('#add-item');
 	inventoryList = $('#equipment table');
 	inventoryBody = $('#equipment tbody');
@@ -1210,6 +1385,7 @@ $(function() {
 	});
 	//Populate inventory & skills select dropdowns
 	//and initate drag and drop
+	populateCyberwareSelect();
 	populateInventorySelect();
 	populateSkillsSelect();
 	dragula([actionsEnablersSection[0]]);
@@ -1217,6 +1393,9 @@ $(function() {
 	var skillsDrake = dragula([skillList[0], skillsDeleteSpace[0]], {
 			accepts: function(el,target,source,sibling) {
 				if ( el.hasAttribute("data-spellid") && target.classList.contains('delete-space') ) return false;
+				else return true;
+			}, moves: function(el,container,handle) {
+				if ( isTouchDevice ) return handle.classList.contains('handle');
 				else return true;
 			}
 		}).on('drag', function(el,source) {
@@ -1271,8 +1450,72 @@ $(function() {
 			firstDrag = true;
 		});
 	skillsDrake;
-	var itemsDrake = dragula([inventoryBody[0], itemsDeleteSpace[0]],
-		).on('drag', function(el,source) {
+	var cyberwareDrake = dragula([cyberwareBody[0], cyberwareDeleteSpace[0]],{
+			moves: function(el,container,handle) {
+					if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+					else return true;
+			}
+		}).on('drag', function(el,source) {
+			cyberwareDeleteSpace.slideToggle(150);
+			if ( firstDrag ) firstDrag = false;
+			if ( cyberwareBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
+			else defaultContainerHeight = "194px";
+		}).on('shadow', function(el,container,source) {
+			if ( container.classList.contains('delete-space') ) {
+				cyberwareDeleteSpace.stop().animate({
+					'height' : $('.gu-transit').css('height')
+				}, 150);
+				if ( cyberwareBody.children('tr:first-child').is(':visible') ) {
+					cyberwareList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
+				} else {
+					if ( !isEven(cyberwareBody.children().length) ) cyberwareList.css('padding-bottom', $('.gu-transit').outerHeight(true));
+					else cyberwareList.css('padding-bottom', $('.gu-transit').outerHeight(true)- 194);
+				}
+			} else {
+				cyberwareDeleteSpace.stop().animate({
+					'height' : defaultContainerHeight
+				}, 150);
+				cyberwareList.css('padding-bottom', '');
+			}
+		}).on('drop', function(el,target,source,sibling) {
+			if ( target.classList.contains('delete-space') ) {
+				if ( source.children.length === 1 ) {
+						addCyberware();
+						cyberwareList.removeAttr('style');
+				} else {
+					cyberwareList.stop().animate({
+						'padding-bottom' : '0'
+					}, 300, function() {
+						$(this).removeAttr('style');
+					});
+				}
+				cyberwareDrake.remove();
+			} else {
+				cyberwareList.removeAttr('style');
+			}
+			cyberwareDeleteSpace.stop().animate({
+						'height' : defaultContainerHeight
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
+		}).on('cancel', function(el,container,source) {
+			cyberwareDeleteSpace.stop().animate({
+						'height' : defaultContainerHeight
+					}, 100, function() {
+						$(this).css('height','');
+						$(this).slideToggle(200);
+					});
+			firstDrag = true;
+		});
+	cyberwareDrake;
+	var itemsDrake = dragula([inventoryBody[0], itemsDeleteSpace[0]],{
+			moves: function(el,container,handle) {
+					if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+					else return true;
+			}
+		}).on('drag', function(el,source) {
 			itemsDeleteSpace.slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 			if ( inventoryBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
@@ -1327,8 +1570,12 @@ $(function() {
 			firstDrag = true;
 		});
 	itemsDrake;
-	var artifactsDrake = dragula([artifactsBody[0], artifactsDeleteSpace[0]],
-		).on('drag', function(el,source) {
+	var artifactsDrake = dragula([artifactsBody[0], artifactsDeleteSpace[0]],{
+			moves: function(el,container,handle) {
+					if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+					else return true;
+			}
+		}).on('drag', function(el,source) {
 			artifactsDeleteSpace.slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 			if ( artifactsBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
@@ -1383,8 +1630,12 @@ $(function() {
 			firstDrag = true;
 		});
 	artifactsDrake;
-	var notesDrake = dragula([notesBody[0], notesDeleteSpace[0]],
-		).on('drag', function(el,source) {
+	var notesDrake = dragula([notesBody[0], notesDeleteSpace[0]],{
+			moves: function(el,container,handle) {
+					if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+					else return true;
+			}
+		}).on('drag', function(el,source) {
 			notesDeleteSpace.slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 		}).on('shadow', function(el,container,source) {
@@ -1550,8 +1801,9 @@ $(function() {
 		if ( thisVal === "I" ) inabilityFields.show();
 		else inabilityFields.hide();
 	});
+	//Change the stat bonus if selected based on 
 	//Filter inputs for level, weight and value fields
-	$('.item-list, #skill-list').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .inability', function(e){
+	$('.item-list, #skill-list').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .cost .editable, .inability', function(e){
 		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
         var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
         var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >=96 && e.keyCode <= 105);
@@ -1567,6 +1819,7 @@ $(function() {
 	})
 	//Add skills and items when respective button is clicked
 	addSkillButton.click( function() { addSkill(); });
+	addCyberwareButton.click( function() { addCyberware(); });
 	addItemButton.click( function() { addItem(); });
 	addArtifactButton.click( function() { addArtifact(); });
 	addNoteButton.click( function() { addNote(); });
