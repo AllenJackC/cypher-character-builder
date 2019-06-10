@@ -380,19 +380,26 @@ div.proficiency {
 	width: fit-content;
 }
 #cyber-mannequin {
-	height: 496px;
+	max-width: 280px;
 	position: relative;
-	width: 280px;
+	width: 100%;
 }
 #cyber-mannequin img {
+	cursor: pointer;
+	pointer-events: auto;
 	position: absolute;
+	z-index: 2;
+}
+#cyber-mannequin .skin {
+	position: relative;
+	width: 100%;
 	z-index: 1;
 }
 #cyber-mannequin .modded {
-	z-index: 2;
+	z-index: 3;
 }
 #cyber-mannequin .hover {
-	z-index: 3;
+	z-index: 4;
 }
 #cyber-mannequin .head {
 	left: 119px;
