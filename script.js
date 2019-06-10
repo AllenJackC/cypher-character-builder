@@ -38,6 +38,7 @@ var spellsList;
 var actionsEnablersSection;
 var talentsSection;
 var spellHotbars;
+var mannequinState;
 var addCyberwareButton;
 var cyberwareList;
 var cyberwareBody;
@@ -157,7 +158,7 @@ function sortOptions(field,options) {
 function populateSkillsSelect() {
 	$('#skills .proficiency select').chosen({
 		disable_search: true,
-		width: "100px"
+		width: "fit-content"
 	});
 }
 //Add a blank skill, unless variables are parsed
@@ -188,20 +189,20 @@ function addSkill(skillName,inabilityNumber) {
 //Populate all of the active item select fields
 function populateCyberwareSelect() {
 	$('#cyberware .type select').chosen({
-		disable_search: true
-	});
-	$('#cyberware .location select').chosen({
 		disable_search: true,
-		placeholder_text_single: "Select a location"
+		placeholder_text_single: "Select one",		
+		width: "fit-content"
 	});
 }
 //Populate all of the active item select fields
 function populateInventorySelect() {
 	$('#equipment .equip select').chosen({
-		disable_search: true
+		disable_search: true,
+		width: "fit-content"
 	});
 	$('#equipment .type select').chosen({
-		disable_search: true
+		disable_search: true,
+		width: "fit-content"
 	});
 }
 //Add a blank cyberware, unless variables are parsed
@@ -1803,7 +1804,7 @@ $(function() {
 	});
 	//Change the stat bonus if selected based on 
 	//Filter inputs for level, weight and value fields
-	$('.item-list, #skill-list').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .cost .editable, .inability', function(e){
+	$('.item-list, #skill-list, #cyberware').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .essence .editable, .inability', function(e){
 		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
         var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
         var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >=96 && e.keyCode <= 105);
@@ -1829,8 +1830,33 @@ $(function() {
 		else $(this).parent('.weight').children('div:last-child').text('slots');
 	});
 	//Focus editable div fields when clicking on outter cells
-	$('td').click( function() {
+	$('td, div').click( function() {
 		$('editable', this).focus();
+	});
+	//Hover and click listeners for cyberware mannequin
+	$('#cyber-mannequin img').hover( function() {
+		var thisSection = $(this).attr('class').split(' ')[0];
+		if ( $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ thisSection + '-hover.png');
+	}, function() {
+		var thisSection = $(this).attr('class').split(' ')[0];
+		if ( $(this).hasClass('modded') && $(this).hasClass('active') == false) $(this).attr('src',  'images/cyber'+ thisSection + '-modded.png');
+		else if ( $(this).hasClass('modded') == false && $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ thisSection + '.png');
+	});
+	$('#cyber-mannequin img').click( function() {
+		var bodyPart = $(this).attr('class').split(' ')[0];
+		var thisSection = $('#' + bodyPart + '-cyberware');
+		$('#' + bodyPart + '-cyberware').stop().slideToggle(300);
+		$(this).toggleClass('active');
+	});
+	$('#cyberware').on('keyup', '.essence .editable', function(){
+		var bodyPart = $(this).closest('.cyberware').attr('class').split(' ')[1];
+		var emptyMods = $(this).closest('.cyberware').children('essence').text('0').length + $(this).closest('.cyberware').children('essence').text('').length;
+		console.log($(this).text());
+		if ( $(this).text() ) {
+			$('#cyber-mannequin img.' + bodyPart).addClass('modded');
+		} else if ( emptyMods == 0 ) {
+			$('#cyber-mannequin img.' + bodyPart).removeClass('modded');
+		}
 	});
 	//Highlight spells and keep track of spell count
 	spellBook.on('click', '.spell', function() {

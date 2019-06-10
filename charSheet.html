@@ -654,100 +654,470 @@
 			<div class="hotbars" id="talents"></div>
 		</div>
 		<!-- Cyberware -->
-		<div class="item-list" id="cyberware">
-			<div id="cyber-mannequin">
-				<img class="hover skin" src="images/cyberskin-hover.png" alt="Configure skin cyberware" />
-				<img class="modded skin" src="images/cyberskin-modded.png" alt="Configure skin cyberware" />
-				<img class="default skin" src="images/cyberskin.png" alt="Configure skin cyberware" />
-				<img class="hover head" src="images/cyberhead-hover.png" alt="Configure head cyberware" />
-				<img class="modded head" src="images/cyberhead-modded.png" alt="Configure head cyberware" />
-				<img class="default head" src="images/cyberhead.png" alt="Configure head cyberware" />
-				<img class="hover core" src="images/cybercore-hover.png" alt="Configure core cyberware" />
-				<img class="modded core" src="images/cybercore-modded.png" alt="Configure core cyberware" />
-				<img class="default core" src="images/cybercore.png" alt="Configure core cyberware" />
-				<img class="hover left-arm" src="images/cyberleftarm-hover.png" alt="Configure left arm cyberware" />
-				<img class="modded left-arm" src="images/cyberleftarm-modded.png" alt="Configure left arm cyberware" />
-				<img class="default left-arm" src="images/cyberleftarm.png" alt="Configure left arm cyberware" />
-				<img class="hover left-hand" src="images/cyberlefthand-hover.png" alt="Configure left hand cyberware" />
-				<img class="modded left-hand" src="images/cyberlefthand-modded.png" alt="Configure left hand cyberware" />
-				<img class="default left-hand" src="images/cyberlefthand.png" alt="Configure left hand cyberware" />
-				<img class="hover right-arm" src="images/cyberrightarm-hover.png" alt="Configure right arm cyberware" />
-				<img class="modded right-arm" src="images/cyberrightarm-modded.png" alt="Configure right arm cyberware" />
-				<img class="default right-arm" src="images/cyberrightarm.png" alt="Configure right arm cyberware" />
-				<img class="hover right-hand" src="images/cyberrighthand-hover.png" alt="Configure right hand cyberware" />
-				<img class="modded right-hand" src="images/cyberrighthand-modded.png" alt="Configure right hand cyberware" />
-				<img class="default right-hand" src="images/cyberrighthand.png" alt="Configure right hand cyberware" />
-				<img class="hover left-leg" src="images/cyberleftleg-hover.png" alt="Configure left leg cyberware" />
-				<img class="modded left-leg" src="images/cyberleftleg-modded.png" alt="Configure left leg cyberware" />
-				<img class="default left-leg" src="images/cyberleftleg.png" alt="Configure left leg cyberware" />
-				<img class="hover left-foot" src="images/cyberleftfoot-hover.png" alt="Configure left foot cyberware" />
-				<img class="modded left-foot" src="images/cyberleftfoot-modded.png" alt="Configure left foot cyberware" />
-				<img class="default left-foot" src="images/cyberleftfoot.png" alt="Configure left foot cyberware" />
-				<img class="hover right-leg" src="images/cyberrightleg-hover.png" alt="Configure right leg cyberware" />
-				<img class="modded right-leg" src="images/cyberrightleg-modded.png" alt="Configure right leg cyberware" />
-				<img class="default right-leg" src="images/cyberrightleg.png" alt="Configure right leg cyberware" />
-				<img class="hover right-foot" src="images/cyberrightfoot-hover.png" alt="Configure right foot cyberware" />
-				<img class="modded right-foot" src="images/cyberrightfoot-modded.png" alt="Configure right foot cyberware" />
-				<img class="default right-foot" src="images/cyberrightfoot.png" alt="Configure right foot cyberware" />
-				<img class="skin" src="images/cyberbody.png" alt="Select body parts to configure cyberware" />
-			</div>
+		<div id="cyberware">
 			<div class="list-header">
 				<div class="header">
 					<img src="images/cyberware.png">
 					<h2>Cyberware</h2>
 				</div>
-				<div class="button" id="add-cyberware">
-					Add Mod
+			</div>
+			<div id="cyber-content">
+				<div id="cyber-mannequin">
+					<img class="skin" src="images/cyberskin.png" alt="Configure skin cyberware" />
+					<img class="head" src="images/cyberhead.png" alt="Configure head cyberware" />
+					<img class="core" src="images/cybercore.png" alt="Configure core cyberware" />
+					<img class="leftarm" src="images/cyberleftarm.png" alt="Configure left arm cyberware" />
+					<img class="lefthand" src="images/cyberlefthand.png" alt="Configure left hand cyberware" />
+					<img class="rightarm" src="images/cyberrightarm.png" alt="Configure right arm cyberware" />
+					<img class="righthand" src="images/cyberrighthand.png" alt="Configure right hand cyberware" />
+					<img class="leftleg" src="images/cyberleftleg.png" alt="Configure left leg cyberware" />
+					<img class="leftfoot" src="images/cyberleftfoot.png" alt="Configure left foot cyberware" />
+					<img class="rightleg" src="images/cyberrightleg.png" alt="Configure right leg cyberware" />
+					<img class="rightfoot" src="images/cyberrightfoot.png" alt="Configure right foot cyberware" />
+				</div>
+				<div id="cyber-mods">
+					<!-- Skin Cyberware -->
+					<div id="skin-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/dermalLayer</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select>
+										<option></option>
+										<option value="ST">"+1 Armour"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Head Cyberware -->
+					<div id="head-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/cranial</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware head">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+2 Intellect"</option>
+										<option value="LW">"Light Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Core Cyberware -->
+					<div id="core-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/core</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware core">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+3 Might"</option>
+										<option value="HW">"Heavy Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Left Arm Cyberware -->
+					<div id="leftarm-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/leftArm</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware leftarm">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+1 Might"</option>
+										<option value="MW">"Medium Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Left Hand Cyberware -->
+					<div id="lefthand-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/leftHand</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware lefthand">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+1 Speed"</option>
+										<option value="LW">"Light Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Right Arm Cyberware -->
+					<div id="rightarm-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/rightArm</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware rightarm">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+1 Might"</option>
+										<option value="MW">"Medium Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Right Hand Cyberware -->
+					<div id="righthand-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/rightHand</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware righthand">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+1 Speed"</option>
+										<option value="LW">"Light Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Left Leg Cyberware -->
+					<div id="leftleg-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/leftLeg</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware leftleg">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+2 Speed"</option>
+										<option value="MW">"Medium Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Left Foot Cyberware -->
+					<div id="leftfoot-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/leftFoot</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware leftfoot">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+1 Speed"</option>
+										<option value="LW">"Light Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Right Leg Cyberware -->
+					<div id="rightleg-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/rightLeg</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware rightleg">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+2 Speed"</option>
+										<option value="MW">"Medium Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Left Foot Cyberware -->
+					<div id="rightfoot-cyberware">
+						<div class="cyber-header">
+							<div><span class="yellow-text">#//</span>./cyberMod/rightFoot</div>
+							<div class="add-cyberware">+</div>
+						</div>
+						<div class="cyberware rightfoot">
+							<div class="function">
+								<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>
+								<div class="text-wrapper">
+									<div contenteditable="true" class="editable"></div>
+								</div>
+							</div>
+							<div class="type">
+								<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>
+								<div class="text-wrapper">
+									<select data-placeholder="Select one">
+										<option></option>
+										<option value="ST">"+1 Speed"</option>
+										<option value="LW">"Light Weapon"</option>
+										<option value="EA">"Extra Ability"</option>
+										<option value="ES">"Extra Skill"</option>
+										<option value="SP">"Special"</option>
+									</select>
+								</div>
+							</div>
+							<div class="essence">
+								<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>
+								<div class="text-wrapper">
+									&#123; <div contenteditable="true" class="editable">0</div> Essence &#125;
+								</div>
+							</div>
+							<div class="value">
+								<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>
+								<div class="text-wrapper">
+									<span class="blue-text">return</span> <div contenteditable="true" class="editable">0</div>&#8353;
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="delete-space"></div>
 				</div>
 			</div>
-			<table>
-				<tbody>
-					<tr>
-						<th></th>
-						<th>LOCATION</th>
-						<th>FUNCTION</th>
-						<th>TYPE</th>
-						<th>VALUE</th>
-						<th>COST</th>
-					</tr>
-					<tr class="item">
-						<td class="arrow mobile-handle"></td>
-						<td class="location">
-							<select>
-								<option></option>
-								<option value="H">Head</option>
-								<option value="S">Skin</option>
-								<option value="C">Core</option>
-								<option value="A">Arm</option>
-								<option value="L">Leg</option>
-							</select>
-						</td>
-						<td class="function mobile-handle">
-							<div class="editable mobile-handle" contenteditable="true"></div>
-						</td>
-						<td class="type">
-							<select>
-								<option selected value="ST">Increased Stat</option>
-								<option value="LW">Light Weapon</option>
-								<option value="MW">Heavy Weapon</option>
-								<option value="HW">Medium Weapon</option>
-								<option value="EA">Extra Ability</option>
-								<option value="ES">Extra Skill</option>
-								<option value="SP">Special</option>
-							</select>
-						</td>
-						<td class="value">
-							<div class="editable" contenteditable="true">0</div>
-							<div class="credits"> &#8353;</div>
-						</td>
-						<td class="cost">
-							<div class="editable" contenteditable="true">0</div>
-							<div class="essence"> Essence</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="delete-space"></div>
 		</div>
 		<!-- Inventory -->
 		<div class="item-list" id="equipment">

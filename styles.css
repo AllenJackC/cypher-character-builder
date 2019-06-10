@@ -352,12 +352,9 @@ div.proficiency {
 	justify-content: flex-start;
 	margin: 15px 15px 0 15px;
 }
-#skill-list, .item-list, .spell-list {
+#skill-list, #cyberware, .item-list, .spell-list {
 	flex-grow: 1;
 	margin: 15px 15px 10px 15px;
-}
-#skill-list .chosen-container, .item-list .chosen-container, .gu-mirror .chosen-container {
-	width: fit-content!important;
 }
 #skill-list .chosen-single, .item-list .chosen-single, .gu-mirror .chosen-single {
 	border: 0!important;
@@ -375,14 +372,19 @@ div.proficiency {
 #skill-list .chosen-single > div, .item-list .chosen-single > div, .gu-mirror .chosen-single > div {
 	display: none!important;
 }
-#skill-list .chosen-drop, .item-list .chosen-drop,  .gu-mirror .chosen-drop {
+#skill-list .chosen-drop, .item-list .chosen-drop, .gu-mirror .chosen-drop {
 	text-align: left;
 	width: fit-content;
 }
+#cyber-content {
+	display: flex;
+}
 #cyber-mannequin {
-	max-width: 280px;
+	flex-grow: 0;
+	min-width: 280px;
+	margin-top: 10px;
+    max-width: 280px;
 	position: relative;
-	width: 100%;
 }
 #cyber-mannequin img {
 	cursor: pointer;
@@ -395,12 +397,6 @@ div.proficiency {
 	width: 100%;
 	z-index: 1;
 }
-#cyber-mannequin .modded {
-	z-index: 3;
-}
-#cyber-mannequin .hover {
-	z-index: 4;
-}
 #cyber-mannequin .head {
 	left: 119px;
     top: 4px;
@@ -409,13 +405,46 @@ div.proficiency {
 	left: 70px;
     top: 59px;
 }
-#cyber-mannequin .left-arm {
+#cyber-mannequin .leftarm {
     right: 34px;
 	top: 118px;
 }
-#cyber-mannequin .right-arm {
+#cyber-mannequin .rightarm {
     left: 34px;
 	top: 118px;
+}
+#cyber-mannequin .lefthand {
+	top: 236px;
+    right: 4px;
+}
+#cyber-mannequin .righthand {
+	top: 236px;
+    left: 4px;
+}
+#cyber-mannequin .leftleg {
+	top: 217px;
+    right: 94px;
+}
+#cyber-mannequin .rightleg {
+	top: 217px;
+    left: 94px;
+}
+#cyber-mannequin .leftfoot {
+	top: 446px;
+    right: 95px;
+}
+#cyber-mannequin .rightfoot {
+	top: 446px;
+    left: 95px;
+}
+#cyber-mods {
+	display: flex;
+    flex-direction: column;
+	font-family: 'Consolas', monospace;
+	margin-left: 20px;
+}
+#cyber-mods > div {
+	display: none;
 }
 #spellbook, #archives {
 	display: flex;
@@ -510,6 +539,86 @@ div.proficiency {
 #footer-links a {
 	margin: 0 5px;
 }
+.cyber-header {
+    border-bottom: 2px solid var(--selected);
+	color: var(--white);
+	display: flex;
+	justify-content: space-between;
+    padding: 2px 0 10px 0;
+}
+.add-cyberware {
+	cursor: pointer;
+	font-size: 24px;
+	font-weight: 900;
+	line-height: 23px;
+	height: 24px;
+	pointer-events: auto;
+	text-align: center;
+	width: 28px;
+}
+.cyberware {
+	color: var(--white);
+    font-size: 14px;
+    font-family: 'Consolas', monospace;
+	padding: 15px 20px 15px 15px;
+}
+.cyberware > div {
+	align-items: center;
+	padding-left: 20px;
+	pointer-events: auto;
+}
+.cyberware .function {
+	padding-left: 0;
+}
+.cyberware .text-wrapper {
+	padding-left: 20px;
+}
+.cyberware .type {
+	display: flex;
+}
+.cyberware .type .text-wrapper {
+	padding-left: 0;
+}
+.cyberware .chosen-container, .cyberware .chosen-single, .cyberware .chosen-drop, .cyberware select {
+	background: transparent!important;
+	border: 0!important;
+	box-shadow: none!important;
+    color: var(--light-grey)!important;
+	outline: 0!important;
+}
+.cyberware option {
+	color: var(--black);
+}
+.cyberware .chosen-results, .cyberware .chosen-drop {
+	background: var(--black)!important;
+    color: var(--light-grey)!important;
+	width: 135px;
+}
+.cyberware .chosen-single span, .cyberware.gu-mirror .chosen-single span {
+	width: fit-content;
+}
+.cyberware .editable {
+	min-width: 10px;
+	border-color: var(--black);
+}
+.cyberware .function .editable {
+	padding-left: 15px;
+	position: relative;
+}
+.cyberware .function .editable:before {
+	content: '\003E';
+	left: 0;
+	position: absolute;
+}
+.yellow-text {
+	color: var(--selected-hover);
+}
+.red-text {
+	color: var(--remove-hover);
+}
+.blue-text {
+	color: var(--secondary-button);
+}
 .list-header  {
 	display: flex;
 	justify-content: space-between;
@@ -521,6 +630,7 @@ div.proficiency {
 .spell-list .list-header {
 	justify-content: flex-start;
 }
+
 .mobile-label {
 	border: 0!important;
 	display: none;
@@ -529,9 +639,11 @@ div.proficiency {
 .editable {
 	border-bottom: dashed 1px var(--background-white);
 	cursor: text;
+	display: inline-block;
 	height: 100%;
 	margin-bottom: -1px;
 	min-width: 7px;
+	pointer-events: auto;
 }
 .name .editable, .effect .editable, .function .editable {
 	width: 100%;
@@ -543,7 +655,7 @@ div.proficiency {
 	width: fit-content;
 	padding-left: 4px;
 }
-.slots, .essence {
+.slots {
 	width: fit-content;
 	padding-left: 4px;
 }
@@ -888,6 +1000,12 @@ tr.gu-mirror:hover .editable {
 	background: var(--button)!important;
 	color: var(--white)!important;
 }
+#cyber-mannequin img:hover {
+	filter: contrast(125%);
+}
+#cyber-mannequin img:active {
+	filter: brightness(90%);
+}
 .visible {
     opacity: 1!important;
 	visibility: visible!important;
@@ -935,6 +1053,15 @@ tr.gu-mirror:hover .editable {
 }
 .spell:hover div.handle, .gu-mirror div.handle {
 	max-width: 24px;
+}
+.add-cyberware:hover {
+	color: var(--selected-hover);
+}
+.add-cyberware:active {
+	color: var(--selected-active);
+}
+.cyberware > div:hover .editable {
+	border-color: var(--white);	
 }
 @media (hover: none) {
 	h4 {
