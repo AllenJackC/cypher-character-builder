@@ -1,9 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Condensed:400,400i,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Oswald|Roboto+Condensed:400,400i,700&display=swap');
 :root {
 	--white: #FBFBFB;
-	--background-white: #FBFBFB;
 	--black: #212931;
-	--text-black: #212931;
 	--black-translucent: #212931FA;
 	--light-grey: #B6B4B4;
 	--dark-grey: #375473;
@@ -87,7 +85,7 @@ table {
   background: transparent;
 }
 body {
-	color: var(--text-black);
+	color: var(--black);
 	background: var(--black);
 	font-family: var(--body-font);
 	line-height: 1.5em;
@@ -102,7 +100,7 @@ body {
     user-select: none;
 }
 h1 {
-	color: var(--background-white);
+	color: var(--white);
     font-family: var(--header-font);
     font-size: 11vmin;
     line-height: 11vmin;
@@ -155,9 +153,9 @@ a:active, h5 a:active {
 	color: var(--selected-active);
 }
 input, select {
-	background: var(--background-white);
+	background: var(--white);
     border: 0;
-    color: var(--text-black);
+    color: var(--black);
 	font-family: var(--body-font);
 	font-size: 14px;
 	height: 19px;
@@ -203,10 +201,10 @@ tr, td {
 	white-space: nowrap;
 }
 tr.item, tr.gu-mirror {
-	background: var(--background-white);
+	background: var(--white);
 	border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-	color: var(--text-black);
+	color: var(--black);
 }
 th {
 	background: none;
@@ -222,7 +220,7 @@ td {
 	vertical-align: middle;
 }
 td.arrow:before {
-	color: var(--background-white);
+	color: var(--white);
     content: '\0025B6';
 	cursor: move;
 	font-size: 40px;
@@ -338,6 +336,9 @@ div.proficiency {
 	max-width: 996px;
 	padding: 0 15px;
 }
+#extra-attributes, #extra-attributes .attribute {
+	display: none;
+}
 #character-attributes {
 	max-width: 577px;
 	margin: 15px 15px 10px 15px;
@@ -345,12 +346,19 @@ div.proficiency {
 #reset-button {
 	right: -45px
 }
+#character-options {
+	display: none;
+    flex-basis: calc(100% - 30px);
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 15px 15px 15px 30px;
+}
 #buttons {
 	display: flex;
 	flex-basis: calc(100% - 30px);
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	margin: 15px 15px 0 15px;
+	margin: 20px 15px 0 15px;
 }
 #skill-list, #cyberware, .item-list, .spell-list {
 	flex-grow: 1;
@@ -376,6 +384,9 @@ div.proficiency {
 	text-align: left;
 	width: fit-content;
 }
+#cyberware {
+	display: none;
+}
 #cyber-content {
 	display: flex;
 }
@@ -385,6 +396,7 @@ div.proficiency {
 	margin-top: 10px;
     max-width: 280px;
 	position: relative;
+	zoom: 0.9;
 }
 #cyber-mannequin img {
 	cursor: pointer;
@@ -438,13 +450,12 @@ div.proficiency {
     left: 95px;
 }
 #cyber-mods {
-	display: flex;
-    flex-direction: column;
+	color: var(--white);
+	font-size: 14px;
 	font-family: 'Consolas', monospace;
 	margin-left: 20px;
-}
-#cyber-mods > div {
-	display: none;
+	max-width: 300px;
+	min-width: 250px;
 }
 #spellbook, #archives {
 	display: flex;
@@ -481,9 +492,9 @@ div.proficiency {
 	width: 24px;
 }
 #spellbook .details {
-	background: var(--background-white);
+	background: var(--white);
 	box-shadow: inset 0 0 0 3px var(--white);
-	color: var(--text-black);
+	color: var(--black);
 	padding: 15px;
 }
 #spellbook .stats {
@@ -539,33 +550,57 @@ div.proficiency {
 #footer-links a {
 	margin: 0 5px;
 }
+.character-option {
+	align-items: center;
+	color: var(--white);
+	cursor: pointer;
+    display: flex;
+    margin-right: 10px;
+	pointer-events: auto;
+}
+.checkbox {
+	background: var(--light-grey);
+    box-shadow: inset 0 0 0 2px var(--button);
+	height: 16px;
+	margin-right: 5px;
+	width: 16px;
+}
+.clicked .checkbox {
+	background: var(--selected);
+}
 .cyber-header {
     border-bottom: 2px solid var(--selected);
 	color: var(--white);
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 15px;
     padding: 2px 0 10px 0;
+}
+.cyber-header div:first-child{
+	padding-right: 10px;
 }
 .add-cyberware {
 	cursor: pointer;
-	font-size: 24px;
+	/*font-size: 24px;
 	font-weight: 900;
 	line-height: 23px;
-	height: 24px;
+	height: 24px;*/
 	pointer-events: auto;
 	text-align: center;
-	width: 28px;
+	/*width: 28px;*/
 }
 .cyberware {
-	color: var(--white);
-    font-size: 14px;
-    font-family: 'Consolas', monospace;
-	padding: 15px 20px 15px 15px;
+	min-height: 170px;
+	padding: 0 20px 15px 15px;
+	transition: width 0.2 linear;
 }
 .cyberware > div {
 	align-items: center;
 	padding-left: 20px;
 	pointer-events: auto;
+}
+.cyber-section {
+	display: none;
 }
 .cyberware .function {
 	padding-left: 0;
@@ -610,6 +645,9 @@ div.proficiency {
 	left: 0;
 	position: absolute;
 }
+.cyberware .value .editable {
+	margin-right: 4px;
+}
 .yellow-text {
 	color: var(--selected-hover);
 }
@@ -618,6 +656,11 @@ div.proficiency {
 }
 .blue-text {
 	color: var(--secondary-button);
+}
+.cyberware .handle {
+	cursor: move;
+	pointer-events: auto;
+	touch-action: none;
 }
 .list-header  {
 	display: flex;
@@ -637,7 +680,7 @@ div.proficiency {
 	margin-right: 10px;
 }
 .editable {
-	border-bottom: dashed 1px var(--background-white);
+	border-bottom: dashed 1px var(--white);
 	cursor: text;
 	display: inline-block;
 	height: 100%;
@@ -743,10 +786,10 @@ tr.gu-mirror {
 	pointer-events: auto;
 }
 .chosen-single, .chosen-drop, .chosen-results {
-	background: var(--background-white)!important;
+	background: var(--white)!important;
 	border-color: var(--black-translucent)!important;
 	border-radius: 0!important;
-    color: var(--text-black)!important;
+    color: var(--black)!important;
 }
 .chosen-results::-webkit-scrollbar {
   width: 7px;
@@ -847,6 +890,9 @@ tr.gu-mirror {
 #skill-list .delete-space {
 	height: 34px;
 }
+#cyberware .delete-space {
+	height: 200px;
+}
 .delete-space:after {
 	content: 'DROP HERE TO REMOVE';
 	line-height: 34px;
@@ -855,6 +901,12 @@ tr.gu-mirror {
 	text-align: center;
 	top: 0;
     width: 100%;
+}
+#skill-list .delete-space:after {
+	line-height: 34px;
+}
+#cyberware .delete-space:after {
+	line-height: 200px;
 }
 .modal-background {
 	background: var(--black-translucent);
@@ -903,7 +955,6 @@ tr.gu-mirror {
 	left: -7px;
 	position: relative;
 	top: -1px;
-	transition: background-color 0.2s linear;
 	width: 12px;
 }
 .header, .header h3 {
@@ -915,7 +966,7 @@ tr.gu-mirror {
 	height: 36px;
 	width: 36px;
 }
-.spell p, .lore p {
+.spell p, .lore p, #cyber-mods p {
 	margin-bottom: 15px;
 }
 .spell p:last-child, .lore p:last-child {
@@ -964,10 +1015,10 @@ tr:hover td.arrow:before {
 	color: var(--selected);
 }
 tr:hover .editable {
-	border-color: var(--text-black);
+	border-color: var(--black);
 }
 tr.gu-mirror:hover .editable {
-	border-color: var(--background-white);
+	border-color: var(--white);
 }
 #spellbook .spell:hover .header {
 	background: var(--button-hover);
@@ -1006,12 +1057,21 @@ tr.gu-mirror:hover .editable {
 #cyber-mannequin img:active {
 	filter: brightness(90%);
 }
+.character-option:hover .checkbox {
+	background: var(--selected-hover);
+}
+.character-option:active .checkbox {
+	background: var(--selected-active);
+}
 .visible {
     opacity: 1!important;
 	visibility: visible!important;
 }
 .hidden-section {
-	display: none!important;
+	max-height: 0;
+	max-width: 0;
+	opacity: 0;
+	visibility: hidden;
 }
 .secondary-button > div:hover {
 	box-shadow: inset 0 0 0 1px var(--secondary-button-hover);
@@ -1083,8 +1143,8 @@ tr.gu-mirror:hover .editable {
 		touch-action: none;
 	}
 	.tooltip {
-		background: var(--background-white);
-		color: var(--text-black);
+		background: var(--white);
+		color: var(--black);
 		display: none;
 		flex-wrap: wrap;
 		font-size: 14px;
@@ -1364,6 +1424,7 @@ tr.gu-mirror:hover .editable {
 		padding: 12px 30px 15px;
 	}
 	.item-list:not(#notes) .delete-space {
+		line-height: 194px;
 		height: 194px;
 		margin: 0 auto;
 		width: 50%;

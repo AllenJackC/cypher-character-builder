@@ -33,6 +33,7 @@ var skillsDeleteSpace;
 var spellBook;
 var spellbookButton;
 var loreButton;
+var enableCyberware;
 var modalBackground;
 var spellsList;
 var actionsEnablersSection;
@@ -40,8 +41,9 @@ var talentsSection;
 var spellHotbars;
 var mannequinState;
 var addCyberwareButton;
-var cyberwareList;
-var cyberwareBody;
+var cyberware;
+var cyberwareSection;
+var cyberBodyParts;
 var cyberwareDeleteSpace;
 var addItemButton;
 var inventoryList;
@@ -64,6 +66,7 @@ var firstDrag = true;
 var containerHeight;
 var defaultContainerHeight;
 var isHovering;
+var periodCount = 0;
 //Check if an integer is even
 function isEven(value) {
 	if (value%2 == 0)
@@ -206,50 +209,102 @@ function populateInventorySelect() {
 	});
 }
 //Add a blank cyberware, unless variables are parsed
-function addCyberware(spellID,cyberwareFunction,cyberwareValue,essenceCost) {
+function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceCost) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
 	if ( !cyberwareFunction ) cyberwareFunction = "";
 	if ( !cyberwareValue ) cyberwareValue = "0";
 	if ( !essenceCost ) essenceCost = "0";
+	var partOptions;
+	switch ( bodyPart.replace('-cyberware','') ) {
+		case "skin":
+		partOptions = '<option value="ST">"+1 Armour"</option>';
+		break;	
+		case "head":
+		partOptions =
+			'<option value="ST">"+2 Intellect"</option>' +
+			'<option value="LW">"Light Weapon"</option>';
+		break;	
+		case "core":
+		partOptions = 
+			'<option value="ST">"+3 Might"</option>' +
+			'<option value="HW">"Heavy Weapon"</option>';
+		break;	
+		case "leftarm":
+		partOptions = 
+			'<option value="ST">"+1 Might"</option>' +
+			'<option value="MW">"Medium Weapon"</option>';
+		break;	
+		case "rightarm":
+		partOptions = 
+			'<option value="ST">"+1 Might"</option>' +
+			'<option value="MW">"Medium Weapon"</option>';
+		break;	
+		case "lefthand":
+		partOptions =
+			'<option value="ST">"+1 Speed"</option>' +
+			'<option value="LW">"Light Weapon"</option>';
+		break;	
+		case "righthand":
+		partOptions =
+			'<option value="ST">"+1 Speed"</option>' +
+			'<option value="LW">"Light Weapon"</option>';
+		break;	
+		case "leftleg":
+		partOptions = 
+			'<option value="ST">"+2 Speed"</option>' +
+			'<option value="MW">"Medium Weapon"</option>';
+		break;	
+		case "rightleg":
+		partOptions = 
+			'<option value="ST">"+2 Speed"</option>' +
+			'<option value="MW">"Medium Weapon"</option>';
+		break;	
+		case "leftfoot":
+		partOptions = 
+			'<option value="ST">"+1 Speed"</option>' +
+			'<option value="LW">"Light Weapon"</option>';
+		break;	
+		case "rightfoot":
+		partOptions = 
+			'<option value="ST">"+1 Speed"</option>' +
+			'<option value="LW">"Light Weapon"</option>';
+		break;	
+	}
 	var cyberwareToAdd =
-		'<tr class="item"' + spellID + '>' +
-			'<td class="arrow mobile-handle"></td>' +
-			'<td class="location">' +
-				'<select>' +
-					'<option></option>' +
-					'<option value="H">Head</option>' +
-					'<option value="S">Skin</option>' +
-					'<option value="C">Core</option>' +
-					'<option value="A">Arm</option>' +
-					'<option value="L">Leg</option>' +
-				'</select>' +
-			'</td>' +
-			'<td class="function mobile-handle">' +
-				'<div class="editable mobile-handle" contenteditable="true">' + cyberwareFunction + '</div>' +
-			'</td>' +
-			'<td class="type">' +
-				'<select>' +
-					'<option selected value="ST">Increased Stat</option>' +
-					'<option value="LW">Light Weapon</option>' +
-					'<option value="MW">Heavy Weapon</option>' +
-					'<option value="HW">Medium Weapon</option>' +
-					'<option value="EA">Extra Ability</option>' +
-					'<option value="ES">Extra Skill</option>' +
-					'<option value="SP">Special</option>' +
-				'</select>' +
-			'</td>' +
-			'<td class="value">' +
-				'<div class="editable" contenteditable="true">' + cyberwareValue + '</div>' +
-				'<div class="credits"> &#8353;</div>' +
-			'</td>' +
-			'<td class="cost">' +
-				'<div class="editable" contenteditable="true">' + essenceCost + '</div>' +
-				'<div class="essence"> Essence</div>' +
-			'</td>' +
-		'</tr>'
-	if ( spellID ) $(cyberwareToAdd).insertAfter('#cyberware table tr:first-child')
-	else cyberwareList.append(cyberwareToAdd);
+		'<div class="cyberware ' + bodyPart.replace('-cyberware','') + '"' + spellID + '>' +
+			'<div class="function">' +
+				'<div class="cyber-label"><span class="blue-text handle">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>' +
+				'<div class="text-wrapper">' +
+					'<div contenteditable="true" class="editable">' + cyberwareFunction + '</div>' +
+				'</div>' +
+			'</div>' +
+			'<div class="type">' +
+				'<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>' +
+				'<div class="text-wrapper">' +
+					'<select>' +
+						'<option></option>' +
+						partOptions +
+						'<option value="EA">"Extra Ability"</option>' +
+						'<option value="ES">"Extra Skill"</option>' +
+						'<option value="SP">"Special"</option>' +
+					'</select>' +
+				'</div>' +
+			'</div>' +
+			'<div class="essence">' +
+				'<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>' +
+				'<div class="text-wrapper">' +
+					'&#123; <div contenteditable="true" class="editable">' + essenceCost + '</div> Essence &#125;' +
+				'</div>' +
+			'</div>' +
+			'<div class="value">' +
+				'<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>' +
+				'<div class="text-wrapper">' +
+					'<span class="blue-text">return</span> <div contenteditable="true" class="editable">' + cyberwareValue + '</div>&#8353;' +
+				'</div>' +
+			'</div>' +
+		'</div>'
+	$('#' + bodyPart).append(cyberwareToAdd);
 	populateCyberwareSelect();
 }
 //Add a blank item, unless variables are parsed
@@ -1192,9 +1247,10 @@ function populateSpellLists() {
 						$('.type select', thisItem).val(selectThisType);
 						$('.type select', thisItem).trigger('chosen:updated');
 					}
-				} else if ( typeCheck == "Cyberware" && $('#cyberware tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var essenceCost = spellListDatabase[i].itemweight;
-					var cyberwareLocation = spellListDatabase[i].itemtype;
+					var bodyPart = spellListDatabase[i].itemtype;
+					var cyberwareLocation = bodyPart + "-cyberware";
 					var cyberwareFunction = spellListDatabase[i].itemeffect;
 					var cyberwareValue = spellListDatabase[i].itemvalue;
 					var cyberwareType = spellListDatabase[i].itemlevel;
@@ -1222,31 +1278,15 @@ function populateSpellLists() {
 						default:
 						selectThisType = "ST";
 					}
-					switch ( cyberwareLocation ) {
-						case "Head":
-						selectThisLocation = "H";
-						break;
-						case "Skin":
-						selectThisLocation = "S";
-						break;
-						case "Core":
-						selectThisLocation = "C";
-						break;
-						case "Arm":
-						selectThisLocation = "A";
-						break;
-						case "Leg":
-						selectThisLocation = "L";
-						break;
-						default:
-						selectThisLocation = "";
-					}
-					addCyberware(spellID,cyberwareFunction,cyberwareValue,essenceCost);
-					var thisCyberware = $('#cyberware tr[data-spellid="' + spellID + '"]');
+					addCyberware(cyberwareLocation,spellID,cyberwareFunction,cyberwareValue,essenceCost);
+					var thisCyberware = $('.cyberware[data-spellid="' + spellID + '"]');
 					$('.type select', thisCyberware).val(selectThisType);
-					$('.location select', thisCyberware).val(selectThisLocation);
 					$('.type select', thisCyberware).trigger('chosen:updated');
-					$('.location select', thisCyberware).trigger('chosen:updated');
+					var bodyPartImg = $('#cyber-mannequin img.' + bodyPart);
+					bodyPartImg.addClass('modded');
+					enableCyberware.toggleClass('clicked');
+					cyberware.slideToggle(200);
+					if ( bodyPartImg.hasClass('active') == false ) bodyPartImg.attr('src',  'images/cyber'+ bodyPart + '-modded.png');
 				} else if ( typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
 					addNote(spellID,note);
@@ -1255,9 +1295,22 @@ function populateSpellLists() {
 		}
 	});
 	//Remove any items or spells not in the current spelllist
-	$('.spell-list .spell, .item-list tr, .tooltip').each( function() {
+	$('.spell-list .spell, .item-list tr, .tooltip, .cyberware').each( function() {
 		var spellID = parseInt($(this).data('spellid'));
-		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
+		if ( spellID && $.inArray(spellID,spellsList) < 0 ) {
+			$(this).remove();
+			if ( $(this).hasClass('cyberware') ) {
+				var bodyPart = $(this).attr('class').split(' ')[1];
+				var emptyMods = 0;
+				for (var i = 0; i < $('.cyberware.' + bodyPart).children('.essence').length; i++) {
+					if ( Number($(this).text()) ) emptyMods++;
+				}
+				if ( !emptyMods ) {
+					$('#cyber-mannequin img.' + bodyPart).removeClass('modded');
+					$('#cyber-mannequin img.' + bodyPart).attr('src',  'images/cyber'+ bodyPart + '.png')
+				}
+			}
+		}
 	});
 	//Show the spell list section if there are spells in the list, otherwise hide it
 	$('.hotbars').each(function() {
@@ -1285,7 +1338,7 @@ $(function() {
 	secFociOptions = $('#secondary-foci option');
 	foci = $('#foci, #secondary-foci');
 	fociOptions = $('#foci option, #secondary-foci option');
-	extraAttributes = $('#extra-attributes, #extra-attributes-header');
+	extraAttributes = $('#extra-attributes');
 	variantsSection = $('#genetic-variation');
 	variants = $('#genetic-variants');
 	variantsOptions = $('#genetic-variants option');
@@ -1304,12 +1357,14 @@ $(function() {
 	filterButtons = $('#spellbook .filters .button');
 	loreButton = $('#open-archives');
 	spellModal = $('#spellbook-background');
+	enableCyberware = $('#enable-cyberware');
 	actionsEnablersSection = $('#actions-enablers');
 	talentsSection = $('#talents');
 	spellHotbars = $('.spell-list .hotbars');
-	addCyberwareButton = $('#add-cyberware');
-	cyberwareList = $('#cyberware table');
-	cyberwareBody = $('#cyberware tbody');
+	addCyberwareButton = $('.add-cyberware');
+	cyberware = $('#cyberware');
+	cyberwareSection = $('#cyber-mods');
+	cyberBodyParts = $('.cyber-section');
 	cyberwareDeleteSpace = $('#cyberware .delete-space');
 	addItemButton = $('#add-item');
 	inventoryList = $('#equipment table');
@@ -1421,8 +1476,8 @@ $(function() {
 		}).on('drop', function(el,target,source,sibling) {
 			if ( target.classList.contains('delete-space') ) {
 				if ( source.children.length === 0 ) {
-						addSkill();
-						skillList.removeAttr('style');
+					addSkill();
+					skillList.removeAttr('style');
 				} else {
 					skillList.stop().animate({
 						'height' : containerHeight - skillsDeleteSpace.height()
@@ -1435,86 +1490,79 @@ $(function() {
 				skillList.removeAttr('style');
 			}
 			skillsDeleteSpace.stop().animate({
-						'height' : '34px'
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : '34px'
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
 			skillsDeleteSpace.stop().animate({
-						'height' : '34px'
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : '34px'
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		});
 	skillsDrake;
-	var cyberwareDrake = dragula([cyberwareBody[0], cyberwareDeleteSpace[0]],{
-			moves: function(el,container,handle) {
-					if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
-					else return true;
+	var cyberwareDrake = dragula([cyberwareDeleteSpace[0]],{
+			isContainer: function(el) {
+				return el.classList.contains('cyber-section');
+			}, moves: function(el,container,handle) {
+				if ( isTouchDevice ) return handle.classList.contains('handle');
+				else return true;
+			}, accepts: function (el,target,source,sibling) {
+				if ( target.classList.contains('cyber-section') && target.classList.contains('cyber-section') ) return false;
+				else return true;
 			}
 		}).on('drag', function(el,source) {
 			cyberwareDeleteSpace.slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
-			if ( cyberwareBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
-			else defaultContainerHeight = "194px";
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
 				cyberwareDeleteSpace.stop().animate({
 					'height' : $('.gu-transit').css('height')
 				}, 150);
-				if ( cyberwareBody.children('tr:first-child').is(':visible') ) {
-					cyberwareList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
-				} else {
-					if ( !isEven(cyberwareBody.children().length) ) cyberwareList.css('padding-bottom', $('.gu-transit').outerHeight(true));
-					else cyberwareList.css('padding-bottom', $('.gu-transit').outerHeight(true)- 194);
-				}
+				cyberwareDeleteSpace.css('margin-top', String(parseInt($('.gu-transit').css('height').replace('px','')) + 40) + 'px');
 			} else {
 				cyberwareDeleteSpace.stop().animate({
-					'height' : defaultContainerHeight
+					'height' : '200px'
 				}, 150);
-				cyberwareList.css('padding-bottom', '');
+				cyberwareDeleteSpace.css('margin-top', '');
 			}
 		}).on('drop', function(el,target,source,sibling) {
 			if ( target.classList.contains('delete-space') ) {
-				if ( source.children.length === 1 ) {
-						addCyberware();
-						cyberwareList.removeAttr('style');
-				} else {
-					cyberwareList.stop().animate({
-						'padding-bottom' : '0'
-					}, 300, function() {
-						$(this).removeAttr('style');
-					});
-				}
 				cyberwareDrake.remove();
-			} else {
-				cyberwareList.removeAttr('style');
+				var bodyPart = el.classList[1];
+				var emptyMods = 0;
+				for (var i = 0; i < $('.cyberware.' + bodyPart).children('.essence').length; i++) {
+					if ( Number($(this).text()) ) emptyMods++;
+				}
+				if ( !emptyMods ) $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
 			}
 			cyberwareDeleteSpace.stop().animate({
-						'height' : defaultContainerHeight
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'margin-top' : '10px',
+				'height' : '200px'
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
 			cyberwareDeleteSpace.stop().animate({
-						'height' : defaultContainerHeight
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : '200px'
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		});
 	cyberwareDrake;
 	var itemsDrake = dragula([inventoryBody[0], itemsDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-					if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
-					else return true;
+				if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+				else return true;
 			}
 		}).on('drag', function(el,source) {
 			itemsDeleteSpace.slideToggle(150);
@@ -1555,26 +1603,26 @@ $(function() {
 				inventoryList.removeAttr('style');
 			}
 			itemsDeleteSpace.stop().animate({
-						'height' : defaultContainerHeight
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : defaultContainerHeight
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
 			itemsDeleteSpace.stop().animate({
-						'height' : defaultContainerHeight
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : defaultContainerHeight
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		});
 	itemsDrake;
 	var artifactsDrake = dragula([artifactsBody[0], artifactsDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-					if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
-					else return true;
+				if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+				else return true;
 			}
 		}).on('drag', function(el,source) {
 			artifactsDeleteSpace.slideToggle(150);
@@ -1615,26 +1663,26 @@ $(function() {
 				artifactsList.removeAttr('style');
 			}
 			artifactsDeleteSpace.stop().animate({
-						'height' : defaultContainerHeight
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : defaultContainerHeight
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
 			artifactsDeleteSpace.stop().animate({
-						'height' : defaultContainerHeight
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : defaultContainerHeight
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		});
 	artifactsDrake;
 	var notesDrake = dragula([notesBody[0], notesDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-					if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
-					else return true;
+				if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+				else return true;
 			}
 		}).on('drag', function(el,source) {
 			notesDeleteSpace.slideToggle(150);
@@ -1672,19 +1720,19 @@ $(function() {
 				notesList.removeAttr('style');
 			}
 			notesDeleteSpace.stop().animate({
-						'height' : '36px'
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : '36px'
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
 			notesDeleteSpace.stop().animate({
-						'height' : '36px'
-					}, 100, function() {
-						$(this).css('height','');
-						$(this).slideToggle(200);
-					});
+				'height' : '36px'
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).slideToggle(200);
+			});
 			firstDrag = true;
 		});
 	notesDrake;
@@ -1692,10 +1740,29 @@ $(function() {
 	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
 		$(this).toggleClass('clicked');
-		extraAttributes.removeClass('hidden-section');
 		genderFocusRow.removeClass('last-row');
-		hybridSection.toggleClass('hidden-section');
-		if ( extraAttributes.children(':visible').length == 0 ) extraAttributes.addClass('hidden-section');
+		hybridSection.show();
+		if ( extraAttributes.is(':visible') ) {
+			hybridSection.stop().animate({
+				'width' : '153px'
+			}, {
+				duration: 300,
+				start: function() {
+					hybridSection.css('height','auto');
+				},
+				complete: function() {
+					hybridSection.css('overflow','initial');
+				}
+			});
+		} else {
+			hybridSection.css({
+				'height' : 'auto',
+				'overflow' : 'initial',
+				'width' : '153px'
+			});
+			extraAttributes.slideToggle(300);
+		}
+		//if ( extraAttributes.children(':visible').length == 0 ) extraAttributes.addClass('hidden-section');
 		secSpecies.val('');	
 		//If the Hybrid button is clicked and terran is not the primary species,
 		//hide and reset the genetic variation field
@@ -1703,15 +1770,15 @@ $(function() {
 			variantsSection.addClass('hidden-section');
 			variants.val('');
 			if ( extraAttributes.children(':visible').length == 0 ) {
-				extraAttributes.addClass('hidden-section');
+				//extraAttributes.addClass('hidden-section');
 				genderFocusRow.addClass('last-row');
 			}
 		}
 		//Repopulate all of the fields after cliking the toggle
-		populateSpecies();
-		populateTypes();
-		populateFoci();
-		populateVariants();
+		//populateSpecies();
+		//populateTypes();
+		//populateFoci();
+		//populateVariants();
 		//If only the secondary species is selected when clicked, hide the reset button
 		if ( !secSpecies.val() && !priSpeciesVal && !types.val() ) {
 			resetSection.addClass('hidden-section');
@@ -1802,28 +1869,37 @@ $(function() {
 		if ( thisVal === "I" ) inabilityFields.show();
 		else inabilityFields.hide();
 	});
-	//Change the stat bonus if selected based on 
-	//Filter inputs for level, weight and value fields
+	//Filter inputs for level, weight. essence and value fields
 	$('.item-list, #skill-list, #cyberware').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .essence .editable, .inability', function(e){
+		var thisVal = $(this).html();
 		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
         var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
         var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >=96 && e.keyCode <= 105);
         var vKey = 86, cKey = 67, aKey = 65;
+		//Essence decimal controller
+		var isEssence = $(this).closest('.essence').length;
+		var isPeriodKey = [190].indexOf(e.keyCode) != -1;
+		periodCount = 0;
+		for (i = 0; i < thisVal.length; i++) {
+			if (thisVal[i] == ".") periodCount++;
+		}
+		var onePeriod = periodCount === 0;
         switch(true){
             case isCursorMoveOrDeleteAction:
             case isModifierkeyPressed == false && isNumKeyPressed:
             case (e.metaKey || e.ctrlKey) && ([vKey,cKey,aKey].indexOf(e.keyCode) != -1):
+			case isEssence && isPeriodKey && onePeriod:
                 break;
             default:
                 e.preventDefault();
         }
-	})
+	});
 	//Add skills and items when respective button is clicked
 	addSkillButton.click( function() { addSkill(); });
-	addCyberwareButton.click( function() { addCyberware(); });
 	addItemButton.click( function() { addItem(); });
 	addArtifactButton.click( function() { addArtifact(); });
 	addNoteButton.click( function() { addNote(); });
+	addCyberwareButton.click( function() { addCyberware($(this).closest('.cyber-section').attr('id')); });
 	//Update slots text in carry weight to reflect amount of slots
 	$('td.weight .editable').keyup(function() {
 		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
@@ -1833,53 +1909,47 @@ $(function() {
 	$('td, div').click( function() {
 		$('editable', this).focus();
 	});
-	//Hover and click listeners for cyberware mannequin
-	$('#cyber-mannequin img').hover( function() {
-		var thisSection = $(this).attr('class').split(' ')[0];
-		if ( $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ thisSection + '-hover.png');
-	}, function() {
-		var thisSection = $(this).attr('class').split(' ')[0];
-		if ( $(this).hasClass('modded') && $(this).hasClass('active') == false) $(this).attr('src',  'images/cyber'+ thisSection + '-modded.png');
-		else if ( $(this).hasClass('modded') == false && $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ thisSection + '.png');
-	});
+	//Highlight currently selected body part
+	//and show the section to the right
 	$('#cyber-mannequin img').click( function() {
 		var bodyPart = $(this).attr('class').split(' ')[0];
 		var thisSection = $('#' + bodyPart + '-cyberware');
 		$('#' + bodyPart + '-cyberware').stop().slideToggle(300);
 		$(this).toggleClass('active');
+		if ( $(this).hasClass('active') ) $(this).attr('src',  'images/cyber'+ bodyPart + '-hover.png');
+		else if ( $(this).hasClass('modded') && $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ bodyPart + '-modded.png');
+		else $(this).attr('src',  'images/cyber'+ bodyPart + '.png');
+		if ( $('#cyber-mods > div:not(#cyber-intro):visible').length === 1 ) $('#cyber-intro').stop().slideToggle(300);
+		else if ( $('#cyber-intro').is(':visible') ) $('#cyber-intro').stop().slideToggle(300);
 	});
-	$('#cyberware').on('keyup', '.essence .editable', function(){
-		var bodyPart = $(this).closest('.cyberware').attr('class').split(' ')[1];
-		var emptyMods = $(this).closest('.cyberware').children('essence').text('0').length + $(this).closest('.cyberware').children('essence').text('').length;
-		console.log($(this).text());
-		if ( $(this).text() ) {
-			$('#cyber-mannequin img.' + bodyPart).addClass('modded');
-		} else if ( emptyMods == 0 ) {
-			$('#cyber-mannequin img.' + bodyPart).removeClass('modded');
+	cyberware.on('keyup', '.essence .editable', function(){
+		var cyberParent = $(this).closest('.cyberware');
+		var bodyPart = cyberParent.attr('class').split(' ')[1];
+		var emptyMods = 0;
+		for (var i = 0; i < cyberParent.children('.essence').length; i++) {
+			if ( Number($(this).text()) ) emptyMods++;
 		}
+		if ( emptyMods ) $('#cyber-mannequin img.' + bodyPart).addClass('modded');
+		else $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
 	});
 	//Highlight spells and keep track of spell count
 	spellBook.on('click', '.spell', function() {
 		if ( $(this).hasClass('required') == false && $(this).hasClass('selected') == false && selectedSpellCount < availSpellCount ) {
 			$(this).addClass('selected');
 			++selectedSpellCount;
-			if ( $('#spellbook .filters #selected').hasClass('clicked') == false ) {
-				$(this).slideToggle(500);
-			}
+			if ( $('#spellbook .filters #selected').hasClass('clicked') == false ) $(this).slideToggle(500);
 		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
 			$('.spell-list .spell[data-spellid="' + $(this).attr('id') + '"]').remove();
 			$('.item-list tr[data-spellid="' + $(this).attr('id') + '"]').remove();
 			$(this).removeClass('selected');
 			--selectedSpellCount;
-			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) {
-				$(this).slideToggle(500);
-			}
+			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) $(this).slideToggle(500);
 		}
 		resetAbilityCounters();
 		populateSpellLists();
 	});
 	//Show modals on click
-	$('#buttons .button, .modal-background, .modal, .modal-header .button').click( function(e) {
+	$('#buttons .modal-button, .modal-background, .modal, .modal-header .button').click( function(e) {
 		if(e.target !== e.currentTarget) return;
 		var modal;
 		if ( $(this).attr('id') ) {
@@ -1899,15 +1969,27 @@ $(function() {
 		}
 		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
 	});
+	$('#open-options').click( function() {
+		$('#character-options').slideToggle({
+			duration: 200, 
+			start: function() {
+				$(this).css('display', 'flex');
+			}
+		});
+	});
+	enableCyberware.click( function() {
+		$(this).toggleClass('clicked');
+		cyberware.slideToggle(200);
+	});
 	filterButtons.click( function() {
 		var spellState = $(this).attr('id');
 		if ( spellState != "available" ) $('#spellbook .spell.' + spellState).slideToggle(500);
 		else $('#spellbook .spell').not('.required, .selected').slideToggle(500);
 		$(this).toggleClass('clicked');
 	});
-	//Show tooltips on hover when using a mouse
-	//Show tooltips on click when using touch
+	//Listerers for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
+		//Show a sliding tooltip on click
 		spellHotbars.on('click', '.spell', function() {
 			var hotbar = $(this);
 			var hotbarWidth = hotbar.width();
@@ -1942,6 +2024,16 @@ $(function() {
 			tooltip.css('width', hotbarWidth - 40 );
 		});
 	} else {
+		//Highlight the current bodypart on mouseover
+		$('#cyber-mannequin img').hover( function() {
+			var thisSection = $(this).attr('class').split(' ')[0];
+			if ( $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ thisSection + '-hover.png');
+		}, function() {
+			var thisSection = $(this).attr('class').split(' ')[0];
+			if ( $(this).hasClass('modded') && $(this).hasClass('active') == false) $(this).attr('src',  'images/cyber'+ thisSection + '-modded.png');
+			else if ( $(this).hasClass('modded') == false && $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ thisSection + '.png');
+		});
+		//Show tooltips on hover
 		function tooltipPosition(targetElement,tooltip) {
 			var fromLeft = targetElement.pageX - 20;
 			var windowWidth = $(window).width();
