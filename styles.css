@@ -1071,10 +1071,7 @@ tr.gu-mirror:hover .editable {
 	visibility: visible!important;
 }
 .hidden-section {
-	max-height: 0;
-	max-width: 0;
-	opacity: 0;
-	visibility: hidden;
+	display: none;
 }
 .secondary-button > div:hover {
 	box-shadow: inset 0 0 0 1px var(--secondary-button-hover);

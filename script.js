@@ -1739,10 +1739,20 @@ $(function() {
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
+		var extraVisible = extraAttributes.is(':visible');
+		var hybridVisible = hybridSection.is(':visible');
+		var onlyChild = extraAttributes.children(':visible').length == 2;
 		$(this).toggleClass('clicked');
-		genderFocusRow.removeClass('last-row');
 		hybridSection.show();
-		if ( extraAttributes.is(':visible') ) {
+		if ( !extraVisible ) {
+			hybridSection.css({
+				'height' : 'auto',
+				'overflow' : 'initial',
+				'width' : '153px'
+			});
+			extraAttributes.slideToggle(300);
+		} else if ( extraVisible && !hybridVisible ) {
+			genderFocusRow.removeClass('last-row');
 			hybridSection.stop().animate({
 				'width' : '153px'
 			}, {
@@ -1754,29 +1764,32 @@ $(function() {
 					hybridSection.css('overflow','initial');
 				}
 			});
-		} else {
-			hybridSection.css({
-				'height' : 'auto',
-				'overflow' : 'initial',
-				'width' : '153px'
+		} else if ( extraVisible && hybridVisible && onlyChild ) {
+			genderFocusRow.addClass('last-row');
+			extraAttributes.slideToggle({
+					duration: 300,
+					done: function() {
+						hybridSection.removeAttr('style');
+					}
 			});
-			extraAttributes.slideToggle(300);
 		}
-		if ( extraAttributes.children(':visible').length == 0 ) {
-			if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
-		}
-		secSpecies.val('');	
 		//If the Hybrid button is clicked and terran is not the primary species,
 		//hide and reset the genetic variation field
 		if ( priSpeciesVal != 6 ) {
 			variantsSection.addClass('hidden-section');
 			variants.val('');
-			if ( extraAttributes.children(':visible').length == 0 ) {
-				if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
+			if ( extraVisible && hybridVisible && onlyChild ) {
 				genderFocusRow.addClass('last-row');
+				extraAttributes.slideToggle({
+						duration: 300,
+						done: function() {
+							hybridSection.removeAttr('style');
+						}
+				});
 			}
 		}
 		//Repopulate all of the fields after cliking the toggle
+		secSpecies.val('');	
 		populateSpecies();
 		populateTypes();
 		populateFoci();
