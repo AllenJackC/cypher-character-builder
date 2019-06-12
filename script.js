@@ -796,14 +796,14 @@ function populateVariants() {
 	else resTypes = resPriTypes;
 	//If user picks Terran, show genetic variations
 	if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
-		extraAttributes.removeClass('hidden-section');
+		if ( extraAttributes.is(':hidden') ) extraAttributes.slideToggle(300);
 		variantsSection.removeClass('hidden-section');
 		$('#gender-focus').removeClass('last-row');
 	} else {
 		variants.val('');
 		variantsSection.addClass('hidden-section');
 		if ( extraAttributes.children(':visible').length == 0 ) {
-			extraAttributes.addClass('hidden-section');
+			if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
 			genderFocusRow.addClass('last-row');
 		}
 	}
@@ -1762,7 +1762,9 @@ $(function() {
 			});
 			extraAttributes.slideToggle(300);
 		}
-		//if ( extraAttributes.children(':visible').length == 0 ) extraAttributes.addClass('hidden-section');
+		if ( extraAttributes.children(':visible').length == 0 ) {
+			if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
+		}
 		secSpecies.val('');	
 		//If the Hybrid button is clicked and terran is not the primary species,
 		//hide and reset the genetic variation field
@@ -1770,15 +1772,15 @@ $(function() {
 			variantsSection.addClass('hidden-section');
 			variants.val('');
 			if ( extraAttributes.children(':visible').length == 0 ) {
-				//extraAttributes.addClass('hidden-section');
+				if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
 				genderFocusRow.addClass('last-row');
 			}
 		}
 		//Repopulate all of the fields after cliking the toggle
-		//populateSpecies();
-		//populateTypes();
-		//populateFoci();
-		//populateVariants();
+		populateSpecies();
+		populateTypes();
+		populateFoci();
+		populateVariants();
 		//If only the secondary species is selected when clicked, hide the reset button
 		if ( !secSpecies.val() && !priSpeciesVal && !types.val() ) {
 			resetSection.addClass('hidden-section');
@@ -1809,7 +1811,9 @@ $(function() {
 		loreButton.text('Lore');
 		spellbookButton.text('Abilities');
 		filterButtons.addClass('clicked');
-		if ( extraAttributes.children(':visible').length == 0 ) extraAttributes.addClass('hidden-section');
+		if ( extraAttributes.children(':visible').length == 0 ) {
+			if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
+		}
 	});
 	//Populate relevant lists each time the select list is interacted
 	//with, populate spells, and show the reset button
@@ -1838,14 +1842,14 @@ $(function() {
 	foci.on('change', function() {
 		var curFocus = priFoci.val();
 		if ( curFocus == "E2" ) {
-			extraAttributes.removeClass('hidden-section');
+			if ( extraAttributes.is(':hidden') ) extraAttributes.slideToggle(300);
 			secFociSection.removeClass('hidden-section');
 			$('#gender-focus').removeClass('last-row');
 		} else {
 			secFociSection.addClass('hidden-section');
 			secFoci.val('');
 			if ( extraAttributes.children(':visible').length == 0 ) {
-				extraAttributes.addClass('hidden-section');
+				if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
 				genderFocusRow.addClass('last-row');
 			}
 		}

@@ -339,6 +339,9 @@ div.proficiency {
 #extra-attributes, #extra-attributes .attribute {
 	display: none;
 }
+#extra-attributes .attribute {
+	width: 0;
+}
 #character-attributes {
 	max-width: 577px;
 	margin: 15px 15px 10px 15px;
