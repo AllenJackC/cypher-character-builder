@@ -1736,57 +1736,113 @@ $(function() {
 			firstDrag = true;
 		});
 	notesDrake;
-	//[H] button to show or hide secondary species dropdown and reset its value
-	hybridButton.click(function(){
-		var priSpeciesVal = priSpecies.val();
+	function showExtraAttribute(section,width,secondSection) {
 		var extraVisible = extraAttributes.is(':visible');
-		var hybridVisible = hybridSection.is(':visible');
-		var onlyChild = extraAttributes.children(':visible').length == 2;
-		$(this).toggleClass('clicked');
-		hybridSection.show();
+		var sectionVisible = section.is(':visible');
+		var onlyChild = extraAttributes.children(':visible').length === 2;
+		var allVisible = extraAttributes.children(':visible').length === 4;
 		if ( !extraVisible ) {
-			hybridSection.css({
+			section.show();
+			section.css({
 				'height' : 'auto',
 				'overflow' : 'initial',
-				'width' : '153px'
+				'width' : width
 			});
-			extraAttributes.slideToggle(300);
-		} else if ( extraVisible && !hybridVisible ) {
-			genderFocusRow.removeClass('last-row');
-			hybridSection.stop().animate({
-				'width' : '153px'
+			extraAttributes.slideToggle({
+					duration: 300,
+					start: function() {
+						genderFocusRow.removeClass('last-row');
+					}
+			});
+		} else if ( extraVisible && !sectionVisible ) {
+			section.show();
+			section.stop().animate({
+				'width' : width
 			}, {
 				duration: 300,
 				start: function() {
-					hybridSection.css('height','auto');
+					section.css('height','auto');
 				},
 				complete: function() {
-					hybridSection.css('overflow','initial');
+					section.css('overflow','initial');
 				}
 			});
-		} else if ( extraVisible && hybridVisible && onlyChild ) {
-			genderFocusRow.addClass('last-row');
+		} else if ( extraVisible && sectionVisible && !onlyChild ) {
+			 if ( !secondSection ) {
+				console.log('just hybrid');
+				section.stop().animate({
+					'width' : '0'
+				}, {
+					duration: 300,
+					start: function() {
+						section.css('overflow','hidden');
+					},
+					complete: function() {
+						section.removeAttr('style');
+						section.hide();
+					}
+				});
+			 } else if ( secondSection && allVisible ) {
+				section.stop().animate({
+					'width' : '0'
+				}, {
+					duration: 300,
+					start: function() {
+						section.css('overflow','hidden');
+					},
+					complete: function() {
+						section.removeAttr('style');
+						section.hide();
+					}
+				});
+				secondSection.stop().animate({
+					'width' : '0'
+				}, {
+					duration: 300,
+					start: function() {
+						section.css('overflow','hidden');
+					},
+					complete: function() {
+						section.removeAttr('style');
+						section.hide();
+					}
+				});
+			} else if ( secondSection && !allVisible ) {
+				extraAttributes.slideToggle({
+					duration: 300,
+					done: function() {
+						section.removeAttr('style');
+						secondSection.removeAttr('style');
+						section.hide();
+						secondSection.hide();
+						genderFocusRow.addClass('last-row');
+					}
+				});
+			}
+		} else if ( extraVisible && sectionVisible && onlyChild ) {
 			extraAttributes.slideToggle({
 					duration: 300,
 					done: function() {
-						hybridSection.removeAttr('style');
+						section.removeAttr('style');
+						section.hide();
+						genderFocusRow.addClass('last-row');
 					}
 			});
 		}
+	}
+	//[H] button to show or hide secondary species dropdown and reset its value
+	hybridButton.click(function(){
+		var priSpeciesVal = priSpecies.val();
+		$(this).toggleClass('clicked');
 		//If the Hybrid button is clicked and terran is not the primary species,
 		//hide and reset the genetic variation field
 		if ( priSpeciesVal != 6 ) {
-			variantsSection.addClass('hidden-section');
+			console.log('Not Terran');
+			showExtraAttribute(hybridSection,"153px",variantsSection);
 			variants.val('');
-			if ( extraVisible && hybridVisible && onlyChild ) {
-				genderFocusRow.addClass('last-row');
-				extraAttributes.slideToggle({
-						duration: 300,
-						done: function() {
-							hybridSection.removeAttr('style');
-						}
-				});
-			}
+		} else {
+			console.log('Terran');
+			showExtraAttribute(hybridSection,"153px");
 		}
 		//Repopulate all of the fields after cliking the toggle
 		secSpecies.val('');	
