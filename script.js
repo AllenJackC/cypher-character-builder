@@ -168,7 +168,7 @@ function populateSkillsSelect() {
 function addSkill(skillName,inabilityNumber) {
 	if ( !skillName ) skillName = "";
 	if ( !inabilityNumber ) inabilityNumber = "1";
-	skillList.append(
+	var skillToAdd =
 		'<div class="spell">' +
 			'<div class="wrapper">' +
 				'<div class="handle">&#9776;</div>' +
@@ -185,8 +185,8 @@ function addSkill(skillName,inabilityNumber) {
 					'</div>' +
 				'</div>' +
 			'</div>' +
-		'</div>'
-	);
+		'</div>';
+	$(skillToAdd).appendTo(skillList).stop().animate({'width' : '100%'},300);
 	populateSkillsSelect();
 }
 //Populate all of the active item select fields
@@ -304,7 +304,12 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceC
 				'</div>' +
 			'</div>' +
 		'</div>'
-	$('#' + bodyPart).append(cyberwareToAdd);
+	$(cyberwareToAdd).appendTo($('#' + bodyPart)).slideToggle({
+		duration: 300,
+		complete: function() {
+			$(this).css('min-height','170px');
+		}
+	});
 	populateCyberwareSelect();
 }
 //Add a blank item, unless variables are parsed
@@ -348,7 +353,7 @@ function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType
 				'<div class="slots">' + slotNumber + '</div>' +
 			'</td>' +
 		'</tr>';
-	if ( spellID ) $(itemToAdd).insertAfter('#equipment table tr:first-child')
+	if ( spellID ) $(itemToAdd).insertAfter('#equipment table tr:first-child');
 	else inventoryList.append(itemToAdd);
 	populateInventorySelect();
 }
@@ -794,19 +799,6 @@ function populateVariants() {
 	//restrict types based on that secondary focus
 	if ( resSecTypes ) resTypes = resSecTypes;
 	else resTypes = resPriTypes;
-	//If user picks Terran, show genetic variations
-	if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
-		if ( extraAttributes.is(':hidden') ) extraAttributes.slideToggle(300);
-		variantsSection.removeClass('hidden-section');
-		$('#gender-focus').removeClass('last-row');
-	} else {
-		variants.val('');
-		variantsSection.addClass('hidden-section');
-		if ( extraAttributes.children(':visible').length == 0 ) {
-			if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
-			genderFocusRow.addClass('last-row');
-		}
-	}
 	//If the currently selected type or focus has to do with Elementalist
 	//disabled all genetic variations exception for the one
 	if ( resTypes ) {
@@ -1128,9 +1120,11 @@ function populateSpells() {
 	populateSpellLists();
 }
 //Populate each individual spell list on the main character sheet
-function populateSpellLists() {
+function populateSpellLists() {	
 	//Move each spell to their respective lists
 	$('#spellbook .spell').each( function() {
+		var talentsVisible = talentsSection.parent('.spell-list').is(':visible');
+		var actionsEnablersVisible = actionsEnablersSection.parent('.spell-list').is(':visible');
 		var spellID = $(this).attr('id');
 		var spellOrigin = '<span class="origin">' + $('.origin', this).text() + '</span>';
 		var isEnabled = $(this).hasClass('required') || $(this).hasClass('selected');
@@ -1159,14 +1153,13 @@ function populateSpellLists() {
 				//Action & enabler spell hotbars & tooltips
 				if ( (typeCheck == "Action" || typeCheck == "Enabler") && ($('#actions-enablers .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
 					var spellCost = '<span>' + spellListDatabase[i].cost + '</span>';
-					actionsEnablersSection.append(
+					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
 							'<div class="wrapper">' +
 								spellName +
 								spellCost +
 							'</div>' +
-						'</div>'
-					);
+						'</div>';
 					actionsEnablersSection.after(
 						'<div data-spellid="' + spellID + '" class="tooltip">' +
 							tooltipName + 
@@ -1181,15 +1174,28 @@ function populateSpellLists() {
 							spellOrigin +
 						'</div>'
 					);
+					//Show the spell list section if there are spells in the list, otherwise hide it
+					if ( !actionsEnablersVisible ) {
+						$(spellToAdd).appendTo(actionsEnablersSection).css('width','100%');
+						actionsEnablersSection.parent('.spell-list').stop().slideToggle(300);
+					} else {
+						$(spellToAdd).appendTo(actionsEnablersSection).stop().animate({
+							'width' : '100%'
+						}, {
+							duration: 300,
+							step: function() {
+								$(this).css('height','34px');
+							}
+						});
+					}
 				//Talent spell hotbars & tooltips
 				} else if ( typeCheck == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
-					talentsSection.append(
+					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
 							'<div class="wrapper">' +
 								spellName +
 							'</div>' +
-						'</div>'
-					);
+						'</div>';
 					talentsSection.after(
 						'<div data-spellid="' + spellID + '" class="tooltip">' +
 							tooltipName + 
@@ -1203,6 +1209,20 @@ function populateSpellLists() {
 							spellOrigin +
 						'</div>'
 					);
+					//Show the spell list section if there are spells in the list, otherwise hide it
+					if ( !talentsVisible ) {
+						$(spellToAdd).appendTo(talentsSection).css('width','100%');
+						talentsSection.parent('.spell-list').stop().slideToggle(300);
+					} else {
+						$(spellToAdd).appendTo(talentsSection).stop().animate({
+							'width' : '100%'
+						}, {
+							duration: 300,
+							step: function() {
+								$(this).css('height','34px');
+							}
+						});
+					}
 				//Add items to the iventory list
 				} else if ( typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var itemType = spellListDatabase[i].itemtype;
@@ -1285,7 +1305,7 @@ function populateSpellLists() {
 					var bodyPartImg = $('#cyber-mannequin img.' + bodyPart);
 					bodyPartImg.addClass('modded');
 					enableCyberware.toggleClass('clicked');
-					cyberware.slideToggle(200);
+					cyberware.stop().slideToggle(200);
 					if ( bodyPartImg.hasClass('active') == false ) bodyPartImg.attr('src',  'images/cyber'+ bodyPart + '-modded.png');
 				} else if ( typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
@@ -1296,11 +1316,32 @@ function populateSpellLists() {
 	});
 	//Remove any items or spells not in the current spelllist
 	$('.spell-list .spell, .item-list tr, .tooltip, .cyberware').each( function() {
+		var thisBar = $(this);
+		var thisHotbarList = thisBar.parent();
+		var thisSpellList = thisBar.closest('.spell-list');
 		var spellID = parseInt($(this).data('spellid'));
 		if ( spellID && $.inArray(spellID,spellsList) < 0 ) {
-			$(this).remove();
-			if ( $(this).hasClass('cyberware') ) {
-				var bodyPart = $(this).attr('class').split(' ')[1];
+			if ( thisBar.hasClass('spell') ) {
+				if ( thisSpellList.is(':visible') && thisHotbarList.children().length <= 1 ) {
+					 thisSpellList.stop().slideToggle({
+						duration: 300,
+						complete: function() {
+							thisBar.remove();
+						}
+					});
+				} else {	
+					thisBar.stop().slideToggle({
+						duration: 300,
+						start: function() {
+							thisBar.css('max-height','34px');
+						},
+						complete: function() {
+							thisBar.remove();
+						}
+					});
+				}
+			} else if ( thisBar.hasClass('cyberware') ) {
+				var bodyPart = thisBar.attr('class').split(' ')[1];
 				var emptyMods = 0;
 				for (var i = 0; i < $('.cyberware.' + bodyPart).children('.essence').length; i++) {
 					if ( Number($(this).text()) ) emptyMods++;
@@ -1309,14 +1350,44 @@ function populateSpellLists() {
 					$('#cyber-mannequin img.' + bodyPart).removeClass('modded');
 					$('#cyber-mannequin img.' + bodyPart).attr('src',  'images/cyber'+ bodyPart + '.png')
 				}
+			} else {
+				thisBar.remove();
 			}
 		}
 	});
-	//Show the spell list section if there are spells in the list, otherwise hide it
-	$('.hotbars').each(function() {
-		if ( $(this).is(':empty') ) $(this).parent('.spell-list').addClass('hidden-section');
-		else $(this).parent('.spell-list').removeClass('hidden-section');
-	});
+}
+//Show extra attributes sections
+function showExtraAttribute(section,width,animate) {
+	if ( animate ) {
+		section.stop().animate({
+			'width' : width
+		}, {
+			duration: 300,
+			start: function() {
+				section.show();
+			}
+		});
+	} else {
+		section.css({
+			'display' : 'block',
+			'width' : width
+		});
+	}
+}
+//Hide extra attributes sections
+function hideExtraAttribute(section,animate) {
+	if ( animate ) {
+		section.stop().animate({
+			'width' : '0'
+		}, {
+			duration: 300,
+			complete: function() {
+				section.removeAttr('style');
+			}
+		});
+	} else {
+		section.removeAttr('style');
+	}
 }
 //Primary on load function
 $(function() {
@@ -1451,12 +1522,12 @@ $(function() {
 				if ( el.hasAttribute("data-spellid") && target.classList.contains('delete-space') ) return false;
 				else return true;
 			}, moves: function(el,container,handle) {
-				if ( isTouchDevice ) return handle.classList.contains('handle');
+				if ( isTouchDevice() ) return handle.classList.contains('handle');
 				else return true;
 			}
 		}).on('drag', function(el,source) {
 			el.style.display = "flex";
-			skillsDeleteSpace.slideToggle(150);
+			skillsDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) {
 				firstDrag = false;
 				containerHeight = skillList.height();
@@ -1493,7 +1564,7 @@ $(function() {
 				'height' : '34px'
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
@@ -1501,7 +1572,7 @@ $(function() {
 				'height' : '34px'
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		});
@@ -1510,24 +1581,24 @@ $(function() {
 			isContainer: function(el) {
 				return el.classList.contains('cyber-section');
 			}, moves: function(el,container,handle) {
-				if ( isTouchDevice ) return handle.classList.contains('handle');
+				if ( isTouchDevice() ) return handle.classList.contains('handle');
 				else return true;
 			}, accepts: function (el,target,source,sibling) {
 				if ( target.classList.contains('cyber-section') && target.classList.contains('cyber-section') ) return false;
 				else return true;
 			}
 		}).on('drag', function(el,source) {
-			cyberwareDeleteSpace.slideToggle(150);
+			cyberwareDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
 				cyberwareDeleteSpace.stop().animate({
-					'height' : $('.gu-transit').css('height')
+					'height' : $('.gu-transit').height
 				}, 150);
 				cyberwareDeleteSpace.css('margin-top', String(parseInt($('.gu-transit').css('height').replace('px','')) + 40) + 'px');
 			} else {
 				cyberwareDeleteSpace.stop().animate({
-					'height' : '200px'
+					'height' : '185px'
 				}, 150);
 				cyberwareDeleteSpace.css('margin-top', '');
 			}
@@ -1543,29 +1614,29 @@ $(function() {
 			}
 			cyberwareDeleteSpace.stop().animate({
 				'margin-top' : '10px',
-				'height' : '200px'
+				'height' : '185px'
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
 			cyberwareDeleteSpace.stop().animate({
-				'height' : '200px'
+				'height' : '185px'
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		});
 	cyberwareDrake;
 	var itemsDrake = dragula([inventoryBody[0], itemsDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-				if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+				if ( isTouchDevice() ) return handle.classList.contains('mobile-handle');
 				else return true;
 			}
 		}).on('drag', function(el,source) {
-			itemsDeleteSpace.slideToggle(150);
+			itemsDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 			if ( inventoryBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
 			else defaultContainerHeight = "194px";
@@ -1606,7 +1677,7 @@ $(function() {
 				'height' : defaultContainerHeight
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
@@ -1614,18 +1685,18 @@ $(function() {
 				'height' : defaultContainerHeight
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		});
 	itemsDrake;
 	var artifactsDrake = dragula([artifactsBody[0], artifactsDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-				if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+				if ( isTouchDevice() ) return handle.classList.contains('mobile-handle');
 				else return true;
 			}
 		}).on('drag', function(el,source) {
-			artifactsDeleteSpace.slideToggle(150);
+			artifactsDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 			if ( artifactsBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
 			else defaultContainerHeight = "194px";
@@ -1666,7 +1737,7 @@ $(function() {
 				'height' : defaultContainerHeight
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
@@ -1674,18 +1745,18 @@ $(function() {
 				'height' : defaultContainerHeight
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		});
 	artifactsDrake;
 	var notesDrake = dragula([notesBody[0], notesDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-				if ( isTouchDevice ) return handle.classList.contains('mobile-handle');
+				if ( isTouchDevice() ) return handle.classList.contains('mobile-handle');
 				else return true;
 			}
 		}).on('drag', function(el,source) {
-			notesDeleteSpace.slideToggle(150);
+			notesDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
@@ -1723,7 +1794,7 @@ $(function() {
 				'height' : '36px'
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
@@ -1731,133 +1802,93 @@ $(function() {
 				'height' : '36px'
 			}, 100, function() {
 				$(this).css('height','');
-				$(this).slideToggle(200);
+				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
 		});
 	notesDrake;
-	function showExtraAttribute(section,width,secondSection) {
-		var extraVisible = extraAttributes.is(':visible');
-		var sectionVisible = section.is(':visible');
-		var onlyChild = extraAttributes.children(':visible').length === 2;
-		var allVisible = extraAttributes.children(':visible').length === 4;
-		if ( !extraVisible ) {
-			section.show();
-			section.css({
-				'height' : 'auto',
-				'overflow' : 'initial',
-				'width' : width
-			});
-			extraAttributes.slideToggle({
-					duration: 300,
-					start: function() {
-						genderFocusRow.removeClass('last-row');
-					}
-			});
-		} else if ( extraVisible && !sectionVisible ) {
-			section.show();
-			section.stop().animate({
-				'width' : width
-			}, {
-				duration: 300,
-				start: function() {
-					section.css('height','auto');
-				},
-				complete: function() {
-					section.css('overflow','initial');
-				}
-			});
-		} else if ( extraVisible && sectionVisible && !onlyChild ) {
-			 if ( !secondSection ) {
-				console.log('just hybrid');
-				section.stop().animate({
-					'width' : '0'
-				}, {
-					duration: 300,
-					start: function() {
-						section.css('overflow','hidden');
-					},
-					complete: function() {
-						section.removeAttr('style');
-						section.hide();
-					}
-				});
-			 } else if ( secondSection && allVisible ) {
-				section.stop().animate({
-					'width' : '0'
-				}, {
-					duration: 300,
-					start: function() {
-						section.css('overflow','hidden');
-					},
-					complete: function() {
-						section.removeAttr('style');
-						section.hide();
-					}
-				});
-				secondSection.stop().animate({
-					'width' : '0'
-				}, {
-					duration: 300,
-					start: function() {
-						section.css('overflow','hidden');
-					},
-					complete: function() {
-						section.removeAttr('style');
-						section.hide();
-					}
-				});
-			} else if ( secondSection && !allVisible ) {
-				extraAttributes.slideToggle({
-					duration: 300,
-					done: function() {
-						section.removeAttr('style');
-						secondSection.removeAttr('style');
-						section.hide();
-						secondSection.hide();
-						genderFocusRow.addClass('last-row');
-					}
-				});
-			}
-		} else if ( extraVisible && sectionVisible && onlyChild ) {
-			extraAttributes.slideToggle({
-					duration: 300,
-					done: function() {
-						section.removeAttr('style');
-						section.hide();
-						genderFocusRow.addClass('last-row');
-					}
-			});
-		}
-	}
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
+		var extraAttributesVisible = extraAttributes.is(':visible');
+		var hybridVisible = hybridSection.is(':visible');
+		var variantsVisible = variantsSection.is(':visible');
+		var secFociVisible = secFociSection.is(':visible');
 		$(this).toggleClass('clicked');
-		//If the Hybrid button is clicked and terran is not the primary species,
-		//hide and reset the genetic variation field
-		if ( priSpeciesVal != 6 ) {
-			console.log('Not Terran');
-			showExtraAttribute(hybridSection,"153px",variantsSection);
-			variants.val('');
-		} else {
-			console.log('Terran');
-			showExtraAttribute(hybridSection,"153px");
+		//Show the section and show the hybrid selector
+		if ( !extraAttributesVisible ) {
+			showExtraAttribute(hybridSection,"145px",false);
+			extraAttributes.stop().slideToggle({
+				duration: 300,
+				start: function() {
+					genderFocusRow.removeClass('last-row');
+				}
+			});
+		//Show the hybrid selector if it's not showing
+		} else if ( !hybridVisible ) {
+			showExtraAttribute(hybridSection,"145px",true);
+		//If no other attributes are showing except the hybrid selector
+		} else if ( hybridVisible && !variantsVisible && !secFociVisible ) {
+			extraAttributes.stop().slideToggle({
+				duration: 300,
+				done: function() {
+					secSpecies.val('');
+					hideExtraAttribute(hybridSection,false);
+					genderFocusRow.addClass('last-row');
+				}
+			});
+		//If only the variants and hybrid selectors are showing
+		} else if ( hybridVisible && variantsVisible && !secFociVisible ) {
+			//If the primary species is not Terran
+			if ( priSpeciesVal != 6 ) {
+				extraAttributes.stop().slideToggle({
+					duration: 300,
+					done: function() {
+						secSpecies.val('');
+						variants.val('');
+						hideExtraAttribute(hybridSection,false);
+						hideExtraAttribute(variantsSection,false);
+						genderFocusRow.addClass('last-row');
+					}
+				});
+			//If the primary species is Terran
+			} else {
+				secSpecies.val('');
+				hideExtraAttribute(hybridSection,true);
+			}
+		//If only the secondary foci and hybrid selectors are showing
+		} else if ( hybridVisible && !variantsVisible && secFociVisible ) {
+			secSpecies.val('');
+			hideExtraAttribute(hybridSection,true);
+		//If all selectors are showing
+		} else if ( hybridVisible && variantsVisible && secFociVisible ) {
+			//If the primary species is not Terran
+			if ( priSpeciesVal != 6 ) {
+				secSpecies.val('');
+				variants.val('');
+				hideExtraAttribute(hybridSection,true);
+				hideExtraAttribute(variantsSection,true);
+			//If the primary species is Terran
+			} else {
+				secSpecies.val('');
+				hideExtraAttribute(hybridSection,true);
+			}
 		}
 		//Repopulate all of the fields after cliking the toggle
-		secSpecies.val('');	
 		populateSpecies();
 		populateTypes();
 		populateFoci();
 		populateVariants();
 		//If only the secondary species is selected when clicked, hide the reset button
-		if ( !secSpecies.val() && !priSpeciesVal && !types.val() ) {
-			resetSection.addClass('hidden-section');
-		}
+		if ( secSpecies.val() && !priSpeciesVal && !types.val() ) resetSection.addClass('hidden-section');
 	});
 	//Reset button to reset all values and hide extra sections
 	//Does not affect hybrid toggle
 	resetButton.click(function(){
+		var extraAttributesVisible = extraAttributes.is(':visible');
+		var hybridVisible = hybridSection.is(':visible');
+		var variantsVisible = variantsSection.is(':visible');
+		var secFociVisible = secFociSection.is(':visible');
 		availSpellCount = 4;
 		selectedSpellCount = 0;
 		descriptors.val('');
@@ -1867,9 +1898,7 @@ $(function() {
 		priFoci.val('');
 		secFoci.val('');
 		variants.val('');
-		secFociSection.addClass('hidden-section');
 		resetSection.addClass('hidden-section');
-		variantsSection.addClass('hidden-section');
 		descriptors.trigger('chosen:updated');
 		setStoryArc(curArc);
 		populateSpecies();
@@ -1880,8 +1909,18 @@ $(function() {
 		loreButton.text('Lore');
 		spellbookButton.text('Abilities');
 		filterButtons.addClass('clicked');
-		if ( extraAttributes.children(':visible').length == 0 ) {
-			if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
+		if ( hybridVisible ) {
+			if ( variantsVisible ) hideExtraAttribute(variantsSection,true);
+			if ( secFociVisible ) hideExtraAttribute(secFociSection,true);
+		} else if ( extraAttributesVisible ) {
+			extraAttributes.stop().slideToggle({
+				duration: 300,
+				start: function() {
+					if ( variantsVisible ) hideExtraAttribute(variantsSection,false);
+					if ( secFociVisible ) hideExtraAttribute(secFociSection,false);
+					genderFocusRow.removeClass('last-row');
+				}
+			});
 		}
 	});
 	//Populate relevant lists each time the select list is interacted
@@ -1891,6 +1930,12 @@ $(function() {
 		populateSpells();
 	});
 	species.on('change', function() {
+		var priSpeciesVal = priSpecies.val();
+		var secSpeciesVal = secSpecies.val();
+		var extraAttributesVisible = extraAttributes.is(':visible');
+		var variantsVisible = variantsSection.is(':visible');
+		var hybridVisible = hybridSection.is(':visible');
+		var secFociVisible = secFociSection.is(':visible');
 		resetSection.removeClass('hidden-section');
 		populateSpecies();
 		populateTypes();
@@ -1898,6 +1943,37 @@ $(function() {
 		populateVariants();
 		populateSpells();
 		loreButton.text('New Lore');
+		//If user picks Terran, show genetic variations
+		if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
+			if ( !extraAttributesVisible ) {
+				showExtraAttribute(variantsSection,"137px",false);
+				extraAttributes.stop().slideToggle({
+					duration: 300,
+					start: function() {
+						genderFocusRow.removeClass('last-row');
+					}
+				});
+			//Show the variants selector if it's not showing
+			} else if ( !variantsVisible ) {
+				showExtraAttribute(variantsSection,"137px",true);
+			}
+		} else {
+			//If no other attributes are showing except the variants selector
+			if ( variantsVisible && !hybridVisible && !secFociVisible ) {
+				extraAttributes.stop().slideToggle({
+					duration: 300,
+					done: function() {
+						variants.val('');
+						hideExtraAttribute(variantsSection,false);
+						genderFocusRow.addClass('last-row');
+					}
+				});
+			//If either of the other selectors are showing
+			} else if ( variantsVisible && (hybridVisible || secFociVisible) ) {
+				variants.val('');
+				hideExtraAttribute(variantsSection,true);
+			}
+		}
 	});
 	types.on('change', function() {
 		resetSection.removeClass('hidden-section');
@@ -1909,17 +1985,53 @@ $(function() {
 		loreButton.text('New Lore');
 	});
 	foci.on('change', function() {
+		var extraAttributesVisible = extraAttributes.is(':visible');
+		var variantsVisible = variantsSection.is(':visible');
+		var hybridVisible = hybridSection.is(':visible');
+		var secFociVisible = secFociSection.is(':visible');
 		var curFocus = priFoci.val();
-		if ( curFocus == "E2" ) {
-			if ( extraAttributes.is(':hidden') ) extraAttributes.slideToggle(300);
-			secFociSection.removeClass('hidden-section');
-			$('#gender-focus').removeClass('last-row');
-		} else {
-			secFociSection.addClass('hidden-section');
-			secFoci.val('');
-			if ( extraAttributes.children(':visible').length == 0 ) {
-				if ( extraAttributes.is(':visible') ) extraAttributes.slideToggle(300);
-				genderFocusRow.addClass('last-row');
+		//If user picks Forges a New Bond, show second focus
+		if ( curFocus == "E2" && $(this).attr('id') == "foci" ) {
+			if ( !extraAttributesVisible ) {
+				showExtraAttribute(secFociSection,"241px",false);
+				extraAttributes.stop().slideToggle({
+					duration: 300,
+					start: function() {
+						genderFocusRow.removeClass('last-row');
+					}
+				});
+			//Show the second focus selector if it's not showing
+			} else if ( !secFociVisible ) {
+				showExtraAttribute(secFociSection,"241px",true);
+			//If no other attributes are showing except the second focus selector
+			} else if ( secFociVisible && !hybridVisible && !variantsVisible ) {
+				extraAttributes.stop().slideToggle({
+					duration: 300,
+					done: function() {
+						secFoci.val('');
+						hideExtraAttribute(secFociSection,false);
+						genderFocusRow.addClass('last-row');
+					}
+				});
+			//If either of the other selectors are showing
+			} else if ( secFociVisible && (variantsVisible || hybridVisible) ) {
+				secFoci.val('');
+				hideExtraAttribute(secFociSection,true);
+			}
+		} else if ( $(this).attr('id') == "foci" ) {
+			if ( secFociVisible && !hybridVisible && !variantsVisible ) {
+				extraAttributes.stop().slideToggle({
+					duration: 300,
+					done: function() {
+						secFoci.val('');
+						hideExtraAttribute(secFociSection,false);
+						genderFocusRow.addClass('last-row');
+					}
+				});
+			//If either of the other selectors are showing
+			} else if ( secFociVisible && (variantsVisible || hybridVisible) ) {
+				secFoci.val('');
+				hideExtraAttribute(secFociSection,true);
 			}
 		}
 		resetSection.removeClass('hidden-section');
@@ -2010,13 +2122,13 @@ $(function() {
 		if ( $(this).hasClass('required') == false && $(this).hasClass('selected') == false && selectedSpellCount < availSpellCount ) {
 			$(this).addClass('selected');
 			++selectedSpellCount;
-			if ( $('#spellbook .filters #selected').hasClass('clicked') == false ) $(this).slideToggle(500);
+			if ( $('#spellbook .filters #selected').hasClass('clicked') == false ) $(this).stop().slideToggle(500);
 		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
 			$('.spell-list .spell[data-spellid="' + $(this).attr('id') + '"]').remove();
 			$('.item-list tr[data-spellid="' + $(this).attr('id') + '"]').remove();
 			$(this).removeClass('selected');
 			--selectedSpellCount;
-			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) $(this).slideToggle(500);
+			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) $(this).stop().slideToggle(500);
 		}
 		resetAbilityCounters();
 		populateSpellLists();
@@ -2043,7 +2155,7 @@ $(function() {
 		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
 	});
 	$('#open-options').click( function() {
-		$('#character-options').slideToggle({
+		$('#character-options').stop().slideToggle({
 			duration: 200, 
 			start: function() {
 				$(this).css('display', 'flex');
@@ -2052,12 +2164,12 @@ $(function() {
 	});
 	enableCyberware.click( function() {
 		$(this).toggleClass('clicked');
-		cyberware.slideToggle(200);
+		cyberware.stop().slideToggle(200);
 	});
 	filterButtons.click( function() {
 		var spellState = $(this).attr('id');
-		if ( spellState != "available" ) $('#spellbook .spell.' + spellState).slideToggle(500);
-		else $('#spellbook .spell').not('.required, .selected').slideToggle(500);
+		if ( spellState != "available" ) $('#spellbook .spell.' + spellState).stop().slideToggle(500);
+		else $('#spellbook .spell').not('.required, .selected').stop().slideToggle(500);
 		$(this).toggleClass('clicked');
 	});
 	//Listerers for mobile vs listeners for desktop
@@ -2068,10 +2180,10 @@ $(function() {
 			var hotbarWidth = hotbar.width();
 			var spellID = hotbar.data('spellid');
 			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
-			$('.tooltip:visible').not(tooltip).slideToggle(500);
+			$('.tooltip:visible').not(tooltip).stop().slideToggle(500);
 			if (tooltip.is(':visible')) {
 				hotbar.css('width', hotbarWidth);
-				tooltip.slideToggle(500, function() {
+				tooltip.stop().slideToggle(500, function() {
 					hotbar.css('width','');
 					tooltip.appendTo($('body'));
 				});
@@ -2079,7 +2191,7 @@ $(function() {
 				hotbar.css('width',hotbarWidth);
 				tooltip.appendTo(hotbar);
 				tooltip.css('width', hotbarWidth - 40);
-				tooltip.slideToggle({
+				tooltip.stop().slideToggle({
 						duration: 500, 
 						start: function() {
 							$(this).css('display', 'flex');

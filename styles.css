@@ -336,10 +336,11 @@ div.proficiency {
 	max-width: 996px;
 	padding: 0 15px;
 }
-#extra-attributes, #extra-attributes .attribute {
+#extra-attributes, #extra-attributes .attribute, .spell-list {
 	display: none;
 }
 #extra-attributes .attribute {
+	padding-right: 8px;
 	width: 0;
 }
 #character-attributes {
@@ -593,9 +594,10 @@ div.proficiency {
 	/*width: 28px;*/
 }
 .cyberware {
-	min-height: 170px;
+	display: none;
+	font-size: 14px;
+    font-family: 'Consolas', monospace;
 	padding: 0 20px 15px 15px;
-	transition: width 0.2 linear;
 }
 .cyberware > div {
 	align-items: center;
@@ -730,8 +732,8 @@ div.proficiency {
     text-align: center;
 }
 tr.gu-mirror {
-	display: flex;
 	align-items: center;
+	display: flex;
 }
 .gu-mirror td {
 	display: block;
@@ -863,6 +865,7 @@ tr.gu-mirror {
 	padding: 0;
 	pointer-events: auto;
 	transition: padding 0.2s linear,  margin 0.2s linear;
+	width: 0;
 }
 .spell .chosen-container {
 	font-size: 16px!important;
@@ -894,7 +897,7 @@ tr.gu-mirror {
 	height: 34px;
 }
 #cyberware .delete-space {
-	height: 200px;
+	height: 185px;
 }
 .delete-space:after {
 	content: 'DROP HERE TO REMOVE';
@@ -909,7 +912,7 @@ tr.gu-mirror {
 	line-height: 34px;
 }
 #cyberware .delete-space:after {
-	line-height: 200px;
+	line-height: 185px;
 }
 .modal-background {
 	background: var(--black-translucent);
