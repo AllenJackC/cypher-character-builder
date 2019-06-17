@@ -371,12 +371,6 @@ div.proficiency {
 	max-width: 577px;
     margin: 15px 15px 10px 15px;
 }
-.stat-pool {
-	background: url(images/statpool-bg.png);
-	background-position: 0 60px;
-    background-repeat: no-repeat;
-    height: 245px;
-}
 .stat-pool .label {
 	padding: 10px;
 	text-align: center;
