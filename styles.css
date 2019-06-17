@@ -122,6 +122,9 @@ h3 {
 	line-height: 1em;
 	padding-right: 15px;
 }
+h3.edge-label {
+    padding-right: 0;
+}
 h4 {
 	color: var(--selected);
 	flex-basis: 70%;
@@ -367,14 +370,27 @@ div.proficiency {
 #stat-pools {
 	display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 15px;
+    grid-gap: 30px;
 	max-width: 577px;
     margin: 15px 15px 10px 15px;
 }
-.stat-pool .label {
-	padding: 10px;
-	text-align: center;
-    text-transform: uppercase;
+#might {
+	background: url('images/might-bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+#speed {
+	background: url('images/speed-bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+#intellect {
+	background: url('images/intellect-bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 #reset-button {
 	right: -45px
@@ -566,6 +582,101 @@ div.proficiency {
 }
 #footer-links a {
 	margin: 0 5px;
+}
+.stat-pool {
+	min-width: 172px;
+}
+.stat-pool .label {
+    border-bottom: solid 3px var(--secondary-button);
+	padding: 10px 10px 10px 10px;
+	pointer-events: auto;
+    text-align: center;
+    text-transform: uppercase;
+}
+.pool {
+	align-items: center;
+    color: var(--white);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+	pointer-events: auto;
+}
+.current-value {
+	cursor: text;
+	border-bottom: 2px dashed transparent;
+	font-family: var(--header-font);
+    font-size: 60px;
+    line-height: 70px;
+    padding: 5px 5px 0 5px;
+	pointer-events: auto;
+    text-align: right;
+}
+.slash {
+	color: var(--secondary-button);
+	font-family: var(--header-font);
+    font-size: 28px;
+    padding-top: 30px;
+}
+.pool-value {
+	color: var(--secondary-button);
+	font-family: var(--header-font);
+    font-size: 28px;
+    padding-top: 40px;
+}
+.edge {
+	align-items: baseline;
+    color: var(--white);
+	display: flex;
+    font-family: var(--header-font);
+    font-size: 24px;
+	font-variant: small-caps;
+    justify-content: center;
+    padding: 10px 0;
+}
+.edge-value {
+	padding-right: 3px;
+}
+.add-remove {
+	display: none;
+	margin-bottom: -25px;
+}
+.add-point, .remove-point {
+	align-self: center;
+	background: var(--button);
+    cursor: pointer;
+	font-family: var(--header-font);
+    font-size: 30px;
+	height: 18px;
+    line-height: 17px;
+	margin: 10px;
+	overflow: hidden;
+    padding: 2px;
+	pointer-events: auto;
+	text-align: center;
+	width: 18px;
+}
+.remove-point {
+	font-size: 45px;
+	line-height: 6px;
+}
+.edge .add-point, .edge .remove-point {
+	display: none;
+	margin: 4px 10px;
+}
+.secondary-stats {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	margin: 15px 15px 10px 15px;
+}
+.secondary-stats > div {
+	color: var(--white);
+    display: flex;
+    font-family: var(--header-font);
+    font-size: 30px;
+    justify-content: center;
+    width: 150px;
 }
 .character-option {
 	align-items: center;
@@ -1069,6 +1180,13 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 #cyber-mannequin img:active {
 	filter: brightness(90%);
 }
+.add-point.disabled, .remove-point.disabled {
+	background: var(--button)!important;
+	cursor: default;
+	filter: grayscale(80%);
+	opacity: 0.7;
+	pointer-events: none;
+}
 .character-option:hover .checkbox {
 	background: var(--selected-hover);
 }
@@ -1090,11 +1208,11 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	box-shadow: inset 0 0 0 1px var(--secondary-button-active);
 	color: var(--secondary-button-active);
 }
-.secondary-button .clicked:hover, .button:hover, .spell:hover .header {
+.secondary-button .clicked:hover, .button:hover, .spell:hover .header, .add-point:hover, .remove-point:hover {
 	background: var(--button-hover);
 	box-shadow: none;
 }
-.secondary-button .clicked:active, .button:active, .spell:active .header {
+.secondary-button .clicked:active, .button:active, .spell:active .header, .add-point:active, .remove-point:active {
 	background: var(--button-active);
 	box-shadow: none;
 }
@@ -1132,7 +1250,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 .add-cyberware:active {
 	color: var(--selected-active);
 }
-.cyberware > div:hover .editable {
+.cyberware > div:hover .editable, .stat-pool:hover .current-value {
 	border-color: var(--white);	
 }
 @media (hover: none) {
@@ -1294,7 +1412,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 }
 /* Responsive CSS */
 @media only screen and (max-width: 1024px) {
-	#character-attributes {
+	#character-attributes, #stat-pools {
 		margin: 15px auto 0;
 	}
 	#stats-attributes {
@@ -1403,6 +1521,11 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		padding: 0;
 		width: auto;
 	}
+	#stat-pools {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
 	#character-attributes, .item-list, #cyberware {
 		width: calc(100% - 30px);
 		max-width: unset;
@@ -1425,6 +1548,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	#footer p:not(:nth-child(5)) {
 		margin-bottom: 10px;
+	}
+	.stat-pool {
+		margin: 15px 15px 0 15px;
 	}
 	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop, .gu-transit .chosen-container, .gu-transit .chosen-single, .gu-transit .chosen-single span, .gu-transit .chosen-drop	{
 		width: 100%!important;

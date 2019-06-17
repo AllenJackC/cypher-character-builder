@@ -2058,7 +2058,7 @@ $(function() {
 		else inabilityFields.hide();
 	});
 	//Filter inputs for level, weight. essence and value fields
-	$('.item-list, #skill-list, #cyberware').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .essence .editable, .inability', function(e){
+	$('.item-list, #skill-list, #cyberware, .pool').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .essence .editable, .inability, .current-value', function(e){
 		var thisVal = $(this).html();
 		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
         var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
@@ -2081,6 +2081,13 @@ $(function() {
             default:
                 e.preventDefault();
         }
+	});
+	//Make sure the current pool value doesn't exceed the current
+	//maximum pool value
+	$('.current-value').on('keyup blur paste', function() {
+		var curVal = $(this).html();
+		var maxVal = $(this).closest('.pool').children('.pool-value').text();
+		if ( curVal > maxVal ) $(this).html(maxVal);
 	});
 	//Add skills and items when respective button is clicked
 	addSkillButton.click( function() { addSkill(); });
