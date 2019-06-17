@@ -40,13 +40,13 @@
 	<div id="warning" style="padding: 10px; background: red; color: white;text-align:center">
 		❗ PLEASE WAIT WHILE THE DATABASE PULLS ❗
 	</div>
+	<div id="title">
+		<h1>Immortal Freedom</h1>
+		<h5>a <a target="_blank" href="https://www.cypher-system.com">Cypher System</a> homebrew campaign character sheet</h5>
+	</div>
 	<div id="main">
-		<div id="title">
-			<h1>Immortal Freedom</h1>
-			<h5>a <a target="_blank" href="https://www.cypher-system.com">Cypher System</a> homebrew campaign character sheet</h5>
-		</div>
 		<!-- Attributes & Stats -->
-		<div class="content-column">
+		<div id="stats-attributes">
 			<!-- Character Attributes -->
 			<div id="character-attributes">
 				<!-- NAME -->
@@ -596,6 +596,54 @@
 					</div>
 				</div>
 			</div>
+			<!-- Stats -->
+			<div id="stat-pools">
+				<!-- Might -->
+				<div class="stat-pool" id="might">
+					<h2 class="label">Might</h2>
+					<div class="current-value" contenteditable="true">0</div>
+					<div class="edge-pool">
+						<div class="pool">
+							<div class="pool-value" contenteditable="true">0</div>
+							<div class="pool-label">Pool</div>
+						</div>
+						<div class="edge">
+							<div class="edge-value" contenteditable="true">0</div>
+							<div class="edge-label">Edge</div>
+						</div>
+					</div>
+				</div>
+				<!-- Speed -->
+				<div class="stat-pool" id="speed">
+					<h2 class="label">Speed</h2>
+					<div class="current-value" contenteditable="true">0</div>
+					<div class="edge-pool">
+						<div class="pool">
+							<div class="pool-value" contenteditable="true">0</div>
+							<div class="pool-label">Pool</div>
+						</div>
+						<div class="edge">
+							<div class="edge-value" contenteditable="true">0</div>
+							<div class="edge-label">Edge</div>
+						</div>
+					</div>
+				</div>
+				<!-- Intellect -->
+				<div class="stat-pool" id="intellect">
+					<h2 class="label">Intellect</h2>
+					<div class="current-value" contenteditable="true">0</div>
+					<div class="edge-pool">
+						<div class="pool">
+							<div class="pool-value" contenteditable="true">0</div>
+							<div class="pool-label">Pool</div>
+						</div>
+						<div class="edge">
+							<div class="edge-value" contenteditable="true">0</div>
+							<div class="edge-label">Edge</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- Buttons -->
 			<div id="buttons">
 				<div class="button modal-button" id="open-spellbook">
@@ -610,45 +658,52 @@
 			</div>
 			<!-- Options -->
 			<div id="character-options">
-				<div id="enable-cyberware" class="character-option">
-					<div class="checkbox"></div>
-					<div>Cyberware</div>
+				<div id="cyberware-option">
+					<div id="enable-cyberware" class="character-option">
+						<div class="checkbox"></div>
+						<div>Cyberware</div>
+					</div>
+					<em>You cannot disable the cyberware interface while you have cyberware installed.</em>
+					<div id="cyberware-tooltip">
+						<h4>Cyberware Interface</h4>
+						<span class="description">
+							Toggle the cyberware interface. Cyberware is an additional customization option, but has some drawbacks.
+							<em>You cannot disable the cyberware interface while you have cyberware installed.</em>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>
-		<!-- Skills Sidebar -->
-		<div class="content-column">
-			<!-- Skills -->
-			<div id="skill-list">
-				<div class="list-header">
-					<div class="header">
-						<img src="images/skills.png">
-						<h2>Skills</h2>
-					</div>
-					<div class="button" id="add-skill">
-						Add Skill
-					</div>
+		<!-- Skills -->
+		<div id="skill-list">
+			<div class="list-header">
+				<div class="header">
+					<img src="images/skills.png">
+					<h2>Skills</h2>
 				</div>
-				<div class="hotbars" id="skills">
-					<div class="spell" style="width:100%">
-						<div class="wrapper">
-							<div class="handle">&#9776;</div>
-							<div class="name" contenteditable="true"></div>
-							<div class="proficiency">
-								<div class="plus-symbol">+</div>
-								<div class="inability" contenteditable="true">1</div>
-								<select>
-									<option value="I">Inability</option>
-									<option selected value="P">Practiced</option>
-									<option value="T">Trained</option>
-									<option value="S">Specialized</option>
-								</select>
-							</div>
+				<div class="button" id="add-skill">
+					Add Skill
+				</div>
+			</div>
+			<div class="hotbars" id="skills">
+				<div class="spell" style="width:100%">
+					<div class="wrapper">
+						<div class="handle">&#9776;</div>
+						<div class="name" contenteditable="true"></div>
+						<div class="proficiency">
+							<div class="plus-symbol">+</div>
+							<div class="inability" contenteditable="true">1</div>
+							<select>
+								<option value="I">Inability</option>
+								<option selected value="P">Practiced</option>
+								<option value="T">Trained</option>
+								<option value="S">Specialized</option>
+							</select>
 						</div>
 					</div>
 				</div>
-				<div class="delete-space"></div>
 			</div>
+			<div class="delete-space"></div>
 		</div>
 		<!-- Actions & Enablers -->
 		<div class="spell-list">
@@ -687,7 +742,7 @@
 						<th>VALUE</th>
 						<th>WEIGHT</th>
 					</tr>
-					<tr class="item first">
+					<tr class="item">
 						<td class="arrow mobile-handle"></td>
 						<td class="equip">
 							<select>
@@ -696,7 +751,7 @@
 								<option value="E">Equipped</option>
 							</select>
 						</td>
-						<td class="name mobile-handle">
+						<td class="name">
 							<div class="editable mobile-handle" contenteditable="true"></div>
 						</td>
 						<td class="type">
@@ -744,13 +799,13 @@
 						<th>DEPLETION</th>
 						<th>WEIGHT</th>
 					</tr>
-					<tr class="item first">
+					<tr class="item">
 						<td class="arrow mobile-handle"></td>
 						<td class="level">
 							<div class="mobile-label">Level:</div>
 							<div class="editable" contenteditable="true">1</div>
 						</td>
-						<td class="name mobile-handle">
+						<td class="name">
 							<div class="editable mobile-handle" contenteditable="true"></div>
 						</td>
 						<td class="effect">
@@ -786,20 +841,16 @@
 					<img class="head" src="images/cyberhead.png" alt="Configure head cyberware" />
 					<img class="core" src="images/cybercore.png" alt="Configure core cyberware" />
 					<img class="leftarm" src="images/cyberleftarm.png" alt="Configure left arm cyberware" />
-					<img class="lefthand" src="images/cyberlefthand.png" alt="Configure left hand cyberware" />
 					<img class="rightarm" src="images/cyberrightarm.png" alt="Configure right arm cyberware" />
-					<img class="righthand" src="images/cyberrighthand.png" alt="Configure right hand cyberware" />
 					<img class="leftleg" src="images/cyberleftleg.png" alt="Configure left leg cyberware" />
-					<img class="leftfoot" src="images/cyberleftfoot.png" alt="Configure left foot cyberware" />
 					<img class="rightleg" src="images/cyberrightleg.png" alt="Configure right leg cyberware" />
-					<img class="rightfoot" src="images/cyberrightfoot.png" alt="Configure right foot cyberware" />
 				</div>
 				<!-- Body Parts -->
 				<div id="cyber-mods">
 					<div id="cyber-intro">
 						<p><span class="blue-text">init</span> <span class="yellow-text">CyberMod System</span> v 1.7.706</p>
 						<p>Select the body part you would like to modify.</p>
-						<p><span class="yellow-text">!CAUTION!</span> Cyberware provides you with additional abilities or improves your existing abilities, but taxes the body or the mind in the process.</p>
+						<p><span class="yellow-text">!CAUTION!</span> Cyberware provides improves your body's natural abilities or allows you perform unique actions, but taxes the body or the mind in the process.</p>
 						<p><span class="red-text">!WARNING!</span> Cybernetic modifications reduce your Essence, which makes you more vulnerable to mental attacks and Divine Magic.</p>
 					</div>
 					<!-- Skin Cyberware -->
@@ -830,24 +881,10 @@
 							<div class="add-cyberware">addMod()</div>
 						</div>
 					</div>
-					<!-- Left Hand Cyberware -->
-					<div class="cyber-section" id="lefthand-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/leftHand</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
 					<!-- Right Arm Cyberware -->
 					<div class="cyber-section" id="rightarm-cyberware">
 						<div class="cyber-header">
 							<div><span class="yellow-text">#//</span>./cyberMod/rightArm</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<!-- Right Hand Cyberware -->
-					<div class="cyber-section" id="righthand-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/rightHand</div>
 							<div class="add-cyberware">addMod()</div>
 						</div>
 					</div>
@@ -858,24 +895,10 @@
 							<div class="add-cyberware">addMod()</div>
 						</div>
 					</div>
-					<!-- Left Foot Cyberware -->
-					<div class="cyber-section" id="leftfoot-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/leftFoot</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
 					<!-- Right Leg Cyberware -->
 					<div class="cyber-section" id="rightleg-cyberware">
 						<div class="cyber-header">
 							<div><span class="yellow-text">#//</span>./cyberMod/rightLeg</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<!-- Left Foot Cyberware -->
-					<div class="cyber-section" id="rightfoot-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/rightFoot</div>
 							<div class="add-cyberware">addMod()</div>
 						</div>
 					</div>
@@ -900,8 +923,8 @@
 						<th></th>
 						<th></th>
 					</tr>
-					<tr class="item first">
-						<td class="arrow mobile-handle"></td>
+					<tr class="item">
+						<td class="arrow mobile-handle hide-me"></td>
 						<td class="note">
 							<img class="pin mobile-handle" src="images/note-pin.png" />
 							<div class="editable" contenteditable="true"></div>

@@ -34,6 +34,7 @@ var spellBook;
 var spellbookButton;
 var loreButton;
 var enableCyberware;
+var cyberwareTooltip;
 var modalBackground;
 var spellsList;
 var actionsEnablersSection;
@@ -44,6 +45,7 @@ var addCyberwareButton;
 var cyberware;
 var cyberwareSection;
 var cyberBodyParts;
+var cyberwareImages;
 var cyberwareDeleteSpace;
 var addItemButton;
 var inventoryList;
@@ -228,53 +230,38 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceC
 		case "core":
 		partOptions = 
 			'<option value="ST">"+3 Might"</option>' +
+			'<option value="MW">"Medium Weapon"</option>' +
 			'<option value="HW">"Heavy Weapon"</option>';
 		break;	
 		case "leftarm":
 		partOptions = 
 			'<option value="ST">"+1 Might"</option>' +
+			'<option value="LW">"Light Weapon"</option>' +
 			'<option value="MW">"Medium Weapon"</option>';
 		break;	
 		case "rightarm":
 		partOptions = 
 			'<option value="ST">"+1 Might"</option>' +
+			'<option value="LW">"Light Weapon"</option>' +
 			'<option value="MW">"Medium Weapon"</option>';
-		break;	
-		case "lefthand":
-		partOptions =
-			'<option value="ST">"+1 Speed"</option>' +
-			'<option value="LW">"Light Weapon"</option>';
-		break;	
-		case "righthand":
-		partOptions =
-			'<option value="ST">"+1 Speed"</option>' +
-			'<option value="LW">"Light Weapon"</option>';
-		break;	
+		break;
 		case "leftleg":
 		partOptions = 
 			'<option value="ST">"+2 Speed"</option>' +
+			'<option value="LW">"Light Weapon"</option>' +
 			'<option value="MW">"Medium Weapon"</option>';
 		break;	
 		case "rightleg":
 		partOptions = 
 			'<option value="ST">"+2 Speed"</option>' +
+			'<option value="LW">"Light Weapon"</option>' +
 			'<option value="MW">"Medium Weapon"</option>';
-		break;	
-		case "leftfoot":
-		partOptions = 
-			'<option value="ST">"+1 Speed"</option>' +
-			'<option value="LW">"Light Weapon"</option>';
-		break;	
-		case "rightfoot":
-		partOptions = 
-			'<option value="ST">"+1 Speed"</option>' +
-			'<option value="LW">"Light Weapon"</option>';
-		break;	
+		break;
 	}
 	var cyberwareToAdd =
 		'<div class="cyberware ' + bodyPart.replace('-cyberware','') + '"' + spellID + '>' +
 			'<div class="function">' +
-				'<div class="cyber-label"><span class="blue-text handle">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span></div>' +
+				'<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span><span class="mobile-handle">&#9776;</span></div>' +
 				'<div class="text-wrapper">' +
 					'<div contenteditable="true" class="editable">' + cyberwareFunction + '</div>' +
 				'</div>' +
@@ -321,7 +308,7 @@ function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType
 	if ( !itemWeight ) itemWeight = "0";
 	if ( !slotNumber ) slotNumber = "slots";
 	var itemToAdd =
-		'<tr class="item"' + spellID + '>' +
+		'<tr class="item"' + spellID + ' style="width: 0">' +
 			'<td class="arrow mobile-handle"></td>' +
 			'<td class="equip">' +
 				'<select>' +
@@ -330,7 +317,7 @@ function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType
 					'<option value="E">Equipped</option>' +
 				'</select>' +
 			'</td>' +
-			'<td class="name mobile-handle">' +
+			'<td class="name">' +
 				'<div class="editable mobile-handle" contenteditable="true">' + itemName + '</div>' +
 			'</td>' +
 			'<td class="type">' +
@@ -374,7 +361,7 @@ function addArtifact(spellID,itemLevel,itemName,itemEffect,itemDepletion,itemWei
 				'<div class="mobile-label">Level:</div>' +
 				'<div class="editable" contenteditable="true">' + itemLevel + '</div>' +
 			'</td>' +
-			'<td class="name mobile-handle">' +
+			'<td class="name">' +
 				'<div class="editable mobile-handle" contenteditable="true">' + itemName + '</div>' +
 			'</td>' +
 			'<td class="effect">' +
@@ -400,7 +387,7 @@ function addNote(spellID,note) {
 	if ( !note ) note = "";
 	var noteToAdd =
 		'<tr class="item"' + spellID + '>' +
-			'<td class="arrow mobile-handle"></td>' +
+			'<td class="arrow mobile-handle hide-me"></td>' +
 			'<td class="note">' +
 				'<img class="pin mobile-handle" src="images/note-pin.png" />' +
 				'<div class="editable" contenteditable="true">' + note + '</div>' +
@@ -1132,7 +1119,7 @@ function populateSpellLists() {
 			if ( spellListDatabase[i].id === spellID && isEnabled ) {
 				var spellName = spellListDatabase[i].name;
 				var tooltipName = '<h4 class="name">' + spellName + '</h4>';
-				spellName = '<span>' + spellName + '</span>';
+				spellName = '<span class="spell-handle">' + spellName + '</span>';
 				var itemName = spellListDatabase[i].itemname;
 				var spellTier = spellListDatabase[i].tier;
 				var typeCheck = spellListDatabase[i].type;
@@ -1152,10 +1139,10 @@ function populateSpellLists() {
 				if ( spellCooldown ) spellCooldown = "<span>" + spellCooldown + "</span>";
 				//Action & enabler spell hotbars & tooltips
 				if ( (typeCheck == "Action" || typeCheck == "Enabler") && ($('#actions-enablers .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
-					var spellCost = '<span>' + spellListDatabase[i].cost + '</span>';
+					var spellCost = '<span class="spell-handle">' + spellListDatabase[i].cost + '</span>';
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
-							'<div class="wrapper">' +
+							'<div class="wrapper spell-handle">' +
 								spellName +
 								spellCost +
 							'</div>' +
@@ -1192,7 +1179,7 @@ function populateSpellLists() {
 				} else if ( typeCheck == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
-							'<div class="wrapper">' +
+							'<div class="wrapper spell-handle">' +
 								spellName +
 							'</div>' +
 						'</div>';
@@ -1304,8 +1291,8 @@ function populateSpellLists() {
 					$('.type select', thisCyberware).trigger('chosen:updated');
 					var bodyPartImg = $('#cyber-mannequin img.' + bodyPart);
 					bodyPartImg.addClass('modded');
-					enableCyberware.toggleClass('clicked');
-					cyberware.stop().slideToggle(200);
+					enableCyberware.addClass('clicked');
+					if ( cyberware.is(':visible') == false ) cyberware.stop().slideToggle(200);
 					if ( bodyPartImg.hasClass('active') == false ) bodyPartImg.attr('src',  'images/cyber'+ bodyPart + '-modded.png');
 				} else if ( typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
@@ -1322,33 +1309,28 @@ function populateSpellLists() {
 		var spellID = parseInt($(this).data('spellid'));
 		if ( spellID && $.inArray(spellID,spellsList) < 0 ) {
 			if ( thisBar.hasClass('spell') ) {
-				if ( thisSpellList.is(':visible') && thisHotbarList.children().length <= 1 ) {
-					 thisSpellList.stop().slideToggle({
-						duration: 300,
-						complete: function() {
-							thisBar.remove();
+				thisBar.stop().slideToggle({
+					duration: 300,
+					start: function() {
+						thisBar.css('max-height','34px');
+					},
+					complete: function() {
+						thisBar.remove();
+						if( thisSpellList.is(':visible') && thisHotbarList.is(':empty') ) {
+							 thisSpellList.stop().slideToggle(200);
 						}
-					});
-				} else {	
-					thisBar.stop().slideToggle({
-						duration: 300,
-						start: function() {
-							thisBar.css('max-height','34px');
-						},
-						complete: function() {
-							thisBar.remove();
-						}
-					});
-				}
+					}
+				});
 			} else if ( thisBar.hasClass('cyberware') ) {
 				var bodyPart = thisBar.attr('class').split(' ')[1];
 				var emptyMods = 0;
+				thisBar.remove();
 				for (var i = 0; i < $('.cyberware.' + bodyPart).children('.essence').length; i++) {
 					if ( Number($(this).text()) ) emptyMods++;
 				}
 				if ( !emptyMods ) {
 					$('#cyber-mannequin img.' + bodyPart).removeClass('modded');
-					$('#cyber-mannequin img.' + bodyPart).attr('src',  'images/cyber'+ bodyPart + '.png')
+					if ( $('#cyber-mannequin img.' + bodyPart).hasClass('active') == false ) $('#cyber-mannequin img.' + bodyPart).attr('src',  'images/cyber'+ bodyPart + '.png')
 				}
 			} else {
 				thisBar.remove();
@@ -1429,6 +1411,7 @@ $(function() {
 	loreButton = $('#open-archives');
 	spellModal = $('#spellbook-background');
 	enableCyberware = $('#enable-cyberware');
+	cyberwareTooltip = $('#cyberware-tooltip');
 	actionsEnablersSection = $('#actions-enablers');
 	talentsSection = $('#talents');
 	spellHotbars = $('.spell-list .hotbars');
@@ -1436,6 +1419,7 @@ $(function() {
 	cyberware = $('#cyberware');
 	cyberwareSection = $('#cyber-mods');
 	cyberBodyParts = $('.cyber-section');
+	cyberwareImages = $('#cyber-mannequin img');
 	cyberwareDeleteSpace = $('#cyberware .delete-space');
 	addItemButton = $('#add-item');
 	inventoryList = $('#equipment table');
@@ -1515,15 +1499,25 @@ $(function() {
 	populateCyberwareSelect();
 	populateInventorySelect();
 	populateSkillsSelect();
-	dragula([actionsEnablersSection[0]]);
-	dragula([talentsSection[0]]);
+	//Actions & Enablers Dragula
+	dragula([actionsEnablersSection[0]], {
+		moves: function(el,container,handle) {
+			return handle.classList.contains('spell-handle');
+		}
+	});
+	//Talents Dragula
+	dragula([talentsSection[0]], {
+		moves: function(el,container,handle) {
+			return handle.classList.contains('spell-handle');
+		}
+	});
+	//Skills Dragula
 	var skillsDrake = dragula([skillList[0], skillsDeleteSpace[0]], {
 			accepts: function(el,target,source,sibling) {
 				if ( el.hasAttribute("data-spellid") && target.classList.contains('delete-space') ) return false;
 				else return true;
 			}, moves: function(el,container,handle) {
-				if ( isTouchDevice() ) return handle.classList.contains('handle');
-				else return true;
+				return handle.classList.contains('handle');
 			}
 		}).on('drag', function(el,source) {
 			el.style.display = "flex";
@@ -1577,12 +1571,12 @@ $(function() {
 			firstDrag = true;
 		});
 	skillsDrake;
+	//Cyberware Dragula
 	var cyberwareDrake = dragula([cyberwareDeleteSpace[0]],{
 			isContainer: function(el) {
 				return el.classList.contains('cyber-section');
 			}, moves: function(el,container,handle) {
-				if ( isTouchDevice() ) return handle.classList.contains('handle');
-				else return true;
+				return handle.classList.contains('mobile-handle');
 			}, accepts: function (el,target,source,sibling) {
 				if ( target.classList.contains('cyber-section') && target.classList.contains('cyber-section') ) return false;
 				else return true;
@@ -1611,6 +1605,7 @@ $(function() {
 					if ( Number($(this).text()) ) emptyMods++;
 				}
 				if ( !emptyMods ) $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
+				if ( isTouchDevice() && $('.cyberware').length === 0 ) $('#cyberware-option em').hide();
 			}
 			cyberwareDeleteSpace.stop().animate({
 				'margin-top' : '10px',
@@ -1630,26 +1625,29 @@ $(function() {
 			firstDrag = true;
 		});
 	cyberwareDrake;
+	//Inventory Dragula
 	var itemsDrake = dragula([inventoryBody[0], itemsDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-				if ( isTouchDevice() ) return handle.classList.contains('mobile-handle');
-				else return true;
+				return handle.classList.contains('mobile-handle');
 			}
 		}).on('drag', function(el,source) {
 			itemsDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
-			if ( inventoryBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
-			else defaultContainerHeight = "194px";
+			if ( inventoryBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "31px";
+			else defaultContainerHeight = "208px";
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
-				itemsDeleteSpace.stop().animate({
-					'height' : $('.gu-transit').css('height')
-				}, 150);
 				if ( inventoryBody.children('tr:first-child').is(':visible') ) {
+					itemsDeleteSpace.stop().animate({
+						'height' : $('.gu-transit').css('height')
+					}, 150);
 					inventoryList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
 				} else {
-					if ( !isEven(inventoryBody.children().length) ) inventoryList.css('padding-bottom', $('.gu-transit').outerHeight(true));
-					else inventoryList.css('padding-bottom', $('.gu-transit').outerHeight(true)- 194);
+					itemsDeleteSpace.stop().animate({
+						'height' : String(parseInt($('.gu-transit').css('height').replace('px','')) - 20) + 'px'
+					}, 150);
+					if ( !isEven(inventoryBody.children().length) || addItemButton.css('width') == "40px" ) inventoryList.css('padding-bottom', $('.gu-transit').outerHeight(true) + 11);
+					else inventoryList.css('padding-bottom', $('.gu-transit').outerHeight(true) - 208);
 				}
 			} else {
 				itemsDeleteSpace.stop().animate({
@@ -1690,26 +1688,29 @@ $(function() {
 			firstDrag = true;
 		});
 	itemsDrake;
+	//Artifacts Dragula
 	var artifactsDrake = dragula([artifactsBody[0], artifactsDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-				if ( isTouchDevice() ) return handle.classList.contains('mobile-handle');
-				else return true;
+				return handle.classList.contains('mobile-handle');
 			}
 		}).on('drag', function(el,source) {
 			artifactsDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
-			if ( artifactsBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "36px";
+			if ( artifactsBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "31px";
 			else defaultContainerHeight = "194px";
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
-				artifactsDeleteSpace.stop().animate({
-					'height' : $('.gu-transit').css('height')
-				}, 150);
 				if ( artifactsBody.children('tr:first-child').is(':visible') ) {
+					artifactsDeleteSpace.stop().animate({
+						'height' : $('.gu-transit').css('height')
+					}, 150);
 					artifactsList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
 				} else {
-					if ( !isEven(artifactsBody.children().length) ) artifactsList.css('padding-bottom', $('.gu-transit').outerHeight(true));
-					else artifactsList.css('padding-bottom', $('.gu-transit').outerHeight(true)- 194);
+					itemsDeleteSpace.stop().animate({
+						'height' : String(parseInt($('.gu-transit').css('height').replace('px','')) - 20) + 'px'
+					}, 150);
+					if ( !isEven(artifactsBody.children().length) || addArtifactButton.css('width') == "40px" ) artifactsList.css('padding-bottom', $('.gu-transit').outerHeight(true) + 11);
+					else artifactsList.css('padding-bottom', $('.gu-transit').outerHeight(true) - 208);
 				}
 			} else {
 				artifactsDeleteSpace.stop().animate({
@@ -1750,14 +1751,16 @@ $(function() {
 			firstDrag = true;
 		});
 	artifactsDrake;
+	//Notes Dragula
 	var notesDrake = dragula([notesBody[0], notesDeleteSpace[0]],{
 			moves: function(el,container,handle) {
-				if ( isTouchDevice() ) return handle.classList.contains('mobile-handle');
-				else return true;
+				return handle.classList.contains('mobile-handle');
 			}
 		}).on('drag', function(el,source) {
 			notesDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
+			if ( notesBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "31px";
+			else defaultContainerHeight = "38px";
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
 				notesDeleteSpace.stop().animate({
@@ -1770,7 +1773,7 @@ $(function() {
 				}
 			} else {
 				notesDeleteSpace.stop().animate({
-					'height' : '36px'
+					'height' : defaultContainerHeight
 				}, 150);
 				notesList.css('padding-bottom', '');
 			}
@@ -1791,7 +1794,7 @@ $(function() {
 				notesList.removeAttr('style');
 			}
 			notesDeleteSpace.stop().animate({
-				'height' : '36px'
+				'height' : defaultContainerHeight
 			}, 100, function() {
 				$(this).css('height','');
 				$(this).stop().slideToggle(200);
@@ -1799,7 +1802,7 @@ $(function() {
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
 			notesDeleteSpace.stop().animate({
-				'height' : '36px'
+				'height' : defaultContainerHeight
 			}, 100, function() {
 				$(this).css('height','');
 				$(this).stop().slideToggle(200);
@@ -2084,19 +2087,22 @@ $(function() {
 	addItemButton.click( function() { addItem(); });
 	addArtifactButton.click( function() { addArtifact(); });
 	addNoteButton.click( function() { addNote(); });
-	addCyberwareButton.click( function() { addCyberware($(this).closest('.cyber-section').attr('id')); });
+	addCyberwareButton.click( function() { 
+		addCyberware($(this).closest('.cyber-section').attr('id'));
+		if ( isTouchDevice() ) $('#cyberware-option em').show();
+	});
 	//Update slots text in carry weight to reflect amount of slots
-	$('td.weight .editable').keyup(function() {
+	$('.item-list').on('keyup', 'td.weight .editable', function() {
 		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
 		else $(this).parent('.weight').children('div:last-child').text('slots');
 	});
 	//Focus editable div fields when clicking on outter cells
-	$('td, div').click( function() {
-		$('editable', this).focus();
+	$('.item-list, #skill-list, #cyberware').on('click', 'td, div.spell, div.text-wrapper', function() {
+		$('.editable', this).focus();
 	});
 	//Highlight currently selected body part
 	//and show the section to the right
-	$('#cyber-mannequin img').click( function() {
+	cyberwareImages.click( function() {
 		var bodyPart = $(this).attr('class').split(' ')[0];
 		var thisSection = $('#' + bodyPart + '-cyberware');
 		$('#' + bodyPart + '-cyberware').stop().slideToggle(300);
@@ -2156,15 +2162,17 @@ $(function() {
 	});
 	$('#open-options').click( function() {
 		$('#character-options').stop().slideToggle({
-			duration: 200, 
+			duration: 300, 
 			start: function() {
 				$(this).css('display', 'flex');
 			}
 		});
 	});
 	enableCyberware.click( function() {
-		$(this).toggleClass('clicked');
-		cyberware.stop().slideToggle(200);
+		if ( $('.cyberware').length === 0 ) {
+			$(this).toggleClass('clicked');
+			cyberware.stop().slideToggle(500);
+		}
 	});
 	filterButtons.click( function() {
 		var spellState = $(this).attr('id');
@@ -2268,6 +2276,18 @@ $(function() {
 		resetButton.mousemove( function(targetElement){
 			isHovering = true;
 			tooltipPosition(targetElement,resetTooltip);
+		});
+		enableCyberware.hover( function(targetElement){
+			tooltipPosition(targetElement,cyberwareTooltip);
+			if ( $('.cyberware').length ) $('em', cyberwareTooltip).css('display','block');
+			else $('em', cyberwareTooltip).css('display','none')
+		}, function() {
+			isHovering = false;
+			cyberwareTooltip.removeClass('visible');
+		});
+		enableCyberware.mousemove( function(targetElement){
+			isHovering = true;
+			tooltipPosition(targetElement,cyberwareTooltip);
 		});
 	}
 });

@@ -137,6 +137,7 @@ h5 {
     font-size: 18px;
     line-height: 18px;
 	margin-left: 0.8%;
+	text-align: left;
 }
 a, a:visited {
 	pointer-events: auto;
@@ -200,7 +201,7 @@ tr, td {
 	text-align: center;
 	white-space: nowrap;
 }
-tr.item, tr.gu-mirror {
+tr.item, tr.gu-mirror, tr.gu-transit {
 	background: var(--white);
 	border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -213,6 +214,9 @@ th {
     line-height: 18px;
 	padding: 0 5px;
 }
+th:first-child {
+	width: 34px;
+}
 td {
 	order: 3;
 	padding: 5px;
@@ -221,22 +225,24 @@ td {
 }
 td.arrow:before {
 	color: var(--white);
-    content: '\0025B6';
-	cursor: move;
-	font-size: 40px;
-    left: -43px;
+    content: '\2630';
+    cursor: move;
+    font-size: 17px;
+    left: 4px;
     position: absolute;
-    top: 0;
-    transition: all 0.2s linear;
+    top: 10px;
+    transition: color 0.2s linear;
 }
 td.arrow {
-	border-color: transparent transparent transparent var(--black);
-	border-style: solid;
-	border-width: 18px 0 18px 31.2px;
-	height: 0;
-	padding: 0 10px 0 0;
-	position: relative;
-	width: 0;
+    background: var(--black);
+	border-bottom: var(--white) 5px solid;
+	border-left: var(--black) solid;
+    border-top: var(--white) 5px solid;
+    border-right: var(--white) 15px solid;
+	height: 21px;
+    padding: 0px 24px 0 0;
+    position: relative;
+    width: 0;
 }
 img.pin {
 	cursor: move;
@@ -295,16 +301,21 @@ td > div {
     line-height: 18px;
 }
 div.handle {
+	background: var(--black);
+	color: var(--button);
+	cursor: move;
 	flex-grow: 0;
-	overflow: hidden;
+	left: -10px;
 	max-width: 0;
 	order: 0;
+	overflow: hidden;
 	pointer-events: auto;
+    position: relative;
+	text-align: center;
 	transition: max-width 0.2s linear;
-	width: 24px;
+	width: 35px;
 }
 div.name {
-	margin-left: 10px;
 	width: 100%;
 }
 div.name, div.inability {
@@ -325,6 +336,7 @@ div.proficiency {
 }
 #title {
 	margin: 15px auto 10px;
+	width: fit-content;
 }
 #main {
 	align-items: flex-start;
@@ -336,6 +348,15 @@ div.proficiency {
 	max-width: 996px;
 	padding: 0 15px;
 }
+#stats-attributes {
+	flex-basis: 0;
+    flex-grow: 1;
+	height: 100%;
+}
+#character-attributes {
+	max-width: 577px;
+	margin: 15px 15px 10px 15px;
+}
 #extra-attributes, #extra-attributes .attribute, .spell-list {
 	display: none;
 }
@@ -343,9 +364,23 @@ div.proficiency {
 	padding-right: 8px;
 	width: 0;
 }
-#character-attributes {
+#stat-pools {
+	display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 15px;
 	max-width: 577px;
-	margin: 15px 15px 10px 15px;
+    margin: 15px 15px 10px 15px;
+}
+.stat-pool {
+	background: url(images/statpool-bg.png);
+	background-position: 0 60px;
+    background-repeat: no-repeat;
+    height: 245px;
+}
+.stat-pool .label {
+	padding: 10px;
+	text-align: center;
+    text-transform: uppercase;
 }
 #reset-button {
 	right: -45px
@@ -362,13 +397,13 @@ div.proficiency {
 	flex-basis: calc(100% - 30px);
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	margin: 20px 15px 0 15px;
+	margin: 25px 15px 0 15px;
 }
 #skill-list, #cyberware, .item-list, .spell-list {
 	flex-grow: 1;
 	margin: 15px 15px 10px 15px;
 }
-#skill-list .chosen-single, .item-list .chosen-single, .gu-mirror .chosen-single {
+#skill-list .chosen-single, .item-list .chosen-single, .gu-mirror:not(.cyberware) .chosen-single, .gu-transit:not(.cyberware) .chosen-single {
 	border: 0!important;
 	box-shadow: none!important;
 	height: 18px;
@@ -376,15 +411,15 @@ div.proficiency {
 	padding: 0!important;
 	width: fit-content;
 }
-#skill-list .chosen-single span, .item-list .chosen-single span, .gu-mirror .chosen-single span {
+#skill-list .chosen-single span, .item-list .chosen-single span, .gu-mirror .chosen-single span, .gu-transit .chosen-single span {
 	margin-right: 0!important;
 	text-align: center;
 	width: fit-content;
 }
-#skill-list .chosen-single > div, .item-list .chosen-single > div, .gu-mirror .chosen-single > div {
+#skill-list .chosen-single > div, .item-list .chosen-single > div, .gu-mirror .chosen-single > div, .gu-transit .chosen-single > div {
 	display: none!important;
 }
-#skill-list .chosen-drop, .item-list .chosen-drop, .gu-mirror .chosen-drop {
+#skill-list .chosen-drop, .item-list .chosen-drop, .gu-mirror .chosen-drop, .gu-transit .chosen-drop {
 	text-align: left;
 	width: fit-content;
 }
@@ -422,35 +457,19 @@ div.proficiency {
     top: 59px;
 }
 #cyber-mannequin .leftarm {
-    right: 34px;
-	top: 118px;
+    right: 7px;
+    top: 122px;
 }
 #cyber-mannequin .rightarm {
-    left: 34px;
-	top: 118px;
-}
-#cyber-mannequin .lefthand {
-	top: 236px;
-    right: 4px;
-}
-#cyber-mannequin .righthand {
-	top: 236px;
-    left: 4px;
+    left: 7px;
+    top: 122px;
 }
 #cyber-mannequin .leftleg {
-	top: 217px;
-    right: 94px;
-}
-#cyber-mannequin .rightleg {
-	top: 217px;
-    left: 94px;
-}
-#cyber-mannequin .leftfoot {
-	top: 446px;
+	top: 221px;
     right: 95px;
 }
-#cyber-mannequin .rightfoot {
-	top: 446px;
+#cyber-mannequin .rightleg {
+	top: 221px;
     left: 95px;
 }
 #cyber-mods {
@@ -585,15 +604,11 @@ div.proficiency {
 }
 .add-cyberware {
 	cursor: pointer;
-	/*font-size: 24px;
-	font-weight: 900;
-	line-height: 23px;
-	height: 24px;*/
 	pointer-events: auto;
 	text-align: center;
-	/*width: 28px;*/
 }
-.cyberware {
+.cyberware, .gu-mirror.cyberware {
+	color: var(--white);
 	display: none;
 	font-size: 14px;
     font-family: 'Consolas', monospace;
@@ -602,7 +617,6 @@ div.proficiency {
 .cyberware > div {
 	align-items: center;
 	padding-left: 20px;
-	pointer-events: auto;
 }
 .cyber-section {
 	display: none;
@@ -610,8 +624,16 @@ div.proficiency {
 .cyberware .function {
 	padding-left: 0;
 }
+.cyberware .mobile-handle {
+    cursor: move;
+	float: right;
+	font-size: 18px;
+    pointer-events: auto;
+	touch-action: none;
+}
 .cyberware .text-wrapper {
 	padding-left: 20px;
+	pointer-events: auto;
 }
 .cyberware .type {
 	display: flex;
@@ -634,7 +656,7 @@ div.proficiency {
     color: var(--light-grey)!important;
 	width: 135px;
 }
-.cyberware .chosen-single span, .cyberware.gu-mirror .chosen-single span {
+.cyberware .chosen-single span, .cyberware.gu-mirror .chosen-single span, .cyberware.gu-transit .chosen-single span {
 	width: fit-content;
 }
 .cyberware .editable {
@@ -662,11 +684,6 @@ div.proficiency {
 .blue-text {
 	color: var(--secondary-button);
 }
-.cyberware .handle {
-	cursor: move;
-	pointer-events: auto;
-	touch-action: none;
-}
 .list-header  {
 	display: flex;
 	justify-content: space-between;
@@ -678,7 +695,9 @@ div.proficiency {
 .spell-list .list-header {
 	justify-content: flex-start;
 }
-
+.spell-list .spell {
+	cursor: move;
+}
 .mobile-label {
 	border: 0!important;
 	display: none;
@@ -709,6 +728,7 @@ div.proficiency {
 }
 .wrapper {
 	flex-basis: 100%;
+	pointer-events: auto;
 }
 .plus-symbol, .inability  {
 	display: none;
@@ -743,15 +763,6 @@ tr.gu-mirror {
 .gu-mirror td.arrow {
 	flex-grow: unset;
 	align-self: stretch;
-}
-.content-column {
-	align-items: flex-start;
-	display: flex;
-	flex-basis: 0;
-    flex-grow: 1;
-	flex-wrap: wrap;
-	height: 100%;
-	justify-content: flex-start;
 }
 .row {
 	display: flex;
@@ -856,14 +867,12 @@ tr.gu-mirror {
 	margin-top: 15px;
 	position: relative;
 }
-.hotbars .spell, .gu-mirror.spell {
-	cursor: move;
+.hotbars .spell, .gu-mirror.spell, .gu-transit.spell {
 	display: flex;
 	flex-wrap: wrap;
 	margin-bottom: 2px;
 	margin-right: 0;
 	padding: 0;
-	pointer-events: auto;
 	transition: padding 0.2s linear,  margin 0.2s linear;
 	width: 0;
 }
@@ -879,15 +888,18 @@ tr.gu-mirror {
 	flex-grow: 1;
 	justify-content: space-between;
 	padding: 5px 10px;
-	pointer-events: none;
 	white-space: nowrap;
+}
+.spell .spell-handle {
+	pointer-events: auto;
+	touch-action: none;
 }
 .delete-space {
 	border: 3px dashed var(--secondary-button);
     color: var(--secondary-button);
 	display: none;
     font-weight: 900;
-	height: 36px;
+	height: 31px;
 	margin-top: 10px;
 	overflow: hidden;
 	pointer-events: auto;
@@ -901,7 +913,7 @@ tr.gu-mirror {
 }
 .delete-space:after {
 	content: 'DROP HERE TO REMOVE';
-	line-height: 34px;
+	line-height: 31px;
 	left: 0;
     position: absolute;
 	text-align: center;
@@ -1023,7 +1035,7 @@ tr:hover td.arrow:before {
 tr:hover .editable {
 	border-color: var(--black);
 }
-tr.gu-mirror:hover .editable {
+tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	border-color: var(--white);
 }
 #spellbook .spell:hover .header {
@@ -1096,13 +1108,16 @@ tr.gu-mirror:hover .editable {
 	background: var(--selected);
 	color: var(--black);
 }
+#skill-list .spell:hover .handle {
+	color: var(--selected);
+}
 .spell:hover .chosen-single, .spell:hover .chosen-drop, .spell:hover .chosen-results, .spell:hover select {
 	background: var(--selected)!important;
 	border-color: var(--selected)!important;
 	color: var(--black)!important;
 	outline-color: var(--selected)!important;
 }
-.gu-mirror:hover .proficiency .chosen-single, .gu-mirror:hover .proficiency .chosen-drop, .gu-mirror:hover .proficiency .chosen-results, .gu-mirror:hover .proficiency select {
+.gu-mirror:hover .proficiency .chosen-single, .gu-mirror:hover .proficiency .chosen-drop, .gu-mirror:hover .proficiency .chosen-results, .gu-mirror:hover .proficiency select, .gu-transit:hover .proficiency .chosen-single, .gu-transit:hover .proficiency .chosen-drop, .gu-transit:hover .proficiency .chosen-results, .gu-transit:hover .proficiency select {
 	background: var(--button)!important;
 	border-color: var(--button)!important;
 	color: var(--white)!important;
@@ -1111,11 +1126,11 @@ tr.gu-mirror:hover .editable {
 .spell:hover div.name, .spell:hover div.inability {
 	border-color: var(--black);
 }
-.gu-mirror:hover div.name, .gu-mirror:hover div.inability {
+.gu-mirror:hover div.name, .gu-mirror:hover div.inability, .gu-transit:hover div.name, .gu-transit:hover div.inability {
 	border-color: var(--button);
 }
-.spell:hover div.handle, .gu-mirror div.handle {
-	max-width: 24px;
+.spell:hover div.handle, .gu-mirror div.handle, .gu-transit div.handle {
+	max-width: 35px;
 }
 .add-cyberware:hover {
 	color: var(--selected-hover);
@@ -1131,8 +1146,18 @@ tr.gu-mirror:hover .editable {
 		color: var(--button);
 		font-size: 18px;
 	}
-	#hybrid-tooltip, #reset-tooltip {
+	#hybrid-tooltip, #reset-tooltip, #cyberware-tooltip {
 		display: none;
+	}
+	#character-options > div {
+		max-width: 230px;
+	}
+	#character-options em {
+		color: var(--secondary-button);
+		display: none;
+		font-size: 12px;
+		font-style: italic;
+		margin-top: 10px;
 	}
 	.hotbars, .hotbars .spell {
 		transition: width 0.2s linear;
@@ -1141,7 +1166,6 @@ tr.gu-mirror:hover .editable {
 		flex-basis: calc(50% - 30px);
 	}
 	.handle, .mobile-handle {
-		cursor: move;
 		pointer-events: auto;
 		touch-action: none;
 	}
@@ -1194,19 +1218,34 @@ tr.gu-mirror:hover .editable {
 		flex-basis: calc(50% - 4px);
 		text-align: right;
 	}
+	tr .editable, tr.gu-mirror .editable, tr.gu-transit .editable {
+		border-color: var(--black);
+	}
+	.cyberware > div .editable, .spell div.name, .spell div.inability {
+		border-color: var(--white);	
+	}
 }
 /* Desktop tooltip CSS */
 @media (hover: hover) {
-	#hybrid-tooltip > *, #reset-tooltip > * {
+	#hybrid-tooltip > *, #reset-tooltip > *, #cyberware-tooltip > * {
 		flex-basis: 100%;
 		margin: 2px;
 		text-align: left!important;
+	}
+	#character-options em {
+		display: none!important;
+	}
+	#cyberware-tooltip em {
+		color: var(--secondary-button);
+		display: none;
+		font-style: italic;
+		margin-top: 10px;
 	}
 	.hotbars .spell:hover, .hotbars .spell:active {
 		margin-right: -5px;
 		padding-left: 5px;
 	}
-	.tooltip, #hybrid-tooltip, #reset-tooltip {
+	.tooltip, #hybrid-tooltip, #reset-tooltip, #cyberware-tooltip {
 		align-items: baseline;
 		background: var(--black-translucent);
 		border: solid 1px var(--selected);
@@ -1264,9 +1303,18 @@ tr.gu-mirror:hover .editable {
 	#character-attributes {
 		margin: 15px auto 0;
 	}
-	.content-column {
+	#stats-attributes {
 		flex-basis: 100%;
 		width: 100%;
+	}
+	#cyber-content {
+		display: block;
+	}
+	#cyber-mannequin {
+		margin: 10px auto;
+	}
+	#cyber-mods {
+		margin: 0 auto;
 	}
 }
 @media only screen and (max-width: 637px) {
@@ -1291,7 +1339,6 @@ tr.gu-mirror:hover .editable {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 		border-radius: 0 0 5px 5px;
-		cursor: move;
 		display: flex;
 		flex-basis: 48%;
 		flex-direction: column;
@@ -1304,8 +1351,21 @@ tr.gu-mirror:hover .editable {
 		text-align: center!important;
 		width: calc(100% - 20px)!important;
 	}
-	img.pin {
+	img.pin, .mobile-label {
 		display: block;
+	}
+	td.arrow {
+		background: var(--button);
+		cursor: move;
+		border: 0;
+		height: 0;
+		order: 0!important;
+		padding: 0 10px 0 10px!important;
+		transition: padding 0.2s linear;
+	}
+	td.arrow:before {
+		left: calc(50% - 5px);
+		transform: scaleX(6);
 	}
 	td.name, td.function {
 		background: var(--button);
@@ -1349,7 +1409,7 @@ tr.gu-mirror:hover .editable {
 		padding: 0;
 		width: auto;
 	}
-	#character-attributes, .item-list {
+	#character-attributes, .item-list, #cyberware {
 		width: calc(100% - 30px);
 		max-width: unset;
 	}
@@ -1363,17 +1423,17 @@ tr.gu-mirror:hover .editable {
 		flex-basis: 100%;
 		margin-bottom: 10px;
 	}
+	#cyber-mods {
+		max-width: unset;
+	}
 	#spellbook, #archives {
 		margin: 15px 0 0 0;
 	}
 	#footer p:not(:nth-child(5)) {
 		margin-bottom: 10px;
 	}
-	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop {
+	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop, .gu-transit .chosen-container, .gu-transit .chosen-single, .gu-transit .chosen-single span, .gu-transit .chosen-drop	{
 		width: 100%!important;
-	}
-	.mobile-label {
-		display: block;
 	}
 	.list-header {
 		margin-bottom: 15px;
@@ -1390,8 +1450,8 @@ tr.gu-mirror:hover .editable {
 		padding-bottom: 10px;
 		width: 100%!important;
 	}
-	.connector, #extra-attributes-header, table tr:first-child, td.arrow {
-		display: none;
+	.connector, #extra-attributes-header, table tr:first-child, .hide-me {
+		display: none!important;
 	}
 	.secondary-button {
 		right: 0!important;
@@ -1426,39 +1486,71 @@ tr.gu-mirror:hover .editable {
 	#spellbook .spell .header, #archives .lore .header {
 		padding: 12px 30px 15px;
 	}
-	.item-list:not(#notes) .delete-space {
-		line-height: 194px;
-		height: 194px;
+	.item-list .delete-space {
+		line-height: 208px;
+		height: 208px;
 		margin: 0 auto;
-		width: 50%;
+		width: 48%;
 	}
-	.item-list:not(#notes) .delete-space:after {
-		line-height: 194px;
+	.item-list .delete-space:after {
+		line-height: 208px;
 	}
-	.gu-mirror td {
+	#notes .delete-space {
+		line-height: 38px;
+		height: 38px;
+		margin: 0 auto;
+		width: 100%;
+	}
+	#notes .delete-space:after {
+		line-height: 38px;
+	}
+	.gu-mirror td, .gu-transit td {
 		order: 3;
 	}
-	.gu-mirror td.name, .gu-mirror td.function {
+	.gu-mirror td.name, .gu-mirror td.function, .gu-transit td.name, .gu-transit td.function {
 		order: 1;
 	}
-	.gu-mirror td.level {
+	.gu-mirror td.effect, .gu-transit td.effect {
 		order: 2;
 	}
+	tr.gu-transit {
+		align-items: center;
+		display: flex;
+		width: auto!important;
+	}
+	.gu-transit td {
+		flex-grow: 1;
+	}
+	.gu-transit td.arrow {
+		flex-grow: unset;
+		align-self: stretch;
+	}
 	/* States */
+	tr:hover td.arrow {
+		padding: 10px!important;
+	}
 	tr:hover td.name .editable, tr:hover td.function .editable {
 		border-color: var(--selected);
 	}
-	tr.gu-mirror:hover td.name .editable, tr.gu-mirror:hover td.function .editable {
+	tr.gu-mirror:hover td.name .editable, tr.gu-mirror:hover td.function .editable, tr.gu-transit:hover td.name .editable, tr.gu-transit:hover td.function .editable {
 		border-color: var(--button-hover);
 	}
-	tr:hover td.name, tr:hover td.function {
+	tr:hover td.name, tr:hover td.function, tr:hover td.arrow {
 		background: var(--button-hover);
 	}
 	td.name:active, td.function:active {
 		cursor: grabbing;
 	}
-	img.pin:hover {
-		filter: brightness (80%);
+	tr:hover img.pin {
+		filter: contrast(1.4);
+	}
+	tr:active img.pin {
+		filter: brightness(80%);
+	}
+	@media (hover: none) {
+		tr td.name .editable, tr td.function .editable, tr.gu-mirror td.name .editable, tr.gu-mirror td.function .editable, tr.gu-transit td.name .editable, tr.gu-transit td.function .editable {
+			border-color: var(--selected);
+		}
 	}
 }
 @media only screen and (max-width: 400px) {
