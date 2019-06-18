@@ -27,6 +27,18 @@ var hybridTooltip;
 var resetSection;
 var resetButton;
 var resetTooltip;
+var curMightVal;
+var maxMightVal;
+var curSpeedVal;
+var maxSpeedVal;
+var curIntellectVal;
+var maxIntellectVal;
+var poolAddPoint;
+var poolRemovePoint;
+var essenceStat;
+var effortStat;
+var availPoolStat;
+var availEdgeStat;
 var addSkillButton;
 var skillList;
 var skillsDeleteSpace;
@@ -61,14 +73,18 @@ var notesBody;
 var notesDeleteSpace;
 var curArc;
 var curTier;
+var availPoints;
+var	availEdge;
+var	curEffort;
+var	curEssence;
 var spellListDatabase;
 var availSpellCount;
 var selectedSpellCount;
-var firstDrag = true;
+var firstDrag;
 var containerHeight;
 var defaultContainerHeight;
 var isHovering;
-var periodCount = 0;
+var periodCount;
 //Check if an integer is even
 function isEven(value) {
 	if (value%2 == 0)
@@ -1402,6 +1418,18 @@ $(function() {
 	resetSection = $('#reset-button');
 	resetButton = $('#reset-button div');
 	resetTooltip = $('#reset-tooltip');
+	curMightVal = $('#might .current-value');
+	maxMightVal = $('#might .pool-value');
+	curSpeedVal = $('#speed .current-value');
+	maxSpeedVal = $('#speed .pool-value');
+	curIntellectVal = $('#intellect .current-value');
+	maxIntellectVal = $('#intellect .pool-value');
+	poolAddPoint = $('.pool .add-point');
+	poolRemovePoint = $('.pool .remove-point');
+	essenceStat = $('#essence');
+	effortStat = $('#effort');
+	availPoolStat = $('#available-points');
+	availEdgeStat = $('#available-edgepoints');
 	addSkillButton = $('#add-skill');
 	skillList = $('#skill-list #skills');
 	skillsDeleteSpace = $('#skill-list .delete-space');
@@ -1433,12 +1461,18 @@ $(function() {
 	notesList = $('#notes table');
 	notesBody = $('#notes tbody');
 	notesDeleteSpace = $('#notes .delete-space');
+	firstDrag = true;
+	periodCount = 0;
 	//Initial variables
 	curArc = 2;
 	curTier = 6;
 	spellListDatabase = [];
 	availSpellCount = 4;
 	selectedSpellCount = 0;
+	availPoints = 6;
+	availEdge = 0;
+	curEffort = 1;
+	curEssence = "6.00";
 	//Setup spell list database
 	Tabletop.init({
 		key: 'https://docs.google.com/spreadsheets/d/133J5k_1XfoPxFiWuVXcztwIunjamNA7YGTh11zS0U_M/edit?usp=sharing',
@@ -2049,6 +2083,22 @@ $(function() {
 		populateTypes();
 		populateFoci();
 		populateSpells();
+	});
+	//Add or remove stat pool points with button clicks
+	poolAddPoint.click( function() {
+		var statPool = $(this).closest('.stat-pool').attr('id');
+		var curVal = Number($('#' + statPool + ' .current-value').html());
+		var poolVal = Number($('#' + statPool + ' .pool-value').text());
+		var availPoints = Number($('.value', availPoolStat).text());
+		if ( availPoints > 0 ) {
+			$('#' + statPool + ' .current-value').html(curVal + 1);
+			$('#' + statPool + ' .pool-value').text(poolVal + 1);
+			$('.value', availPoolStat).text(availPoints - 1)
+			if ( Number($('.value', availPoolStat).text()) === 0 ) {
+				availPoolStat.hide(500);
+				$('.add-remove').hide(500);
+			}
+		}
 	});
 	//Check for changes in any of the skill proficiency dropdowns
 	skillList.on('change', '.proficiency select', function() {

@@ -395,6 +395,39 @@ div.proficiency {
 #reset-button {
 	right: -45px
 }
+#secondary-stats {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 0 15px 10px 15px;
+}
+#secondary-stats > div {
+	color: var(--white);
+    font-family: var(--header-font);
+    font-size: 20px;
+	line-height: 1.2em;
+	margin: 0 10px;
+	text-align: center;
+    width: calc(25% - 20px);
+}
+#secondary-stats .label {
+	background: var(--button);
+	padding: 20px 5px 5px 7px;
+}
+#secondary-stats .value {
+	background: var(--black);
+    border-radius: 50%;
+    font-size: 35px;
+	margin: 0 auto;
+    padding: 15px 15px;
+    position: relative;
+    top: 16px;
+    width: fit-content;
+}
+#essence, #available-edgepoints {
+	display: none;
+}
 #character-options {
 	display: none;
     flex-basis: calc(100% - 30px);
@@ -637,7 +670,6 @@ div.proficiency {
 	padding-right: 3px;
 }
 .add-remove {
-	display: none;
 	margin-bottom: -25px;
 }
 .add-point, .remove-point {
@@ -662,21 +694,6 @@ div.proficiency {
 .edge .add-point, .edge .remove-point {
 	display: none;
 	margin: 4px 10px;
-}
-.secondary-stats {
-	align-items: center;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-evenly;
-	margin: 15px 15px 10px 15px;
-}
-.secondary-stats > div {
-	color: var(--white);
-    display: flex;
-    font-family: var(--header-font);
-    font-size: 30px;
-    justify-content: center;
-    width: 150px;
 }
 .character-option {
 	align-items: center;
