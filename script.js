@@ -74,7 +74,9 @@ var notesDeleteSpace;
 var curArc;
 var curTier;
 var availPoints;
+var spentPoints;
 var	availEdge;
+var spentEdge;
 var	curEffort;
 var	curEssence;
 var spellListDatabase;
@@ -1470,7 +1472,9 @@ $(function() {
 	availSpellCount = 4;
 	selectedSpellCount = 0;
 	availPoints = 6;
+	spentPoints = 0;
 	availEdge = 0;
+	spentEdge = 0;
 	curEffort = 1;
 	curEssence = "6.00";
 	//Setup spell list database
@@ -2089,15 +2093,36 @@ $(function() {
 		var statPool = $(this).closest('.stat-pool').attr('id');
 		var curVal = Number($('#' + statPool + ' .current-value').html());
 		var poolVal = Number($('#' + statPool + ' .pool-value').text());
-		var availPoints = Number($('.value', availPoolStat).text());
-		if ( availPoints > 0 ) {
+		var availPool = Number($('.value', availPoolStat).text());
+		if ( availPool > 0 ) {
+			availPool--;
+			spentPoints++;
 			$('#' + statPool + ' .current-value').html(curVal + 1);
 			$('#' + statPool + ' .pool-value').text(poolVal + 1);
-			$('.value', availPoolStat).text(availPoints - 1)
-			if ( Number($('.value', availPoolStat).text()) === 0 ) {
-				availPoolStat.hide(500);
-				$('.add-remove').hide(500);
-			}
+			$('.value', availPoolStat).text(availPool);
+			if ( availPool === 0 ) poolAddPoint.addClass('disabled');
+			poolRemovePoint.each( function() {
+				var maxPool = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .pool-value').text());
+				if ( maxPool > 0 ) $(this).removeClass('disabled');
+			});
+		}
+	});
+	poolRemovePoint.click( function() {
+		var statPool = $(this).closest('.stat-pool').attr('id');
+		var curVal = Number($('#' + statPool + ' .current-value').html());
+		var poolVal = Number($('#' + statPool + ' .pool-value').text());
+		var availPool = Number($('.value', availPoolStat).text());
+		if ( spentPoints <= availPoints ) {
+			poolAddPoint.removeClass('disabled');
+			availPool++;
+			spentPoints--;
+			if ( curVal === poolVal ) $('#' + statPool + ' .current-value').html(curVal - 1);
+			$('#' + statPool + ' .pool-value').text(poolVal - 1);
+			$('.value', availPoolStat).text(availPool);
+			poolRemovePoint.each( function() {
+				var maxPool = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .pool-value').text());
+				if ( maxPool === 0 ) $(this).addClass('disabled');
+			});
 		}
 	});
 	//Check for changes in any of the skill proficiency dropdowns
@@ -2135,8 +2160,8 @@ $(function() {
 	//Make sure the current pool value doesn't exceed the current
 	//maximum pool value
 	$('.current-value').on('keyup blur paste', function() {
-		var curVal = $(this).html();
-		var maxVal = $(this).closest('.pool').children('.pool-value').text();
+		var curVal = Number($(this).html());
+		var maxVal = Number($(this).closest('.pool').children('.pool-value').text());
 		if ( curVal > maxVal ) $(this).html(maxVal);
 	});
 	//Add skills and items when respective button is clicked
