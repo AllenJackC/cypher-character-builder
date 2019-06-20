@@ -35,11 +35,19 @@ var curIntellectVal;
 var maxIntellectVal;
 var poolAddPoint;
 var poolRemovePoint;
+var mightEdge;
+var speedEdge;
+var intellectEdge;
+var edgeAddPoint;
+var edgeRemovePoint;
+var commitSection;
+var commitButton;
 var essenceStat;
 var effortStat;
 var availPoolStat;
 var availEdgeStat;
 var addSkillButton;
+var skillError;
 var skillList;
 var skillsDeleteSpace;
 var spellBook;
@@ -54,6 +62,7 @@ var talentsSection;
 var spellHotbars;
 var mannequinState;
 var addCyberwareButton;
+var cyberError;
 var cyberware;
 var cyberwareSection;
 var cyberBodyParts;
@@ -227,6 +236,14 @@ function populateInventorySelect() {
 		disable_search: true,
 		width: "fit-content"
 	});
+}
+//Calculate and then show the current essence
+function calculateEssence() {
+	var essenceCost = 0;
+	$('.essence .editable').each( function() {
+		if ( $(this).html() != "." ) essenceCost += Number($(this).html());
+	});
+	$('.value', essenceStat).text((6 - essenceCost).toFixed(2));
 }
 //Add a blank cyberware, unless variables are parsed
 function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceCost) {
@@ -1311,6 +1328,15 @@ function populateSpellLists() {
 					bodyPartImg.addClass('modded');
 					enableCyberware.addClass('clicked');
 					if ( cyberware.is(':visible') == false ) cyberware.stop().slideToggle(200);
+					if ( essenceStat.is(':visible') == false ) {
+						essenceStat.animate( {
+							width : '124px'
+							}, { duration: 300,
+							start: function() {
+								essenceStat.show();
+							}
+						});	
+					}
 					if ( bodyPartImg.hasClass('active') == false ) bodyPartImg.attr('src',  'images/cyber'+ bodyPart + '-modded.png');
 				} else if ( typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
@@ -1355,6 +1381,7 @@ function populateSpellLists() {
 			}
 		}
 	});
+	calculateEssence();
 }
 //Show extra attributes sections
 function showExtraAttribute(section,width,animate) {
@@ -1428,11 +1455,19 @@ $(function() {
 	maxIntellectVal = $('#intellect .pool-value');
 	poolAddPoint = $('.pool .add-point');
 	poolRemovePoint = $('.pool .remove-point');
+	mightEdge = $('#might .edge-value');
+	speedEdge = $('#speed .edge-value');
+	intellectEdge = $('#intellect .edge-value');
+	edgeAddPoint = $('.edge .add-point');
+	edgeRemovePoint = $('.edge .remove-point');
+	commitSection = $('#commit-button');
+	commitButton = $('#commit-button .button');
 	essenceStat = $('#essence');
 	effortStat = $('#effort');
 	availPoolStat = $('#available-points');
 	availEdgeStat = $('#available-edgepoints');
 	addSkillButton = $('#add-skill');
+	skillError = $('#skill-list .error');
 	skillList = $('#skill-list #skills');
 	skillsDeleteSpace = $('#skill-list .delete-space');
 	spellBook = $('#spellbook');
@@ -1447,6 +1482,7 @@ $(function() {
 	spellHotbars = $('.spell-list .hotbars');
 	addCyberwareButton = $('.add-cyberware');
 	cyberware = $('#cyberware');
+	cyberError = $('#cyberware .error');
 	cyberwareSection = $('#cyber-mods');
 	cyberBodyParts = $('.cyber-section');
 	cyberwareImages = $('#cyber-mannequin img');
@@ -1473,7 +1509,7 @@ $(function() {
 	selectedSpellCount = 0;
 	availPoints = 6;
 	spentPoints = 0;
-	availEdge = 0;
+	availEdge = 1;
 	spentEdge = 0;
 	curEffort = 1;
 	curEssence = "6.00";
@@ -1617,6 +1653,7 @@ $(function() {
 				return handle.classList.contains('mobile-handle');
 			}, accepts: function (el,target,source,sibling) {
 				if ( target.classList.contains('cyber-section') && target.classList.contains('cyber-section') ) return false;
+				else if ( el.hasAttribute('data-spellid') && target.classList.contains('delete-space') ) return false;
 				else return true;
 			}
 		}).on('drag', function(el,source) {
@@ -1635,8 +1672,10 @@ $(function() {
 				cyberwareDeleteSpace.css('margin-top', '');
 			}
 		}).on('drop', function(el,target,source,sibling) {
+			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') ) cyberError.slideToggle(300);
 			if ( target.classList.contains('delete-space') ) {
 				cyberwareDrake.remove();
+				calculateEssence();
 				var bodyPart = el.classList[1];
 				var emptyMods = 0;
 				for (var i = 0; i < $('.cyberware.' + bodyPart).children('.essence').length; i++) {
@@ -1654,6 +1693,7 @@ $(function() {
 			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
+			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') ) cyberError.slideToggle(300);
 			cyberwareDeleteSpace.stop().animate({
 				'height' : '185px'
 			}, 100, function() {
@@ -1661,6 +1701,8 @@ $(function() {
 				$(this).stop().slideToggle(200);
 			});
 			firstDrag = true;
+		}).on('out', function(el,container,source) {
+			if ( el.hasAttribute('data-spellid') ) cyberError.slideToggle(300);
 		});
 	cyberwareDrake;
 	//Inventory Dragula
@@ -2094,13 +2136,17 @@ $(function() {
 		var curVal = Number($('#' + statPool + ' .current-value').html());
 		var poolVal = Number($('#' + statPool + ' .pool-value').text());
 		var availPool = Number($('.value', availPoolStat).text());
+		var availEdgeVal = Number($('.value', availEdgeStat).text());
 		if ( availPool > 0 ) {
 			availPool--;
 			spentPoints++;
 			$('#' + statPool + ' .current-value').html(curVal + 1);
 			$('#' + statPool + ' .pool-value').text(poolVal + 1);
 			$('.value', availPoolStat).text(availPool);
-			if ( availPool === 0 ) poolAddPoint.addClass('disabled');
+			if ( availPool === 0 ) {
+				poolAddPoint.addClass('disabled');
+				if ( availEdgeVal === 0 ) commitButton.removeClass('disabled');
+			}
 			poolRemovePoint.each( function() {
 				var maxPool = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .pool-value').text());
 				if ( maxPool > 0 ) $(this).removeClass('disabled');
@@ -2124,6 +2170,72 @@ $(function() {
 				if ( maxPool === 0 ) $(this).addClass('disabled');
 			});
 		}
+		commitButton.addClass('disabled');
+	});
+	edgeAddPoint.click( function() {
+		var statPool = $(this).closest('.stat-pool').attr('id');
+		var curVal = Number($('#' + statPool + ' .edge-value').text());
+		var availPool = Number($('.value', availPoolStat).text());
+		var availEdgeVal = Number($('.value', availEdgeStat).text());
+		if ( availEdgeVal > 0 ) {
+			availEdgeVal--;
+			spentEdge++;
+			$('#' + statPool + ' .edge-value').text(curVal + 1);
+			$('.value', availEdgeStat).text(availEdgeVal);
+			if ( availEdgeVal === 0 ) {
+				edgeAddPoint.addClass('disabled');
+				if ( availPool === 0) commitButton.removeClass('disabled');
+			}
+			edgeRemovePoint.each( function() {
+				var maxEdge = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .edge-value').text());
+				if ( maxEdge > -1 ) $(this).removeClass('disabled');
+			});
+		}
+	});
+	edgeRemovePoint.click( function() {
+		var statPool = $(this).closest('.stat-pool').attr('id');
+		var curVal = Number($('#' + statPool + ' .edge-value').text());
+		var availEdgeVal = Number($('.value', availEdgeStat).text());
+		if ( spentEdge <= availEdge ) {
+			edgeAddPoint.removeClass('disabled');
+			availEdgeVal++;
+			spentEdge--;
+			$('#' + statPool + ' .edge-value').text(curVal - 1);
+			$('.value', availEdgeStat).text(availEdgeVal);
+			edgeRemovePoint.each( function() {
+				var maxEdge = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .edge-value').text());
+				if ( maxEdge <= -1 ) $(this).addClass('disabled');
+			});
+		}
+		commitButton.addClass('disabled');
+	});
+	commitButton.click( function() {
+		$('.add-remove').hide(300);
+		edgeAddPoint.hide(300);
+		edgeRemovePoint.hide(300);
+		setTimeout(function() {
+			commitSection.slideToggle(300);
+			if ( availPoolStat.is(':visible') ) {
+					availPoolStat.animate({
+						width : 0
+					}, { 
+					duration: 300,
+					complete: function() {
+						$(this).hide();
+					}
+				});
+			}
+			if ( availEdgeStat.is(':visible') ) {
+				availEdgeStat.animate({
+						width : 0
+					}, { 
+					duration: 300,
+					complete: function() {
+						$(this).hide();
+					}
+				});
+			}
+		}, 300);
 	});
 	//Check for changes in any of the skill proficiency dropdowns
 	skillList.on('change', '.proficiency select', function() {
@@ -2204,6 +2316,7 @@ $(function() {
 		}
 		if ( emptyMods ) $('#cyber-mannequin img.' + bodyPart).addClass('modded');
 		else $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
+		calculateEssence();
 	});
 	//Highlight spells and keep track of spell count
 	spellBook.on('click', '.spell', function() {
@@ -2250,10 +2363,30 @@ $(function() {
 			}
 		});
 	});
+	//Show cyberware section and essence tracker
+	//but only when no cyberware is installed
 	enableCyberware.click( function() {
 		if ( $('.cyberware').length === 0 ) {
 			$(this).toggleClass('clicked');
 			cyberware.stop().slideToggle(500);
+			if ( essenceStat.is(':visible') ) {
+				essenceStat.animate( {
+					width : '0'
+					}, { duration: 300,
+					complete: function() {
+						essenceStat.hide();
+						essenceStat.removeAttr('style');
+					}
+				});	
+			} else {
+				essenceStat.animate( {
+					width : '124px'
+					}, { duration: 300,
+					start: function() {
+						essenceStat.show();
+					}
+				});				
+			}
 		}
 	});
 	filterButtons.click( function() {

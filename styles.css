@@ -407,26 +407,41 @@ div.proficiency {
     font-family: var(--header-font);
     font-size: 20px;
 	line-height: 1.2em;
-	margin: 0 10px;
+	margin: -20px 10px 0;
+	overflow: hidden;
 	text-align: center;
-    width: calc(25% - 20px);
+    width: 124px;
+}
+#commit-button {
+	flex-basis: 100%;
+	margin: 0!important;
+}
+#commit-button .button {
+	margin: 0 auto;
 }
 #secondary-stats .label {
 	background: var(--button);
+	overflow: hidden;
 	padding: 20px 5px 5px 7px;
+	white-space: nowrap;
 }
 #secondary-stats .value {
 	background: var(--black);
     border-radius: 50%;
     font-size: 35px;
 	margin: 0 auto;
+	overflow: hidden;
     padding: 15px 15px;
     position: relative;
     top: 16px;
-    width: fit-content;
+    width: 18px;
 }
-#essence, #available-edgepoints {
+#essence .value {
+	width: 65px;
+}
+#secondary-stats > #essence, #secondary-stats > #available-edgepoints {
 	display: none;
+	width: 0;
 }
 #character-options {
 	display: none;
@@ -445,6 +460,9 @@ div.proficiency {
 #skill-list, #cyberware, .item-list, .spell-list {
 	flex-grow: 1;
 	margin: 15px 15px 10px 15px;
+}
+#skill-list {
+	max-width: 35%;
 }
 #skill-list .chosen-single, .item-list .chosen-single, .gu-mirror:not(.cyberware) .chosen-single, .gu-transit:not(.cyberware) .chosen-single {
 	border: 0!important;
@@ -728,6 +746,18 @@ div.proficiency {
 	cursor: pointer;
 	pointer-events: auto;
 	text-align: center;
+}
+.error {
+    border: 1px solid var(--remove-hover);
+	color: var(--remove-hover);
+    display: none;
+    font-family: var(--body-font);
+    font-size: 14px;
+    line-height: 1em;
+	margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    text-transform: uppercase;
 }
 .cyberware, .gu-mirror.cyberware {
 	color: var(--white);
@@ -1197,7 +1227,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 #cyber-mannequin img:active {
 	filter: brightness(90%);
 }
-.add-point.disabled, .remove-point.disabled {
+.add-point.disabled, .remove-point.disabled, .button.disabled {
 	background: var(--button)!important;
 	cursor: default;
 	filter: grayscale(80%);
@@ -1431,6 +1461,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 @media only screen and (max-width: 1024px) {
 	#character-attributes, #stat-pools {
 		margin: 15px auto 0;
+	}
+	#skill-list {
+		max-width: unset;
 	}
 	#stats-attributes {
 		flex-basis: 100%;
