@@ -1595,7 +1595,8 @@ $(function() {
 			}
 		}).on('drag', function(el,source) {
 			el.style.display = "flex";
-			skillsDeleteSpace.stop().slideToggle(150);
+			if ( el.hasAttribute('data-spellid') && skillError.is(':visible') == false ) skillError.stop().slideToggle(150);
+			else skillsDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) {
 				firstDrag = false;
 				containerHeight = skillList.height();
@@ -1628,20 +1629,26 @@ $(function() {
 			} else {
 				skillList.removeAttr('style');
 			}
-			skillsDeleteSpace.stop().animate({
-				'height' : '34px'
-			}, 100, function() {
-				$(this).css('height','');
-				$(this).stop().slideToggle(200);
-			});
+			if ( el.hasAttribute('data-spellid') && skillError.is(':visible') ) skillError.stop().slideToggle(300);
+			else if ( skillsDeleteSpace.is(':visible') ) {
+				skillsDeleteSpace.stop().animate({
+					'height' : '34px'
+				}, 100, function() {
+					$(this).css('height','');
+					$(this).stop().slideToggle(200);
+				});
+			}
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
-			skillsDeleteSpace.stop().animate({
-				'height' : '34px'
-			}, 100, function() {
-				$(this).css('height','');
-				$(this).stop().slideToggle(200);
-			});
+			if ( el.hasAttribute('data-spellid') && skillError.is(':visible') ) skillError.stop().slideToggle(300);
+			else if ( skillsDeleteSpace.is(':visible') ) {
+				skillsDeleteSpace.stop().animate({
+					'height' : '34px'
+				}, 100, function() {
+					$(this).css('height','');
+					$(this).stop().slideToggle(200);
+				});
+			}
 			firstDrag = true;
 		});
 	skillsDrake;
@@ -1652,12 +1659,13 @@ $(function() {
 			}, moves: function(el,container,handle) {
 				return handle.classList.contains('mobile-handle');
 			}, accepts: function (el,target,source,sibling) {
-				if ( target.classList.contains('cyber-section') && target.classList.contains('cyber-section') ) return false;
+				if ( target.classList.contains('cyber-section') && target != source ) return false;
 				else if ( el.hasAttribute('data-spellid') && target.classList.contains('delete-space') ) return false;
-				else return true;
+				else if ( sibling === null || sibling.classList.contains('cyberware') ) return true;
 			}
 		}).on('drag', function(el,source) {
-			cyberwareDeleteSpace.stop().slideToggle(150);
+			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') == false ) cyberError.stop().slideToggle(150);
+			else cyberwareDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
@@ -1672,7 +1680,6 @@ $(function() {
 				cyberwareDeleteSpace.css('margin-top', '');
 			}
 		}).on('drop', function(el,target,source,sibling) {
-			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') ) cyberError.slideToggle(300);
 			if ( target.classList.contains('delete-space') ) {
 				cyberwareDrake.remove();
 				calculateEssence();
@@ -1684,25 +1691,28 @@ $(function() {
 				if ( !emptyMods ) $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
 				if ( isTouchDevice() && $('.cyberware').length === 0 ) $('#cyberware-option em').hide();
 			}
-			cyberwareDeleteSpace.stop().animate({
-				'margin-top' : '10px',
-				'height' : '185px'
-			}, 100, function() {
-				$(this).css('height','');
-				$(this).stop().slideToggle(200);
-			});
+			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') ) cyberError.stop().slideToggle(300);			
+			else if ( cyberwareDeleteSpace.is(':visible') ){
+				cyberwareDeleteSpace.stop().animate({
+					'margin-top' : '10px',
+					'height' : '185px'
+				}, 100, function() {
+					$(this).css('height','');
+					$(this).stop().slideToggle(200);
+				});
+			}
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
-			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') ) cyberError.slideToggle(300);
-			cyberwareDeleteSpace.stop().animate({
-				'height' : '185px'
-			}, 100, function() {
-				$(this).css('height','');
-				$(this).stop().slideToggle(200);
-			});
+			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') ) cyberError.stop().slideToggle(300);
+			else if ( cyberwareDeleteSpace.is(':visible') ) {
+				cyberwareDeleteSpace.stop().animate({
+					'height' : '185px'
+				}, 100, function() {
+					$(this).css('height','');
+					$(this).stop().slideToggle(200);
+				});
+			}
 			firstDrag = true;
-		}).on('out', function(el,container,source) {
-			if ( el.hasAttribute('data-spellid') ) cyberError.slideToggle(300);
 		});
 	cyberwareDrake;
 	//Inventory Dragula

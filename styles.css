@@ -748,11 +748,10 @@ div.proficiency {
 	text-align: center;
 }
 .error {
-    border: 1px solid var(--remove-hover);
+    border: 2px dashed var(--remove-hover);
 	color: var(--remove-hover);
     display: none;
-    font-family: var(--body-font);
-    font-size: 14px;
+	font-weight: 700;
     line-height: 1em;
 	margin: 10px auto;
     padding: 10px;
