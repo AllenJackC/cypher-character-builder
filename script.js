@@ -1416,6 +1416,62 @@ function hideExtraAttribute(section,animate) {
 		section.removeAttr('style');
 	}
 }
+//Calculate stat pools based on current selections
+function calculateStatPools() {
+	var curMightVal = Number(curMight.html());
+	var maxMightVal = Number(maxMight.text());
+	var curSpeedVal = Number(curSpeed.html());
+	var maxSpeedVal = Number(maxSpeed.text());
+	var curIntellectVal = Number(curIntellect.html());
+	var maxIntellectVal = Number(maxIntellect.text());
+	var mightBonus = 0;
+	var speedBonus = 0;
+	var intellectBonus = 0;
+	var mightPenalty = 0;
+	var speedPenalty = 0;
+	var intellectPenalty = 0;
+	//Get currently selected cyberware, and then add their amounts
+	$('.cyberware').each( function() {
+		var bodyPart = $(this).attr('class').split(' ')[1];
+		var selectedType = $('.type select', this).val();
+		switch ( bodyPart) {
+			case "skin":
+			switch (selectedType) {
+				case "ST":
+				//+1 Effort Cost
+				break;
+				case "EA":
+				intellectPenalty += 1;
+				break;
+			}
+			break;
+		}
+	});
+	//Calculate new values for all of the stat pools
+	curMightVal = curMightVal + mightBonus - mightPenalty;
+	curSpeedVal = curSpeedVal + speedBonus - speedPenalty;
+	curIntellectVal = curIntellectVal + intellectBonus - intellectPenalty;
+	maxMightVal = maxMightVal + mightBonus - mightPenalty;
+	maxSpeedVal = maxSpeedVal + speedBonus - speedPenalty;
+	maxIntellectVal = maxIntellectVal + intellectBonus - intellectPenalty;
+	//No less than 0, or no less than 1 if max value is higher than 0
+	if ( maxMightVal <= 0 ) maxMightVal = 0;
+	if ( maxSpeedVal <= 0 ) maxSpeedVal = 0;
+	if ( maxIntellectVal <= 0 ) maxIntellectVal = 0;
+	if ( curMightVal <= 0 && maxMightVal != 0 ) curMightVal = 1;
+	else if ( curMightVal <= 0 ) curMightVal = 0;
+	if ( curSpeedVal <= 0 && maxSpeedVal != 0 ) curSpeedVal = 1;
+	else if ( curSpeedVal <= 0 ) curSpeedVal = 0;
+	if ( curIntellectVal <= 0 && maxIntellectVal != 0 ) curIntellectVal = 1;
+	else if ( curIntellectVal <= 0 ) curIntellectVal = 0;
+	//Apply the new values to the fields
+	curMight.html(curMightVal);
+	maxMight.text(maxMightVal);
+	curSpeed.html(curSpeedVal);
+	maxSpeed.text(maxSpeedVal);
+	curIntellect.html(curIntellectVal);
+	maxIntellect.text(maxIntellectVal);
+};
 //Primary on load function
 $(function() {
 	descriptors = $('#descriptors');
@@ -1447,12 +1503,12 @@ $(function() {
 	resetSection = $('#reset-button');
 	resetButton = $('#reset-button div');
 	resetTooltip = $('#reset-tooltip');
-	curMightVal = $('#might .current-value');
-	maxMightVal = $('#might .pool-value');
-	curSpeedVal = $('#speed .current-value');
-	maxSpeedVal = $('#speed .pool-value');
-	curIntellectVal = $('#intellect .current-value');
-	maxIntellectVal = $('#intellect .pool-value');
+	curMight = $('#might .current-value');
+	maxMight = $('#might .pool-value');
+	curSpeed = $('#speed .current-value');
+	maxSpeed = $('#speed .pool-value');
+	curIntellect = $('#intellect .current-value');
+	maxIntellect = $('#intellect .pool-value');
 	poolAddPoint = $('.pool .add-point');
 	poolRemovePoint = $('.pool .remove-point');
 	mightEdge = $('#might .edge-value');
@@ -2328,6 +2384,10 @@ $(function() {
 		else $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
 		calculateEssence();
 	});
+	//Calculate stats whenever cyberware is installed
+	cyberware.on('change', '.type select', function() {
+		calculateStatPools();
+	});
 	//Highlight spells and keep track of spell count
 	spellBook.on('click', '.spell', function() {
 		if ( $(this).hasClass('required') == false && $(this).hasClass('selected') == false && selectedSpellCount < availSpellCount ) {
@@ -2365,6 +2425,7 @@ $(function() {
 		}
 		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
 	});
+	//Toggle optional character options
 	$('#open-options').click( function() {
 		$('#character-options').stop().slideToggle({
 			duration: 300, 
@@ -2376,7 +2437,11 @@ $(function() {
 	//Show cyberware section and essence tracker
 	//but only when no cyberware is installed
 	enableCyberware.click( function() {
-		if ( $('.cyberware').length === 0 ) {
+		var installedCyberware = [];
+		$('.cyberware .essence .editable').each( function() {
+			if ( Number($(this).html()) ) installedCyberware.push(Number($(this).html()));
+		});
+		if ( installedCyberware.length === 0 ) {
 			$(this).toggleClass('clicked');
 			cyberware.stop().slideToggle(500);
 			if ( essenceStat.is(':visible') ) {
@@ -2503,8 +2568,12 @@ $(function() {
 			tooltipPosition(targetElement,resetTooltip);
 		});
 		enableCyberware.hover( function(targetElement){
+			var installedCyberware = [];
 			tooltipPosition(targetElement,cyberwareTooltip);
-			if ( $('.cyberware').length ) $('em', cyberwareTooltip).css('display','block');
+			$('.cyberware .essence .editable').each( function() {
+				if ( Number($(this).html()) ) installedCyberware.push(Number($(this).html()));
+			});
+			if ( installedCyberware.length ) $('em', cyberwareTooltip).css('display','block');
 			else $('em', cyberwareTooltip).css('display','none')
 		}, function() {
 			isHovering = false;

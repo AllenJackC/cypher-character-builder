@@ -417,7 +417,7 @@ div.proficiency {
 	margin: 0!important;
 }
 #commit-button .button {
-	margin: 0 auto;
+	margin: 0 auto 10px;
 }
 #secondary-stats .label {
 	background: var(--button);
@@ -1390,14 +1390,14 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		margin: 2px;
 		text-align: left!important;
 	}
-	#character-options em {
-		display: none!important;
-	}
 	#cyberware-tooltip em {
 		color: var(--secondary-button);
 		display: none;
 		font-style: italic;
 		margin-top: 10px;
+	}
+	.character-option > em {
+		display: none!important;
 	}
 	.hotbars .spell:hover, .hotbars .spell:active {
 		margin-right: -5px;
