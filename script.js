@@ -33,6 +33,9 @@ var curSpeedVal;
 var maxSpeedVal;
 var curIntellectVal;
 var maxIntellectVal;
+var mightOverflow;
+var speedOverflow;
+var intellectOverflow;
 var poolAddPoint;
 var poolRemovePoint;
 var mightEdge;
@@ -1433,18 +1436,57 @@ function calculateStatPools() {
 	//Get currently selected cyberware, and then add their amounts
 	$('.cyberware').each( function() {
 		var bodyPart = $(this).attr('class').split(' ')[1];
-		var selectedType = $('.type select', this).val();
-		switch ( bodyPart) {
-			case "skin":
-			switch (selectedType) {
-				case "ST":
-				//+1 Effort Cost
-				break;
-				case "EA":
-				intellectPenalty += 1;
-				break;
+		var hasEssence = Number($('.essence .editable', this).html());
+		if ( hasEssence ) {
+			if ( $(this)[0].hasAttribute('data-mod') ) {
+				var oldType = $(this).data('mod');
+				var newType = $('.type select', this).val();
+				if ( oldType != newType ) {
+					switch ( bodyPart) {
+						case "skin":
+						switch (oldType) {
+							case "ST":
+							console.log('Armour');
+							break;
+							case "EA":
+							if ( intellectOverflow > 0 ) intellectOverflow -= 1;
+							else intellectPenalty -= 1;
+							break;
+						}
+						break;
+					}
+					switch ( bodyPart) {
+						case "skin":
+						switch (newType) {
+							case "ST":
+							console.log('Armour');
+							break;
+							case "EA":
+							intellectPenalty += 1;
+							if ( maxIntellectVal <= 0 ) intellectOverflow += Math.abs(maxIntellectVal);
+							break;
+						}
+						break;
+					}
+					$(this).attr('data-mod', selectedType);
+				}
+			} else {
+				var selectedType = $('.type select', this).val();
+				switch ( bodyPart) {
+					case "skin":
+					switch (selectedType) {
+						case "ST":
+						console.log('Armour');
+						break;
+						case "EA":
+						intellectPenalty += 1;
+						if ( maxIntellectVal <= 0 ) intellectOverflow += Math.abs(maxIntellectVal);
+						break;
+					}
+					break;
+				}
+				$(this).attr('data-mod', selectedType);
 			}
-			break;
 		}
 	});
 	//Calculate new values for all of the stat pools
@@ -1565,6 +1607,9 @@ $(function() {
 	selectedSpellCount = 0;
 	availPoints = 6;
 	spentPoints = 0;
+	mightOverflow = 0;
+	speedOverflow = 0;
+	intellectOverflow = 0;
 	availEdge = 1;
 	spentEdge = 0;
 	curEffort = 1;
