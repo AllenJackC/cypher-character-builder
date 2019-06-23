@@ -351,6 +351,23 @@ div.proficiency {
 	max-width: 996px;
 	padding: 0 15px;
 }
+#popup-error {
+	background: var(--black);
+	border: 2px solid var(--secondary-button);
+	color: var(--white);
+	display: none;
+	font-weight: 400;
+    left: calc(50% - 125px);
+	overflow: hidden;
+    padding: 10px;
+	position: fixed;
+	text-align: center;
+    top: 30%;
+	width: 250px;
+}
+#popup-error .button {
+	margin: 10px auto 5px;
+}
 #stats-attributes {
 	flex-basis: 0;
     flex-grow: 1;

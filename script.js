@@ -1,3 +1,4 @@
+var popupError;
 var descriptors;
 var descriptorsOptions;
 var priSpecies;
@@ -239,6 +240,86 @@ function populateInventorySelect() {
 		disable_search: true,
 		width: "fit-content"
 	});
+}
+//Check to see if the currently selected cyberware are valid
+function validCyberware(selectedType,bodyPart,essenceVal) {
+	var hasEssence = essenceVal > 0 || essenceVal == "." || essenceVal;
+	var mightVal = Number(maxMight.text());
+	var speedVal = Number(maxSpeed.text());
+	var intellectVal = Number(maxIntellect.text());
+	var validSelection =
+		( bodyPart == "skin" && selectedType == "ST" ) ||
+		( bodyPart == "skin" && selectedType == "EA" && intellectVal >= 4 ) ||
+		( bodyPart == "skin" && selectedType == "ES" && intellectVal >= 4 ) ||
+		( bodyPart == "skin" && selectedType == "SP" && intellectVal >= 4 ) ||
+		( bodyPart == "head" && selectedType == "ST" && mightVal >= 3 ) ||
+		( bodyPart == "head" && selectedType == "LW" && intellectVal >= 3 ) ||
+		( bodyPart == "head" && selectedType == "EA" && mightVal >= 4 ) ||
+		( bodyPart == "head" && selectedType == "ES" && mightVal >= 4 ) ||
+		( bodyPart == "head" && selectedType == "SP" && mightVal >= 4 ) ||
+		( bodyPart == "core" && selectedType == "ST" && intellectVal >= 3 && speedVal >= 2 ) ||
+		( bodyPart == "core" && selectedType == "MW" && intellectVal >= 3 && speedVal >= 2 ) ||
+		( bodyPart == "core" && selectedType == "HW" && intellectVal >= 3 && speedVal >= 3 ) ||
+		( bodyPart == "core" && selectedType == "EA" && intellectVal >= 4 ) ||
+		( bodyPart == "core" && selectedType == "ES" && intellectVal >= 4 ) ||
+		( bodyPart == "core" && selectedType == "SP" && intellectVal >= 4 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "ST" && intellectVal >= 2 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "LW" && intellectVal >= 3 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "MW" && intellectVal >= 3 && speedVal >= 2 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "EA" && intellectVal >= 4 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "ES" && intellectVal >= 4 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "SP" && intellectVal >= 4 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "ST" && intellectVal >= 3 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "LW" && intellectVal >= 3 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "MW" && intellectVal >= 3 && mightVal >= 2 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "EA" && intellectVal >= 4 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "ES" && intellectVal >= 4 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "SP" && intellectVal >= 4 );
+	var returnedStat;
+	switch ( bodyPart) {
+		case "head":
+			if ( selectedType == "LW" ) returnedStat = "Intellect";
+			else returnedStat = "Might";
+		break;
+		case "core":
+		switch ( selectedType ) {
+			case "ST":
+			returnedStat = "Intellect & Speed";
+			break;
+			case "MW":
+			returnedStat = "Intellect & Speed";
+			break;
+			case "HW":
+			returnedStat = "Intellect & Speed";
+			break;
+			default:
+			returnedStat = "Intellect";
+		}
+		break;
+		case "leftarm":
+			if ( selectedType == "MW" ) returnedStat = "Intellect & Speed";
+			else returnedStat = "Intellect";
+		break;
+		case "rightarm":
+			if ( selectedType == "MW" ) returnedStat = "Intellect & Speed";
+			else returnedStat = "Intellect";
+		break;
+		case "leftleg":
+			if ( selectedType == "MW" ) returnedStat = "Intellect & Might";
+			else returnedStat = "Intellect";
+		break;
+		case "rightleg":
+			if ( selectedType == "MW" ) returnedStat = "Intellect & Might";
+			else returnedStat = "Intellect";
+		break;
+		default:
+		returnedStat = "Intellect";
+	}
+	if ( hasEssence && !selectedType ) return false;
+	else if ( !hasEssence && selectedType ) return false;
+	else if ( !hasEssence && !selectedType ) return false;
+	else if ( hasEssence && validSelection ) return true;
+	else return returnedStat;
 }
 //Calculate and then show the current essence
 function calculateEssence() {
@@ -1436,58 +1517,47 @@ function calculateStatPools() {
 	//Get currently selected cyberware, and then add their amounts
 	$('.cyberware').each( function() {
 		var bodyPart = $(this).attr('class').split(' ')[1];
-		var hasEssence = Number($('.essence .editable', this).html());
-		if ( hasEssence ) {
-			if ( $(this)[0].hasAttribute('data-mod') ) {
-				var oldType = $(this).data('mod');
-				var newType = $('.type select', this).val();
-				if ( oldType != newType ) {
-					switch ( bodyPart) {
-						case "skin":
-						switch (oldType) {
-							case "ST":
-							console.log('Armour');
-							break;
-							case "EA":
-							if ( intellectOverflow > 0 ) intellectOverflow -= 1;
-							else intellectPenalty -= 1;
-							break;
-						}
-						break;
-					}
-					switch ( bodyPart) {
-						case "skin":
-						switch (newType) {
-							case "ST":
-							console.log('Armour');
-							break;
-							case "EA":
-							intellectPenalty += 1;
-							if ( maxIntellectVal <= 0 ) intellectOverflow += Math.abs(maxIntellectVal);
-							break;
-						}
-						break;
-					}
-					$(this).attr('data-mod', selectedType);
-				}
-			} else {
-				var selectedType = $('.type select', this).val();
-				switch ( bodyPart) {
+		var oldType = $(this).data('mod').split(',')[0];
+		var selectedType = $('.type select', this).val();
+		var bonusStat;
+		var priPenaltyStat;
+		var secPenaltyStat;
+		var bonusVal;
+		var priPenaltyStat;
+		var secPenaltyStat;
+		if ( oldType ) {
+			if ( oldType != selectedType ) {
+				switch ( bodyPart ) {
 					case "skin":
-					switch (selectedType) {
-						case "ST":
-						console.log('Armour');
-						break;
-						case "EA":
-						intellectPenalty += 1;
-						if ( maxIntellectVal <= 0 ) intellectOverflow += Math.abs(maxIntellectVal);
-						break;
-					}
+						if ( oldType === "ST" ) console.log('Armour');
+						else {
+							intellectPenalty -= 3;
+							bonusStat = ", ";
+							bonusVal= ", ";
+							priPenaltyStat = ", Intellect";
+							priPenaltyVal= ", 3";
+							secPenaltyStat = ", ";
+							secPenaltyVal= ", ";
+						}
 					break;
 				}
-				$(this).attr('data-mod', selectedType);
 			}
 		}
+		switch ( bodyPart ) {
+			case "skin":
+				if ( selectedType === "ST" ) console.log('Armour');
+				else {
+					intellectPenalty += 3;
+					bonusStat = ", ";
+					bonusVal= ", ";
+					priPenaltyStat = ", Intellect";
+					priPenaltyVal= ", 3";
+					secPenaltyStat = ", ";
+					secPenaltyVal= ", ";
+				}
+				break;
+		}
+		$(this).attr('data-mod', selectedType + bonusStat + bonusVal + priPenaltyStat + priPenaltyVal + secPenaltyStat + secPenaltyVal);
 	});
 	//Calculate new values for all of the stat pools
 	curMightVal = curMightVal + mightBonus - mightPenalty;
@@ -1516,6 +1586,7 @@ function calculateStatPools() {
 };
 //Primary on load function
 $(function() {
+	popupError = $('#popup-error');
 	descriptors = $('#descriptors');
 	descriptorsOptions = $('#descriptors option');
 	priSpecies = $('#species');
@@ -2419,19 +2490,49 @@ $(function() {
 		else if ( $('#cyber-intro').is(':visible') ) $('#cyber-intro').stop().slideToggle(300);
 	});
 	cyberware.on('keyup', '.essence .editable', function(){
-		var cyberParent = $(this).closest('.cyberware');
-		var bodyPart = cyberParent.attr('class').split(' ')[1];
+		var essenceVal = Number($(this).html());
+		var thisParent = $(this).closest('.cyberware');
+		var bodyPart = thisParent.attr('class').split(' ')[1];
+		var selectedType = $('.type select', thisParent).val();
+		var stats = validCyberware(selectedType,bodyPart,essenceVal);
 		var emptyMods = 0;
-		for (var i = 0; i < cyberParent.children('.essence').length; i++) {
+		for (var i = 0; i < thisParent.children('.essence').length; i++) {
 			if ( Number($(this).text()) ) emptyMods++;
 		}
 		if ( emptyMods ) $('#cyber-mannequin img.' + bodyPart).addClass('modded');
 		else $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
-		calculateEssence();
+		if ( stats === true ) {
+			calculateStatPools();
+			calculateEssence();
+		} else if ( stats === false ) {
+			return;
+		} else {
+			$('.text', popupError).text('You do not have enough ' + stats + ' to install this cyberware.');
+			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
+			$(this).html(0);
+		}
 	});
 	//Calculate stats whenever cyberware is installed
 	cyberware.on('change', '.type select', function() {
-		calculateStatPools();
+		var selectedType = $(this).val();
+		var thisParent = $(this).closest('.cyberware');
+		var bodyPart = thisParent.attr('class').split(' ')[1];
+		var essenceVal = Number($('.essence .editable', thisParent).html());
+		var stats = validCyberware(selectedType,bodyPart,essenceVal);
+		if ( stats === true ) {
+			calculateStatPools();
+			calculateEssence();
+		} else if ( stats === false ) {
+			return;
+		} else {
+			$('.text', popupError).text('You do not have enough ' + stats + ' to install this cyberware.');
+			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
+			$(this).val('');
+			$(this).trigger('chosen:updated');		
+		}
+	});
+	$('.button', popupError).click( function() {
+		popupError.stop().slideToggle(300);
 	});
 	//Highlight spells and keep track of spell count
 	spellBook.on('click', '.spell', function() {
