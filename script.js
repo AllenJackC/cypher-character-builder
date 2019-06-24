@@ -242,90 +242,345 @@ function populateInventorySelect() {
 	});
 }
 //Check to see if the currently selected cyberware are valid
-function validCyberware(selectedType,bodyPart,essenceVal) {
+function validCyberware(selectedType,bodyPart,essenceVal,oldType) {
 	var hasEssence = essenceVal > 0 || essenceVal == "." || essenceVal;
 	var mightVal = Number(maxMight.text());
 	var speedVal = Number(maxSpeed.text());
 	var intellectVal = Number(maxIntellect.text());
-	var validSelection =
-		( bodyPart == "skin" && selectedType == "ST" ) ||
-		( bodyPart == "skin" && selectedType == "EA" && intellectVal >= 4 ) ||
-		( bodyPart == "skin" && selectedType == "ES" && intellectVal >= 4 ) ||
-		( bodyPart == "skin" && selectedType == "SP" && intellectVal >= 4 ) ||
-		( bodyPart == "head" && selectedType == "ST" && mightVal >= 3 ) ||
-		( bodyPart == "head" && selectedType == "LW" && intellectVal >= 3 ) ||
-		( bodyPart == "head" && selectedType == "EA" && mightVal >= 4 ) ||
-		( bodyPart == "head" && selectedType == "ES" && mightVal >= 4 ) ||
-		( bodyPart == "head" && selectedType == "SP" && mightVal >= 4 ) ||
-		( bodyPart == "core" && selectedType == "ST" && intellectVal >= 3 && speedVal >= 2 ) ||
-		( bodyPart == "core" && selectedType == "MW" && intellectVal >= 3 && speedVal >= 2 ) ||
-		( bodyPart == "core" && selectedType == "HW" && intellectVal >= 3 && speedVal >= 3 ) ||
-		( bodyPart == "core" && selectedType == "EA" && intellectVal >= 4 ) ||
-		( bodyPart == "core" && selectedType == "ES" && intellectVal >= 4 ) ||
-		( bodyPart == "core" && selectedType == "SP" && intellectVal >= 4 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "ST" && intellectVal >= 2 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "LW" && intellectVal >= 3 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "MW" && intellectVal >= 3 && speedVal >= 2 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "EA" && intellectVal >= 4 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "ES" && intellectVal >= 4 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "SP" && intellectVal >= 4 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "ST" && intellectVal >= 3 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "LW" && intellectVal >= 3 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "MW" && intellectVal >= 3 && mightVal >= 2 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "EA" && intellectVal >= 4 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "ES" && intellectVal >= 4 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "SP" && intellectVal >= 4 );
-	var returnedStat;
+	var stats = [];
+	var priStat;
+	var priNumber;
+	var secStat;
+	var secNumber;
+	var oldPriStat;
+	var oldPriNumber;
+	var oldSecStat;
+	var oldPSecNumber;
 	switch ( bodyPart) {
 		case "head":
-			if ( selectedType == "LW" ) returnedStat = "Intellect";
-			else returnedStat = "Might";
+			switch ( selectedType ) {
+				case "ST":
+					priStat = "Might";
+					priNumber = 2;
+				break;
+				case "LW":
+					priStat = "Intellect";
+					priNumber = 2;
+				break;
+				default:
+					priStat = "Might";
+					priNumber = 3;
+			}
 		break;
 		case "core":
-		switch ( selectedType ) {
-			case "ST":
-			returnedStat = "Intellect & Speed";
-			break;
-			case "MW":
-			returnedStat = "Intellect & Speed";
-			break;
-			case "HW":
-			returnedStat = "Intellect & Speed";
-			break;
-			default:
-			returnedStat = "Intellect";
-		}
+			switch ( selectedType ) {
+				case "ST":
+					priStat = "Intellect";
+					priNumber = 2;
+					secStat = "Speed";
+					secNumber = 1;
+				break;
+				case "MW":
+					priStat = "Intellect";
+					priNumber = 2;
+					secStat = "Speed";
+					secNumber = 1;
+				break;
+				case "HW":
+					priStat = "Intellect";
+					priNumber = 2;
+					secStat = "Speed";
+					secNumber = 2;
+				break;
+				default:
+					priStat = "Intellect";
+					priNumber = 3;
+			}
 		break;
 		case "leftarm":
-			if ( selectedType == "MW" ) returnedStat = "Intellect & Speed";
-			else returnedStat = "Intellect";
+			switch ( selectedType ) {
+				case "ST":
+					priStat = "Intellect";
+					priNumber = 1;
+				break;
+				case "LW":
+					priStat = "Intellect";
+					priNumber = 2;
+				break;
+				case "MW":
+					priStat = "Intellect";
+					priNumber = 2;
+					secStat = "Speed";
+					secNumber = 1;
+				break;
+				default:
+					priStat = "Intellect";
+					priNumber = 3;
+			}
 		break;
 		case "rightarm":
-			if ( selectedType == "MW" ) returnedStat = "Intellect & Speed";
-			else returnedStat = "Intellect";
+			switch ( selectedType ) {
+				case "ST":
+					priStat = "Intellect";
+					priNumber = 2;
+				break;
+				case "LW":
+					priStat = "Intellect";
+					priNumber = 2;
+				break;
+				case "MW":
+					priStat = "Intellect";
+					priNumber = 2;
+					secStat = "Speed";
+					secNumber = 1;
+				break;
+				default:
+					priStat = "Intellect";
+					priNumber = 3;
+			}
 		break;
 		case "leftleg":
-			if ( selectedType == "MW" ) returnedStat = "Intellect & Might";
-			else returnedStat = "Intellect";
+			switch ( selectedType ) {
+				case "ST":
+					priStat = "Intellect";
+					priNumber = 1;
+				break;
+				case "LW":
+					priStat = "Intellect";
+					priNumber = 2;
+				break;
+				case "MW":
+					priStat = "Intellect";
+					priNumber = 2;
+					secStat = "Speed";
+					secNumber = 1;
+				break;
+				default:
+					priStat = "Intellect";
+					priNumber = 3;
+			}
 		break;
 		case "rightleg":
-			if ( selectedType == "MW" ) returnedStat = "Intellect & Might";
-			else returnedStat = "Intellect";
+			switch ( selectedType ) {
+				case "ST":
+					priStat = "Intellect";
+					priNumber = 1;
+				break;
+				case "LW":
+					priStat = "Intellect";
+					priNumber = 2;
+				break;
+				case "MW":
+					priStat = "Intellect";
+					priNumber = 2;
+					secStat = "Speed";
+					secNumber = 1;
+				break;
+				default:
+					priStat = "Intellect";
+					priNumber = 3;
+			}
 		break;
 		default:
-		returnedStat = "Intellect";
+			priStat = "Intellect";
+			priNumber = 3;
+	}
+	switch ( bodyPart) {
+		case "skin":
+			if ( oldType == "ST" ) {
+				oldPriStat = "Armour";
+				oldPriNumber = 0;
+			} else { 
+				oldPriStat = "Intellect";
+				oldPriNumber = 3;
+			}
+		break;
+		case "head":
+			switch ( oldType ) {
+				case "ST":
+					oldPriStat = "Might";
+					oldPriNumber = 2;
+				break;
+				case "LW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+				break;
+				default:
+					oldPriStat = "Might";
+					oldPriNumber = 3;
+			}
+		break;
+		case "core":
+			switch ( oldType ) {
+				case "ST":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+					oldSecStat = "Speed";
+					oldSecNumber = 1;
+				break;
+				case "MW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+					oldSecStat = "Speed";
+					oldSecNumber = 1;
+				break;
+				case "HW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+					oldSecStat = "Speed";
+					oldSecNumber = 2;
+				break;
+				default:
+					oldPriStat = "Intellect";
+					oldPriNumber = 3;
+			}
+		break;
+		case "leftarm":
+			switch ( oldType ) {
+				case "ST":
+					oldPriStat = "Intellect";
+					oldPriNumber = 1;
+				break;
+				case "LW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+				break;
+				case "MW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+					oldSecStat = "Speed";
+					oldSecNumber = 1;
+				break;
+				default:
+					oldPriStat = "Intellect";
+					oldPriNumber = 3;
+			}
+		break;
+		case "rightarm":
+			switch ( oldType ) {
+				case "ST":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+				break;
+				case "LW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+				break;
+				case "MW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+					oldSecStat = "Speed";
+					oldSecNumber = 1;
+				break;
+				default:
+					oldPriStat = "Intellect";
+					oldPriNumber = 3;
+			}
+		break;
+		case "leftleg":
+			switch ( oldType ) {
+				case "ST":
+					oldPriStat = "Intellect";
+					oldPriNumber = 1;
+				break;
+				case "LW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+				break;
+				case "MW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+					oldSecStat = "Speed";
+					oldSecNumber = 1;
+				break;
+				default:
+					oldPriStat = "Intellect";
+					oldPriNumber = 3;
+			}
+		break;
+		case "rightleg":
+			switch ( oldType ) {
+				case "ST":
+					oldPriStat = "Intellect";
+					oldPriNumber = 1;
+				break;
+				case "LW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+				break;
+				case "MW":
+					oldPriStat = "Intellect";
+					oldPriNumber = 2;
+					oldSecStat = "Speed";
+					oldSecNumber = 1;
+				break;
+				default:
+					oldPriStat = "Intellect";
+					oldPriNumber = 3;
+			}
+		break;
+		default:
+			oldPriStat = "Intellect";
+			oldPriNumber = 3;
+	}
+	if ( oldType ) {
+		if ( oldPriStat === priStat ) priNumber -= oldPriNumber;
+		if ( oldSecStat && secStat && oldSecStat === secStat ) secNumber -= oldSecNumber;
+	}
+	//Determine if the selection is valid based on the current
+	//selections and if previous options were selected
+	var validSelection =
+		( bodyPart == "skin" && selectedType == "ST" ) ||
+		( bodyPart == "skin" && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart == "skin" && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart == "skin" && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart == "head" && selectedType == "ST" && mightVal >= priNumber + 1 ) ||
+		( bodyPart == "head" && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart == "head" && selectedType == "EA" && mightVal >= priNumber + 1 ) ||
+		( bodyPart == "head" && selectedType == "ES" && mightVal >= priNumber + 1 ) ||
+		( bodyPart == "head" && selectedType == "SP" && mightVal >= priNumber + 1 ) ||
+		( bodyPart == "core" && selectedType == "ST" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
+		( bodyPart == "core" && selectedType == "MW" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
+		( bodyPart == "core" && selectedType == "HW" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
+		( bodyPart == "core" && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart == "core" && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart == "core" && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "ST" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "MW" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "ST" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "MW" && intellectVal >= priNumber + 1 && mightVal >= secNumber + 1 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") && selectedType == "SP" && intellectVal >= priNumber + 1 );
+	//Validate, and then push stats needed if invalid
+	stats.push(priStat);
+	stats.push(priNumber);
+	if ( secStat ) {
+		stats.push(secStat);
+		stats.push(secNumber);
 	}
 	if ( hasEssence && !selectedType ) return false;
 	else if ( !hasEssence && selectedType ) return false;
 	else if ( !hasEssence && !selectedType ) return false;
 	else if ( hasEssence && validSelection ) return true;
-	else return returnedStat;
+	else {
+		
+		
+		return stats;
+	}
 }
 //Calculate and then show the current essence
 function calculateEssence() {
 	var essenceCost = 0;
 	$('.essence .editable').each( function() {
-		if ( $(this).html() != "." ) essenceCost += Number($(this).html());
+		var thisParent = $(this).closest('.cyberware');
+		var selectedType = $('.type select', thisParent).val();
+		if ( $(this).html() != "." && selectedType ) essenceCost += Number($(this).html());
 	});
 	$('.value', essenceStat).text((6 - essenceCost).toFixed(2));
 }
@@ -1517,28 +1772,14 @@ function calculateStatPools() {
 	//Get currently selected cyberware, and then add their amounts
 	$('.cyberware').each( function() {
 		var bodyPart = $(this).attr('class').split(' ')[1];
-		var oldType = $(this).data('mod').split(',')[0];
+		var oldType = $(this).attr('data-mod');
 		var selectedType = $('.type select', this).val();
-		var bonusStat;
-		var priPenaltyStat;
-		var secPenaltyStat;
-		var bonusVal;
-		var priPenaltyStat;
-		var secPenaltyStat;
 		if ( oldType ) {
 			if ( oldType != selectedType ) {
 				switch ( bodyPart ) {
 					case "skin":
 						if ( oldType === "ST" ) console.log('Armour');
-						else {
-							intellectPenalty -= 3;
-							bonusStat = ", ";
-							bonusVal= ", ";
-							priPenaltyStat = ", Intellect";
-							priPenaltyVal= ", 3";
-							secPenaltyStat = ", ";
-							secPenaltyVal= ", ";
-						}
+						else intellectPenalty -= 3;
 					break;
 				}
 			}
@@ -1546,18 +1787,10 @@ function calculateStatPools() {
 		switch ( bodyPart ) {
 			case "skin":
 				if ( selectedType === "ST" ) console.log('Armour');
-				else {
-					intellectPenalty += 3;
-					bonusStat = ", ";
-					bonusVal= ", ";
-					priPenaltyStat = ", Intellect";
-					priPenaltyVal= ", 3";
-					secPenaltyStat = ", ";
-					secPenaltyVal= ", ";
-				}
-				break;
+				else intellectPenalty += 3;
+			break;
 		}
-		$(this).attr('data-mod', selectedType + bonusStat + bonusVal + priPenaltyStat + priPenaltyVal + secPenaltyStat + secPenaltyVal);
+		$(this).attr('data-mod', selectedType);
 	});
 	//Calculate new values for all of the stat pools
 	curMightVal = curMightVal + mightBonus - mightPenalty;
@@ -2072,6 +2305,10 @@ $(function() {
 			firstDrag = true;
 		});
 	notesDrake;
+	//Close error pop-up if OK button is clicked
+	$('.button', popupError).click( function() {
+		popupError.stop().slideToggle(300);
+	});
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
@@ -2419,157 +2656,12 @@ $(function() {
 			}
 		}, 300);
 	});
-	//Check for changes in any of the skill proficiency dropdowns
-	skillList.on('change', '.proficiency select', function() {
-		var thisVal = $(this).val();
-		var inabilityFields = $(this).parent('.proficiency').children('div:first-child, .inability');
-		if ( thisVal === "I" ) inabilityFields.show();
-		else inabilityFields.hide();
-	});
-	//Filter inputs for level, weight. essence and value fields
-	$('.item-list, #skill-list, #cyberware, .pool').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .essence .editable, .inability, .current-value', function(e){
-		var thisVal = $(this).html();
-		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
-        var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
-        var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >=96 && e.keyCode <= 105);
-        var vKey = 86, cKey = 67, aKey = 65;
-		//Essence decimal controller
-		var isEssence = $(this).closest('.essence').length;
-		var isPeriodKey = [190].indexOf(e.keyCode) != -1;
-		periodCount = 0;
-		for (i = 0; i < thisVal.length; i++) {
-			if (thisVal[i] == ".") periodCount++;
-		}
-		var onePeriod = periodCount === 0;
-        switch(true){
-            case isCursorMoveOrDeleteAction:
-            case isModifierkeyPressed == false && isNumKeyPressed:
-            case (e.metaKey || e.ctrlKey) && ([vKey,cKey,aKey].indexOf(e.keyCode) != -1):
-			case isEssence && isPeriodKey && onePeriod:
-                break;
-            default:
-                e.preventDefault();
-        }
-	});
 	//Make sure the current pool value doesn't exceed the current
 	//maximum pool value
 	$('.current-value').on('keyup blur paste', function() {
 		var curVal = Number($(this).html());
 		var maxVal = Number($(this).closest('.pool').children('.pool-value').text());
 		if ( curVal > maxVal ) $(this).html(maxVal);
-	});
-	//Add skills and items when respective button is clicked
-	addSkillButton.click( function() { addSkill(); });
-	addItemButton.click( function() { addItem(); });
-	addArtifactButton.click( function() { addArtifact(); });
-	addNoteButton.click( function() { addNote(); });
-	addCyberwareButton.click( function() { 
-		addCyberware($(this).closest('.cyber-section').attr('id'));
-		if ( isTouchDevice() ) $('#cyberware-option em').show();
-	});
-	//Update slots text in carry weight to reflect amount of slots
-	$('.item-list').on('keyup', 'td.weight .editable', function() {
-		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
-		else $(this).parent('.weight').children('div:last-child').text('slots');
-	});
-	//Focus editable div fields when clicking on outter cells
-	$('.item-list, #skill-list, #cyberware').on('click', 'td, div.spell, div.text-wrapper', function() {
-		$('.editable', this).focus();
-	});
-	//Highlight currently selected body part
-	//and show the section to the right
-	cyberwareImages.click( function() {
-		var bodyPart = $(this).attr('class').split(' ')[0];
-		var thisSection = $('#' + bodyPart + '-cyberware');
-		$('#' + bodyPart + '-cyberware').stop().slideToggle(300);
-		$(this).toggleClass('active');
-		if ( $(this).hasClass('active') ) $(this).attr('src',  'images/cyber'+ bodyPart + '-hover.png');
-		else if ( $(this).hasClass('modded') && $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ bodyPart + '-modded.png');
-		else $(this).attr('src',  'images/cyber'+ bodyPart + '.png');
-		if ( $('#cyber-mods > div:not(#cyber-intro):visible').length === 1 ) $('#cyber-intro').stop().slideToggle(300);
-		else if ( $('#cyber-intro').is(':visible') ) $('#cyber-intro').stop().slideToggle(300);
-	});
-	cyberware.on('keyup', '.essence .editable', function(){
-		var essenceVal = Number($(this).html());
-		var thisParent = $(this).closest('.cyberware');
-		var bodyPart = thisParent.attr('class').split(' ')[1];
-		var selectedType = $('.type select', thisParent).val();
-		var stats = validCyberware(selectedType,bodyPart,essenceVal);
-		var emptyMods = 0;
-		for (var i = 0; i < thisParent.children('.essence').length; i++) {
-			if ( Number($(this).text()) ) emptyMods++;
-		}
-		if ( emptyMods ) $('#cyber-mannequin img.' + bodyPart).addClass('modded');
-		else $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
-		if ( stats === true ) {
-			calculateStatPools();
-			calculateEssence();
-		} else if ( stats === false ) {
-			return;
-		} else {
-			$('.text', popupError).text('You do not have enough ' + stats + ' to install this cyberware.');
-			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
-			$(this).html(0);
-		}
-	});
-	//Calculate stats whenever cyberware is installed
-	cyberware.on('change', '.type select', function() {
-		var selectedType = $(this).val();
-		var thisParent = $(this).closest('.cyberware');
-		var bodyPart = thisParent.attr('class').split(' ')[1];
-		var essenceVal = Number($('.essence .editable', thisParent).html());
-		var stats = validCyberware(selectedType,bodyPart,essenceVal);
-		if ( stats === true ) {
-			calculateStatPools();
-			calculateEssence();
-		} else if ( stats === false ) {
-			return;
-		} else {
-			$('.text', popupError).text('You do not have enough ' + stats + ' to install this cyberware.');
-			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
-			$(this).val('');
-			$(this).trigger('chosen:updated');		
-		}
-	});
-	$('.button', popupError).click( function() {
-		popupError.stop().slideToggle(300);
-	});
-	//Highlight spells and keep track of spell count
-	spellBook.on('click', '.spell', function() {
-		if ( $(this).hasClass('required') == false && $(this).hasClass('selected') == false && selectedSpellCount < availSpellCount ) {
-			$(this).addClass('selected');
-			++selectedSpellCount;
-			if ( $('#spellbook .filters #selected').hasClass('clicked') == false ) $(this).stop().slideToggle(500);
-		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
-			$('.spell-list .spell[data-spellid="' + $(this).attr('id') + '"]').remove();
-			$('.item-list tr[data-spellid="' + $(this).attr('id') + '"]').remove();
-			$(this).removeClass('selected');
-			--selectedSpellCount;
-			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) $(this).stop().slideToggle(500);
-		}
-		resetAbilityCounters();
-		populateSpellLists();
-	});
-	//Show modals on click
-	$('#buttons .modal-button, .modal-background, .modal, .modal-header .button').click( function(e) {
-		if(e.target !== e.currentTarget) return;
-		var modal;
-		if ( $(this).attr('id') ) {
-			modal = $(this).attr('id').replace('open-','')
-			modal = $('#' + modal).closest('.modal-background');
-		} else if ( $(this).hasClass('close') || $(this).hasClass('modal') ) {
-			modal = $(this).closest('.modal-background');
-		} else {
-			modal = $(this);
-		}
-		if ( modal.hasClass('visible') ) {
-			modal.removeClass('visible');
-			$('body').css('overflow-y','auto');
-		} else {
-			modal.addClass('visible');
-			$('body').css('overflow-y','hidden');
-		}
-		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
 	});
 	//Toggle optional character options
 	$('#open-options').click( function() {
@@ -2609,6 +2701,172 @@ $(function() {
 				});				
 			}
 		}
+	});
+	//Focus editable div fields when clicking on outter cells
+	$('.item-list, #skill-list, #cyberware').on('click', 'td, div.spell, div.text-wrapper', function() {
+		$('.editable', this).focus();
+	});
+	//Add skills when respective button is clicked
+	addSkillButton.click( function() { addSkill(); });	
+	//Check for changes in any of the skill proficiency dropdowns
+	skillList.on('change', '.proficiency select', function() {
+		var thisVal = $(this).val();
+		var inabilityFields = $(this).parent('.proficiency').children('div:first-child, .inability');
+		if ( thisVal === "I" ) inabilityFields.show();
+		else inabilityFields.hide();
+	});
+	//Add notes and items when respective button is clicked
+	addItemButton.click( function() { addItem(); });
+	addArtifactButton.click( function() { addArtifact(); });
+	addNoteButton.click( function() { addNote(); });
+	addCyberwareButton.click( function() { 
+		addCyberware($(this).closest('.cyber-section').attr('id'));
+		if ( isTouchDevice() ) $('#cyberware-option em').show();
+	});	
+	//Filter inputs for level, weight. essence and value fields
+	$('.item-list, #skill-list, #cyberware, .pool').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .essence .editable, .inability, .current-value', function(e){
+		var thisVal = $(this).html();
+		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
+        var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
+        var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >=96 && e.keyCode <= 105);
+        var vKey = 86, cKey = 67, aKey = 65;
+		//Essence decimal controller
+		var isEssence = $(this).closest('.essence').length;
+		var isPeriodKey = [190].indexOf(e.keyCode) != -1;
+		periodCount = 0;
+		for (i = 0; i < thisVal.length; i++) {
+			if (thisVal[i] == ".") periodCount++;
+		}
+		var onePeriod = periodCount === 0;
+        switch(true){
+            case isCursorMoveOrDeleteAction:
+            case isModifierkeyPressed == false && isNumKeyPressed:
+            case (e.metaKey || e.ctrlKey) && ([vKey,cKey,aKey].indexOf(e.keyCode) != -1):
+			case isEssence && isPeriodKey && onePeriod:
+                break;
+            default:
+                e.preventDefault();
+        }
+	});
+	//Update slots text in carry weight to reflect amount of slots
+	$('.item-list').on('keyup', 'td.weight .editable', function() {
+		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
+		else $(this).parent('.weight').children('div:last-child').text('slots');
+	});
+	//Highlight currently selected body part
+	//and show the section to the right
+	cyberwareImages.click( function() {
+		var bodyPart = $(this).attr('class').split(' ')[0];
+		var thisSection = $('#' + bodyPart + '-cyberware');
+		$('#' + bodyPart + '-cyberware').stop().slideToggle(300);
+		$(this).toggleClass('active');
+		if ( $(this).hasClass('active') ) $(this).attr('src',  'images/cyber'+ bodyPart + '-hover.png');
+		else if ( $(this).hasClass('modded') && $(this).hasClass('active') == false ) $(this).attr('src',  'images/cyber'+ bodyPart + '-modded.png');
+		else $(this).attr('src',  'images/cyber'+ bodyPart + '.png');
+		if ( $('#cyber-mods > div:not(#cyber-intro):visible').length === 1 ) $('#cyber-intro').stop().slideToggle(300);
+		else if ( $('#cyber-intro').is(':visible') ) $('#cyber-intro').stop().slideToggle(300);
+	});
+	cyberware.on('keyup', '.essence .editable', function(){
+		var essenceVal = Number($(this).html());
+		var thisParent = $(this).closest('.cyberware');
+		var oldType = thisParent.attr('data-mod');
+		var bodyPart = thisParent.attr('class').split(' ')[1];
+		var selectedType = $('.type select', thisParent).val();
+		var returnedStats = validCyberware(selectedType,bodyPart,essenceVal,oldType);
+		var priStat;
+		var priNumber;
+		var secStat;
+		var secNumber;
+		var copy;
+		var emptyMods = 0;
+		for (var i = 0; i < thisParent.children('.essence').length; i++) {
+			if ( Number($(this).text()) ) emptyMods++;
+		}
+		if ( emptyMods ) $('#cyber-mannequin img.' + bodyPart).addClass('modded');
+		else $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
+		if ( returnedStats != true || returnedStats != false ) {
+			priStat = returnedStats[0];
+			priNumber = returnedStats[1] + 1;
+			secStat = returnedStats[2];
+			secNumber = returnedStats[3] + 1;
+		}
+		if ( secStat ) copy = "You need at least " + priNumber + " " + priStat + " & " + secNumber +  " " + secStat + " to install this cyberware.";
+		else copy = "You need at least " + priNumber + " " + priStat + " to install this cyberware.";
+		if ( returnedStats === true ) {
+			calculateStatPools();
+		} else if ( returnedStats === false ) {
+			return;
+		} else {
+			$('.text', popupError).text(copy);
+			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
+			$(this).html(0);
+		}
+		calculateEssence();
+	});
+	//Calculate stats whenever cyberware is installed
+	cyberware.on('change', '.type select', function() {
+		var selectedType = $(this).val();
+		var thisParent = $(this).closest('.cyberware');
+		var oldType = thisParent.attr('data-mod');
+		var bodyPart = thisParent.attr('class').split(' ')[1];
+		var essenceVal = Number($('.essence .editable', thisParent).html());
+		var returnedStats = validCyberware(selectedType,bodyPart,essenceVal,oldType);
+		if ( returnedStats != true || returnedStats != false ) {
+			priStat = returnedStats[0];
+			priNumber = returnedStats[1] + 1;
+			secStat = returnedStats[2];
+			secNumber = returnedStats[3] + 1;
+		}
+		if ( secStat ) copy = "You need at least " + priNumber + " " + priStat + " & " + secNumber +  " " + secStat + " to install this cyberware.";
+		else copy = "You need at least " + priNumber + " " + priStat + " to install this cyberware.";
+		if ( returnedStats === true ) {
+			calculateStatPools();	
+		} else if ( returnedStats === false ) {
+			return;
+		} else {
+			$('.text', popupError).text(copy);
+			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
+			$(this).val('');
+			$(this).trigger('chosen:updated');
+		}
+		calculateEssence();
+	});
+	//Show modals on click
+	$('#buttons .modal-button, .modal-background, .modal, .modal-header .button').click( function(e) {
+		if(e.target !== e.currentTarget) return;
+		var modal;
+		if ( $(this).attr('id') ) {
+			modal = $(this).attr('id').replace('open-','')
+			modal = $('#' + modal).closest('.modal-background');
+		} else if ( $(this).hasClass('close') || $(this).hasClass('modal') ) {
+			modal = $(this).closest('.modal-background');
+		} else {
+			modal = $(this);
+		}
+		if ( modal.hasClass('visible') ) {
+			modal.removeClass('visible');
+			$('body').css('overflow-y','auto');
+		} else {
+			modal.addClass('visible');
+			$('body').css('overflow-y','hidden');
+		}
+		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
+	});
+	//Highlight spells in spellbook and keep track of spell count
+	spellBook.on('click', '.spell', function() {
+		if ( $(this).hasClass('required') == false && $(this).hasClass('selected') == false && selectedSpellCount < availSpellCount ) {
+			$(this).addClass('selected');
+			++selectedSpellCount;
+			if ( $('#spellbook .filters #selected').hasClass('clicked') == false ) $(this).stop().slideToggle(500);
+		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
+			$('.spell-list .spell[data-spellid="' + $(this).attr('id') + '"]').remove();
+			$('.item-list tr[data-spellid="' + $(this).attr('id') + '"]').remove();
+			$(this).removeClass('selected');
+			--selectedSpellCount;
+			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) $(this).stop().slideToggle(500);
+		}
+		resetAbilityCounters();
+		populateSpellLists();
 	});
 	filterButtons.click( function() {
 		var spellState = $(this).attr('id');
