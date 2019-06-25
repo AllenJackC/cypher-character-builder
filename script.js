@@ -385,145 +385,145 @@ function validCyberware(selectedType,bodyPart,essenceVal,oldType) {
 			priStat = "Intellect";
 			priNumber = 3;
 	}
-	switch ( bodyPart) {
-		case "skin":
-			if ( oldType == "ST" ) {
-				oldPriStat = "Armour";
-				oldPriNumber = 0;
-			} else { 
+	if ( oldType ) {
+		switch ( bodyPart) {
+			case "skin":
+				if ( oldType == "ST" ) {
+					oldPriStat = "Armour";
+					oldPriNumber = 0;
+				} else { 
+					oldPriStat = "Intellect";
+					oldPriNumber = 3;
+				}
+			break;
+			case "head":
+				switch ( oldType ) {
+					case "ST":
+						oldPriStat = "Might";
+						oldPriNumber = 2;
+					break;
+					case "LW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+					break;
+					default:
+						oldPriStat = "Might";
+						oldPriNumber = 3;
+				}
+			break;
+			case "core":
+				switch ( oldType ) {
+					case "ST":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+						oldSecStat = "Speed";
+						oldSecNumber = 1;
+					break;
+					case "MW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+						oldSecStat = "Speed";
+						oldSecNumber = 1;
+					break;
+					case "HW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+						oldSecStat = "Speed";
+						oldSecNumber = 2;
+					break;
+					default:
+						oldPriStat = "Intellect";
+						oldPriNumber = 3;
+				}
+			break;
+			case "leftarm":
+				switch ( oldType ) {
+					case "ST":
+						oldPriStat = "Intellect";
+						oldPriNumber = 1;
+					break;
+					case "LW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+					break;
+					case "MW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+						oldSecStat = "Speed";
+						oldSecNumber = 1;
+					break;
+					default:
+						oldPriStat = "Intellect";
+						oldPriNumber = 3;
+				}
+			break;
+			case "rightarm":
+				switch ( oldType ) {
+					case "ST":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+					break;
+					case "LW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+					break;
+					case "MW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+						oldSecStat = "Speed";
+						oldSecNumber = 1;
+					break;
+					default:
+						oldPriStat = "Intellect";
+						oldPriNumber = 3;
+				}
+			break;
+			case "leftleg":
+				switch ( oldType ) {
+					case "ST":
+						oldPriStat = "Intellect";
+						oldPriNumber = 1;
+					break;
+					case "LW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+					break;
+					case "MW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+						oldSecStat = "Speed";
+						oldSecNumber = 1;
+					break;
+					default:
+						oldPriStat = "Intellect";
+						oldPriNumber = 3;
+				}
+			break;
+			case "rightleg":
+				switch ( oldType ) {
+					case "ST":
+						oldPriStat = "Intellect";
+						oldPriNumber = 1;
+					break;
+					case "LW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+					break;
+					case "MW":
+						oldPriStat = "Intellect";
+						oldPriNumber = 2;
+						oldSecStat = "Speed";
+						oldSecNumber = 1;
+					break;
+					default:
+						oldPriStat = "Intellect";
+						oldPriNumber = 3;
+				}
+			break;
+			default:
 				oldPriStat = "Intellect";
 				oldPriNumber = 3;
-			}
-		break;
-		case "head":
-			switch ( oldType ) {
-				case "ST":
-					oldPriStat = "Might";
-					oldPriNumber = 2;
-				break;
-				case "LW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-				break;
-				default:
-					oldPriStat = "Might";
-					oldPriNumber = 3;
-			}
-		break;
-		case "core":
-			switch ( oldType ) {
-				case "ST":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-					oldSecStat = "Speed";
-					oldSecNumber = 1;
-				break;
-				case "MW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-					oldSecStat = "Speed";
-					oldSecNumber = 1;
-				break;
-				case "HW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-					oldSecStat = "Speed";
-					oldSecNumber = 2;
-				break;
-				default:
-					oldPriStat = "Intellect";
-					oldPriNumber = 3;
-			}
-		break;
-		case "leftarm":
-			switch ( oldType ) {
-				case "ST":
-					oldPriStat = "Intellect";
-					oldPriNumber = 1;
-				break;
-				case "LW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-				break;
-				case "MW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-					oldSecStat = "Speed";
-					oldSecNumber = 1;
-				break;
-				default:
-					oldPriStat = "Intellect";
-					oldPriNumber = 3;
-			}
-		break;
-		case "rightarm":
-			switch ( oldType ) {
-				case "ST":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-				break;
-				case "LW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-				break;
-				case "MW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-					oldSecStat = "Speed";
-					oldSecNumber = 1;
-				break;
-				default:
-					oldPriStat = "Intellect";
-					oldPriNumber = 3;
-			}
-		break;
-		case "leftleg":
-			switch ( oldType ) {
-				case "ST":
-					oldPriStat = "Intellect";
-					oldPriNumber = 1;
-				break;
-				case "LW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-				break;
-				case "MW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-					oldSecStat = "Speed";
-					oldSecNumber = 1;
-				break;
-				default:
-					oldPriStat = "Intellect";
-					oldPriNumber = 3;
-			}
-		break;
-		case "rightleg":
-			switch ( oldType ) {
-				case "ST":
-					oldPriStat = "Intellect";
-					oldPriNumber = 1;
-				break;
-				case "LW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-				break;
-				case "MW":
-					oldPriStat = "Intellect";
-					oldPriNumber = 2;
-					oldSecStat = "Speed";
-					oldSecNumber = 1;
-				break;
-				default:
-					oldPriStat = "Intellect";
-					oldPriNumber = 3;
-			}
-		break;
-		default:
-			oldPriStat = "Intellect";
-			oldPriNumber = 3;
-	}
-	if ( oldType ) {
+		}
 		if ( oldPriStat === priStat ) priNumber -= oldPriNumber;
 		if ( oldSecStat && secStat && oldSecStat === secStat ) secNumber -= oldSecNumber;
 	}
@@ -569,8 +569,6 @@ function validCyberware(selectedType,bodyPart,essenceVal,oldType) {
 	else if ( !hasEssence && !selectedType ) return false;
 	else if ( hasEssence && validSelection ) return true;
 	else {
-		
-		
 		return stats;
 	}
 }
@@ -1756,7 +1754,7 @@ function hideExtraAttribute(section,animate) {
 	}
 }
 //Calculate stat pools based on current selections
-function calculateStatPools() {
+function calculateStatPools(oldTypeOnly) {
 	var curMightVal = Number(curMight.html());
 	var maxMightVal = Number(maxMight.text());
 	var curSpeedVal = Number(curSpeed.html());
@@ -1774,23 +1772,228 @@ function calculateStatPools() {
 		var bodyPart = $(this).attr('class').split(' ')[1];
 		var oldType = $(this).attr('data-mod');
 		var selectedType = $('.type select', this).val();
+		if ( oldTypeOnly == "delete" && $(this).parents('.delete-space').length === 0 ) return;
 		if ( oldType ) {
-			if ( oldType != selectedType ) {
-				switch ( bodyPart ) {
-					case "skin":
-						if ( oldType === "ST" ) console.log('Armour');
-						else intellectPenalty -= 3;
-					break;
-				}
+			switch ( bodyPart ) {
+				case "skin":
+					if ( oldType === "ST" ) console.log('Armour');
+					else intellectPenalty -= 3;
+				break;
+				case "head":
+					switch ( oldType ) {
+						case "ST":
+							mightPenalty -= 2;
+							intellectBonus -= 2;
+						break;
+						case "LW":
+							intellectPenalty -= 2;
+						break;
+						default:
+							mightPenalty -= 3;
+					}
+				break;
+				case "core":
+					switch ( oldType ) {
+						case "ST":
+							speedPenalty -= 1;
+							intellectPenalty -= 2;
+							mightBonus -= 3;
+						break;
+						case "MW":
+							speedPenalty -= 1;
+							intellectPenalty -= 2;
+						break;
+						case "HW":
+							speedPenalty -= 2;
+							intellectPenalty -= 2;
+						break;
+						default:
+							intellectPenalty -= 3;
+					}
+				break;
+				case "leftarm":
+					switch ( oldType ) {
+						case "ST":
+							intellectPenalty -= 1;
+							mightBonus -= 1;
+						break;
+						case "LW":
+							intellectPenalty -= 2;
+						break;
+						case "MW":
+							speedPenalty -= 1;
+							intellectPenalty -= 2;
+						break;
+						default:
+							intellectPenalty -= 3;
+					}
+				break;
+				case "rightarm":
+					switch ( oldType ) {
+						case "ST":
+							intellectPenalty -= 1;
+							mightBonus -= 1;
+						break;
+						case "LW":
+							intellectPenalty -= 2;
+						break;
+						case "MW":
+							speedPenalty -= 1;
+							intellectPenalty -= 2;
+						break;
+						default:
+							intellectPenalty -= 3;
+					}
+				break;
+				case "leftleg":
+					switch ( oldType ) {
+						case "ST":
+							intellectPenalty -= 1;
+							speedBonus -= 1;
+						break;
+						case "LW":
+							intellectPenalty -= 2;
+						break;
+						case "MW":
+							speedPenalty -= 1;
+							intellectPenalty -= 2;
+						break;
+						default:
+							intellectPenalty -= 3;
+					}
+				break;
+				case "rightleg":
+					switch ( oldType ) {
+						case "ST":
+							intellectPenalty -= 1;
+							speedBonus -= 1;
+						break;
+						case "LW":
+							intellectPenalty -= 2;
+						break;
+						case "MW":
+							speedPenalty -= 1;
+							intellectPenalty -= 2;
+						break;
+						default:
+							intellectPenalty -= 3;
+					}
+				break;
+				default:
+					intellectPenalty -= 3;
 			}
 		}
-		switch ( bodyPart ) {
-			case "skin":
-				if ( selectedType === "ST" ) console.log('Armour');
-				else intellectPenalty += 3;
-			break;
+		if ( !oldTypeOnly ) {
+			switch ( bodyPart ) {
+				case "skin":
+					if ( selectedType === "ST" ) console.log('Armour');
+					else intellectPenalty += 3;
+				break;
+				case "head":
+					switch ( selectedType ) {
+						case "ST":
+							mightPenalty += 2;
+							intellectBonus += 2;
+						break;
+						case "LW":
+							intellectPenalty += 2;
+						break;
+						default:
+							mightPenalty += 3;
+					}
+				break;
+				case "core":
+					switch ( selectedType ) {
+						case "ST":
+							speedPenalty += 1;
+							intellectPenalty += 2;
+							mightBonus += 3;
+						break;
+						case "MW":
+							speedPenalty += 1;
+							intellectPenalty += 2;
+						break;
+						case "HW":
+							speedPenalty += 2;
+							intellectPenalty += 2;
+						break;
+						default:
+							intellectPenalty += 3;
+					}
+				break;
+				case "leftarm":
+					switch ( selectedType ) {
+						case "ST":
+							intellectPenalty += 1;
+							mightBonus += 1;
+						break;
+						case "LW":
+							intellectPenalty += 2;
+						break;
+						case "MW":
+							speedPenalty += 1;
+							intellectPenalty += 2;
+						break;
+						default:
+							intellectPenalty += 3;
+					}
+				break;
+				case "rightarm":
+					switch ( selectedType ) {
+						case "ST":
+							intellectPenalty += 1;
+							mightBonus += 1;
+						break;
+						case "LW":
+							intellectPenalty += 2;
+						break;
+						case "MW":
+							speedPenalty += 1;
+							intellectPenalty += 2;
+						break;
+						default:
+							intellectPenalty += 3;
+					}
+				break;
+				case "leftleg":
+					switch ( selectedType ) {
+						case "ST":
+							intellectPenalty += 1;
+							speedBonus += 1;
+						break;
+						case "LW":
+							intellectPenalty += 2;
+						break;
+						case "MW":
+							speedPenalty += 1;
+							intellectPenalty += 2;
+						break;
+						default:
+							intellectPenalty += 3;
+					}
+				break;
+				case "rightleg":
+					switch ( selectedType ) {
+						case "ST":
+							intellectPenalty += 1;
+							speedBonus += 1;
+						break;
+						case "LW":
+							intellectPenalty += 2;
+						break;
+						case "MW":
+							speedPenalty += 1;
+							intellectPenalty += 2;
+						break;
+						default:
+							intellectPenalty += 3;
+					}
+				break;
+				default:
+					intellectPenalty += 3;
+			}
+			$(this).attr('data-mod', selectedType);
 		}
-		$(this).attr('data-mod', selectedType);
 	});
 	//Calculate new values for all of the stat pools
 	curMightVal = curMightVal + mightBonus - mightPenalty;
@@ -2069,8 +2272,69 @@ $(function() {
 				else if ( sibling === null || sibling.classList.contains('cyberware') ) return true;
 			}
 		}).on('drag', function(el,source) {
-			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') == false ) cyberError.stop().slideToggle(150);
-			else cyberwareDeleteSpace.stop().slideToggle(150);
+			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') == false ) {
+				cyberError.text('Cyberware granted by character attributes cannot be removed');
+				cyberError.stop().slideToggle(150);
+			} else if ( el.hasAttribute('data-mod') && cyberError.is(':visible') == false ) {
+				var selectedType = el.getAttribute('data-mod');
+				var bodyPart = el.classList[1];
+				var essenceVal = el.querySelector('.essence .editable').innerHTML;
+				var stat;
+				var statVal;
+				var curStat;
+				if ( selectedType == "ST" ) {
+					switch ( bodyPart ) {
+						case "skin":
+							console.log("Armour");
+						break;
+						case "head":
+							stat = "Intellect";
+							statVal = 3;
+						break;
+						case "core":
+							stat = "Might";
+							statVal = 4;
+						break;
+						case "leftarm":
+							stat = "Might";
+							statVal = 2;
+						break;
+						case "rightarm":
+							stat = "Might";
+							statVal = 2;
+						break;
+						case "leftleg":
+							stat = "Speed";
+							statVal = 3;
+						break;
+						case "rightleg":
+							stat = "Speed";
+							statVal = 3;
+						break;
+					}
+					switch ( stat ) {
+						case "Might":
+							curStat = maxMight;
+						break;
+						case "Speed":
+							curStat = maxSpeed;
+						break;
+						case "Intellect":
+							curStat = maxIntellect;
+						break;
+					}
+					if ( Number(curStat.text()) >= statVal ) {
+						cyberwareDeleteSpace.stop().slideToggle(150);
+					} else {
+						cyberError.text('You need at least ' + statVal + ' ' + stat + ' to remove this cyberware');
+						cyberError.stop().slideToggle(150);
+					}
+				} else {
+					cyberwareDeleteSpace.stop().slideToggle(150);
+				}
+			} else {
+				cyberwareDeleteSpace.stop().slideToggle(150);
+			}
 			if ( firstDrag ) firstDrag = false;
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
@@ -2086,8 +2350,13 @@ $(function() {
 			}
 		}).on('drop', function(el,target,source,sibling) {
 			if ( target.classList.contains('delete-space') ) {
+				calculateStatPools("delete");
 				cyberwareDrake.remove();
 				calculateEssence();
+				poolRemovePoint.each( function() {
+					var maxPool = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .pool-value').text());
+					if ( maxPool > 0 ) $(this).removeClass('disabled');
+				});
 				var bodyPart = el.classList[1];
 				var emptyMods = 0;
 				for (var i = 0; i < $('.cyberware.' + bodyPart).children('.essence').length; i++) {
@@ -2096,7 +2365,7 @@ $(function() {
 				if ( !emptyMods ) $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
 				if ( isTouchDevice() && $('.cyberware').length === 0 ) $('#cyberware-option em').hide();
 			}
-			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') ) cyberError.stop().slideToggle(300);			
+			if ( cyberError.is(':visible') ) cyberError.stop().slideToggle(300);			
 			else if ( cyberwareDeleteSpace.is(':visible') ){
 				cyberwareDeleteSpace.stop().animate({
 					'margin-top' : '10px',
@@ -2108,7 +2377,7 @@ $(function() {
 			}
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
-			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') ) cyberError.stop().slideToggle(300);
+			if ( cyberError.is(':visible') ) cyberError.stop().slideToggle(300);
 			else if ( cyberwareDeleteSpace.is(':visible') ) {
 				cyberwareDeleteSpace.stop().animate({
 					'height' : '185px'
@@ -2586,7 +2855,7 @@ $(function() {
 			$('.value', availPoolStat).text(availPool);
 			poolRemovePoint.each( function() {
 				var maxPool = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .pool-value').text());
-				if ( maxPool === 0 ) $(this).addClass('disabled');
+				if ( maxPool === 0 || spentPoints === -availPoints ) $(this).addClass('disabled');
 			});
 		}
 		commitButton.addClass('disabled');
@@ -2800,6 +3069,8 @@ $(function() {
 			$('.text', popupError).text(copy);
 			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
 			$(this).html(0);
+			calculateStatPools(true);
+			thisParent.removeAttr('data-mod');
 		}
 		calculateEssence();
 	});
@@ -2828,6 +3099,8 @@ $(function() {
 			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
 			$(this).val('');
 			$(this).trigger('chosen:updated');
+			calculateStatPools(true);
+			thisParent.removeAttr('data-mod');
 		}
 		calculateEssence();
 	});
