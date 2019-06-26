@@ -243,7 +243,7 @@ function populateInventorySelect() {
 }
 //Check to see if the currently selected cyberware are valid
 function validCyberware(selectedType,bodyPart,essenceVal,oldType) {
-	var hasEssence = essenceVal > 0 || essenceVal == "." || essenceVal;
+	var hasEssence = (essenceVal > 0 || essenceVal) && (essenceVal != ".");
 	var mightVal = Number(maxMight.text());
 	var speedVal = Number(maxSpeed.text());
 	var intellectVal = Number(maxIntellect.text());
@@ -545,18 +545,18 @@ function validCyberware(selectedType,bodyPart,essenceVal,oldType) {
 		( bodyPart == "core" && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
 		( bodyPart == "core" && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
 		( bodyPart == "core" && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "ST" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "MW" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "ST" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "MW" && intellectVal >= priNumber + 1 && mightVal >= secNumber + 1 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") && selectedType == "SP" && intellectVal >= priNumber + 1 );
+		( bodyPart.indexOf("arm") > -1 && selectedType == "ST" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") > -1 && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") > -1 && selectedType == "MW" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
+		( bodyPart.indexOf("arm") > -1 && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") > -1 && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("arm") > -1 && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") > -1 && selectedType == "ST" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") > -1 && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") > -1 && selectedType == "MW" && intellectVal >= priNumber + 1 && mightVal >= secNumber + 1 ) ||
+		( bodyPart.indexOf("leg") > -1 && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") > -1 && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
+		( bodyPart.indexOf("leg") > -1 && selectedType == "SP" && intellectVal >= priNumber + 1 );
 	//Validate, and then push stats needed if invalid
 	stats.push(priStat);
 	stats.push(priNumber);
@@ -584,8 +584,15 @@ function calculateEssence() {
 }
 //Add a blank cyberware, unless variables are parsed
 function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceCost) {
-	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
-	else spellID = "";
+	var contentEditable;
+	var disabledSelect;
+	if ( spellID ) {
+		spellID = ' data-spellid="' + spellID + '"';
+		contentEditable = false;
+	} else {
+		spellID = "";
+		contentEditable = true;
+	}
 	if ( !cyberwareFunction ) cyberwareFunction = "";
 	if ( !cyberwareValue ) cyberwareValue = "0";
 	if ( !essenceCost ) essenceCost = "0";
@@ -653,13 +660,13 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceC
 			'<div class="essence">' +
 				'<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>' +
 				'<div class="text-wrapper">' +
-					'&#123; <div contenteditable="true" class="editable">' + essenceCost + '</div> Essence &#125;' +
+					'&#123; <div contenteditable="' + contentEditable + '" class="editable">' + essenceCost + '</div> Essence &#125;' +
 				'</div>' +
 			'</div>' +
 			'<div class="value">' +
 				'<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>' +
 				'<div class="text-wrapper">' +
-					'<span class="blue-text">return</span> <div contenteditable="true" class="editable">' + cyberwareValue + '</div>&#8353;' +
+					'<span class="blue-text">return</span> <div contenteditable="' + contentEditable + '" class="editable">' + cyberwareValue + '</div>&#8353;' +
 				'</div>' +
 			'</div>' +
 		'</div>'
@@ -670,6 +677,10 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceC
 		}
 	});
 	populateCyberwareSelect();
+	if ( $('.' + bodyPart.replace('-cyberware','') + ' option:selected[value="ST"]').length > 0 ) {
+		$('.' + bodyPart.replace('-cyberware','') + ' option[value="ST"]:not(:selected)').prop('disabled', true);
+		$('.' + bodyPart.replace('-cyberware','') + ' .type select').trigger('chosen:updated');
+	}
 }
 //Add a blank item, unless variables are parsed
 function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType) {
@@ -1660,7 +1671,12 @@ function populateSpellLists() {
 					addCyberware(cyberwareLocation,spellID,cyberwareFunction,cyberwareValue,essenceCost);
 					var thisCyberware = $('.cyberware[data-spellid="' + spellID + '"]');
 					$('.type select', thisCyberware).val(selectThisType);
-					$('.type select', thisCyberware).trigger('chosen:updated');
+					if ( selectThisType == "ST" ) {
+						$('.' + bodyPart + ' option[value="ST"]:not(:selected)').prop('disabled', true);
+						$('.' + bodyPart + ' .type select').trigger('chosen:updated');
+					} else {
+						$('.type select', thisCyberware).trigger('chosen:updated');
+					}
 					var bodyPartImg = $('#cyber-mannequin img.' + bodyPart);
 					bodyPartImg.addClass('modded');
 					enableCyberware.addClass('clicked');
@@ -1768,7 +1784,10 @@ function calculateStatPools(oldTypeOnly) {
 	var speedPenalty = 0;
 	var intellectPenalty = 0;
 	//Get currently selected cyberware, and then add their amounts
-	$('.cyberware').each( function() {
+	//Ignore cyberware granted by attributes
+	$('.cyberware:not([data-spellid])').each( function() {
+		var essenceVal = Number($('.essence .editable', this).html());
+		var hasEssence = (essenceVal > 0 || essenceVal) && (essenceVal != ".");
 		var bodyPart = $(this).attr('class').split(' ')[1];
 		var oldType = $(this).attr('data-mod');
 		var selectedType = $('.type select', this).val();
@@ -1883,7 +1902,7 @@ function calculateStatPools(oldTypeOnly) {
 					intellectPenalty -= 3;
 			}
 		}
-		if ( !oldTypeOnly ) {
+		if ( !oldTypeOnly && hasEssence ) {
 			switch ( bodyPart ) {
 				case "skin":
 					if ( selectedType === "ST" ) console.log('Armour');
@@ -3061,16 +3080,26 @@ $(function() {
 		}
 		if ( secStat ) copy = "You need at least " + priNumber + " " + priStat + " & " + secNumber +  " " + secStat + " to install this cyberware.";
 		else copy = "You need at least " + priNumber + " " + priStat + " to install this cyberware.";
-		if ( returnedStats === true ) {
+		if ( essenceVal == 0 || essenceVal == "." || !essenceVal ) {
 			calculateStatPools();
-		} else if ( returnedStats === false ) {
-			return;
-		} else {
+			thisParent.removeAttr('data-mod');
+		} else if ( returnedStats === true ) {
+			if ( selectedType == "EA" ) {
+				
+			} else if ( oldType == "EA" ) {
+
+			}
+			calculateStatPools();			
+		} else if ( returnedStats != false && returnedStats != true ) {
 			$('.text', popupError).text(copy);
 			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
 			$(this).html(0);
 			calculateStatPools(true);
 			thisParent.removeAttr('data-mod');
+		}
+		if ( $('.' + bodyPart + ' option:selected[value="ST"]').length === 0 ) {
+			$('.' + bodyPart + ' option[value="ST"]').removeAttr('disabled');
+			$('.' + bodyPart + ' .type select').trigger('chosen:updated');
 		}
 		calculateEssence();
 	});
@@ -3088,13 +3117,24 @@ $(function() {
 			secStat = returnedStats[2];
 			secNumber = returnedStats[3] + 1;
 		}
+		if ( selectedType == "ST" ) {
+			$('.' + bodyPart + ' option[value="ST"]:not(:selected)').prop('disabled', true);
+			$('.' + bodyPart + ' .type select').trigger('chosen:updated');
+		}
+		if ( $('.' + bodyPart + ' option:selected[value="ST"]').length == 0 ) {
+			$('.' + bodyPart + ' option[value="ST"]').removeAttr('disabled');
+			$('.' + bodyPart + ' .type select').trigger('chosen:updated');
+		}
 		if ( secStat ) copy = "You need at least " + priNumber + " " + priStat + " & " + secNumber +  " " + secStat + " to install this cyberware.";
 		else copy = "You need at least " + priNumber + " " + priStat + " to install this cyberware.";
 		if ( returnedStats === true ) {
-			calculateStatPools();	
-		} else if ( returnedStats === false ) {
-			return;
-		} else {
+			if ( selectedType == "EA" ) {
+				
+			} else if ( oldType == "EA" ) {
+
+			}
+			calculateStatPools();
+		} else if ( returnedStats != false && returnedStats != true ) {
 			$('.text', popupError).text(copy);
 			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
 			$(this).val('');

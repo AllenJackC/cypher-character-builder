@@ -364,6 +364,7 @@ div.proficiency {
 	text-align: center;
     top: 30%;
 	width: 250px;
+	z-index: 3;
 }
 #popup-error .button {
 	margin: 10px auto 5px;
@@ -843,6 +844,18 @@ div.proficiency {
 .cyberware .value .editable {
 	margin-right: 4px;
 }
+.cyberware[data-spellid] > div:not(.function):hover .editable {
+	border-color: transparent;
+}
+.cyberware[data-spellid] > div:not(.function) .editable {
+	cursor: default;
+}
+.cyberware[data-spellid] .chosen-container, .cyberware[data-spellid] .chosen-single {
+	pointer-events: none!important;
+}
+.cyberware[data-spellid] .chosen-single > div {
+	display: none;
+}
 .yellow-text {
 	color: var(--selected-hover);
 }
@@ -981,7 +994,9 @@ tr.gu-mirror {
 }
 .chosen-default { 
 	color: var(--dark-grey)!important;
-	font-style: italic;
+}
+.cyberware .chosen-container .chosen-results li.disabled-result {
+    text-decoration: line-through;
 }
 .highlighted {
 	background: var(--button)!important;
