@@ -357,12 +357,13 @@ div.proficiency {
 	color: var(--white);
 	display: none;
 	font-weight: 400;
-    left: calc(50% - 125px);
+    left: 50%;
 	overflow: hidden;
     padding: 10px;
 	position: fixed;
 	text-align: center;
     top: 30%;
+	transform: translate(-50%, 0);
 	width: 250px;
 	z-index: 3;
 }
@@ -559,26 +560,26 @@ div.proficiency {
 	max-width: 300px;
 	min-width: 250px;
 }
-#spellbook, #archives {
+#spellbook, #archives, #spell-browser {
 	display: flex;
 	flex-basis: 100%;
 	flex-direction: column;
 	flex-wrap: wrap;
 	margin: 15px 15px 0 15px;
 }
-#spellbook .spell {
+#spellbook .spell, #spell-browser .spell {
 	cursor: pointer;
 	margin-bottom: 15px;
 	pointer-events: auto;
 	width: 100%;
 }
-#spellbook .spell .header {
+#spellbook .spell .header, #spell-browser .spell .header {
 	background: var(--button);
 	color: var(--white);
 	justify-content: space-between;
 	padding: 12px 15px 15px 15px;
 }
-#spellbook .tier {
+#spellbook .tier, #spell-browser .tier {
     font-family: var(--header-font);
     font-size: 24px;
 	font-weight: 400;
@@ -586,37 +587,37 @@ div.proficiency {
 	text-transform: uppercase;
 	white-space: nowrap;
 }
-#spellbook .spell img {
+#spellbook .spell img, #spell-browser .spell img {
 	height: 24px;
 	padding-right: 12px;
 	position: relative;
     top: 1px;
 	width: 24px;
 }
-#spellbook .details {
+#spellbook .details, #spell-browser .details {
 	background: var(--white);
 	box-shadow: inset 0 0 0 3px var(--white);
 	color: var(--black);
 	padding: 15px;
 }
-#spellbook .stats {
+#spellbook .stats, #spell-browser .stats {
 	display: flex;
 	flex-wrap: wrap;
 	margin-top: 15px;
 }
-#spellbook .spell .stats:first-child {
+#spellbook .spell .stats:first-child, #spell-browser .spell .stats:first-child {
 	margin-top: 0;
 	margin-bottom: 15px;
 }
-#spellbook .stats span {
+#spellbook .stats span, #spell-browser .stats span {
 	flex-basis: calc( 50% - 10px );
 	padding-right: 10px;
 }
-#spellbook .stats span:nth-child(even), #spellbook .origin {
+#spellbook .stats span:nth-child(even), #spellbook .origin, #spell-browser .stats span:nth-child(even) {
 	padding-right: 0;
 	text-align: right;
 }
-#spellbook .description, #archives .description {
+#spellbook .description, #archives .description, #spell-browser .description {
 	flex-basis: 100%;
 }
 #spellbook .origin {
@@ -1131,11 +1132,41 @@ tr.gu-mirror {
 	padding: 15px;
 	pointer-events: none;
 }
+.spellbrowser-modal {
+	background: var(--black-translucent);
+	border: 3px solid var(--light-grey);
+	display: flex;
+    flex-direction: column;
+	height: calc(100vh - 90px);
+	left: 50%;
+    max-width: 500px;
+	min-width: 320px;
+	opacity: 0;
+	overflow-y: auto;
+	padding: 15px;
+    position: fixed;
+    pointer-events: auto;
+    top: 30px;
+	transition: visibility 0.3s, opacity 0.2s linear;
+    transform: translate(-50%, 0);
+	visibility: hidden;
+	width: 100%;
+	z-index: 10;
+}
 .modal-header {
 	align-items: center;
 	display: flex;
 	justify-content: space-between;
 	margin: 15px 15px 0 15px;
+}
+.spell-search {
+    align-items: baseline;
+	display: flex;
+	padding-bottom: 15px;
+}
+.clear-search {
+	margin-bottom: 0;
+	margin-left: 10px;
 }
 .filters {
 	align-items: center;
@@ -1221,34 +1252,34 @@ tr:hover .editable {
 tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	border-color: var(--white);
 }
-#spellbook .spell:hover .header {
+#spellbook .spell:hover .header, #spell-browser .spell:hover .header {
 	background: var(--button-hover);
 }
-#spellbook .spell:active .header {
+#spellbook .spell:active .header, #spell-browser .spell:active .header  {
 	background: var(--button-active);
 }
 #spellbook .required {
 	pointer-events: none;
 }
-#spellbook .selected .header, #spellbook .required .header {
+#spellbook .selected .header, #spellbook .required .header, #spell-browser .selected .header {
 	background: var(--selected);
 	color: var(--black);
 }
-#spellbook .selected img, #spellbook .required img {
+#spellbook .selected img, #spellbook .required img, #spell-browser .selected img {
 	filter: brightness(15%);
 }
-#spellbook .selected:hover .header {
+#spellbook .selected:hover .header, #spell-browser .selected:hover .header {
 	background: var(--selected-hover);
 }
-#spellbook .selected:active .header {
+#spellbook .selected:active .header, #spell-browser .selected:active .header {
 	background: var(--selected-active);
 }
-#spellbook .disabled {
+#spellbook .disabled, #spell-browser .disabled {
 	cursor: default;
 	filter: grayscale(80%);
 	opacity: 0.7;
 }
-#spellbook .disabled .header {
+#spellbook .disabled .header, #spell-browser .disabled .header {
 	background: var(--button)!important;
 	color: var(--white)!important;
 }
