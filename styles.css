@@ -1135,21 +1135,19 @@ tr.gu-mirror {
 .spellbrowser-modal {
 	background: var(--black-translucent);
 	border: 3px solid var(--light-grey);
-	display: flex;
+	border-top: 0;
+	display: none;
     flex-direction: column;
-	height: calc(100vh - 90px);
+	height: 90%;
 	left: 50%;
-    max-width: 500px;
+    max-width: 800px;
 	min-width: 320px;
-	opacity: 0;
-	overflow-y: auto;
-	padding: 15px;
+	overflow-y: scroll;
+	padding: 5px 15px 15px 15px;
     position: fixed;
     pointer-events: auto;
-    top: 30px;
-	transition: visibility 0.3s, opacity 0.2s linear;
+    top: 0;
     transform: translate(-50%, 0);
-	visibility: hidden;
 	width: 100%;
 	z-index: 10;
 }

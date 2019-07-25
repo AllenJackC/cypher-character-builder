@@ -55,6 +55,11 @@ var skillError;
 var skillList;
 var skillsDeleteSpace;
 var spellBook;
+var spellBrowser;
+var spellBrowserModal;
+var spellBrowserConfirm;
+var spellbookButton;
+var spellBrowserButton;
 var spellbookButton;
 var loreButton;
 var filterButtons;
@@ -2158,8 +2163,10 @@ $(function() {
 	skillsDeleteSpace = $('#skill-list .delete-space');
 	spellBook = $('#spellbook');
 	spellBrowser = $('#spell-browser');
+	spellBrowserModal = $('.spellbrowser-modal');
 	spellBrowserConfirm = $('.spellbrowser-modal .confirm');
 	spellbookButton = $('#open-spellbook');
+	spellBrowserButton = $('#open-spellbrowser');
 	filterButtons = $('.filters .button');
 	filterSearchBar = $('.spell-search input');
 	clearSearchButton = $('.spell-search .clear-search');
@@ -3323,10 +3330,18 @@ $(function() {
 		$('.spell', thisModal).removeClass('disabled selected');
 		$('.confirm', thisModal).addClass('disabled');
 	});
+	//Show the spell browser on click
+	spellBrowserButton.click( function() {
+		spellBrowserConfirm.addClass('disabled');
+		$('.spell.selected', spellBrowser).hide();
+		$('.spell', spellBrowser).removeClass('disabled');
+		$('body').css('overflow-y','hidden');
+		spellBrowserModal.slideToggle(500);
+	});
 	//Highlight selected spells in ability browser when clicked
 	spellBrowser.on('click', '.spell', function() {
-		console.log($('.spell.selected', spellBrowser).length);
-		if ( $('.spell.selected', spellBrowser).length === 0 ) {
+		var extraAbilities = 0;
+		if ( $('.spell.selected', spellBrowser).length === extraAbilities ) {
 			$(this).addClass('selected');
 			$('.spell', spellBrowser).not(this).addClass('disabled');
 			spellBrowserConfirm.removeClass('disabled');
@@ -3335,6 +3350,12 @@ $(function() {
 			$(this).removeClass('selected');
 			spellBrowserConfirm.addClass('disabled');
 		}
+	});
+	//Clicking confirm closes the spell browser and applies
+	//the spell to the spell list
+	spellBrowserConfirm.click( function() {
+		spellBrowserModal.slideToggle(500);
+		$('body').css('overflow-y','auto');
 	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
