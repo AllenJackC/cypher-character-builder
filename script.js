@@ -2,18 +2,18 @@ var popupError;
 var descriptors;
 var descriptorsOptions;
 var priSpecies;
-var priSpeciesOptions;
 var secSpecies;
-var secSpeciesOptions;
 var species;
+var priSpeciesOptions;
+var secSpeciesOptions;
 var speciesOptions;
 var types;
 var typesOptions;
 var elementalistType;
 var genderFocusRow;
 var priFoci;
-var priFociOptions;
 var secFoci;
+var priFociOptions;
 var secFociOptions;
 var foci;
 var fociOptions;
@@ -28,15 +28,12 @@ var hybridTooltip;
 var resetSection;
 var resetButton;
 var resetTooltip;
-var curMightVal;
-var maxMightVal;
-var curSpeedVal;
-var maxSpeedVal;
-var curIntellectVal;
-var maxIntellectVal;
-var mightOverflow;
-var speedOverflow;
-var intellectOverflow;
+var curMight;
+var maxMight;
+var curSpeed;
+var maxSpeed;
+var curIntellect;
+var maxIntellect;
 var poolAddPoint;
 var poolRemovePoint;
 var mightEdge;
@@ -60,22 +57,18 @@ var spellBrowserModal;
 var spellBrowserConfirm;
 var spellbookButton;
 var spellBrowserButton;
-var spellbookButton;
-var loreButton;
 var filterButtons;
 var filterSearchBar;
 var clearSearchButton;
+var loreButton;
 var enableCyberware;
 var cyberwareTooltip;
-var modalBackground;
-var spellsList;
 var actionsEnablersSection;
 var talentsSection;
 var spellHotbars;
-var mannequinState;
 var addCyberwareButton;
-var cyberError;
 var cyberware;
+var cyberError;
 var cyberwareSection;
 var cyberBodyParts;
 var cyberwareImages;
@@ -92,22 +85,24 @@ var addNoteButton;
 var notesList;
 var notesBody;
 var notesDeleteSpace;
+var firstDrag;
+var periodCount;
 var curArc;
 var curTier;
-var availPoints;
-var spentPoints;
-var	availEdge;
-var spentEdge;
-var	curEffort;
-var	curEssence;
 var spellListDatabase;
 var availSpellCount;
 var selectedSpellCount;
-var firstDrag;
-var containerHeight;
-var defaultContainerHeight;
+var availPoints;
+var spentPoints;
+var mightOverflow;
+var speedOverflow;
+var intellectOverflow;
+var availEdge;
+var spentEdge;
+var curEffort;
+var curEssence;
+var extraAbilities;
 var isHovering;
-var periodCount;
 //Check if an integer is even
 function isEven(value) {
 	if (value%2 == 0)
@@ -1222,11 +1217,17 @@ function populateSpells() {
 			} 
 		}
 	});
+	//Add any spells to the the spellList
+	//that are confirmed in spellBrowser
+	$('.spell.moved', spellBrowser).each( function() {
+		var spellID = parseInt($(this).attr('id'));
+		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
+	});
 	//Remove any spells that are not
 	//in the active spell list array
 	$('.spell, .lore').each( function() {
 		var spellID = parseInt($(this).attr('id'));
-		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
+		spellsList.push(spellID);
 	});
 	//Hide placeholder if there are spells or lore,
 	//and show the filters in the spellbook
@@ -1284,7 +1285,7 @@ function populateSpellBrowser() {
 			//If the spell ID is already on the page, just change
 			//the origin name; otherwise, create a spell card
 			$('#spell-browser').append(
-				'<div data-spellid="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
+				'<div data-spellid="' + spellID + '" class="spell" style="order: ' + spellOrder + ';pointer-events:none">' +
 					'<div class="header">' +
 						'<h3>' +
 							spellType +
@@ -2198,6 +2199,7 @@ $(function() {
 	firstDrag = true;
 	periodCount = 0;
 	//Initial variables
+	extraAbilities = 3;
 	curArc = 2;
 	curTier = 6;
 	spellListDatabase = [];
@@ -3332,29 +3334,62 @@ $(function() {
 	});
 	//Show the spell browser on click
 	spellBrowserButton.click( function() {
+		if ( !extraAbilities ) $('.spell', spellBrowser).css('pointer-events','none');
+		else $('.spell', spellBrowser).not('.disabled').css('pointer-events','auto');
+		$('#spellbook .spell').each( function() {
+			var spellID = $(this).attr('id');
+			$('.spell[data-spellid="' + spellID +'"]', spellBrowser).addClass('disabled');
+		});
 		spellBrowserConfirm.addClass('disabled');
-		$('.spell.selected', spellBrowser).hide();
-		$('.spell', spellBrowser).removeClass('disabled');
 		$('body').css('overflow-y','hidden');
 		spellBrowserModal.slideToggle(500);
 	});
 	//Highlight selected spells in ability browser when clicked
 	spellBrowser.on('click', '.spell', function() {
-		var extraAbilities = 0;
-		if ( $('.spell.selected', spellBrowser).length === extraAbilities ) {
+		var buttonString;
+		if ( $(this).hasClass('disabled') ) return;
+		if ( $(this).hasClass('disabled') == false && $('.spell.selected', spellBrowser).length <= extraAbilities ) {
 			$(this).addClass('selected');
-			$('.spell', spellBrowser).not(this).addClass('disabled');
-			spellBrowserConfirm.removeClass('disabled');
-		} else if ( $(this).hasClass('disabled') == false ) {
+			extraAbilities--;
+			if ( extraAbilities === 0 ) {
+				spellBrowserConfirm.removeClass('disabled');
+				$('.spell', spellBrowser).not(this).addClass('disabled');
+				buttonString = "Ability Browser";
+			} else if ( extraAbilities === 1 ) {
+				buttonString = "1 Extra Ability";
+			} else {
+				buttonString = extraAbilities + " Extra Abilities";
+			}
+			spellBrowserButton.text(buttonString);
+		} else {
 			$('.spell', spellBrowser).removeClass('disabled');
 			$(this).removeClass('selected');
 			spellBrowserConfirm.addClass('disabled');
+			extraAbilities++;
+			spellBrowserButton.text(extraAbilities + " Extra Abilities");
 		}
 	});
 	//Clicking confirm closes the spell browser and applies
 	//the spell to the spell list
 	spellBrowserConfirm.click( function() {
-		spellBrowserModal.slideToggle(500);
+		spellBrowserModal.stop().slideToggle(500, function() {
+			$('.spell.selected', spellBrowser).each(function() {
+				var spellID = $(this).data('spellid');
+				$(this).attr('id', spellID);
+				$(this).removeAttr('data-spellid');
+				$(this).clone().appendTo('#spellbook');
+				$(this).removeAttr('id');
+				$(this).attr('data-spellid', spellID);
+				$(this).addClass('moved');
+				$(this).removeClass('selected');
+				populateSpells();
+			});
+			$('.spell', spellBrowser).removeClass('disabled');
+		});
+		$('body').css('overflow-y','auto');
+	});
+	$('.spellbrowser-modal .close.button').click( function() {
+		spellBrowserModal.stop().slideToggle(500);
 		$('body').css('overflow-y','auto');
 	});
 	//Listeners for mobile vs listeners for desktop

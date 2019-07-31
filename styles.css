@@ -1134,7 +1134,8 @@ tr.gu-mirror {
 }
 .spellbrowser-modal {
 	background: var(--black-translucent);
-	border: 3px solid var(--light-grey);
+	border: 10px solid var(--secondary-button);
+	border-right: 0;
 	border-top: 0;
 	display: none;
     flex-direction: column;
@@ -1272,12 +1273,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 #spellbook .selected:active .header, #spell-browser .selected:active .header {
 	background: var(--selected-active);
 }
-#spellbook .disabled, #spell-browser .disabled {
+#spellbook .disabled, #spell-browser .disabled, #spell-browser .moved {
 	cursor: default;
 	filter: grayscale(80%);
 	opacity: 0.7;
 }
-#spellbook .disabled .header, #spell-browser .disabled .header {
+#spellbook .disabled .header, #spell-browser .disabled .header, #spell-browser .moved .header {
 	background: var(--button)!important;
 	color: var(--white)!important;
 }
