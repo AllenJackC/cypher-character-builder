@@ -102,7 +102,9 @@ var spentEdge;
 var curEffort;
 var curEssence;
 var extraAbilities;
+var availExtraAbilities;
 var isHovering;
+var removeAbility;
 //Check if an integer is even
 function isEven(value) {
 	if (value%2 == 0)
@@ -643,8 +645,17 @@ function calculateStatPools(oldTypeOnly) {
 		if ( oldType ) {
 			switch ( bodyPart ) {
 				case "skin":
-					if ( oldType === "ST" ) console.log('Armour');
-					else intellectPenalty -= 3;
+					switch ( oldType ) {
+						case "ST":
+							console.log('Armour');
+						break;
+						case "EA":
+							extraAbilities -= 1;
+							intellectPenalty -= 3;
+						break;
+						default:
+							intellectPenalty -= 3;
+					}
 				break;
 				case "head":
 					switch ( oldType ) {
@@ -654,6 +665,10 @@ function calculateStatPools(oldTypeOnly) {
 						break;
 						case "LW":
 							intellectPenalty -= 2;
+						break;
+						case "EA":
+							extraAbilities -= 1;
+							mightPenalty -= 3;
 						break;
 						default:
 							mightPenalty -= 3;
@@ -674,6 +689,10 @@ function calculateStatPools(oldTypeOnly) {
 							speedPenalty -= 2;
 							intellectPenalty -= 2;
 						break;
+						case "EA":
+							extraAbilities -= 1;
+							intellectPenalty -= 3;
+						break;
 						default:
 							intellectPenalty -= 3;
 					}
@@ -690,6 +709,10 @@ function calculateStatPools(oldTypeOnly) {
 						case "MW":
 							speedPenalty -= 1;
 							intellectPenalty -= 2;
+						break;
+						case "EA":
+							extraAbilities -= 1;
+							intellectPenalty -= 3;
 						break;
 						default:
 							intellectPenalty -= 3;
@@ -708,6 +731,10 @@ function calculateStatPools(oldTypeOnly) {
 							speedPenalty -= 1;
 							intellectPenalty -= 2;
 						break;
+						case "EA":
+							extraAbilities -= 1;
+							intellectPenalty -= 3;
+						break;
 						default:
 							intellectPenalty -= 3;
 					}
@@ -724,6 +751,10 @@ function calculateStatPools(oldTypeOnly) {
 						case "MW":
 							speedPenalty -= 1;
 							intellectPenalty -= 2;
+						break;
+						case "EA":
+							extraAbilities -= 1;
+							intellectPenalty -= 3;
 						break;
 						default:
 							intellectPenalty -= 3;
@@ -742,6 +773,10 @@ function calculateStatPools(oldTypeOnly) {
 							speedPenalty -= 1;
 							intellectPenalty -= 2;
 						break;
+						case "EA":
+							extraAbilities -= 1;
+							intellectPenalty -= 3;
+						break;
 						default:
 							intellectPenalty -= 3;
 					}
@@ -753,8 +788,17 @@ function calculateStatPools(oldTypeOnly) {
 		if ( !oldTypeOnly && hasEssence ) {
 			switch ( bodyPart ) {
 				case "skin":
-					if ( selectedType === "ST" ) console.log('Armour');
-					else intellectPenalty += 3;
+					switch ( selectedType ) {
+						case "ST":
+							console.log('Armour');
+						break;
+						case "EA":
+							extraAbilities += 1;
+							intellectPenalty += 3;
+						break;
+						default:
+							intellectPenalty += 3;
+					}
 				break;
 				case "head":
 					switch ( selectedType ) {
@@ -764,6 +808,10 @@ function calculateStatPools(oldTypeOnly) {
 						break;
 						case "LW":
 							intellectPenalty += 2;
+						break;
+						case "EA":
+							extraAbilities += 1;
+							mightPenalty += 3;
 						break;
 						default:
 							mightPenalty += 3;
@@ -784,6 +832,10 @@ function calculateStatPools(oldTypeOnly) {
 							speedPenalty += 2;
 							intellectPenalty += 2;
 						break;
+						case "EA":
+							extraAbilities += 1;
+							intellectPenalty += 3;
+						break;
 						default:
 							intellectPenalty += 3;
 					}
@@ -800,6 +852,10 @@ function calculateStatPools(oldTypeOnly) {
 						case "MW":
 							speedPenalty += 1;
 							intellectPenalty += 2;
+						break;
+						case "EA":
+							extraAbilities += 1;
+							intellectPenalty += 3;
 						break;
 						default:
 							intellectPenalty += 3;
@@ -818,6 +874,10 @@ function calculateStatPools(oldTypeOnly) {
 							speedPenalty += 1;
 							intellectPenalty += 2;
 						break;
+						case "EA":
+							extraAbilities += 1;
+							intellectPenalty += 3;
+						break;
 						default:
 							intellectPenalty += 3;
 					}
@@ -835,6 +895,10 @@ function calculateStatPools(oldTypeOnly) {
 							speedPenalty += 1;
 							intellectPenalty += 2;
 						break;
+						case "EA":
+							extraAbilities += 1;
+							intellectPenalty += 3;
+						break;
 						default:
 							intellectPenalty += 3;
 					}
@@ -851,6 +915,10 @@ function calculateStatPools(oldTypeOnly) {
 						case "MW":
 							speedPenalty += 1;
 							intellectPenalty += 2;
+						break;
+						case "EA":
+							extraAbilities += 1;
+							intellectPenalty += 3;
 						break;
 						default:
 							intellectPenalty += 3;
@@ -886,6 +954,27 @@ function calculateStatPools(oldTypeOnly) {
 	maxSpeed.text(maxSpeedVal);
 	curIntellect.html(curIntellectVal);
 	maxIntellect.text(maxIntellectVal);
+	//Force user to deselect an extra ability
+	//if the ability count is below zero, otherwise
+	//update spell browser button text to match
+	//new values
+	if ( extraAbilities < 0 ) {
+		$('.spell', spellBrowser).not('.moved').hide();
+		$('.spell.moved', spellBrowser).addClass('deselect selected');
+		$('.spell.deselect', spellBrowser).removeClass('moved');
+		$('.spell.deselect').css('pointer-events','auto');
+		availExtraAbilities = extraAbilities;
+		spellBrowserConfirm.addClass('disabled');
+		spellBrowserModal.addClass('visible');
+		$('body').css('overflow-y','none');
+		removeAbility = true;
+	} else if ( extraAbilities === 0 ) {
+		spellBrowserButton.text("Ability Browser");
+	} else if ( extraAbilities === 1 ) {
+		spellBrowserButton.text("1 Extra Ability");
+	} else {
+		spellBrowserButton.text(extraAbilities + " Extra Abilities");
+	}
 };
 //Calculate and then show the current essence
 function calculateEssence() {
@@ -1284,7 +1373,7 @@ function populateSpellBrowser() {
 			if ( spellDamage ) spellDamage = '<span><strong>Damage: </strong>' + spellDamage + '</span>';
 			//If the spell ID is already on the page, just change
 			//the origin name; otherwise, create a spell card
-			$('#spell-browser').append(
+			$('#spellbrowser').append(
 				'<div data-spellid="' + spellID + '" class="spell" style="order: ' + spellOrder + ';pointer-events:none">' +
 					'<div class="header">' +
 						'<h3>' +
@@ -2163,9 +2252,9 @@ $(function() {
 	skillList = $('#skill-list #skills');
 	skillsDeleteSpace = $('#skill-list .delete-space');
 	spellBook = $('#spellbook');
-	spellBrowser = $('#spell-browser');
-	spellBrowserModal = $('.spellbrowser-modal');
-	spellBrowserConfirm = $('.spellbrowser-modal .confirm');
+	spellBrowser = $('#spellbrowser');
+	spellBrowserModal = $('#spellbrowser').closest('.modal-background');
+	spellBrowserConfirm = $('.confirm', spellBrowserModal);
 	spellbookButton = $('#open-spellbook');
 	spellBrowserButton = $('#open-spellbrowser');
 	filterButtons = $('.filters .button');
@@ -2199,7 +2288,7 @@ $(function() {
 	firstDrag = true;
 	periodCount = 0;
 	//Initial variables
-	extraAbilities = 3;
+	extraAbilities = 0;
 	curArc = 2;
 	curTier = 6;
 	spellListDatabase = [];
@@ -3234,6 +3323,8 @@ $(function() {
 		if ( modal.hasClass('visible') ) {
 			modal.removeClass('visible');
 			$('body').css('overflow-y','auto');
+			$('.spell', spellBrowser).removeClass('disabled');
+			$('.spell', spellBrowser).removeClass('selected');
 		} else {
 			modal.addClass('visible');
 			$('body').css('overflow-y','hidden');
@@ -3315,7 +3406,7 @@ $(function() {
 	});
 	//Filter spells based on search input
 	filterSearchBar.on('keyup', function() {
-		var thisModal = $(this).closest('.spellbrowser-modal');
+		var thisModal = $(this).closest('.modal-background');
 		var value = $(this).val().toLowerCase();
 		$('.spell', thisModal).filter( function() {
 			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
@@ -3323,7 +3414,7 @@ $(function() {
 	});
 	//Clear search results and repopulate list
 	clearSearchButton.click( function() {
-		var thisModal = $(this).closest('.spellbrowser-modal');
+		var thisModal = $(this).closest('.modal-background');
 		var inputField = $('input', $(this).closest('.spell-search'));
 		inputField.val('');
 		$('.spell', thisModal).filter( function() {
@@ -3334,63 +3425,84 @@ $(function() {
 	});
 	//Show the spell browser on click
 	spellBrowserButton.click( function() {
-		if ( !extraAbilities ) $('.spell', spellBrowser).css('pointer-events','none');
+		availExtraAbilities = extraAbilities;
+		if ( !availExtraAbilities ) $('.spell', spellBrowser).css('pointer-events','none');
 		else $('.spell', spellBrowser).not('.disabled').css('pointer-events','auto');
 		$('#spellbook .spell').each( function() {
 			var spellID = $(this).attr('id');
 			$('.spell[data-spellid="' + spellID +'"]', spellBrowser).addClass('disabled');
 		});
 		spellBrowserConfirm.addClass('disabled');
-		$('body').css('overflow-y','hidden');
-		spellBrowserModal.slideToggle(500);
 	});
 	//Highlight selected spells in ability browser when clicked
 	spellBrowser.on('click', '.spell', function() {
-		var buttonString;
-		if ( $(this).hasClass('disabled') ) return;
-		if ( $(this).hasClass('disabled') == false && $('.spell.selected', spellBrowser).length <= extraAbilities ) {
-			$(this).addClass('selected');
-			extraAbilities--;
-			if ( extraAbilities === 0 ) {
-				spellBrowserConfirm.removeClass('disabled');
-				$('.spell', spellBrowser).not(this).addClass('disabled');
-				buttonString = "Ability Browser";
-			} else if ( extraAbilities === 1 ) {
-				buttonString = "1 Extra Ability";
+		if ( removeAbility ) {
+			if ( $(this).hasClass('selected') && availExtraAbilities < 0 ) {
+				$(this).removeClass('selected');
+				availExtraAbilities++;
+				if ( availExtraAbilities === 0 ) {
+					spellBrowserConfirm.removeClass('disabled');
+					$('.spell.deselect.selected', spellBrowser).addClass('disabled');
+				}
 			} else {
-				buttonString = extraAbilities + " Extra Abilities";
+				$('.spell.deselect', spellBrowser).removeClass('disabled');
+				$(this).addClass('selected');
+				spellBrowserConfirm.addClass('disabled');
+				availExtraAbilities--;
 			}
-			spellBrowserButton.text(buttonString);
 		} else {
-			$('.spell', spellBrowser).removeClass('disabled');
-			$(this).removeClass('selected');
-			spellBrowserConfirm.addClass('disabled');
-			extraAbilities++;
-			spellBrowserButton.text(extraAbilities + " Extra Abilities");
+			if ( $(this).hasClass('disabled') ) return;
+			if ( $(this).hasClass('disabled') == false && $(this).hasClass('selected') == false && availExtraAbilities > 0 ) {
+				$(this).addClass('selected');
+				availExtraAbilities--;
+				if ( availExtraAbilities === 0 ) {
+					spellBrowserConfirm.removeClass('disabled');
+					$('.spell', spellBrowser).not('.selected').addClass('disabled');
+				}
+			} else {
+				$('.spell', spellBrowser).removeClass('disabled');
+				$(this).removeClass('selected');
+				spellBrowserConfirm.addClass('disabled');
+				availExtraAbilities++;
+			}
 		}
 	});
 	//Clicking confirm closes the spell browser and applies
 	//the spell to the spell list
 	spellBrowserConfirm.click( function() {
-		spellBrowserModal.stop().slideToggle(500, function() {
+		spellBrowserModal.removeClass('visible');
+		$('body').css('overflow-y','auto');
+		if ( removeAbility ) {
+			$('.spell.deselect', spellBrowser).each(function() {
+				if ( $(this).hasClass('selected') ) {
+					$(this).removeClass('deselect selected');
+					$(this).addClass('moved');
+					$(this).css('pointer-events','none');
+				} else {
+					populateSpells();
+					extraAbilities++;
+				}
+			});
+			removeAbility = false;
+		} else {
 			$('.spell.selected', spellBrowser).each(function() {
 				var spellID = $(this).data('spellid');
 				$(this).attr('id', spellID);
 				$(this).removeAttr('data-spellid');
+				$(this).addClass('required extra');
+				$(this).removeClass('selected');
+				$(this).css('pointer-events','none');
 				$(this).clone().appendTo('#spellbook');
 				$(this).removeAttr('id');
 				$(this).attr('data-spellid', spellID);
 				$(this).addClass('moved');
-				$(this).removeClass('selected');
+				$(this).removeClass('required extra');
 				populateSpells();
+				extraAbilities--;
 			});
-			$('.spell', spellBrowser).removeClass('disabled');
-		});
-		$('body').css('overflow-y','auto');
-	});
-	$('.spellbrowser-modal .close.button').click( function() {
-		spellBrowserModal.stop().slideToggle(500);
-		$('body').css('overflow-y','auto');
+		}
+		$('.spell', spellBrowser).removeClass('disabled');
+		spellBrowserButton.text("Ability Browser");
 	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
