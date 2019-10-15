@@ -370,7 +370,7 @@ div.proficiency {
 #popup-error .button {
 	margin: 10px auto 5px;
 }
-#stats-attributes {
+#dice-attributes {
 	flex-basis: 0;
     flex-grow: 1;
 	height: 100%;
@@ -386,9 +386,9 @@ div.proficiency {
 	padding-right: 8px;
 	width: 0;
 }
-#stat-pools {
+#dice-counters {
 	display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-gap: 30px;
 	max-width: 577px;
     margin: 15px 15px 10px 15px;
@@ -413,54 +413,6 @@ div.proficiency {
 }
 #reset-button {
 	right: -45px
-}
-#secondary-stats {
-	align-items: center;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	margin: 0 15px 10px 15px;
-}
-#secondary-stats > div {
-	color: var(--white);
-    font-family: var(--header-font);
-    font-size: 20px;
-	line-height: 1.2em;
-	margin: -20px 10px 0;
-	overflow: hidden;
-	text-align: center;
-    width: 124px;
-}
-#commit-button {
-	flex-basis: 100%;
-	margin: 0!important;
-}
-#commit-button .button {
-	margin: 0 auto 10px;
-}
-#secondary-stats .label {
-	background: var(--button);
-	overflow: hidden;
-	padding: 20px 5px 5px 7px;
-	white-space: nowrap;
-}
-#secondary-stats .value {
-	background: var(--black);
-    border-radius: 50%;
-    font-size: 35px;
-	margin: 0 auto;
-	overflow: hidden;
-    padding: 15px 15px;
-    position: relative;
-    top: 16px;
-    width: 18px;
-}
-#essence .value {
-	width: 65px;
-}
-#secondary-stats > #essence, #secondary-stats > #available-edgepoints {
-	display: none;
-	width: 0;
 }
 #character-options {
 	display: none;
@@ -600,20 +552,20 @@ div.proficiency {
 	color: var(--black);
 	padding: 15px;
 }
-#spellbook .stats, #spellbrowser .stats {
+#spellbook .dice, #spellbrowser .dice {
 	display: flex;
 	flex-wrap: wrap;
 	margin-top: 15px;
 }
-#spellbook .spell .stats:first-child, #spellbrowser .spell .stats:first-child {
+#spellbook .spell .dice:first-child, #spellbrowser .spell .dice:first-child {
 	margin-top: 0;
 	margin-bottom: 15px;
 }
-#spellbook .stats span, #spellbrowser .stats span {
+#spellbook .dice span, #spellbrowser .dice span {
 	flex-basis: calc( 50% - 10px );
 	padding-right: 10px;
 }
-#spellbook .stats span:nth-child(even), #spellbook .origin, #spellbrowser .stats span:nth-child(even) {
+#spellbook .dice span:nth-child(even), #spellbook .origin, #spellbrowser .dice span:nth-child(even) {
 	padding-right: 0;
 	text-align: right;
 }
@@ -653,17 +605,17 @@ div.proficiency {
 #footer-links a {
 	margin: 0 5px;
 }
-.stat-pool {
+.dice-counter {
 	min-width: 172px;
 }
-.stat-pool .label {
+.dice-counter .label {
     border-bottom: solid 3px var(--secondary-button);
 	padding: 10px 10px 10px 10px;
 	pointer-events: auto;
     text-align: center;
     text-transform: uppercase;
 }
-.pool {
+.dice {
 	align-items: center;
     color: var(--white);
     display: flex;
@@ -1338,7 +1290,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 .add-cyberware:active {
 	color: var(--selected-active);
 }
-.cyberware > div:hover .editable, .stat-pool:hover .current-value {
+.cyberware > div:hover .editable, .dice-counter:hover .current-value {
 	border-color: var(--white);	
 }
 @media (hover: none) {
@@ -1500,13 +1452,13 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 }
 /* Responsive CSS */
 @media only screen and (max-width: 1024px) {
-	#character-attributes, #stat-pools {
+	#character-attributes, #dice-counters {
 		margin: 15px auto 0;
 	}
 	#skill-list {
 		max-width: unset;
 	}
-	#stats-attributes {
+	#dice-attributes {
 		flex-basis: 100%;
 		width: 100%;
 	}
@@ -1612,7 +1564,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		padding: 0;
 		width: auto;
 	}
-	#stat-pools {
+	#dice-counters {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
@@ -1640,7 +1592,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#footer p:not(:nth-child(5)) {
 		margin-bottom: 10px;
 	}
-	.stat-pool {
+	.dice-counter {
 		margin: 15px 15px 0 15px;
 	}
 	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop, .gu-transit .chosen-container, .gu-transit .chosen-single, .gu-transit .chosen-single span, .gu-transit .chosen-drop	{

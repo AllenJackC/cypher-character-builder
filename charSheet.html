@@ -45,8 +45,8 @@
 		<h5>a <a target="_blank" href="https://www.cypher-system.com">Cypher System</a> homebrew campaign character sheet</h5>
 	</div>
 	<div id="main">
-		<!-- Attributes & Stats -->
-		<div id="stats-attributes">
+		<!-- Attributes & Dice -->
+		<div id="dice-attributes">
 			<!-- Character Attributes -->
 			<div id="character-attributes">
 				<!-- NAME -->
@@ -596,95 +596,43 @@
 					</div>
 				</div>
 			</div>
-			<!-- Stats -->
-			<div id="stat-pools">
-				<!-- Might -->
-				<div class="stat-pool" id="might">
-					<h2 class="label">Might</h2>
-					<div class="pool">
-						<div class="current-value" contenteditable="true">0</div>
-						<div class="slash">/</div>
-						<div class="pool-value">0</div>
-						<div class="add-remove">
-							<div class="add-point">+</div>
-							<div class="remove-point disabled">-</div>
-						</div>
-					</div>
-					<div class="edge">
-						<div class="add-point">+</div>
-						<div class="edge-value">0</div>
-						<h3 class="edge-label">Edge</h3>
-						<div class="remove-point">-</div>
+			<!-- Dice -->
+			<div id="dice-counters">
+				<!-- Logic & Feelings -->
+				<div class="dice-counter" id="mundane">
+					<h2 class="label">Logic & Feelings</h2>
+					<div class="dice" style="color: white">
+						coin<br>
+						2 bar<br>
+						3 bar<br>
+						4 bar<br>
+						5 bar<br>
+						6 bar<br>
+						7 bar<br>
+						8 bar<br>
+						9 bar<br>
 					</div>
 				</div>
-				<!-- Speed -->
-				<div class="stat-pool" id="speed">
-					<h2 class="label">Speed</h2>
-					<div class="pool">
-						<div class="current-value" contenteditable="true">0</div>
-						<div class="slash">/</div>
-						<div class="pool-value">0</div>
-						<div class="add-remove">
-							<div class="add-point">+</div>
-							<div class="remove-point disabled">-</div>
-						</div>
+				<!-- Magic & Tech -->
+				<div class="dice-counter" id="magic">
+					<h2 class="label">Magic & Tech</h2>
+					<div class="dice" style="color: white">
+						coin<br>
+						2 bar<br>
+						3 bar<br>
+						4 bar<br>
+						5 bar<br>
+						6 bar<br>
+						7 bar<br>
+						8 bar<br>
+						9 bar<br>
 					</div>
-					<div class="edge">
-						<div class="add-point">+</div>
-						<div class="edge-value">0</div>
-						<h3 class="edge-label">Edge</h3>
-						<div class="remove-point">-</div>
-					</div>
-				</div>
-				<!-- Intellect -->
-				<div class="stat-pool" id="intellect">
-					<h2 class="label">Intellect</h2>
-					<div class="pool">
-						<div class="current-value" contenteditable="true">0</div>
-						<div class="slash">/</div>
-						<div class="pool-value">0</div>
-						<div class="add-remove">
-							<div class="add-point">+</div>
-							<div class="remove-point disabled">-</div>
-						</div>
-					</div>
-					<div class="edge">
-						<div class="add-point">+</div>
-						<div class="edge-value">0</div>
-						<h3 class="edge-label">Edge</h3>
-						<div class="remove-point">-</div>
-					</div>
-				</div>
-			</div>
-			<!-- Secondary Stats -->
-			<div id="secondary-stats">
-				<div id="commit-button">
-					<div class="button disabled">Commit</div>
-				</div>
-				<div id="essence">
-					<div class="value" id="essence-value">6.00</div>
-					<div class="label">Essence</div>
-				</div>
-				<div id="effort">
-					<div class="value" id="effort-value">1</div>
-					<div class="label">Effort</div>
-				</div>
-				<div id="available-points">
-					<div class="value" id="available-pool">6</div>
-					<div class="label">Extra Pool</div>
-				</div>
-				<div id="available-edgepoints">
-					<div class="value" id="available-edge">0</div>
-					<div class="label">Extra Edge</div>
 				</div>
 			</div>
 			<!-- Buttons -->
 			<div id="buttons">
 				<div class="button modal-button" id="open-spellbook">
 					Abilities
-				</div>
-				<div class="button modal-button" id="open-spellbrowser">
-					Ability Browser
 				</div>
 				<div class="button modal-button" id="open-archives">
 					Lore
@@ -728,13 +676,10 @@
 						<div class="handle">&#9776;</div>
 						<div class="name" contenteditable="true"></div>
 						<div class="proficiency">
-							<div class="plus-symbol">+</div>
-							<div class="inability" contenteditable="true">1</div>
 							<select>
-								<option value="I">Inability</option>
-								<option selected value="P">Practiced</option>
-								<option value="T">Trained</option>
-								<option value="S">Specialized</option>
+								<option value="I">-1d</option>
+								<option selected value="P">–</option>
+								<option value="T">+1d</option>
 							</select>
 						</div>
 					</div>
@@ -746,10 +691,10 @@
 		<!-- Actions & Enablers -->
 		<div class="spell-list">
 			<div class="list-header">
-				<img src="images/actions-enablers.png">
-				<h2>Actions & Enablers</h2>
+				<img src="images/action.png">
+				<h2>Actions</h2>
 			</div>
-			<div class="hotbars" id="actions-enablers"></div>
+			<div class="hotbars" id="actions"></div>
 		</div>
 		<!-- Talents -->
 		<div class="spell-list">
@@ -776,7 +721,6 @@
 						<th></th>
 						<th>STATE</th>
 						<th>NAME</th>
-						<th>TYPE</th>
 						<th>VALUE</th>
 						<th>WEIGHT</th>
 					</tr>
@@ -791,17 +735,6 @@
 						</td>
 						<td class="name">
 							<div class="editable mobile-handle" contenteditable="true"></div>
-						</td>
-						<td class="type">
-							<select>
-								<option selected value="IT">Item</option>
-								<option value="LW">Light Weapon</option>
-								<option value="MW">Heavy Weapon</option>
-								<option value="HW">Medium Weapon</option>
-								<option value="LA">Light Armour</option>
-								<option value="MA">Medium Armour</option>
-								<option value="HA">Heavy Armour</option>
-							</select>
 						</td>
 						<td class="value">
 							<div class="editable" contenteditable="true">0</div>
@@ -831,27 +764,17 @@
 				<tbody>
 					<tr>
 						<th></th>
-						<th>LEVEL</th>
 						<th>NAME</th>
 						<th>EFFECT</th>
-						<th>DEPLETION</th>
 						<th>WEIGHT</th>
 					</tr>
 					<tr class="item">
 						<td class="arrow mobile-handle"></td>
-						<td class="level">
-							<div class="mobile-label">Level:</div>
-							<div class="editable" contenteditable="true">1</div>
-						</td>
 						<td class="name">
 							<div class="editable mobile-handle" contenteditable="true"></div>
 						</td>
 						<td class="effect">
 							<div class="mobile-label">Effect:</div>
-							<div class="editable" contenteditable="true"></div>
-						</td>
-						<td class="depletion">
-							<div class="mobile-label">Depletion:</div>
 							<div class="editable" contenteditable="true"></div>
 						</td>
 						<td class="weight">
@@ -1062,29 +985,6 @@
 			</div>
 			<div id="archives">
 				<span class="placeholder">Nothing yet! Select your Species or Type to view lore.</span>
-			</div>
-		</div>
-	</div>
-	<!-- Spell Browser -->
-	<div class="modal-background">
-		<div class="modal-header">
-			<div class="header">
-				<img src="images/actions-enablers.png">
-				<h2>Ability Browser</h2>
-			</div>
-			<div class="header">
-				<div class="confirm button disabled">
-					Confirm
-				</div>
-				<div class="close button">
-					Close
-				</div>
-			</div>
-		</div>
-		<div id="spellbrowser">
-			<div class="spell-search">
-				<input placeholder="Start typing to find an ability"/>
-				<div class="clear-search button">Clear</div>
 			</div>
 		</div>
 	</div>
