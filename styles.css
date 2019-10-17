@@ -291,7 +291,7 @@ td.type select {
 td.value {
 	text-align: right;
 }
-td.weight, td.cost {
+td.cost {
 	border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 	padding: 0 15px 0 12px;
@@ -512,26 +512,24 @@ div.proficiency {
 	max-width: 300px;
 	min-width: 250px;
 }
-#spellbook, #archives, #spellbrowser {
+#spellbook, #archives{
 	display: flex;
 	flex-basis: 100%;
 	flex-direction: column;
 	flex-wrap: wrap;
 	margin: 15px 15px 0 15px;
 }
-#spellbook .spell, #spellbrowser .spell {
-	cursor: pointer;
+#spellbook .spell {
 	margin-bottom: 15px;
-	pointer-events: auto;
 	width: 100%;
 }
-#spellbook .spell .header, #spellbrowser .spell .header {
+#spellbook .spell .header {
 	background: var(--button);
 	color: var(--white);
 	justify-content: space-between;
 	padding: 12px 15px 15px 15px;
 }
-#spellbook .tier, #spellbrowser .tier {
+#spellbook .tier {
     font-family: var(--header-font);
     font-size: 24px;
 	font-weight: 400;
@@ -539,37 +537,37 @@ div.proficiency {
 	text-transform: uppercase;
 	white-space: nowrap;
 }
-#spellbook .spell img, #spellbrowser .spell img {
+#spellbook .spell img {
 	height: 24px;
 	padding-right: 12px;
 	position: relative;
     top: 1px;
 	width: 24px;
 }
-#spellbook .details, #spellbrowser .details {
+#spellbook .details {
 	background: var(--white);
 	box-shadow: inset 0 0 0 3px var(--white);
 	color: var(--black);
 	padding: 15px;
 }
-#spellbook .dice, #spellbrowser .dice {
+#spellbook .stats {
 	display: flex;
 	flex-wrap: wrap;
 	margin-top: 15px;
 }
-#spellbook .spell .dice:first-child, #spellbrowser .spell .dice:first-child {
+#spellbook .spell .stats:first-child {
 	margin-top: 0;
 	margin-bottom: 15px;
 }
-#spellbook .dice span, #spellbrowser .dice span {
+#spellbook .stats span {
 	flex-basis: calc( 50% - 10px );
 	padding-right: 10px;
 }
-#spellbook .dice span:nth-child(even), #spellbook .origin, #spellbrowser .dice span:nth-child(even) {
+#spellbook .stats span:nth-child(even), #spellbook .origin {
 	padding-right: 0;
 	text-align: right;
 }
-#spellbook .description, #archives .description, #spellbrowser .description {
+#spellbook .description, #archives .description {
 	flex-basis: 100%;
 }
 #spellbook .origin {
@@ -849,14 +847,7 @@ div.proficiency {
 .name .editable, .effect .editable, .function .editable {
 	width: 100%;
 }
-.depletion .editable {
-	min-width: 20px;
-}
 .credits {
-	width: fit-content;
-	padding-left: 4px;
-}
-.slots {
 	width: fit-content;
 	padding-left: 4px;
 }
@@ -1183,37 +1174,6 @@ tr:hover .editable {
 tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	border-color: var(--white);
 }
-#spellbook .spell:hover .header, #spellbrowser .spell:hover .header {
-	background: var(--button-hover);
-}
-#spellbook .spell:active .header, #spellbrowser .spell:active .header  {
-	background: var(--button-active);
-}
-#spellbook .required {
-	pointer-events: none;
-}
-#spellbook .selected .header, #spellbook .required .header, #spellbrowser .selected .header {
-	background: var(--selected);
-	color: var(--black);
-}
-#spellbook .selected img, #spellbook .required img, #spellbrowser .selected img {
-	filter: brightness(15%);
-}
-#spellbook .selected:hover .header, #spellbrowser .selected:hover .header {
-	background: var(--selected-hover);
-}
-#spellbook .selected:active .header, #spellbrowser .selected:active .header {
-	background: var(--selected-active);
-}
-#spellbook .disabled, #spellbrowser .disabled, #spellbrowser .moved {
-	cursor: default;
-	filter: grayscale(80%);
-	opacity: 0.7;
-}
-#spellbook .disabled .header, #spellbrowser .disabled .header, #spellbrowser .moved .header {
-	background: var(--button)!important;
-	color: var(--white)!important;
-}
 #cyber-mannequin img:hover {
 	filter: contrast(125%);
 }
@@ -1526,7 +1486,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		background: var(--button);
 		color: var(--white);
 	}
-	td.equip, td.type, td.value, td.effect, td.level, td.depletion, td.weight, td.location, td.cost {
+	td.equip, td.type, td.value, td.effect, td.location, td.cost {
 		align-items: center;
 		border-bottom: 1px solid var(--secondary-button);
 		display: flex;
@@ -1547,12 +1507,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		text-align: left;
 		width: auto!important;
 	}
-	td.level .editable, td.depletion .editable, td.value .editable, td.weight .editable, td.cost .editable {
+	td.value .editable, td.cost .editable {
 		cursor: text;
 		min-width: 10px;
 		width: auto!important;		
 	}
-	td.weight, td.cost {
+	td.cost {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 		border-radius: 0 0 5px 5px;

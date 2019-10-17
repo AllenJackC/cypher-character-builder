@@ -18,9 +18,6 @@ var secFociOptions;
 var foci;
 var fociOptions;
 var extraAttributes;
-var variantsSection;
-var variants;
-var variantsOptions;
 var secFociSection;
 var hybridSection;
 var hybridButton;
@@ -28,42 +25,19 @@ var hybridTooltip;
 var resetSection;
 var resetButton;
 var resetTooltip;
-var curMight;
-var maxMight;
-var curSpeed;
-var maxSpeed;
-var curIntellect;
-var maxIntellect;
-var poolAddPoint;
-var poolRemovePoint;
-var mightEdge;
-var speedEdge;
-var intellectEdge;
-var edgeAddPoint;
-var edgeRemovePoint;
-var commitSection;
-var commitButton;
-var essenceStat;
-var effortStat;
-var availPoolStat;
-var availEdgeStat;
 var addSkillButton;
 var skillError;
 var skillList;
 var skillsDeleteSpace;
 var spellBook;
-var spellBrowser;
-var spellBrowserModal;
-var spellBrowserConfirm;
 var spellbookButton;
-var spellBrowserButton;
 var filterButtons;
 var filterSearchBar;
 var clearSearchButton;
 var loreButton;
 var enableCyberware;
 var cyberwareTooltip;
-var actionsEnablersSection;
+var actionsSection;
 var talentsSection;
 var spellHotbars;
 var addCyberwareButton;
@@ -92,17 +66,6 @@ var curTier;
 var spellListDatabase;
 var availSpellCount;
 var selectedSpellCount;
-var availPoints;
-var spentPoints;
-var mightOverflow;
-var speedOverflow;
-var intellectOverflow;
-var availEdge;
-var spentEdge;
-var curEffort;
-var curEssence;
-var extraAbilities;
-var availExtraAbilities;
 var isHovering;
 var removeAbility;
 //Check if an integer is even
@@ -118,11 +81,9 @@ function isTouchDevice() {
   var mq = function(query) {
     return window.matchMedia(query).matches;
   }
-
   if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
     return true;
   }
-
   // include the 'heartz' as a way to have a non matching MQ to help terminate the join
   // https://git.io/vznFH
   var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
@@ -316,7 +277,6 @@ function populateTypes() {
 	var resTypes = "";
 	var resPriTypes = $('#foci option:selected').data('restricted-types');
 	var resSecTypes = $('#secondary-foci option:selected').data('restricted-types');
-	var variantVal = variants.val();
 	//Reset disabled status of types before making changes
 	typesOptions.each( function() {
 		$(this).removeAttr('disabled');
@@ -400,15 +360,6 @@ function populateTypes() {
 			}
 		});
 	}
-	//If a Terrans are selected, only show the Elementalist
-	//type if the correct genetic variation is selected
-	if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
-		if ( variantVal == 2 || !variantVal ) {
-			elementalistType.prop('disabled', false);
-		} else {
-			elementalistType.prop('disabled', true);
-		}
-	}
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
 	hideOptions(typesOptions);
 	//Trigger an update of the contents	
@@ -419,7 +370,6 @@ function populateFoci() {
 	var typeVal = types.val();
 	var priSpeciesVal = priSpecies.val();
 	var secSpeciesVal = secSpecies.val();
-	var variantVal = variants.val();
 	//Select the options under the two focus select fields
 	var fociOptions = $('#foci option, #secondary-foci option');
 	//Reset disabled status of foci before making changes
@@ -534,57 +484,11 @@ function populateFoci() {
 			}
 		});
 	}
-	//If a Terrans are selected, only show Elementalist
-	//foci if the correct genetic variation is selected
-	if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
-		if ( variantVal != 2 && variantVal ) {
-			fociOptions.each( function() {
-				var resTypes = $(this).data('restricted-types');
-				if ( resTypes == "A0A1A2A4A5A6A7A8A9B0B1B2B3B4B5" ) {
-					$(this).prop('disabled', true);
-				} else {
-					$(this).prop('disabled', false);
-				}
-			});
-		}
-	}
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
 	hideOptions(fociOptions);
 	//Trigger an update of the contents
 	priFoci.trigger('chosen:updated');
 	secFoci.trigger('chosen:updated');
-}
-//Populate the contents of the genetic variations dropdown list for Terrans
-function populateVariants() {
-	var priSpeciesVal = priSpecies.val();
-	var secSpeciesVal = secSpecies.val();
-	var typeVal = types.val();
-	var resTypes = "";
-	var resPriTypes = $('#foci option:selected').data('restricted-types');
-	var resSecTypes = $('#secondary-foci option:selected').data('restricted-types');
-	//Boolean variable to check if a restrictied focus was selected
-	var resFocus = false;
-	//Reset disabled status of variants before making changes
-	variantsOptions.each( function() {
-		$(this).removeAttr('disabled');
-	});
-	//If a secondary focus is selected and has restricted types,
-	//restrict types based on that secondary focus
-	if ( resSecTypes ) resTypes = resSecTypes;
-	else resTypes = resPriTypes;
-	//If the currently selected type or focus has to do with Elementalist
-	//disabled all genetic variations exception for the one
-	if ( resTypes ) {
-		var typesArray = resTypes.match(/.{1,2}/g);
-		if( $.inArray("A3",typesArray) < 0 ) resFocus = true;
-		else resFocus = false;
-	}
-	if ( typeVal == "A3" || resFocus ) {
-		variantsOptions.each( function() {
-			if ( $(this).val() != 2 ) $(this).prop('disabled', true);
-		});
-	}
-	variants.trigger('chosen:updated');
 }
 //Show extra attributes sections
 function showExtraAttribute(section,width,animate) {
@@ -619,386 +523,6 @@ function hideExtraAttribute(section,animate) {
 		section.removeAttr('style');
 	}
 }
-//Calculate stat pools based on current selections
-function calculateStatPools(oldTypeOnly) {
-	var curMightVal = Number(curMight.html());
-	var maxMightVal = Number(maxMight.text());
-	var curSpeedVal = Number(curSpeed.html());
-	var maxSpeedVal = Number(maxSpeed.text());
-	var curIntellectVal = Number(curIntellect.html());
-	var maxIntellectVal = Number(maxIntellect.text());
-	var mightBonus = 0;
-	var speedBonus = 0;
-	var intellectBonus = 0;
-	var mightPenalty = 0;
-	var speedPenalty = 0;
-	var intellectPenalty = 0;
-	//Get currently selected cyberware, and then add their amounts
-	//Ignore cyberware granted by attributes
-	$('.cyberware:not([data-spellid])').each( function() {
-		var essenceVal = Number($('.essence .editable', this).html());
-		var hasEssence = (essenceVal > 0 || essenceVal) && (essenceVal != ".");
-		var bodyPart = $(this).attr('class').split(' ')[1];
-		var oldType = $(this).attr('data-mod');
-		var selectedType = $('.type select', this).val();
-		if ( oldTypeOnly == "delete" && $(this).parents('.delete-space').length === 0 ) return;
-		if ( oldType ) {
-			switch ( bodyPart ) {
-				case "skin":
-					switch ( oldType ) {
-						case "ST":
-							console.log('Armour');
-						break;
-						case "EA":
-							extraAbilities -= 1;
-							intellectPenalty -= 3;
-						break;
-						default:
-							intellectPenalty -= 3;
-					}
-				break;
-				case "head":
-					switch ( oldType ) {
-						case "ST":
-							mightPenalty -= 2;
-							intellectBonus -= 2;
-						break;
-						case "LW":
-							intellectPenalty -= 2;
-						break;
-						case "EA":
-							extraAbilities -= 1;
-							mightPenalty -= 3;
-						break;
-						default:
-							mightPenalty -= 3;
-					}
-				break;
-				case "core":
-					switch ( oldType ) {
-						case "ST":
-							speedPenalty -= 1;
-							intellectPenalty -= 2;
-							mightBonus -= 3;
-						break;
-						case "MW":
-							speedPenalty -= 1;
-							intellectPenalty -= 2;
-						break;
-						case "HW":
-							speedPenalty -= 2;
-							intellectPenalty -= 2;
-						break;
-						case "EA":
-							extraAbilities -= 1;
-							intellectPenalty -= 3;
-						break;
-						default:
-							intellectPenalty -= 3;
-					}
-				break;
-				case "leftarm":
-					switch ( oldType ) {
-						case "ST":
-							intellectPenalty -= 1;
-							mightBonus -= 1;
-						break;
-						case "LW":
-							intellectPenalty -= 2;
-						break;
-						case "MW":
-							speedPenalty -= 1;
-							intellectPenalty -= 2;
-						break;
-						case "EA":
-							extraAbilities -= 1;
-							intellectPenalty -= 3;
-						break;
-						default:
-							intellectPenalty -= 3;
-					}
-				break;
-				case "rightarm":
-					switch ( oldType ) {
-						case "ST":
-							intellectPenalty -= 1;
-							mightBonus -= 1;
-						break;
-						case "LW":
-							intellectPenalty -= 2;
-						break;
-						case "MW":
-							speedPenalty -= 1;
-							intellectPenalty -= 2;
-						break;
-						case "EA":
-							extraAbilities -= 1;
-							intellectPenalty -= 3;
-						break;
-						default:
-							intellectPenalty -= 3;
-					}
-				break;
-				case "leftleg":
-					switch ( oldType ) {
-						case "ST":
-							intellectPenalty -= 1;
-							speedBonus -= 1;
-						break;
-						case "LW":
-							intellectPenalty -= 2;
-						break;
-						case "MW":
-							speedPenalty -= 1;
-							intellectPenalty -= 2;
-						break;
-						case "EA":
-							extraAbilities -= 1;
-							intellectPenalty -= 3;
-						break;
-						default:
-							intellectPenalty -= 3;
-					}
-				break;
-				case "rightleg":
-					switch ( oldType ) {
-						case "ST":
-							intellectPenalty -= 1;
-							speedBonus -= 1;
-						break;
-						case "LW":
-							intellectPenalty -= 2;
-						break;
-						case "MW":
-							speedPenalty -= 1;
-							intellectPenalty -= 2;
-						break;
-						case "EA":
-							extraAbilities -= 1;
-							intellectPenalty -= 3;
-						break;
-						default:
-							intellectPenalty -= 3;
-					}
-				break;
-				default:
-					intellectPenalty -= 3;
-			}
-		}
-		if ( !oldTypeOnly && hasEssence ) {
-			switch ( bodyPart ) {
-				case "skin":
-					switch ( selectedType ) {
-						case "ST":
-							console.log('Armour');
-						break;
-						case "EA":
-							extraAbilities += 1;
-							intellectPenalty += 3;
-						break;
-						default:
-							intellectPenalty += 3;
-					}
-				break;
-				case "head":
-					switch ( selectedType ) {
-						case "ST":
-							mightPenalty += 2;
-							intellectBonus += 2;
-						break;
-						case "LW":
-							intellectPenalty += 2;
-						break;
-						case "EA":
-							extraAbilities += 1;
-							mightPenalty += 3;
-						break;
-						default:
-							mightPenalty += 3;
-					}
-				break;
-				case "core":
-					switch ( selectedType ) {
-						case "ST":
-							speedPenalty += 1;
-							intellectPenalty += 2;
-							mightBonus += 3;
-						break;
-						case "MW":
-							speedPenalty += 1;
-							intellectPenalty += 2;
-						break;
-						case "HW":
-							speedPenalty += 2;
-							intellectPenalty += 2;
-						break;
-						case "EA":
-							extraAbilities += 1;
-							intellectPenalty += 3;
-						break;
-						default:
-							intellectPenalty += 3;
-					}
-				break;
-				case "leftarm":
-					switch ( selectedType ) {
-						case "ST":
-							intellectPenalty += 1;
-							mightBonus += 1;
-						break;
-						case "LW":
-							intellectPenalty += 2;
-						break;
-						case "MW":
-							speedPenalty += 1;
-							intellectPenalty += 2;
-						break;
-						case "EA":
-							extraAbilities += 1;
-							intellectPenalty += 3;
-						break;
-						default:
-							intellectPenalty += 3;
-					}
-				break;
-				case "rightarm":
-					switch ( selectedType ) {
-						case "ST":
-							intellectPenalty += 1;
-							mightBonus += 1;
-						break;
-						case "LW":
-							intellectPenalty += 2;
-						break;
-						case "MW":
-							speedPenalty += 1;
-							intellectPenalty += 2;
-						break;
-						case "EA":
-							extraAbilities += 1;
-							intellectPenalty += 3;
-						break;
-						default:
-							intellectPenalty += 3;
-					}
-				break;
-				case "leftleg":
-					switch ( selectedType ) {
-						case "ST":
-							intellectPenalty += 1;
-							speedBonus += 1;
-						break;
-						case "LW":
-							intellectPenalty += 2;
-						break;
-						case "MW":
-							speedPenalty += 1;
-							intellectPenalty += 2;
-						break;
-						case "EA":
-							extraAbilities += 1;
-							intellectPenalty += 3;
-						break;
-						default:
-							intellectPenalty += 3;
-					}
-				break;
-				case "rightleg":
-					switch ( selectedType ) {
-						case "ST":
-							intellectPenalty += 1;
-							speedBonus += 1;
-						break;
-						case "LW":
-							intellectPenalty += 2;
-						break;
-						case "MW":
-							speedPenalty += 1;
-							intellectPenalty += 2;
-						break;
-						case "EA":
-							extraAbilities += 1;
-							intellectPenalty += 3;
-						break;
-						default:
-							intellectPenalty += 3;
-					}
-				break;
-				default:
-					intellectPenalty += 3;
-			}
-			$(this).attr('data-mod', selectedType);
-		}
-	});
-	//Calculate new values for all of the stat pools
-	curMightVal = curMightVal + mightBonus - mightPenalty;
-	curSpeedVal = curSpeedVal + speedBonus - speedPenalty;
-	curIntellectVal = curIntellectVal + intellectBonus - intellectPenalty;
-	maxMightVal = maxMightVal + mightBonus - mightPenalty;
-	maxSpeedVal = maxSpeedVal + speedBonus - speedPenalty;
-	maxIntellectVal = maxIntellectVal + intellectBonus - intellectPenalty;
-	//No less than 0, or no less than 1 if max value is higher than 0
-	if ( maxMightVal <= 0 ) maxMightVal = 0;
-	if ( maxSpeedVal <= 0 ) maxSpeedVal = 0;
-	if ( maxIntellectVal <= 0 ) maxIntellectVal = 0;
-	if ( curMightVal <= 0 && maxMightVal != 0 ) curMightVal = 1;
-	else if ( curMightVal <= 0 ) curMightVal = 0;
-	if ( curSpeedVal <= 0 && maxSpeedVal != 0 ) curSpeedVal = 1;
-	else if ( curSpeedVal <= 0 ) curSpeedVal = 0;
-	if ( curIntellectVal <= 0 && maxIntellectVal != 0 ) curIntellectVal = 1;
-	else if ( curIntellectVal <= 0 ) curIntellectVal = 0;
-	//Apply the new values to the fields
-	curMight.html(curMightVal);
-	maxMight.text(maxMightVal);
-	curSpeed.html(curSpeedVal);
-	maxSpeed.text(maxSpeedVal);
-	curIntellect.html(curIntellectVal);
-	maxIntellect.text(maxIntellectVal);
-	//Force user to deselect an extra ability
-	//if the ability count is below zero, otherwise
-	//update spell browser button text to match
-	//new values
-	if ( extraAbilities < 0 ) {
-		$('.spell', spellBrowser).not('.moved').hide();
-		$('.spell.moved', spellBrowser).addClass('deselect selected');
-		$('.spell.deselect', spellBrowser).removeClass('moved');
-		$('.spell.deselect').css('pointer-events','auto');
-		availExtraAbilities = extraAbilities;
-		spellBrowserConfirm.addClass('disabled');
-		spellBrowserModal.addClass('visible');
-		$('body').css('overflow-y','none');
-		removeAbility = true;
-	} else if ( extraAbilities === 0 ) {
-		spellBrowserButton.text("Ability Browser");
-	} else if ( extraAbilities === 1 ) {
-		spellBrowserButton.text("1 Extra Ability");
-	} else {
-		spellBrowserButton.text(extraAbilities + " Extra Abilities");
-	}
-};
-//Calculate and then show the current essence
-function calculateEssence() {
-	var essenceCost = 0;
-	$('.essence .editable').each( function() {
-		var thisParent = $(this).closest('.cyberware');
-		var selectedType = $('.type select', thisParent).val();
-		if ( $(this).html() != "." && selectedType ) essenceCost += Number($(this).html());
-	});
-	$('.value', essenceStat).text((6 - essenceCost).toFixed(2));
-}
-//Reset spell counters to their default value when selecting or deselecting spells
-function resetAbilityCounters() {
-	if ( selectedSpellCount === availSpellCount ) {
-		$('#spellbook .spell:not(.selected, .required)').addClass('disabled');
-		$('#spellbook .filters #available').html('<div></div>&#10;Disabled');
-	} else {
-		$('#spellbook .spell').removeClass('disabled');
-		$('#spellbook .filters #available').html('<div></div>&#10;Available');
-	}
-	if ( availSpellCount - selectedSpellCount === 0 ) spellbookButton.text('Abilities');
-	else if ( availSpellCount - selectedSpellCount === 1 ) spellbookButton.text(availSpellCount - selectedSpellCount + ' Ability Available');
-	else spellbookButton.text(availSpellCount - selectedSpellCount + ' Abilities Available');
-}
 //Populate all of the active skill select fields
 function populateSkillsSelect() {
 	$('#skills .proficiency select').chosen({
@@ -1007,22 +531,18 @@ function populateSkillsSelect() {
 	});
 }
 //Add a blank skill, unless variables are parsed
-function addSkill(skillName,inabilityNumber) {
+function addSkill(skillName) {
 	if ( !skillName ) skillName = "";
-	if ( !inabilityNumber ) inabilityNumber = "1";
 	var skillToAdd =
 		'<div class="spell">' +
 			'<div class="wrapper">' +
 				'<div class="handle">&#9776;</div>' +
 				'<div class="name" contenteditable="true">' + skillName + '</div>' +
 				'<div class="proficiency">' +
-					'<div class="plus-symbol">+</div>' +
-					'<div class="inability" contenteditable="true">' + inabilityNumber + '</div>' +
 						'<select>' +
-							'<option value="I">Inability</option>' +
-							'<option selected value="P">Practiced</option>' +
-							'<option value="T">Trained</option>' +
-							'<option value="S">Specialized</option>' +
+							'<option value="I">-1d</option>' +
+							'<option selected value="P">&#10022;</option>' +
+							'<option value="T">+1d</option>' +
 						'</select>' +
 					'</div>' +
 				'</div>' +
@@ -1039,7 +559,6 @@ function populateSpells() {
 	var typeVal = types.val();
 	var priFocusVal = priFoci.val();
 	var secFocusVal = secFoci.val();
-	var variantVal = variants.val();
 	var selectedAttributes = [];
 	spellsList = [];
 	//If the value of the field is not blank,
@@ -1051,7 +570,6 @@ function populateSpells() {
 	if ( typeVal ) selectedAttributes.push("T" + typeVal);
 	if ( priFocusVal ) selectedAttributes.push("F" + priFocusVal);
 	if ( secFocusVal ) selectedAttributes.push("F" + secFocusVal);
-	if ( variantVal ) selectedAttributes.push("V" + variantVal);
 	//Run through each field in the character attributes section
 	//to retrieve any spells associated with that attribute
 	$.each(selectedAttributes, function(index,curOption) {
@@ -1063,7 +581,6 @@ function populateSpells() {
 			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
-			var spellRequired = spellListDatabase[i].required.includes("TRUE");
 			var typeCheck = spellListDatabase[i].type;
 			var spellType = '<img src="images/' + typeCheck.toLowerCase() + '.png">';
 			var spellDescription = spellListDatabase[i].description;
@@ -1072,7 +589,7 @@ function populateSpells() {
 			var spellDuration = spellListDatabase[i].duration;
 			var spellRange = spellListDatabase[i].range;
 			var spellCooldown = spellListDatabase[i].cooldown;
-			var spellDamage = spellListDatabase[i].damage;
+			var spellDice = spellListDatabase[i].dice;
 			var spellOrigin;
 			switch ( curOption.charAt(0) ) {
 				case "D":
@@ -1117,17 +634,16 @@ function populateSpells() {
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if (( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Enabler','Talent','Select','Note'].includes(typeCheck)) || ( !spellRequired && spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Passive" )) {
+			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note'].includes(typeCheck)) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-				if ( spellCost ) spellCost = '<span><strong>Cost: </strong>' + spellCost + '</span>';
 				if ( spellDuration ) spellDuration = '<span><strong>Duration: </strong>' + spellDuration + '</span>';
 				if ( spellCasttime ) spellCasttime = '<span><strong>Requires: </strong>' + spellCasttime + '</span>';
 				if ( spellRange ) spellRange = '<span><strong>Range: </strong>' + spellRange + '</span>';
 				if ( spellCooldown ) spellCooldown = '<span><strong>Cooldown: </strong>' + spellCooldown + '</span>';
-				if ( spellDamage ) spellDamage = '<span><strong>Damage: </strong>' + spellDamage + '</span>';
+				if ( spellDice ) spellDice = '<span><strong>Roll: </strong>' + spellDice + '</span>';
 				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
@@ -1146,7 +662,6 @@ function populateSpells() {
 								'</div>' +
 							'<div class="details">' +
 								'<div class="stats">' +
-									spellCost +
 									spellDuration +
 									spellCasttime +
 									spellRange +
@@ -1156,14 +671,13 @@ function populateSpells() {
 									spellDescription +
 								'</div>' +
 								'<div class="stats">' +
-									spellDamage +
+									spellDice +
 									spellOrigin +
 								'</div>' +
 							'</div>' +
 						'</div>'
 					);
 				}
-				if ( spellRequired ) $('#' + spellID).addClass('required');
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" ) {
@@ -1171,11 +685,6 @@ function populateSpells() {
 				var hideThis = "";
 				var itemType = spellListDatabase[i].itemtype;
 				var itemValue = spellListDatabase[i].itemvalue;
-				var itemWeight = spellListDatabase[i].itemweight;
-				var itemDamage = spellListDatabase[i].itemdamage;
-				var itemArmour = spellListDatabase[i].itemarmour;
-				var itemLevel = spellListDatabase[i].itemlevel;
-				var itemDepletion = spellListDatabase[i].itemdepletion;
 				if ( itemType == "Artifact" ) spellType = '<img src="images/artifact.png">';
 				else spellType = '<img src="images/items.png">';					
 				//Check to see if these values exist to avoid
@@ -1183,13 +692,7 @@ function populateSpells() {
 				if ( spellName == "<hide>" ) hideThis = " hidden-spell";
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-				if ( itemValue ) itemValue = '<span><strong>Value: </strong>' + itemValue + '₡</span>';
-				if ( itemWeight ) itemWeight = '<span><strong>Carry Weight: </strong>' + itemWeight + '</span>';
-				if ( itemDamage ) itemDamage = '<span><strong>Damage: </strong>' + itemDamage + '</span>';
-				if ( itemArmour ) itemArmour = '<span><strong>Armour: </strong>' + itemArmour + '</span>';
-				if ( itemLevel ) itemLevel = '<span><strong>Level: </strong>' + itemLevel + '</span>';
-				if ( itemDepletion ) itemDepletion = '<span><strong>Depletion: </strong>' + itemDepletion + '</span>';
-				var newOrigin = spellOrigin;
+				if ( itemValue ) itemValue = '<span><strong>Value: </strong>' + itemValue + '₡</span>';				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
 				//the origin name; otherwise, create a spell card
@@ -1207,43 +710,31 @@ function populateSpells() {
 							'</div>' +
 							'<div class="details">' +
 								'<div class="stats">' +
-									itemLevel +
 									itemValue +
-									itemWeight +
 								'</div>' +
 								'<div class="description">' +
 									spellDescription +
 								'</div>' +
 								'<div class="stats">' +
-									itemDamage +
-									itemArmour +
-									itemDepletion +
 									spellOrigin +
 								'</div>' +
 							'</div>' +
 						'</div>'
 					);
 				}
-				if ( spellRequired ) $('#' + spellID).addClass('required');
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Cyberware" ) {
 				//Variables specific to cyberware
-				var essenceCost = spellListDatabase[i].itemweight;
 				var cyberwareLocation = spellListDatabase[i].itemtype;
 				var cyberwareValue = spellListDatabase[i].itemvalue;
-				var cyberwareDamage = spellListDatabase[i].itemdamage;
-				var cyberwareArmour = spellListDatabase[i].itemarmour;
 				var cyberwareType = spellListDatabase[i].itemlevel;
 				spellType = '<img src="images/cyberware.png">';					
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-				if ( essenceCost ) essenceCost = '<span><strong>Essence Cost: </strong>' + essenceCost + ' Essence</span>';
 				if ( cyberwareValue ) cyberwareValue = '<span><strong>Value: </strong>' + cyberwareValue + '₡</span>';
-				if ( cyberwareDamage ) cyberwareDamage = '<span><strong>Damage: </strong>' + cyberwareDamage + '</span>';
-				if ( cyberwareArmour ) cyberwareArmour = '<span><strong>Armour: </strong>' + cyberwareArmour + '</span>';
 				if ( cyberwareType ) cyberwareType = '<span><strong>Type: </strong>' + cyberwareType + '</span>';
 				if ( cyberwareLocation ) cyberwareLocation = '<span><strong>Location: </strong>' + cyberwareLocation + '</span>';
 				var newOrigin = spellOrigin;
@@ -1266,22 +757,18 @@ function populateSpells() {
 								'<div class="stats">' +
 									cyberwareLocation +
 									cyberwareType +
-									essenceCost +
 									cyberwareValue +
 								'</div>' +
 								'<div class="description">' +
 									spellDescription +
 								'</div>' +
 								'<div class="stats">' +
-									cyberwareDamage +
-									cyberwareArmour +
 									spellOrigin +
 								'</div>' +
 							'</div>' +
 						'</div>'
 					);
 				}
-				if ( spellRequired ) $('#' + spellID).addClass('required');
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && typeCheck == "Lore" ) {
@@ -1306,17 +793,11 @@ function populateSpells() {
 			} 
 		}
 	});
-	//Add any spells to the the spellList
-	//that are confirmed in spellBrowser
-	$('.spell.moved', spellBrowser).each( function() {
-		var spellID = parseInt($(this).attr('id'));
-		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
-	});
 	//Remove any spells that are not
 	//in the active spell list array
 	$('.spell, .lore').each( function() {
 		var spellID = parseInt($(this).attr('id'));
-		spellsList.push(spellID);
+		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
 	});
 	//Hide placeholder if there are spells or lore,
 	//and show the filters in the spellbook
@@ -1329,103 +810,40 @@ function populateSpells() {
 			$(this).find('.filters').addClass('hidden-section');
 		}
 	});
-	//Reset the selected spell count based
-	//on the new selections made
-	selectedSpellCount = $('.selected').length;
 	//If filters were enabled, honor the filters
 	//for any newly added spells
 	filterButtons.each( function() {
 		var spellState = $(this).attr('id');
 		if ( $(this).hasClass('clicked') === false ) {
 			if ( spellState != "available" ) $('#spellbook .spell.' + spellState).hide();
-			else $('#spellbook .spell').not('.required, .selected').hide();
+			else $('#spellbook .spell').hide();
 		}
 	});
 	populateSpellLists();
-}
-//Populate all available actions and enablers into spell browser
-function populateSpellBrowser() {
-	for (var i = 0; i < spellListDatabase.length; i++) {
-		var typeCheck = spellListDatabase[i].type;
-		var spellTier = spellListDatabase[i].tier;
-		if ( (typeCheck == "Action" || typeCheck == "Enabler") && (spellTier > 0) ) {
-			//Define variables for the current spell
-			var spellName = spellListDatabase[i].name;
-			//Set the order of the spell in the flex-box by its Tier and name
-			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
-			var spellID = spellListDatabase[i].id;
-			var spellType = '<img src="images/' + typeCheck.toLowerCase() + '.png">';
-			var spellDescription = spellListDatabase[i].description;
-			var spellCost = spellListDatabase[i].cost;
-			var spellCasttime = spellListDatabase[i].casttime;
-			var spellDuration = spellListDatabase[i].duration;
-			var spellRange = spellListDatabase[i].range;
-			var spellCooldown = spellListDatabase[i].cooldown;
-			var spellDamage = spellListDatabase[i].damage;
-			//Check to see if these values exist to avoid
-			//empty line breaks in the spell card
-			spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-			if ( spellCost ) spellCost = '<span><strong>Cost: </strong>' + spellCost + '</span>';
-			if ( spellDuration ) spellDuration = '<span><strong>Duration: </strong>' + spellDuration + '</span>';
-			if ( spellCasttime ) spellCasttime = '<span><strong>Requires: </strong>' + spellCasttime + '</span>';
-			if ( spellRange ) spellRange = '<span><strong>Range: </strong>' + spellRange + '</span>';
-			if ( spellCooldown ) spellCooldown = '<span><strong>Cooldown: </strong>' + spellCooldown + '</span>';
-			if ( spellDamage ) spellDamage = '<span><strong>Damage: </strong>' + spellDamage + '</span>';
-			//If the spell ID is already on the page, just change
-			//the origin name; otherwise, create a spell card
-			$('#spellbrowser').append(
-				'<div data-spellid="' + spellID + '" class="spell" style="order: ' + spellOrder + ';pointer-events:none">' +
-					'<div class="header">' +
-						'<h3>' +
-							spellType +
-							spellName +
-						'</h3>' +
-						spellTier +
-						'</div>' +
-					'<div class="details">' +
-						'<div class="stats">' +
-							spellCost +
-							spellDuration +
-							spellCasttime +
-							spellRange +
-							spellCooldown +
-						'</div>' +
-						'<div class="description">' +
-							spellDescription +
-						'</div>' +
-						'<div class="stats">' +
-							spellDamage +
-						'</div>' +
-					'</div>' +
-				'</div>'
-			);
-		}
-	}
 }
 //Populate each individual spell list on the main character sheet
 function populateSpellLists() {	
 	//Move each spell to their respective lists
 	$('#spellbook .spell').each( function() {
 		var talentsVisible = talentsSection.parent('.spell-list').is(':visible');
-		var actionsEnablersVisible = actionsEnablersSection.parent('.spell-list').is(':visible');
+		var actionsVisible = actionsSection.parent('.spell-list').is(':visible');
 		var spellID = $(this).attr('id');
 		var spellOrigin = '<span class="origin">' + $('.origin', this).text() + '</span>';
-		var isEnabled = $(this).hasClass('required') || $(this).hasClass('selected');
 		for (var i = 0; i < spellListDatabase.length; i++) {
-			if ( spellListDatabase[i].id === spellID && isEnabled ) {
+			if ( spellListDatabase[i].id === spellID ) {
 				var spellName = spellListDatabase[i].name;
 				var tooltipName = '<h4 class="name">' + spellName + '</h4>';
 				spellName = '<span class="spell-handle">' + spellName + '</span>';
 				var itemName = spellListDatabase[i].itemname;
 				var spellTier = spellListDatabase[i].tier;
 				var typeCheck = spellListDatabase[i].type;
-				var spellType = '<span class="type">' + typeCheck + '</span>';
 				var spellTooltip = '<span class="description">' + spellListDatabase[i].tooltip + '</span>';
 				var spellCasttime = spellListDatabase[i].casttime;
 				var spellDuration = spellListDatabase[i].duration;
 				var spellRange = spellListDatabase[i].range;
 				var spellCooldown = spellListDatabase[i].cooldown;
-				var spellDamage = spellListDatabase[i].damage;
+				var spellDice = spellListDatabase[i].dice;
+				var tooltipDice = '<span class="type">' + spellDice + '</span>';
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( spellDuration ) spellDuration = "<span>Lasts " + spellDuration + "</span>";
@@ -1433,36 +851,35 @@ function populateSpellLists() {
 				if ( spellCasttime ) spellCasttime = "<span>" + spellCasttime + "</span>";
 				if ( spellDuration ) spellDuration = "<span>" + spellDuration + "</span>";
 				if ( spellCooldown ) spellCooldown = "<span>" + spellCooldown + "</span>";
-				//Action & enabler spell hotbars & tooltips
-				if ( (typeCheck == "Action" || typeCheck == "Enabler") && ($('#actions-enablers .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
+				//Action spell hotbars & tooltips
+				if ( typeCheck == "Action" && ($('#actions .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
 					var spellCost = '<span class="spell-handle">' + spellListDatabase[i].cost + '</span>';
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
 							'<div class="wrapper spell-handle">' +
 								spellName +
-								spellCost +
+								spellDice +
 							'</div>' +
 						'</div>';
-					actionsEnablersSection.after(
+					actionsSection.after(
 						'<div data-spellid="' + spellID + '" class="tooltip">' +
 							tooltipName + 
 							spellTier +
-							spellCost +
 							spellCasttime +
 							spellRange +
 							spellDuration +
 							spellCooldown +
 							spellTooltip + 
-							spellType +
+							tooltipDice +
 							spellOrigin +
 						'</div>'
 					);
 					//Show the spell list section if there are spells in the list, otherwise hide it
-					if ( !actionsEnablersVisible ) {
-						$(spellToAdd).appendTo(actionsEnablersSection).css('width','100%');
-						actionsEnablersSection.parent('.spell-list').stop().slideToggle(300);
+					if ( !actionsVisible ) {
+						$(spellToAdd).appendTo(actionsSection).css('width','100%');
+						actionsSection.parent('.spell-list').stop().slideToggle(300);
 					} else {
-						$(spellToAdd).appendTo(actionsEnablersSection).stop().animate({
+						$(spellToAdd).appendTo(actionsSection).stop().animate({
 							'width' : '100%'
 						}, {
 							duration: 300,
@@ -1488,7 +905,7 @@ function populateSpellLists() {
 							spellDuration +
 							spellCooldown +
 							spellTooltip + 
-							spellType +
+							'<span class="type">Talent</span>' +
 							spellOrigin +
 						'</div>'
 					);
@@ -1510,48 +927,27 @@ function populateSpellLists() {
 				} else if ( typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var itemType = spellListDatabase[i].itemtype;
 					var itemValue = spellListDatabase[i].itemvalue;
-					var itemWeight = spellListDatabase[i].itemweight;
-					var slotNumber = "slots";
-					var itemDamage = spellListDatabase[i].itemdamage;
-					var itemArmour = spellListDatabase[i].itemarmour;
-					var itemLevel = spellListDatabase[i].itemlevel;
-					var itemDepletion = spellListDatabase[i].itemdepletion;
 					var itemEffect = spellListDatabase[i].itemeffect;
-					if ( itemWeight == 1 ) slotNumber = "slot &nbsp;";
 					if ( itemType == "Artifact" ) {
-						addArtifact(spellID,itemLevel,itemName,itemEffect,itemDepletion,itemWeight,slotNumber);
+						addArtifact(spellID,itemName,itemEffect);
 					} else {
 						var selectThisType;
 						switch ( itemType ) {
-							case "Item":
+							case "Weapon":
+							selectThisType = "WE";
+							break;
+							case "Clothing":
+							selectThisType = "CL";
+							break;
+							default:
 							selectThisType = "IT";
-							break;
-							case "Light Weapon":
-							selectThisType = "LW";
-							break;
-							case "Medium Weapon":
-							selectThisType = "MW";
-							break;
-							case "Heavy Weapon":
-							selectThisType = "HW";
-							break;
-							case "Light Armour":
-							selectThisType = "LA";
-							break;
-							case "Medium Armour":
-							selectThisType = "MA";
-							break;
-							case "Heavy Armour":
-							selectThisType = "HA";
-							break;
 						}
-						addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType);
+						addItem(spellID,itemName,itemValue,selectThisType);
 						var thisItem = $('#equipment tr[data-spellid="' + spellID + '"]');
 						$('.type select', thisItem).val(selectThisType);
 						$('.type select', thisItem).trigger('chosen:updated');
 					}
 				} else if ( typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
-					var essenceCost = spellListDatabase[i].itemweight;
 					var bodyPart = spellListDatabase[i].itemtype;
 					var cyberwareLocation = bodyPart + "-cyberware";
 					var cyberwareFunction = spellListDatabase[i].itemeffect;
@@ -1560,28 +956,13 @@ function populateSpellLists() {
 					var selectThisType;
 					var selectThisLocation;
 					switch ( cyberwareType ) {
-						case "Light Weapon":
-						selectThisType = "LW";
-						break;
-						case "Medium Weapon":
-						selectThisType = "MW";
-						break;
-						case "Heavy Weapon":
-						selectThisType = "HW";
-						break;
-						case "Extra Ability":
-						selectThisType = "EA";
-						break;
-						case "Extra Skill":
-						selectThisType = "ES";
-						break;
-						case "Special":
-						selectThisType = "SP";
+						case "Weapon":
+						selectThisType = "WE";
 						break;
 						default:
-						selectThisType = "ST";
+						selectThisType = "UT";
 					}
-					addCyberware(cyberwareLocation,spellID,cyberwareFunction,cyberwareValue,essenceCost);
+					addCyberware(cyberwareLocation,spellID,cyberwareFunction,cyberwareValue);
 					var thisCyberware = $('.cyberware[data-spellid="' + spellID + '"]');
 					$('.type select', thisCyberware).val(selectThisType);
 					if ( selectThisType == "ST" ) {
@@ -1594,15 +975,6 @@ function populateSpellLists() {
 					bodyPartImg.addClass('modded');
 					enableCyberware.addClass('clicked');
 					if ( cyberware.is(':visible') == false ) cyberware.stop().slideToggle(200);
-					if ( essenceStat.is(':visible') == false ) {
-						essenceStat.animate( {
-							width : '124px'
-							}, { duration: 300,
-							start: function() {
-								essenceStat.show();
-							}
-						});	
-					}
 					if ( bodyPartImg.hasClass('active') == false ) bodyPartImg.attr('src',  'images/cyber'+ bodyPart + '-modded.png');
 				} else if ( typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
@@ -1635,8 +1007,8 @@ function populateSpellLists() {
 				var bodyPart = thisBar.attr('class').split(' ')[1];
 				var emptyMods = 0;
 				thisBar.remove();
-				for (var i = 0; i < $('.cyberware.' + bodyPart).children('.essence').length; i++) {
-					if ( Number($(this).text()) ) emptyMods++;
+				for (var i = 0; i < $('.cyberware.' + bodyPart).length; i++) {
+					emptyMods++;
 				}
 				if ( !emptyMods ) {
 					$('#cyber-mannequin img.' + bodyPart).removeClass('modded');
@@ -1647,7 +1019,6 @@ function populateSpellLists() {
 			}
 		}
 	});
-	calculateEssence();
 }
 //Populate all of the active item select fields
 function populateInventorySelect() {
@@ -1661,13 +1032,11 @@ function populateInventorySelect() {
 	});
 }
 //Add a blank item, unless variables are parsed
-function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType) {
+function addItem(spellID,itemName,itemValue,selectThisType) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
 	if ( !itemName ) itemName = "";
 	if ( !itemValue ) itemValue = "0";
-	if ( !itemWeight ) itemWeight = "0";
-	if ( !slotNumber ) slotNumber = "slots";
 	var itemToAdd =
 		'<tr class="item"' + spellID + ' style="width: 0">' +
 			'<td class="arrow mobile-handle"></td>' +
@@ -1684,21 +1053,13 @@ function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType
 			'<td class="type">' +
 				'<select>' +
 					'<option selected value="IT">Item</option>' +
-					'<option value="LW">Light Weapon</option>' +
-					'<option value="MW">Heavy Weapon</option>' +
-					'<option value="HW">Medium Weapon</option>' +
-					'<option value="LA">Light Armour</option>' +
-					'<option value="MA">Medium Armour</option>' +
-					'<option value="HA">Heavy Armour</option>' +
+					'<option value="WE">Weapon</option>' +
+					'<option value="CL">Clothing</option>' +
 				'</select>' +
 			'</td>' +
 			'<td class="value">' +
 				'<div class="editable" contenteditable="true">' + itemValue + '</div>' +
 				'<div class="credits">&#8353;</div>' +
-			'</td>' +
-			'<td class="weight">' +
-				'<div class="editable" contenteditable="true">' + itemWeight + '</div>' +
-				'<div class="slots">' + slotNumber + '</div>' +
 			'</td>' +
 		'</tr>';
 	if ( spellID ) $(itemToAdd).insertAfter('#equipment table tr:first-child');
@@ -1706,22 +1067,14 @@ function addItem(spellID,itemName,itemValue,itemWeight,slotNumber,selectThisType
 	populateInventorySelect();
 }
 //Add a blank artifact, unless variables are parsed
-function addArtifact(spellID,itemLevel,itemName,itemEffect,itemDepletion,itemWeight,slotNumber) {
+function addArtifact(spellID,itemName,itemEffect) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
-	if ( !itemLevel ) itemLevel = "1";
 	if ( !itemName ) itemName = "";
 	if ( !itemEffect ) itemEffect = "";
-	if ( !itemDepletion ) itemDepletion = "";
-	if ( !itemWeight ) itemWeight = "0";
-	if ( !slotNumber ) slotNumber = "slots";
 	var artifactToAdd =
 		'<tr class="item"' + spellID + '>' +
 			'<td class="arrow mobile-handle"></td>' +
-			'<td class="level">' +
-				'<div class="mobile-label">Level:</div>' +
-				'<div class="editable" contenteditable="true">' + itemLevel + '</div>' +
-			'</td>' +
 			'<td class="name">' +
 				'<div class="editable mobile-handle" contenteditable="true">' + itemName + '</div>' +
 			'</td>' +
@@ -1729,348 +1082,9 @@ function addArtifact(spellID,itemLevel,itemName,itemEffect,itemDepletion,itemWei
 				'<div class="mobile-label">Effect:</div>' +
 				'<div class="editable" contenteditable="true">' + itemEffect + '</div>' +
 			'</td>' +
-			'<td class="depletion">' +
-				'<div class="mobile-label">Depletion:</div>' +
-				'<div class="editable" contenteditable="true">' + itemDepletion + '</div>' +
-			'</td>' +
-			'<td class="weight">' +
-				'<div class="editable" contenteditable="true">' + itemWeight + '</div>' +
-				'<div class="slots">' + slotNumber + '</div>' +
-			'</td>' +
 		'</tr>';
 	if ( spellID ) $(artifactToAdd).insertAfter('#artifacts table tr:first-child');
 	else artifactsList.append(artifactToAdd);
-}
-//Check to see if the currently selected cyberware are valid
-function validCyberware(selectedType,bodyPart,essenceVal,oldType) {
-	var hasEssence = (essenceVal > 0 || essenceVal) && (essenceVal != ".");
-	var mightVal = Number(maxMight.text());
-	var speedVal = Number(maxSpeed.text());
-	var intellectVal = Number(maxIntellect.text());
-	var stats = [];
-	var priStat;
-	var priNumber;
-	var secStat;
-	var secNumber;
-	var oldPriStat;
-	var oldPriNumber;
-	var oldSecStat;
-	var oldPSecNumber;
-	switch ( bodyPart) {
-		case "head":
-			switch ( selectedType ) {
-				case "ST":
-					priStat = "Might";
-					priNumber = 2;
-				break;
-				case "LW":
-					priStat = "Intellect";
-					priNumber = 2;
-				break;
-				default:
-					priStat = "Might";
-					priNumber = 3;
-			}
-		break;
-		case "core":
-			switch ( selectedType ) {
-				case "ST":
-					priStat = "Intellect";
-					priNumber = 2;
-					secStat = "Speed";
-					secNumber = 1;
-				break;
-				case "MW":
-					priStat = "Intellect";
-					priNumber = 2;
-					secStat = "Speed";
-					secNumber = 1;
-				break;
-				case "HW":
-					priStat = "Intellect";
-					priNumber = 2;
-					secStat = "Speed";
-					secNumber = 2;
-				break;
-				default:
-					priStat = "Intellect";
-					priNumber = 3;
-			}
-		break;
-		case "leftarm":
-			switch ( selectedType ) {
-				case "ST":
-					priStat = "Intellect";
-					priNumber = 1;
-				break;
-				case "LW":
-					priStat = "Intellect";
-					priNumber = 2;
-				break;
-				case "MW":
-					priStat = "Intellect";
-					priNumber = 2;
-					secStat = "Speed";
-					secNumber = 1;
-				break;
-				default:
-					priStat = "Intellect";
-					priNumber = 3;
-			}
-		break;
-		case "rightarm":
-			switch ( selectedType ) {
-				case "ST":
-					priStat = "Intellect";
-					priNumber = 2;
-				break;
-				case "LW":
-					priStat = "Intellect";
-					priNumber = 2;
-				break;
-				case "MW":
-					priStat = "Intellect";
-					priNumber = 2;
-					secStat = "Speed";
-					secNumber = 1;
-				break;
-				default:
-					priStat = "Intellect";
-					priNumber = 3;
-			}
-		break;
-		case "leftleg":
-			switch ( selectedType ) {
-				case "ST":
-					priStat = "Intellect";
-					priNumber = 1;
-				break;
-				case "LW":
-					priStat = "Intellect";
-					priNumber = 2;
-				break;
-				case "MW":
-					priStat = "Intellect";
-					priNumber = 2;
-					secStat = "Speed";
-					secNumber = 1;
-				break;
-				default:
-					priStat = "Intellect";
-					priNumber = 3;
-			}
-		break;
-		case "rightleg":
-			switch ( selectedType ) {
-				case "ST":
-					priStat = "Intellect";
-					priNumber = 1;
-				break;
-				case "LW":
-					priStat = "Intellect";
-					priNumber = 2;
-				break;
-				case "MW":
-					priStat = "Intellect";
-					priNumber = 2;
-					secStat = "Speed";
-					secNumber = 1;
-				break;
-				default:
-					priStat = "Intellect";
-					priNumber = 3;
-			}
-		break;
-		default:
-			priStat = "Intellect";
-			priNumber = 3;
-	}
-	if ( oldType ) {
-		switch ( bodyPart) {
-			case "skin":
-				if ( oldType == "ST" ) {
-					oldPriStat = "Armour";
-					oldPriNumber = 0;
-				} else { 
-					oldPriStat = "Intellect";
-					oldPriNumber = 3;
-				}
-			break;
-			case "head":
-				switch ( oldType ) {
-					case "ST":
-						oldPriStat = "Might";
-						oldPriNumber = 2;
-					break;
-					case "LW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-					break;
-					default:
-						oldPriStat = "Might";
-						oldPriNumber = 3;
-				}
-			break;
-			case "core":
-				switch ( oldType ) {
-					case "ST":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-						oldSecStat = "Speed";
-						oldSecNumber = 1;
-					break;
-					case "MW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-						oldSecStat = "Speed";
-						oldSecNumber = 1;
-					break;
-					case "HW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-						oldSecStat = "Speed";
-						oldSecNumber = 2;
-					break;
-					default:
-						oldPriStat = "Intellect";
-						oldPriNumber = 3;
-				}
-			break;
-			case "leftarm":
-				switch ( oldType ) {
-					case "ST":
-						oldPriStat = "Intellect";
-						oldPriNumber = 1;
-					break;
-					case "LW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-					break;
-					case "MW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-						oldSecStat = "Speed";
-						oldSecNumber = 1;
-					break;
-					default:
-						oldPriStat = "Intellect";
-						oldPriNumber = 3;
-				}
-			break;
-			case "rightarm":
-				switch ( oldType ) {
-					case "ST":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-					break;
-					case "LW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-					break;
-					case "MW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-						oldSecStat = "Speed";
-						oldSecNumber = 1;
-					break;
-					default:
-						oldPriStat = "Intellect";
-						oldPriNumber = 3;
-				}
-			break;
-			case "leftleg":
-				switch ( oldType ) {
-					case "ST":
-						oldPriStat = "Intellect";
-						oldPriNumber = 1;
-					break;
-					case "LW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-					break;
-					case "MW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-						oldSecStat = "Speed";
-						oldSecNumber = 1;
-					break;
-					default:
-						oldPriStat = "Intellect";
-						oldPriNumber = 3;
-				}
-			break;
-			case "rightleg":
-				switch ( oldType ) {
-					case "ST":
-						oldPriStat = "Intellect";
-						oldPriNumber = 1;
-					break;
-					case "LW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-					break;
-					case "MW":
-						oldPriStat = "Intellect";
-						oldPriNumber = 2;
-						oldSecStat = "Speed";
-						oldSecNumber = 1;
-					break;
-					default:
-						oldPriStat = "Intellect";
-						oldPriNumber = 3;
-				}
-			break;
-			default:
-				oldPriStat = "Intellect";
-				oldPriNumber = 3;
-		}
-		if ( oldPriStat === priStat ) priNumber -= oldPriNumber;
-		if ( oldSecStat && secStat && oldSecStat === secStat ) secNumber -= oldSecNumber;
-	}
-	//Determine if the selection is valid based on the current
-	//selections and if previous options were selected
-	var validSelection =
-		( bodyPart == "skin" && selectedType == "ST" ) ||
-		( bodyPart == "skin" && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart == "skin" && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart == "skin" && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart == "head" && selectedType == "ST" && mightVal >= priNumber + 1 ) ||
-		( bodyPart == "head" && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart == "head" && selectedType == "EA" && mightVal >= priNumber + 1 ) ||
-		( bodyPart == "head" && selectedType == "ES" && mightVal >= priNumber + 1 ) ||
-		( bodyPart == "head" && selectedType == "SP" && mightVal >= priNumber + 1 ) ||
-		( bodyPart == "core" && selectedType == "ST" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
-		( bodyPart == "core" && selectedType == "MW" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
-		( bodyPart == "core" && selectedType == "HW" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
-		( bodyPart == "core" && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart == "core" && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart == "core" && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") > -1 && selectedType == "ST" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") > -1 && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") > -1 && selectedType == "MW" && intellectVal >= priNumber + 1 && speedVal >= secNumber + 1 ) ||
-		( bodyPart.indexOf("arm") > -1 && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") > -1 && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("arm") > -1 && selectedType == "SP" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") > -1 && selectedType == "ST" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") > -1 && selectedType == "LW" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") > -1 && selectedType == "MW" && intellectVal >= priNumber + 1 && mightVal >= secNumber + 1 ) ||
-		( bodyPart.indexOf("leg") > -1 && selectedType == "EA" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") > -1 && selectedType == "ES" && intellectVal >= priNumber + 1 ) ||
-		( bodyPart.indexOf("leg") > -1 && selectedType == "SP" && intellectVal >= priNumber + 1 );
-	//Validate, and then push stats needed if invalid
-	stats.push(priStat);
-	stats.push(priNumber);
-	if ( secStat ) {
-		stats.push(secStat);
-		stats.push(secNumber);
-	}
-	if ( hasEssence && !selectedType ) return false;
-	else if ( !hasEssence && selectedType ) return false;
-	else if ( !hasEssence && !selectedType ) return false;
-	else if ( hasEssence && validSelection ) return true;
-	else {
-		return stats;
-	}
 }
 //Populate all of the active item select fields
 function populateCyberwareSelect() {
@@ -2081,7 +1095,7 @@ function populateCyberwareSelect() {
 	});
 }
 //Add a blank cyberware, unless variables are parsed
-function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceCost) {
+function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue) {
 	var contentEditable;
 	var disabledSelect;
 	if ( spellID ) {
@@ -2093,48 +1107,6 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceC
 	}
 	if ( !cyberwareFunction ) cyberwareFunction = "";
 	if ( !cyberwareValue ) cyberwareValue = "0";
-	if ( !essenceCost ) essenceCost = "0";
-	var partOptions;
-	switch ( bodyPart.replace('-cyberware','') ) {
-		case "skin":
-		partOptions = '<option value="ST">"+1 Armour"</option>';
-		break;	
-		case "head":
-		partOptions =
-			'<option value="ST">"+2 Intellect"</option>' +
-			'<option value="LW">"Light Weapon"</option>';
-		break;	
-		case "core":
-		partOptions = 
-			'<option value="ST">"+3 Might"</option>' +
-			'<option value="MW">"Medium Weapon"</option>' +
-			'<option value="HW">"Heavy Weapon"</option>';
-		break;	
-		case "leftarm":
-		partOptions = 
-			'<option value="ST">"+1 Might"</option>' +
-			'<option value="LW">"Light Weapon"</option>' +
-			'<option value="MW">"Medium Weapon"</option>';
-		break;	
-		case "rightarm":
-		partOptions = 
-			'<option value="ST">"+1 Might"</option>' +
-			'<option value="LW">"Light Weapon"</option>' +
-			'<option value="MW">"Medium Weapon"</option>';
-		break;
-		case "leftleg":
-		partOptions = 
-			'<option value="ST">"+2 Speed"</option>' +
-			'<option value="LW">"Light Weapon"</option>' +
-			'<option value="MW">"Medium Weapon"</option>';
-		break;	
-		case "rightleg":
-		partOptions = 
-			'<option value="ST">"+2 Speed"</option>' +
-			'<option value="LW">"Light Weapon"</option>' +
-			'<option value="MW">"Medium Weapon"</option>';
-		break;
-	}
 	var cyberwareToAdd =
 		'<div class="cyberware ' + bodyPart.replace('-cyberware','') + '"' + spellID + '>' +
 			'<div class="function">' +
@@ -2148,17 +1120,9 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceC
 				'<div class="text-wrapper">' +
 					'<select>' +
 						'<option></option>' +
-						partOptions +
-						'<option value="EA">"Extra Ability"</option>' +
-						'<option value="ES">"Extra Skill"</option>' +
-						'<option value="SP">"Special"</option>' +
+						'<option value="WE">"Weapon"</option>' +
+						'<option value="UT">"Utility"</option>' +
 					'</select>' +
-				'</div>' +
-			'</div>' +
-			'<div class="essence">' +
-				'<div class="cyber-label"><span class="blue-text">if</span> (ESSENCE_COST)</div>' +
-				'<div class="text-wrapper">' +
-					'&#123; <div contenteditable="' + contentEditable + '" class="editable">' + essenceCost + '</div> Essence &#125;' +
 				'</div>' +
 			'</div>' +
 			'<div class="value">' +
@@ -2175,10 +1139,6 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue,essenceC
 		}
 	});
 	populateCyberwareSelect();
-	if ( $('.' + bodyPart.replace('-cyberware','') + ' option:selected[value="ST"]').length > 0 ) {
-		$('.' + bodyPart.replace('-cyberware','') + ' option[value="ST"]:not(:selected)').prop('disabled', true);
-		$('.' + bodyPart.replace('-cyberware','') + ' .type select').trigger('chosen:updated');
-	}
 }
 //Add a blank note, unless variables are parsed
 function addNote(spellID,note) {
@@ -2218,9 +1178,6 @@ $(function() {
 	foci = $('#foci, #secondary-foci');
 	fociOptions = $('#foci option, #secondary-foci option');
 	extraAttributes = $('#extra-attributes');
-	variantsSection = $('#genetic-variation');
-	variants = $('#genetic-variants');
-	variantsOptions = $('#genetic-variants option');
 	secFociSection = $('#second-focus');
 	hybridSection = $('#hybrid-species');
 	hybridButton = $('#hybrid-button div');
@@ -2228,42 +1185,17 @@ $(function() {
 	resetSection = $('#reset-button');
 	resetButton = $('#reset-button div');
 	resetTooltip = $('#reset-tooltip');
-	curMight = $('#might .current-value');
-	maxMight = $('#might .pool-value');
-	curSpeed = $('#speed .current-value');
-	maxSpeed = $('#speed .pool-value');
-	curIntellect = $('#intellect .current-value');
-	maxIntellect = $('#intellect .pool-value');
-	poolAddPoint = $('.pool .add-point');
-	poolRemovePoint = $('.pool .remove-point');
-	mightEdge = $('#might .edge-value');
-	speedEdge = $('#speed .edge-value');
-	intellectEdge = $('#intellect .edge-value');
-	edgeAddPoint = $('.edge .add-point');
-	edgeRemovePoint = $('.edge .remove-point');
-	commitSection = $('#commit-button');
-	commitButton = $('#commit-button .button');
-	essenceStat = $('#essence');
-	effortStat = $('#effort');
-	availPoolStat = $('#available-points');
-	availEdgeStat = $('#available-edgepoints');
 	addSkillButton = $('#add-skill');
 	skillError = $('#skill-list .error');
 	skillList = $('#skill-list #skills');
 	skillsDeleteSpace = $('#skill-list .delete-space');
 	spellBook = $('#spellbook');
-	spellBrowser = $('#spellbrowser');
-	spellBrowserModal = $('#spellbrowser').closest('.modal-background');
-	spellBrowserConfirm = $('.confirm', spellBrowserModal);
 	spellbookButton = $('#open-spellbook');
-	spellBrowserButton = $('#open-spellbrowser');
 	filterButtons = $('.filters .button');
-	filterSearchBar = $('.spell-search input');
-	clearSearchButton = $('.spell-search .clear-search');
 	loreButton = $('#open-archives');
 	enableCyberware = $('#enable-cyberware');
 	cyberwareTooltip = $('#cyberware-tooltip');
-	actionsEnablersSection = $('#actions-enablers');
+	actionsSection = $('#actions');
 	talentsSection = $('#talents');
 	spellHotbars = $('.spell-list .hotbars');
 	addCyberwareButton = $('.add-cyberware');
@@ -2288,29 +1220,16 @@ $(function() {
 	firstDrag = true;
 	periodCount = 0;
 	//Initial variables
-	extraAbilities = 0;
 	curArc = 2;
 	curTier = 6;
 	spellListDatabase = [];
-	availSpellCount = 4;
-	selectedSpellCount = 0;
-	availPoints = 6;
-	spentPoints = 0;
-	mightOverflow = 0;
-	speedOverflow = 0;
-	intellectOverflow = 0;
-	availEdge = 1;
-	spentEdge = 0;
-	curEffort = 1;
-	curEssence = "6.00";
 	//Setup spell list database
 	Tabletop.init({
-		key: 'https://docs.google.com/spreadsheets/d/133J5k_1XfoPxFiWuVXcztwIunjamNA7YGTh11zS0U_M/edit?usp=sharing',
+		key: 'https://docs.google.com/spreadsheets/d/1NWFhf8_oT5lvrNEN7cTAmRYnDHzGkD3Mw2P5nODXaCQ/edit?usp=sharing',
 		callback: function (data, tabletop) {
 			spellListDatabase = data;
 			$('#warning').text('👍 DATABASE PULLED 👍');
 			$('#warning').css('background-color','green');
-			populateSpellBrowser();
 		},
 		simpleSheet: true
 	});
@@ -2353,19 +1272,13 @@ $(function() {
 		placeholder_text_single: "Select a focus",
 		width: "100%"
 	});
-	sortOptions(variants,variantsOptions);
-	variants.chosen({
-		no_results_text: "No results found.",
-		placeholder_text_single: "Select a variation",
-		width: "100%"
-	});
 	//Populate inventory & skills select dropdowns
 	//and initate drag and drop
 	populateCyberwareSelect();
 	populateInventorySelect();
 	populateSkillsSelect();
-	//Actions & Enablers Dragula
-	dragula([actionsEnablersSection[0]], {
+	//Actions Dragula
+	dragula([actionsSection[0]], {
 		moves: function(el,container,handle) {
 			return handle.classList.contains('spell-handle');
 		}
@@ -2458,63 +1371,6 @@ $(function() {
 			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') == false ) {
 				cyberError.text('Cyberware granted by character attributes cannot be removed');
 				cyberError.stop().slideToggle(150);
-			} else if ( el.hasAttribute('data-mod') && cyberError.is(':visible') == false ) {
-				var selectedType = el.getAttribute('data-mod');
-				var bodyPart = el.classList[1];
-				var essenceVal = el.querySelector('.essence .editable').innerHTML;
-				var stat;
-				var statVal;
-				var curStat;
-				if ( selectedType == "ST" ) {
-					switch ( bodyPart ) {
-						case "skin":
-							console.log("Armour");
-						break;
-						case "head":
-							stat = "Intellect";
-							statVal = 3;
-						break;
-						case "core":
-							stat = "Might";
-							statVal = 4;
-						break;
-						case "leftarm":
-							stat = "Might";
-							statVal = 2;
-						break;
-						case "rightarm":
-							stat = "Might";
-							statVal = 2;
-						break;
-						case "leftleg":
-							stat = "Speed";
-							statVal = 3;
-						break;
-						case "rightleg":
-							stat = "Speed";
-							statVal = 3;
-						break;
-					}
-					switch ( stat ) {
-						case "Might":
-							curStat = maxMight;
-						break;
-						case "Speed":
-							curStat = maxSpeed;
-						break;
-						case "Intellect":
-							curStat = maxIntellect;
-						break;
-					}
-					if ( Number(curStat.text()) >= statVal ) {
-						cyberwareDeleteSpace.stop().slideToggle(150);
-					} else {
-						cyberError.text('You need at least ' + statVal + ' ' + stat + ' to remove this cyberware');
-						cyberError.stop().slideToggle(150);
-					}
-				} else {
-					cyberwareDeleteSpace.stop().slideToggle(150);
-				}
 			} else {
 				cyberwareDeleteSpace.stop().slideToggle(150);
 			}
@@ -2533,17 +1389,11 @@ $(function() {
 			}
 		}).on('drop', function(el,target,source,sibling) {
 			if ( target.classList.contains('delete-space') ) {
-				calculateStatPools("delete");
 				cyberwareDrake.remove();
-				calculateEssence();
-				poolRemovePoint.each( function() {
-					var maxPool = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .pool-value').text());
-					if ( maxPool > 0 ) $(this).removeClass('disabled');
-				});
 				var bodyPart = el.classList[1];
 				var emptyMods = 0;
-				for (var i = 0; i < $('.cyberware.' + bodyPart).children('.essence').length; i++) {
-					if ( Number($(this).text()) ) emptyMods++;
+				for (var i = 0; i < $('.cyberware.' + bodyPart).length; i++) {
+					emptyMods++;
 				}
 				if ( !emptyMods ) $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
 				if ( isTouchDevice() && $('.cyberware').length === 0 ) $('#cyberware-option em').hide();
@@ -2766,7 +1616,6 @@ $(function() {
 		var priSpeciesVal = priSpecies.val();
 		var extraAttributesVisible = extraAttributes.is(':visible');
 		var hybridVisible = hybridSection.is(':visible');
-		var variantsVisible = variantsSection.is(':visible');
 		var secFociVisible = secFociSection.is(':visible');
 		$(this).toggleClass('clicked');
 		//Show the section and show the hybrid selector
@@ -2782,7 +1631,7 @@ $(function() {
 		} else if ( !hybridVisible ) {
 			showExtraAttribute(hybridSection,"145px",true);
 		//If no other attributes are showing except the hybrid selector
-		} else if ( hybridVisible && !variantsVisible && !secFociVisible ) {
+		} else if ( hybridVisible && !secFociVisible ) {
 			extraAttributes.stop().slideToggle({
 				duration: 300,
 				done: function() {
@@ -2791,48 +1640,15 @@ $(function() {
 					genderFocusRow.addClass('last-row');
 				}
 			});
-		//If only the variants and hybrid selectors are showing
-		} else if ( hybridVisible && variantsVisible && !secFociVisible ) {
-			//If the primary species is not Terran
-			if ( priSpeciesVal != 6 ) {
-				extraAttributes.stop().slideToggle({
-					duration: 300,
-					done: function() {
-						secSpecies.val('');
-						variants.val('');
-						hideExtraAttribute(hybridSection,false);
-						hideExtraAttribute(variantsSection,false);
-						genderFocusRow.addClass('last-row');
-					}
-				});
-			//If the primary species is Terran
-			} else {
-				secSpecies.val('');
-				hideExtraAttribute(hybridSection,true);
-			}
 		//If only the secondary foci and hybrid selectors are showing
-		} else if ( hybridVisible && !variantsVisible && secFociVisible ) {
+		} else if ( hybridVisible && secFociVisible ) {
 			secSpecies.val('');
 			hideExtraAttribute(hybridSection,true);
-		//If all selectors are showing
-		} else if ( hybridVisible && variantsVisible && secFociVisible ) {
-			//If the primary species is not Terran
-			if ( priSpeciesVal != 6 ) {
-				secSpecies.val('');
-				variants.val('');
-				hideExtraAttribute(hybridSection,true);
-				hideExtraAttribute(variantsSection,true);
-			//If the primary species is Terran
-			} else {
-				secSpecies.val('');
-				hideExtraAttribute(hybridSection,true);
-			}
 		}
 		//Repopulate all of the fields after cliking the toggle
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		populateVariants();
 		//If only the secondary species is selected when clicked, hide the reset button
 		if ( secSpecies.val() && !priSpeciesVal && !types.val() ) resetSection.addClass('hidden-section');
 	});
@@ -2841,7 +1657,6 @@ $(function() {
 	resetButton.click(function(){
 		var extraAttributesVisible = extraAttributes.is(':visible');
 		var hybridVisible = hybridSection.is(':visible');
-		var variantsVisible = variantsSection.is(':visible');
 		var secFociVisible = secFociSection.is(':visible');
 		availSpellCount = 4;
 		selectedSpellCount = 0;
@@ -2851,26 +1666,22 @@ $(function() {
 		types.val('');
 		priFoci.val('');
 		secFoci.val('');
-		variants.val('');
 		resetSection.addClass('hidden-section');
 		descriptors.trigger('chosen:updated');
 		setStoryArc(curArc);
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		populateVariants();
 		populateSpells();
 		loreButton.text('Lore');
 		spellbookButton.text('Abilities');
 		filterButtons.addClass('clicked');
 		if ( hybridVisible ) {
-			if ( variantsVisible ) hideExtraAttribute(variantsSection,true);
 			if ( secFociVisible ) hideExtraAttribute(secFociSection,true);
 		} else if ( extraAttributesVisible ) {
 			extraAttributes.stop().slideToggle({
 				duration: 300,
 				start: function() {
-					if ( variantsVisible ) hideExtraAttribute(variantsSection,false);
 					if ( secFociVisible ) hideExtraAttribute(secFociSection,false);
 					genderFocusRow.removeClass('last-row');
 				}
@@ -2887,60 +1698,24 @@ $(function() {
 		var priSpeciesVal = priSpecies.val();
 		var secSpeciesVal = secSpecies.val();
 		var extraAttributesVisible = extraAttributes.is(':visible');
-		var variantsVisible = variantsSection.is(':visible');
 		var hybridVisible = hybridSection.is(':visible');
 		var secFociVisible = secFociSection.is(':visible');
 		resetSection.removeClass('hidden-section');
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		populateVariants();
 		populateSpells();
 		loreButton.text('New Lore');
-		//If user picks Terran, show genetic variations
-		if ( priSpeciesVal == 6 || secSpeciesVal == 6 ) {
-			if ( !extraAttributesVisible ) {
-				showExtraAttribute(variantsSection,"137px",false);
-				extraAttributes.stop().slideToggle({
-					duration: 300,
-					start: function() {
-						genderFocusRow.removeClass('last-row');
-					}
-				});
-			//Show the variants selector if it's not showing
-			} else if ( !variantsVisible ) {
-				showExtraAttribute(variantsSection,"137px",true);
-			}
-		} else {
-			//If no other attributes are showing except the variants selector
-			if ( variantsVisible && !hybridVisible && !secFociVisible ) {
-				extraAttributes.stop().slideToggle({
-					duration: 300,
-					done: function() {
-						variants.val('');
-						hideExtraAttribute(variantsSection,false);
-						genderFocusRow.addClass('last-row');
-					}
-				});
-			//If either of the other selectors are showing
-			} else if ( variantsVisible && (hybridVisible || secFociVisible) ) {
-				variants.val('');
-				hideExtraAttribute(variantsSection,true);
-			}
-		}
 	});
 	types.on('change', function() {
 		resetSection.removeClass('hidden-section');
 		populateSpecies();
 		populateFoci();
-		populateVariants();
 		populateSpells();
-		resetAbilityCounters();
 		loreButton.text('New Lore');
 	});
 	foci.on('change', function() {
 		var extraAttributesVisible = extraAttributes.is(':visible');
-		var variantsVisible = variantsSection.is(':visible');
 		var hybridVisible = hybridSection.is(':visible');
 		var secFociVisible = secFociSection.is(':visible');
 		var curFocus = priFoci.val();
@@ -2958,7 +1733,7 @@ $(function() {
 			} else if ( !secFociVisible ) {
 				showExtraAttribute(secFociSection,"241px",true);
 			//If no other attributes are showing except the second focus selector
-			} else if ( secFociVisible && !hybridVisible && !variantsVisible ) {
+			} else if ( secFociVisible && !hybridVisible ) {
 				extraAttributes.stop().slideToggle({
 					duration: 300,
 					done: function() {
@@ -2968,12 +1743,12 @@ $(function() {
 					}
 				});
 			//If either of the other selectors are showing
-			} else if ( secFociVisible && (variantsVisible || hybridVisible) ) {
+			} else if ( secFociVisible && hybridVisible ) {
 				secFoci.val('');
 				hideExtraAttribute(secFociSection,true);
 			}
 		} else if ( $(this).attr('id') == "foci" ) {
-			if ( secFociVisible && !hybridVisible && !variantsVisible ) {
+			if ( secFociVisible && !hybridVisible ) {
 				extraAttributes.stop().slideToggle({
 					duration: 300,
 					done: function() {
@@ -2983,7 +1758,7 @@ $(function() {
 					}
 				});
 			//If either of the other selectors are showing
-			} else if ( secFociVisible && (variantsVisible || hybridVisible) ) {
+			} else if ( secFociVisible && hybridVisible ) {
 				secFoci.val('');
 				hideExtraAttribute(secFociSection,true);
 			}
@@ -2992,128 +1767,7 @@ $(function() {
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		populateVariants();
 		populateSpells();
-	});
-	variants.on('change', function() {
-		resetSection.removeClass('hidden-section');
-		populateTypes();
-		populateFoci();
-		populateSpells();
-	});
-	//Add or remove stat pool points with button clicks
-	poolAddPoint.click( function() {
-		var statPool = $(this).closest('.stat-pool').attr('id');
-		var curVal = Number($('#' + statPool + ' .current-value').html());
-		var poolVal = Number($('#' + statPool + ' .pool-value').text());
-		var availPool = Number($('.value', availPoolStat).text());
-		var availEdgeVal = Number($('.value', availEdgeStat).text());
-		if ( availPool > 0 ) {
-			availPool--;
-			spentPoints++;
-			$('#' + statPool + ' .current-value').html(curVal + 1);
-			$('#' + statPool + ' .pool-value').text(poolVal + 1);
-			$('.value', availPoolStat).text(availPool);
-			if ( availPool === 0 ) {
-				poolAddPoint.addClass('disabled');
-				if ( availEdgeVal === 0 ) commitButton.removeClass('disabled');
-			}
-			poolRemovePoint.each( function() {
-				var maxPool = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .pool-value').text());
-				if ( maxPool > 0 ) $(this).removeClass('disabled');
-			});
-		}
-	});
-	poolRemovePoint.click( function() {
-		var statPool = $(this).closest('.stat-pool').attr('id');
-		var curVal = Number($('#' + statPool + ' .current-value').html());
-		var poolVal = Number($('#' + statPool + ' .pool-value').text());
-		var availPool = Number($('.value', availPoolStat).text());
-		if ( spentPoints <= availPoints ) {
-			poolAddPoint.removeClass('disabled');
-			availPool++;
-			spentPoints--;
-			if ( curVal === poolVal ) $('#' + statPool + ' .current-value').html(curVal - 1);
-			$('#' + statPool + ' .pool-value').text(poolVal - 1);
-			$('.value', availPoolStat).text(availPool);
-			poolRemovePoint.each( function() {
-				var maxPool = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .pool-value').text());
-				if ( maxPool === 0 || spentPoints === -availPoints ) $(this).addClass('disabled');
-			});
-		}
-		commitButton.addClass('disabled');
-	});
-	edgeAddPoint.click( function() {
-		var statPool = $(this).closest('.stat-pool').attr('id');
-		var curVal = Number($('#' + statPool + ' .edge-value').text());
-		var availPool = Number($('.value', availPoolStat).text());
-		var availEdgeVal = Number($('.value', availEdgeStat).text());
-		if ( availEdgeVal > 0 ) {
-			availEdgeVal--;
-			spentEdge++;
-			$('#' + statPool + ' .edge-value').text(curVal + 1);
-			$('.value', availEdgeStat).text(availEdgeVal);
-			if ( availEdgeVal === 0 ) {
-				edgeAddPoint.addClass('disabled');
-				if ( availPool === 0) commitButton.removeClass('disabled');
-			}
-			edgeRemovePoint.each( function() {
-				var maxEdge = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .edge-value').text());
-				if ( maxEdge > -1 ) $(this).removeClass('disabled');
-			});
-		}
-	});
-	edgeRemovePoint.click( function() {
-		var statPool = $(this).closest('.stat-pool').attr('id');
-		var curVal = Number($('#' + statPool + ' .edge-value').text());
-		var availEdgeVal = Number($('.value', availEdgeStat).text());
-		if ( spentEdge <= availEdge ) {
-			edgeAddPoint.removeClass('disabled');
-			availEdgeVal++;
-			spentEdge--;
-			$('#' + statPool + ' .edge-value').text(curVal - 1);
-			$('.value', availEdgeStat).text(availEdgeVal);
-			edgeRemovePoint.each( function() {
-				var maxEdge = Number($('#' + $(this).closest('.stat-pool').attr('id') + ' .edge-value').text());
-				if ( maxEdge <= -1 ) $(this).addClass('disabled');
-			});
-		}
-		commitButton.addClass('disabled');
-	});
-	commitButton.click( function() {
-		$('.add-remove').hide(300);
-		edgeAddPoint.hide(300);
-		edgeRemovePoint.hide(300);
-		setTimeout(function() {
-			commitSection.slideToggle(300);
-			if ( availPoolStat.is(':visible') ) {
-					availPoolStat.animate({
-						width : 0
-					}, { 
-					duration: 300,
-					complete: function() {
-						$(this).hide();
-					}
-				});
-			}
-			if ( availEdgeStat.is(':visible') ) {
-				availEdgeStat.animate({
-						width : 0
-					}, { 
-					duration: 300,
-					complete: function() {
-						$(this).hide();
-					}
-				});
-			}
-		}, 300);
-	});
-	//Make sure the current pool value doesn't exceed the current
-	//maximum pool value
-	$('.current-value').on('keyup blur paste', function() {
-		var curVal = Number($(this).html());
-		var maxVal = Number($(this).closest('.pool').children('.pool-value').text());
-		if ( curVal > maxVal ) $(this).html(maxVal);
 	});
 	//Toggle optional character options
 	$('#open-options').click( function() {
@@ -3124,34 +1778,12 @@ $(function() {
 			}
 		});
 	});
-	//Show cyberware section and essence tracker
+	//Show cyberware section tracker
 	//but only when no cyberware is installed
 	enableCyberware.click( function() {
-		var installedCyberware = [];
-		$('.cyberware .essence .editable').each( function() {
-			if ( Number($(this).html()) ) installedCyberware.push(Number($(this).html()));
-		});
-		if ( installedCyberware.length === 0 ) {
+		if ( $('.cyberware').length === 0 ) {
 			$(this).toggleClass('clicked');
 			cyberware.stop().slideToggle(500);
-			if ( essenceStat.is(':visible') ) {
-				essenceStat.animate( {
-					width : '0'
-					}, { duration: 300,
-					complete: function() {
-						essenceStat.hide();
-						essenceStat.removeAttr('style');
-					}
-				});	
-			} else {
-				essenceStat.animate( {
-					width : '124px'
-					}, { duration: 300,
-					start: function() {
-						essenceStat.show();
-					}
-				});				
-			}
 		}
 	});
 	//Focus editable div fields when clicking on outter cells
@@ -3159,31 +1791,24 @@ $(function() {
 		$('.editable', this).focus();
 	});
 	//Add skills when respective button is clicked
-	addSkillButton.click( function() { addSkill(); });	
-	//Check for changes in any of the skill proficiency dropdowns
-	skillList.on('change', '.proficiency select', function() {
-		var thisVal = $(this).val();
-		var inabilityFields = $(this).parent('.proficiency').children('div:first-child, .inability');
-		if ( thisVal === "I" ) inabilityFields.show();
-		else inabilityFields.hide();
-	});
+	addSkillButton.click( function() { addSkill(); });
 	//Add notes and items when respective button is clicked
 	addItemButton.click( function() { addItem(); });
 	addArtifactButton.click( function() { addArtifact(); });
 	addNoteButton.click( function() { addNote(); });
 	addCyberwareButton.click( function() { 
+		var bodyPart = $(this).closest('.cyber-section').attr('id').replace('-cyberware','');
 		addCyberware($(this).closest('.cyber-section').attr('id'));
+		$('#cyber-mannequin img.' + bodyPart).addClass('modded');
 		if ( isTouchDevice() ) $('#cyberware-option em').show();
 	});	
-	//Filter inputs for level, weight. essence and value fields
-	$('.item-list, #skill-list, #cyberware, .pool').on('keydown blur paste', '.level .editable, .value .editable, .weight .editable, .essence .editable, .inability, .current-value', function(e){
+	//Filter inputs for value fields
+	$('.item-list, #skill-list').on('keydown blur paste', '.value .editable', function(e){
 		var thisVal = $(this).html();
 		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
         var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
         var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >=96 && e.keyCode <= 105);
         var vKey = 86, cKey = 67, aKey = 65;
-		//Essence decimal controller
-		var isEssence = $(this).closest('.essence').length;
 		var isPeriodKey = [190].indexOf(e.keyCode) != -1;
 		periodCount = 0;
 		for (i = 0; i < thisVal.length; i++) {
@@ -3194,16 +1819,11 @@ $(function() {
             case isCursorMoveOrDeleteAction:
             case isModifierkeyPressed == false && isNumKeyPressed:
             case (e.metaKey || e.ctrlKey) && ([vKey,cKey,aKey].indexOf(e.keyCode) != -1):
-			case isEssence && isPeriodKey && onePeriod:
+			case isPeriodKey && onePeriod:
                 break;
             default:
                 e.preventDefault();
         }
-	});
-	//Update slots text in carry weight to reflect amount of slots
-	$('.item-list').on('keyup', 'td.weight .editable', function() {
-		if ( $(this).text() == 1 ) $(this).parent('.weight').children('div:last-child').html('slot &nbsp;');
-		else $(this).parent('.weight').children('div:last-child').text('slots');
 	});
 	//Highlight currently selected body part
 	//and show the section to the right
@@ -3217,96 +1837,6 @@ $(function() {
 		else $(this).attr('src',  'images/cyber'+ bodyPart + '.png');
 		if ( $('#cyber-mods > div:not(#cyber-intro):visible').length === 1 ) $('#cyber-intro').stop().slideToggle(300);
 		else if ( $('#cyber-intro').is(':visible') ) $('#cyber-intro').stop().slideToggle(300);
-	});
-	cyberware.on('keyup', '.essence .editable', function(){
-		var essenceVal = Number($(this).html());
-		var thisParent = $(this).closest('.cyberware');
-		var oldType = thisParent.attr('data-mod');
-		var bodyPart = thisParent.attr('class').split(' ')[1];
-		var selectedType = $('.type select', thisParent).val();
-		var returnedStats = validCyberware(selectedType,bodyPart,essenceVal,oldType);
-		var priStat;
-		var priNumber;
-		var secStat;
-		var secNumber;
-		var copy;
-		var emptyMods = 0;
-		for (var i = 0; i < thisParent.children('.essence').length; i++) {
-			if ( Number($(this).text()) ) emptyMods++;
-		}
-		if ( emptyMods ) $('#cyber-mannequin img.' + bodyPart).addClass('modded');
-		else $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
-		if ( returnedStats != true || returnedStats != false ) {
-			priStat = returnedStats[0];
-			priNumber = returnedStats[1] + 1;
-			secStat = returnedStats[2];
-			secNumber = returnedStats[3] + 1;
-		}
-		if ( secStat ) copy = "You need at least " + priNumber + " " + priStat + " & " + secNumber +  " " + secStat + " to install this cyberware.";
-		else copy = "You need at least " + priNumber + " " + priStat + " to install this cyberware.";
-		if ( essenceVal == 0 || essenceVal == "." || !essenceVal ) {
-			calculateStatPools();
-			thisParent.removeAttr('data-mod');
-		} else if ( returnedStats === true ) {
-			if ( selectedType == "EA" ) {
-				
-			} else if ( oldType == "EA" ) {
-
-			}
-			calculateStatPools();			
-		} else if ( returnedStats != false && returnedStats != true ) {
-			$('.text', popupError).text(copy);
-			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
-			$(this).html(0);
-			calculateStatPools(true);
-			thisParent.removeAttr('data-mod');
-		}
-		if ( $('.' + bodyPart + ' option:selected[value="ST"]').length === 0 ) {
-			$('.' + bodyPart + ' option[value="ST"]').removeAttr('disabled');
-			$('.' + bodyPart + ' .type select').trigger('chosen:updated');
-		}
-		calculateEssence();
-	});
-	//Calculate stats whenever cyberware is installed
-	cyberware.on('change', '.type select', function() {
-		var selectedType = $(this).val();
-		var thisParent = $(this).closest('.cyberware');
-		var oldType = thisParent.attr('data-mod');
-		var bodyPart = thisParent.attr('class').split(' ')[1];
-		var essenceVal = Number($('.essence .editable', thisParent).html());
-		var returnedStats = validCyberware(selectedType,bodyPart,essenceVal,oldType);
-		if ( returnedStats != true || returnedStats != false ) {
-			priStat = returnedStats[0];
-			priNumber = returnedStats[1] + 1;
-			secStat = returnedStats[2];
-			secNumber = returnedStats[3] + 1;
-		}
-		if ( selectedType == "ST" ) {
-			$('.' + bodyPart + ' option[value="ST"]:not(:selected)').prop('disabled', true);
-			$('.' + bodyPart + ' .type select').trigger('chosen:updated');
-		}
-		if ( $('.' + bodyPart + ' option:selected[value="ST"]').length == 0 ) {
-			$('.' + bodyPart + ' option[value="ST"]').removeAttr('disabled');
-			$('.' + bodyPart + ' .type select').trigger('chosen:updated');
-		}
-		if ( secStat ) copy = "You need at least " + priNumber + " " + priStat + " & " + secNumber +  " " + secStat + " to install this cyberware.";
-		else copy = "You need at least " + priNumber + " " + priStat + " to install this cyberware.";
-		if ( returnedStats === true ) {
-			if ( selectedType == "EA" ) {
-				
-			} else if ( oldType == "EA" ) {
-
-			}
-			calculateStatPools();
-		} else if ( returnedStats != false && returnedStats != true ) {
-			$('.text', popupError).text(copy);
-			if ( popupError.is(':visible') == false ) popupError.stop().slideToggle(300);
-			$(this).val('');
-			$(this).trigger('chosen:updated');
-			calculateStatPools(true);
-			thisParent.removeAttr('data-mod');
-		}
-		calculateEssence();
 	});
 	//Show modals on click
 	$('#buttons .modal-button, .modal-background, .modal, .modal-header .close.button').click( function(e) {
@@ -3323,29 +1853,11 @@ $(function() {
 		if ( modal.hasClass('visible') ) {
 			modal.removeClass('visible');
 			$('body').css('overflow-y','auto');
-			$('.spell', spellBrowser).removeClass('disabled');
-			$('.spell', spellBrowser).removeClass('selected');
 		} else {
 			modal.addClass('visible');
 			$('body').css('overflow-y','hidden');
 		}
 		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
-	});
-	//Highlight spells in spellbook and keep track of spell count
-	spellBook.on('click', '.spell', function() {
-		if ( $(this).hasClass('required') == false && $(this).hasClass('selected') == false && selectedSpellCount < availSpellCount ) {
-			$(this).addClass('selected');
-			++selectedSpellCount;
-			if ( $('#spellbook .filters #selected').hasClass('clicked') == false ) $(this).stop().slideToggle(500);
-		} else if ( $(this).hasClass('required') == false && $(this).hasClass('selected') ) {
-			$('.spell-list .spell[data-spellid="' + $(this).attr('id') + '"]').remove();
-			$('.item-list tr[data-spellid="' + $(this).attr('id') + '"]').remove();
-			$(this).removeClass('selected');
-			--selectedSpellCount;
-			if ( $('#spellbook .filters #available').hasClass('clicked') == false ) $(this).stop().slideToggle(500);
-		}
-		resetAbilityCounters();
-		populateSpellLists();
 	});
 	//Filter spells in spellbook based on selection
 	filterButtons.click( function() {
@@ -3385,124 +1897,8 @@ $(function() {
 					});
 				}
 			});
-		} else if( filter != "available" ) {
-			$('.spell.' + filter, thisModal).each( function() {
-				if ( $(this).hasClass('filter-' + filter) || $(this).hasClass('hidden') == false ) {
-					$(this).stop().slideToggle(500, function() {
-						$(this).toggleClass('hidden filter-' + filter);
-					});
-				}
-			});
-		} else {
-			$('.spell', thisModal).not('.required, .selected').each( function() {
-				if ( $(this).hasClass('filter-' + filter) || $(this).hasClass('hidden') == false ) {
-					$(this).stop().slideToggle(500, function() {
-						$(this).toggleClass('hidden filter-' + filter);
-					});
-				}
-			});
-		}
+		} 
 		thisButton.toggleClass('clicked');
-	});
-	//Filter spells based on search input
-	filterSearchBar.on('keyup', function() {
-		var thisModal = $(this).closest('.modal-background');
-		var value = $(this).val().toLowerCase();
-		$('.spell', thisModal).filter( function() {
-			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-		});
-	});
-	//Clear search results and repopulate list
-	clearSearchButton.click( function() {
-		var thisModal = $(this).closest('.modal-background');
-		var inputField = $('input', $(this).closest('.spell-search'));
-		inputField.val('');
-		$('.spell', thisModal).filter( function() {
-			$(this).toggle($(this).text().toLowerCase().indexOf('') > -1);
-		});
-		$('.spell', thisModal).removeClass('disabled selected');
-		$('.confirm', thisModal).addClass('disabled');
-	});
-	//Show the spell browser on click
-	spellBrowserButton.click( function() {
-		availExtraAbilities = extraAbilities;
-		if ( !availExtraAbilities ) $('.spell', spellBrowser).css('pointer-events','none');
-		else $('.spell', spellBrowser).not('.disabled').css('pointer-events','auto');
-		$('#spellbook .spell').each( function() {
-			var spellID = $(this).attr('id');
-			$('.spell[data-spellid="' + spellID +'"]', spellBrowser).addClass('disabled');
-		});
-		spellBrowserConfirm.addClass('disabled');
-	});
-	//Highlight selected spells in ability browser when clicked
-	spellBrowser.on('click', '.spell', function() {
-		if ( removeAbility ) {
-			if ( $(this).hasClass('selected') && availExtraAbilities < 0 ) {
-				$(this).removeClass('selected');
-				availExtraAbilities++;
-				if ( availExtraAbilities === 0 ) {
-					spellBrowserConfirm.removeClass('disabled');
-					$('.spell.deselect.selected', spellBrowser).addClass('disabled');
-				}
-			} else {
-				$('.spell.deselect', spellBrowser).removeClass('disabled');
-				$(this).addClass('selected');
-				spellBrowserConfirm.addClass('disabled');
-				availExtraAbilities--;
-			}
-		} else {
-			if ( $(this).hasClass('disabled') ) return;
-			if ( $(this).hasClass('disabled') == false && $(this).hasClass('selected') == false && availExtraAbilities > 0 ) {
-				$(this).addClass('selected');
-				availExtraAbilities--;
-				if ( availExtraAbilities === 0 ) {
-					spellBrowserConfirm.removeClass('disabled');
-					$('.spell', spellBrowser).not('.selected').addClass('disabled');
-				}
-			} else {
-				$('.spell', spellBrowser).removeClass('disabled');
-				$(this).removeClass('selected');
-				spellBrowserConfirm.addClass('disabled');
-				availExtraAbilities++;
-			}
-		}
-	});
-	//Clicking confirm closes the spell browser and applies
-	//the spell to the spell list
-	spellBrowserConfirm.click( function() {
-		spellBrowserModal.removeClass('visible');
-		$('body').css('overflow-y','auto');
-		if ( removeAbility ) {
-			$('.spell.deselect', spellBrowser).each(function() {
-				if ( $(this).hasClass('selected') ) {
-					$(this).removeClass('deselect selected');
-					$(this).addClass('moved');
-					$(this).css('pointer-events','none');
-				} else {
-					populateSpells();
-					extraAbilities++;
-				}
-			});
-			removeAbility = false;
-		} else {
-			$('.spell.selected', spellBrowser).each(function() {
-				var spellID = $(this).data('spellid');
-				$(this).attr('id', spellID);
-				$(this).removeAttr('data-spellid');
-				$(this).addClass('required extra');
-				$(this).removeClass('selected');
-				$(this).css('pointer-events','none');
-				$(this).clone().appendTo('#spellbook');
-				$(this).removeAttr('id');
-				$(this).attr('data-spellid', spellID);
-				$(this).addClass('moved');
-				$(this).removeClass('required extra');
-				populateSpells();
-				extraAbilities--;
-			});
-		}
-		$('.spell', spellBrowser).removeClass('disabled');
-		spellBrowserButton.text("Ability Browser");
 	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
@@ -3602,12 +1998,8 @@ $(function() {
 			tooltipPosition(targetElement,resetTooltip);
 		});
 		enableCyberware.hover( function(targetElement){
-			var installedCyberware = [];
 			tooltipPosition(targetElement,cyberwareTooltip);
-			$('.cyberware .essence .editable').each( function() {
-				if ( Number($(this).html()) ) installedCyberware.push(Number($(this).html()));
-			});
-			if ( installedCyberware.length ) $('em', cyberwareTooltip).css('display','block');
+			if ( $('.cyberware').length ) $('em', cyberwareTooltip).css('display','block');
 			else $('em', cyberwareTooltip).css('display','none')
 		}, function() {
 			isHovering = false;

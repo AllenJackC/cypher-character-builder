@@ -42,7 +42,7 @@
 	</div>
 	<div id="title">
 		<h1>Immortal Freedom</h1>
-		<h5>a <a target="_blank" href="https://www.cypher-system.com">Cypher System</a> homebrew campaign character sheet</h5>
+		<h5>an RPG homebrew campaign character sheet</h5>
 	</div>
 	<div id="main">
 		<!-- Attributes & Dice -->
@@ -436,20 +436,6 @@
 							</div>
 							<label for="secondary-species">SECONDARY SPECIES</label>
 						</div>
-						<!-- GENETIC VARIATION -->
-						<div class="attribute" id="genetic-variation">
-							<div class="border">
-								<select id="genetic-variants">
-									<option></option>
-									<option value="0">Acrod Tranckh</option>
-									<option value="1">Harod Tranckh</option>
-									<option value="2">Merod Tranckh</option>
-									<option value="3">Forim</option>
-									<option value="4">Viyun</option>
-								</select>
-							</div>
-							<label for="genetic-variants">GENETIC VARIATION</label>
-						</div>
 						<!-- SECONDARY FOCUS -->
 						<div class="attribute last-column" id="second-focus">
 							<div class="border">
@@ -678,7 +664,7 @@
 						<div class="proficiency">
 							<select>
 								<option value="I">-1d</option>
-								<option selected value="P">–</option>
+								<option selected value="P">&#10022;</option>
 								<option value="T">+1d</option>
 							</select>
 						</div>
@@ -721,8 +707,8 @@
 						<th></th>
 						<th>STATE</th>
 						<th>NAME</th>
+						<th>TYPE</th>
 						<th>VALUE</th>
-						<th>WEIGHT</th>
 					</tr>
 					<tr class="item">
 						<td class="arrow mobile-handle"></td>
@@ -736,13 +722,16 @@
 						<td class="name">
 							<div class="editable mobile-handle" contenteditable="true"></div>
 						</td>
+						<td class="type">
+							<select>
+								<option selected value="IT">Item</option>
+								<option value="WE">Weapon</option>
+								<option value="CL">Clothing</option>
+							</select>
+						</td>
 						<td class="value">
 							<div class="editable" contenteditable="true">0</div>
 							<div class="credits"> &#8353;</div>
-						</td>
-						<td class="weight">
-							<div class="editable" contenteditable="true">0</div>
-							<div class="slots"> slots</div>
 						</td>
 					</tr>
 				</tbody>
@@ -766,7 +755,6 @@
 						<th></th>
 						<th>NAME</th>
 						<th>EFFECT</th>
-						<th>WEIGHT</th>
 					</tr>
 					<tr class="item">
 						<td class="arrow mobile-handle"></td>
@@ -776,10 +764,6 @@
 						<td class="effect">
 							<div class="mobile-label">Effect:</div>
 							<div class="editable" contenteditable="true"></div>
-						</td>
-						<td class="weight">
-							<div class="editable" contenteditable="true">0</div>
-							<div class="slots"> slots</div>
 						</td>
 					</tr>
 				</tbody>
@@ -905,6 +889,7 @@
 		<p>Built with the help of <a target="_blank" href="https://www.jquery.com">JQuery</a>, <a target="_blank" href="https://github.com/jsoma/tabletop">Tabletop.js</a>, <a target="_blank" href="https://harvesthq.github.io/chosen">Chosen.js</a> & <a target="_blank" href="https://bevacqua.github.io/dragula">Dragula.js</a>.</p>
 		<p>Initial systems, descriptors, types, foci and abilities were pulled from:</p>
 		<p id="footer-links">
+			<a target="_blank" href="http://www.onesevendesign.com/laserfeelings/">Lasers & Feelings</a>
 			<a target="_blank" href="https://www.cypher-system.com">Cypher System</a>
 			<a target="_blank" href="https://www.numenera.com">Numenera</a>
 			<a target="_blank" href="https://www.thestrangerpg.com">The Strange</a>
@@ -930,18 +915,6 @@
 			</div>
 			<div id="spellbook">
 				<div class="filters hidden-section">
-					<div class="button clicked" id="required">
-						<div></div>
-						Perquisite
-					</div>
-					<div class="button clicked" id="selected">
-						<div></div>
-						Selected
-					</div>
-					<div class="button clicked" id="available">
-						<div></div>
-						Available
-					</div>
 					<div class="button clicked" id="filter-tier1">
 						<div></div>
 						Tier 1
