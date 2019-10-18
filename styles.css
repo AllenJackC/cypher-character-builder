@@ -523,6 +523,10 @@ div.proficiency {
 	margin-bottom: 15px;
 	width: 100%;
 }
+#spellbook .spell.disabled {
+	filter: brightness(75%);
+	pointer-events: none;
+}
 #spellbook .spell .header {
 	background: var(--button);
 	color: var(--white);
@@ -1151,9 +1155,33 @@ tr.gu-mirror {
 	margin: 15px 0;
 }
 .details li {
-	background: url('images/list-icon.png') no-repeat 0 3px transparent;
 	margin-left: 25px;
     padding-left: 30px;
+}
+.details li:before {
+	content: '\272A';
+    margin-left: -25px;
+    margin-right: 15px;
+    font-size: 18px;
+}
+.details li.selectable {
+	pointer-events: auto;
+	cursor: pointer;
+}
+.details li.selected {
+	pointer-events: none;
+}
+.details li.selected:before {
+	color: var(--selected-active);
+	content: '\2714';
+}
+.details li.disabled {
+	color: var(--light-grey);
+	text-decoration: line-through;
+	pointer-events: none;
+}
+.details li.disabled:before {
+	content: '\2718';
 }
 .hotbars .spell .wrapper span:first-child {
 	white-space: normal;
@@ -1199,6 +1227,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 }
 .hidden-section {
 	display: none;
+}
+.details li.selectable:hover {
+	color: var(--button-hover);
+}
+.details li.selectable:active {
+	color: var(--button-active);
 }
 .secondary-button > div:hover {
 	box-shadow: inset 0 0 0 1px var(--secondary-button-hover);

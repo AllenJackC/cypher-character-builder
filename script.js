@@ -579,6 +579,7 @@ function populateSpells() {
 			var spellTier = spellListDatabase[i].tier;
 			//Set the order of the spell in the flex-box by its Tier and name
 			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+			var spellOptional = spellListDatabase[i].optional;
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
 			var typeCheck = spellListDatabase[i].type;
@@ -843,6 +844,7 @@ function populateSpellLists() {
 				var spellRange = spellListDatabase[i].range;
 				var spellCooldown = spellListDatabase[i].cooldown;
 				var spellDice = spellListDatabase[i].dice;
+				var spellOptional = spellListDatabase[i].optional;
 				var tooltipDice = '<span class="type">' + spellDice + '</span>';
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
@@ -851,8 +853,9 @@ function populateSpellLists() {
 				if ( spellCasttime ) spellCasttime = "<span>" + spellCasttime + "</span>";
 				if ( spellDuration ) spellDuration = "<span>" + spellDuration + "</span>";
 				if ( spellCooldown ) spellCooldown = "<span>" + spellCooldown + "</span>";
+				if ( $('#' + spellID, spellBook).hasClass('selected') ) spellOptional = false;
 				//Action spell hotbars & tooltips
-				if ( typeCheck == "Action" && ($('#actions .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
+				if ( !spellOptional && typeCheck == "Action" && ($('#actions .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
 					var spellCost = '<span class="spell-handle">' + spellListDatabase[i].cost + '</span>';
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
@@ -889,7 +892,7 @@ function populateSpellLists() {
 						});
 					}
 				//Talent spell hotbars & tooltips
-				} else if ( typeCheck == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( !spellOptional && typeCheck == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
 							'<div class="wrapper spell-handle">' +
@@ -924,7 +927,7 @@ function populateSpellLists() {
 						});
 					}
 				//Add items to the iventory list
-				} else if ( typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( !spellOptional && typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var itemType = spellListDatabase[i].itemtype;
 					var itemValue = spellListDatabase[i].itemvalue;
 					var itemEffect = spellListDatabase[i].itemeffect;
@@ -947,7 +950,7 @@ function populateSpellLists() {
 						$('.type select', thisItem).val(selectThisType);
 						$('.type select', thisItem).trigger('chosen:updated');
 					}
-				} else if ( typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( !spellOptional && typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var bodyPart = spellListDatabase[i].itemtype;
 					var cyberwareLocation = bodyPart + "-cyberware";
 					var cyberwareFunction = spellListDatabase[i].itemeffect;
@@ -1899,6 +1902,21 @@ $(function() {
 			});
 		} 
 		thisButton.toggleClass('clicked');
+	});
+	spellBook.on('click', 'li.selectable', function() {
+		var spellList = $(this).closest('ul');
+		var selectedSpellID = $(this).data('spellid');
+		spellList.children('li').each( function() {
+			var spellID = $(this).data('spellid');
+			if ( spellID === selectedSpellID ) {
+				$(this).addClass('selected');
+				$('#' + spellID, spellBook).addClass('selected');
+			} else {
+				$(this).addClass('disabled');
+				$('#' + spellID, spellBook).addClass('disabled');
+			}
+		});
+		populateSpellLists();
 	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
