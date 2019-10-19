@@ -569,7 +569,7 @@
 									<option value="O1">Wields Two Weapons at Once</option>
 									<option value="O2">Wonders</option>
 									<option value="O3">Works for a Living</option>
-									<option data-restricted-species="34" data-restricted-types="" value="O4">Works for the AEG</option>
+									<option data-restricted-species="34" value="O4">Works for the AEG</option>
 									<option value="O5">Works the Back Alleys</option>
 									<option value="O6">Works the System</option>
 									<option data-restricted-types="A0A1A2A3A4A5A6A7A8A9B1B2B3B4B5" value="O7">Worships Dark Beings</option>
@@ -649,7 +649,7 @@
 		<div id="skill-list">
 			<div class="list-header">
 				<div class="header">
-					<img src="images/skills.png">
+					<img src="images/skill.png">
 					<h2>Skills</h2>
 				</div>
 				<div class="button" id="add-skill">
@@ -674,7 +674,7 @@
 			<div class="error">Skills granted by character attributes cannot be removed</div>
 			<div class="delete-space"></div>
 		</div>
-		<!-- Actions & Enablers -->
+		<!-- Actions -->
 		<div class="spell-list">
 			<div class="list-header">
 				<img src="images/action.png">
@@ -689,6 +689,14 @@
 				<h2>Talents</h2>
 			</div>
 			<div class="hotbars" id="talents"></div>
+		</div>
+		<!-- Status -->
+		<div class="spell-list">
+			<div class="list-header">
+				<img src="images/status.png">
+				<h2>Status</h2>
+			</div>
+			<div class="hotbars" id="status"></div>
 		</div>
 		<!-- Inventory -->
 		<div class="item-list" id="equipment">
@@ -795,8 +803,6 @@
 					<div id="cyber-intro">
 						<p><span class="blue-text">init</span> <span class="yellow-text">CyberMod System</span> v 1.7.706</p>
 						<p>Select the body part you would like to modify.</p>
-						<p><span class="yellow-text">!CAUTION!</span> Cyberware provides improves your body's natural abilities or allows you perform unique actions, but taxes the body or the mind in the process.</p>
-						<p><span class="red-text">!WARNING!</span> Cybernetic modifications reduce your Essence, which makes you more vulnerable to mental attacks and Divine Magic.</p>
 					</div>
 					<!-- Skin Cyberware -->
 					<div class="cyber-section" id="skin-cyberware">
@@ -851,6 +857,51 @@
 					<div class="delete-space"></div>
 				</div>
 			</div>
+		</div>
+		<!-- Contacts -->
+		<div class="item-list" id="contacts">
+			<div class="list-header">
+				<div class="header">
+					<img src="images/contact.png">
+					<h2>Contacts</h2>
+				</div>
+				<div class="button" id="add-contact">
+					Add Contact
+				</div>
+			</div>
+			<table>
+				<tbody>
+					<tr>
+						<th></th>
+						<th>TYPE</th>
+						<th>NAME</th>
+						<th>DESCRIPTION</th>
+						<th>SKILL</th>
+					</tr>
+					<tr class="item">
+						<td class="arrow mobile-handle"></td>
+						<td class="type">
+							<select>
+								<option selected value="CT">Contact</option>
+								<option value="CP">Companion</option>
+								<option value="OT">Other</option>
+							</select>
+						</td>
+						<td class="name">
+							<div class="editable mobile-handle" contenteditable="true"></div>
+						</td>
+						<td class="effect">
+							<div class="mobile-label">Description:</div>
+							<div class="editable mobile-handle" contenteditable="true"></div>
+						</td>
+						<td class="effect">
+							<div class="mobile-label">Skill:</div>
+							<div class="editable mobile-handle" contenteditable="true"></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="delete-space"></div>
 		</div>
 		<!-- Notes -->
 		<div class="item-list" id="notes">

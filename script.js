@@ -39,6 +39,7 @@ var enableCyberware;
 var cyberwareTooltip;
 var actionsSection;
 var talentsSection;
+var statusSection;
 var spellHotbars;
 var addCyberwareButton;
 var cyberware;
@@ -59,6 +60,10 @@ var addNoteButton;
 var notesList;
 var notesBody;
 var notesDeleteSpace;
+var addContactButton;
+var contactList;
+var contactBody;
+var contactDeleteSpace;
 var firstDrag;
 var periodCount;
 var curArc;
@@ -254,7 +259,7 @@ function populateSpecies() {
 		});
 	//If the type is NOT selected, and the selected focus has species restrictions but no type restrictions
 	} else if ( !availPriSpecies && resSpecies && !resTypes ) {
-		var array = resSpecies;
+		var array = String(resSpecies);
 		if ( array ) array = array.split('');
 		speciesOptions.each( function() {
 			disableOptions($(this),array,true);				
@@ -531,10 +536,12 @@ function populateSkillsSelect() {
 	});
 }
 //Add a blank skill, unless variables are parsed
-function addSkill(skillName) {
+function addSkill(spellID,skillName) {
 	if ( !skillName ) skillName = "";
+	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
+	else spellID = "";
 	var skillToAdd =
-		'<div class="spell">' +
+		'<div class="spell"' + spellID + '>' +
 			'<div class="wrapper">' +
 				'<div class="handle">&#9776;</div>' +
 				'<div class="name" contenteditable="true">' + skillName + '</div>' +
@@ -548,7 +555,8 @@ function addSkill(skillName) {
 				'</div>' +
 			'</div>' +
 		'</div>';
-	$(skillToAdd).appendTo(skillList).stop().animate({'width' : '100%'},300);
+	if ( spellID ) $(skillToAdd).insertBefore('#skill-list .spell:first-child').stop().animate({'width' : '100%'},300);
+	else $(skillToAdd).appendTo(skillList).stop().animate({'width' : '100%'},300);
 	populateSkillsSelect();
 }
 //Populate the spell list based on the currently selected options
@@ -575,6 +583,7 @@ function populateSpells() {
 	$.each(selectedAttributes, function(index,curOption) {
 		for (var i = 0; i < spellListDatabase.length; i++) {
 			//Define variables for the current spell
+			var hideThis = "";
 			var spellName = spellListDatabase[i].name;
 			var spellTier = spellListDatabase[i].tier;
 			//Set the order of the spell in the flex-box by its Tier and name
@@ -592,6 +601,9 @@ function populateSpells() {
 			var spellCooldown = spellListDatabase[i].cooldown;
 			var spellDice = spellListDatabase[i].dice;
 			var spellOrigin;
+			//Check to see if these values exist to avoid
+			//empty line breaks in the spell card
+			if ( spellName == "<hide>" || typeCheck == "Status" ) hideThis = " hidden-spell";
 			switch ( curOption.charAt(0) ) {
 				case "D":
 				spellOrigin = $('#descriptors option[value="' + optionID + '"]').text();
@@ -635,7 +647,7 @@ function populateSpells() {
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note'].includes(typeCheck)) {
+			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck)) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
@@ -653,7 +665,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + '" style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									spellType +
@@ -683,14 +695,10 @@ function populateSpells() {
 				spellsList.push(parseInt(spellID));
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" ) {
 				//Variables specific to items
-				var hideThis = "";
 				var itemType = spellListDatabase[i].itemtype;
 				var itemValue = spellListDatabase[i].itemvalue;
 				if ( itemType == "Artifact" ) spellType = '<img src="images/artifact.png">';
-				else spellType = '<img src="images/items.png">';					
-				//Check to see if these values exist to avoid
-				//empty line breaks in the spell card
-				if ( spellName == "<hide>" ) hideThis = " hidden-spell";
+				else spellType = '<img src="images/items.png">';
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( itemValue ) itemValue = '<span><strong>Value: </strong>' + itemValue + '₡</span>';				var newOrigin = spellOrigin;
@@ -725,6 +733,50 @@ function populateSpells() {
 				}
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
+			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Contact" ) {
+				//Variables specific to contacts
+				var contactSkill = spellListDatabase[i].itemvalue;
+				var contactType = spellListDatabase[i].itemtype;					
+				//Check to see if these values exist to avoid
+				//empty line breaks in the spell card
+				if ( spellName == "<hide>" ) hideThis = " hidden-spell";
+				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
+				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( contactSkill ) contactSkill = '<span><strong>Skill: </strong>' + contactSkill + '</span>';
+				if ( contactType ) contactType = '<span><strong>Type: </strong>' + contactType + '</span>';	
+				var newOrigin = spellOrigin;
+				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
+				//If the spell ID is already on the page, just change
+				//the origin name; otherwise, create a spell card
+				if ( $('#' + spellID).length > 0 ) {
+					$('#' + spellID + ' .origin').text(newOrigin);
+				} else {
+					$('#spellbook').append(
+						'<div id="' + spellID + '" class="spell' + hideThis + '" style="order: ' + spellOrder + '">' +
+							'<div class="header">' +
+								'<h3>' +
+									'<img src="images/contact.png">' +
+									spellName +
+								'</h3>' +
+							spellTier +
+							'</div>' +
+							'<div class="details">' +
+								'<div class="stats">' +
+									contactType +
+									contactSkill +
+								'</div>' +
+								'<div class="description">' +
+									spellDescription +
+								'</div>' +
+								'<div class="stats">' +
+									spellOrigin +
+								'</div>' +
+							'</div>' +
+						'</div>'
+					);
+				}
+				//Push this spell to the spell list array
+				spellsList.push(parseInt(spellID));
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Cyberware" ) {
 				//Variables specific to cyberware
 				var cyberwareLocation = spellListDatabase[i].itemtype;
@@ -746,7 +798,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell" style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + '" style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									spellType +
@@ -820,6 +872,10 @@ function populateSpells() {
 			else $('#spellbook .spell').hide();
 		}
 	});
+	//If there are select spells, update the abilities
+	//button to prompt user to make selections
+	if ( $('img[src$="images/select.png"]', spellBook).length != $('.selected', spellBook).length ) spellbookButton.text('Make Selections');
+	else spellbookButton.text('New Abilities');
 	populateSpellLists();
 }
 //Populate each individual spell list on the main character sheet
@@ -828,12 +884,14 @@ function populateSpellLists() {
 	$('#spellbook .spell').each( function() {
 		var talentsVisible = talentsSection.parent('.spell-list').is(':visible');
 		var actionsVisible = actionsSection.parent('.spell-list').is(':visible');
+		var statusVisible = statusSection.parent('.spell-list').is(':visible');
 		var spellID = $(this).attr('id');
 		var spellOrigin = '<span class="origin">' + $('.origin', this).text() + '</span>';
 		for (var i = 0; i < spellListDatabase.length; i++) {
 			if ( spellListDatabase[i].id === spellID ) {
 				var spellName = spellListDatabase[i].name;
 				var tooltipName = '<h4 class="name">' + spellName + '</h4>';
+				var statusName = '<li>' + spellName + '</li>';
 				spellName = '<span class="spell-handle">' + spellName + '</span>';
 				var itemName = spellListDatabase[i].itemname;
 				var spellTier = spellListDatabase[i].tier;
@@ -897,6 +955,7 @@ function populateSpellLists() {
 						'<div data-spellid="' + spellID + '" class="spell">' +
 							'<div class="wrapper spell-handle">' +
 								spellName +
+								spellDice +
 							'</div>' +
 						'</div>';
 					talentsSection.after(
@@ -926,7 +985,46 @@ function populateSpellLists() {
 							}
 						});
 					}
-				//Add items to the iventory list
+				//Status hotbars and tooltips
+				} else if ( !spellOptional && typeCheck == "Status" && $('#status .status-effect[data-spellid="' + spellID + '"]').length <= 0 ) {
+					var statusToAdd =
+						'<div data-spellid="' + spellID + '" class="status-effect">' +
+							'<ul class="wrapper">' +
+								statusName +
+							'</ul>' +
+						'</div>';
+					statusSection.after(
+						'<div data-spellid="' + spellID + '" class="tooltip">' +
+							tooltipName + 
+							spellTier +
+							spellCasttime +
+							spellRange +
+							spellDuration +
+							spellCooldown +
+							spellTooltip + 
+							'<span class="type">Status</span>' +
+							spellOrigin +
+						'</div>'
+					);
+					//Show the spell list section if there are spells in the list, otherwise hide it
+					if ( !statusVisible ) {
+						$(statusToAdd).appendTo(statusSection).css('width','100%');
+						statusSection.parent('.spell-list').stop().slideToggle(300);
+					} else {
+						$(statusToAdd).appendTo(statusSection).stop().animate({
+							'width' : '100%'
+						}, {
+							duration: 300
+						});
+					}
+				//Add skills to the skill list
+				} else if ( !spellOptional && typeCheck == "Skill" && $('#skill-list .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
+					var skillProficiency = spellListDatabase[i].itemtype;
+					addSkill(spellID,itemName);
+					var thisSkill = $('#skill-list .spell[data-spellid="' + spellID + '"]');
+					$('.proficiency select', thisSkill).val(skillProficiency);
+					$('.proficiency select', thisSkill).trigger('chosen:updated');
+				//Add items to the inventory list
 				} else if ( !spellOptional && typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var itemType = spellListDatabase[i].itemtype;
 					var itemValue = spellListDatabase[i].itemvalue;
@@ -950,6 +1048,27 @@ function populateSpellLists() {
 						$('.type select', thisItem).val(selectThisType);
 						$('.type select', thisItem).trigger('chosen:updated');
 					}
+				//Add to contact list
+				} else if ( !spellOptional && typeCheck == "Contact" && $('#contacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+					var contactType = spellListDatabase[i].itemtype;
+					var contactSkill = spellListDatabase[i].itemvalue;
+					var contactDescription = spellListDatabase[i].itemeffect;
+					var selectThisType;
+					switch ( contactType ) {
+						case "Contact":
+						selectThisType = "CT";
+						break;
+						case "Companion":
+						selectThisType = "CP";
+						break;
+						default:
+						selectThisType = "OT";
+					}
+					addContact(spellID,itemName,contactDescription,contactSkill);
+					var thisContact = $('#contacts tr[data-spellid="' + spellID + '"]');
+					$('.type select', thisContact).val(selectThisType);
+					$('.type select', thisContact).trigger('chosen:updated');
+				//Add cyberware to the cyberware
 				} else if ( !spellOptional && typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var bodyPart = spellListDatabase[i].itemtype;
 					var cyberwareLocation = bodyPart + "-cyberware";
@@ -979,7 +1098,7 @@ function populateSpellLists() {
 					enableCyberware.addClass('clicked');
 					if ( cyberware.is(':visible') == false ) cyberware.stop().slideToggle(200);
 					if ( bodyPartImg.hasClass('active') == false ) bodyPartImg.attr('src',  'images/cyber'+ bodyPart + '-modded.png');
-				} else if ( typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( !spellOptional && typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
 					addNote(spellID,note);
 				}
@@ -1138,7 +1257,7 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue) {
 	$(cyberwareToAdd).appendTo($('#' + bodyPart)).slideToggle({
 		duration: 300,
 		complete: function() {
-			$(this).css('min-height','170px');
+			$(this).css('min-height','130px');
 		}
 	});
 	populateCyberwareSelect();
@@ -1158,6 +1277,46 @@ function addNote(spellID,note) {
 		'</tr>';
 	if ( spellID ) $(noteToAdd).insertAfter('#notes table tr:first-child');
 	else notesList.append(noteToAdd);
+}
+//Populate dropdown for the contact type
+function populateContactSelect() {
+	$('#contacts .type select').chosen({
+		disable_search: true,
+		width: "fit-content"
+	});
+}
+//Add a blank skill, unless variables are parsed
+function addContact(spellID,contactName,contactDescription,contactSkill) {
+	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
+	else spellID = "";
+	if ( !contactName ) contactName = "";
+	if ( !contactDescription ) contactDescription = "";
+	if ( !contactSkill ) contactSkill = "";
+	var contactToAdd =
+		'<tr class="item"' + spellID + '>' +
+			'<td class="arrow mobile-handle"></td>' +
+			'<td class="type">' +
+				'<select>' +
+					'<option selected value="CT">Contact</option>' +
+					'<option value="CP">Companion</option>' +
+					'<option value="OT">Other</option>' +
+				'</select>' +
+			'</td>' +
+			'<td class="name">' +
+				'<div class="editable mobile-handle" contenteditable="true">' + contactName + '</div>' +
+			'</td>' +
+			'<td class="effect">' +
+				'<div class="mobile-label">Description:</div>' +
+				'<div class="editable mobile-handle" contenteditable="true">' + contactDescription + '</div>' +
+			'</td>' +
+			'<td class="effect">' +
+				'<div class="mobile-label">Skill:</div>' +
+				'<div class="editable mobile-handle" contenteditable="true">' + contactSkill + '</div>' +
+			'</td>' +
+		'</tr>';
+	if ( spellID ) $(contactToAdd).insertAfter('#contacts table tr:first-child');
+	else contactList.append(contactToAdd);
+	populateContactSelect();
 }
 //Primary on load function
 $(function() {
@@ -1200,6 +1359,7 @@ $(function() {
 	cyberwareTooltip = $('#cyberware-tooltip');
 	actionsSection = $('#actions');
 	talentsSection = $('#talents');
+	statusSection = $('#status');
 	spellHotbars = $('.spell-list .hotbars');
 	addCyberwareButton = $('.add-cyberware');
 	cyberware = $('#cyberware');
@@ -1216,6 +1376,10 @@ $(function() {
 	artifactsList = $('#artifacts table');
 	artifactsBody = $('#artifacts tbody');
 	artifactsDeleteSpace = $('#artifacts .delete-space');
+	addContactButton = $('#add-contact');
+	contactList = $('#contacts table');
+	contactBody = $('#contacts tbody');
+	contactDeleteSpace = $('#contacts .delete-space');
 	addNoteButton = $('#add-note');
 	notesList = $('#notes table');
 	notesBody = $('#notes tbody');
@@ -1280,6 +1444,7 @@ $(function() {
 	populateCyberwareSelect();
 	populateInventorySelect();
 	populateSkillsSelect();
+	populateContactSelect();
 	//Actions Dragula
 	dragula([actionsSection[0]], {
 		moves: function(el,container,handle) {
@@ -1434,7 +1599,7 @@ $(function() {
 			itemsDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 			if ( inventoryBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "31px";
-			else defaultContainerHeight = "208px";
+			else defaultContainerHeight = "169px";
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
 				if ( inventoryBody.children('tr:first-child').is(':visible') ) {
@@ -1497,7 +1662,7 @@ $(function() {
 			artifactsDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
 			if ( artifactsBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "31px";
-			else defaultContainerHeight = "194px";
+			else defaultContainerHeight = "76px";
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
 				if ( artifactsBody.children('tr:first-child').is(':visible') ) {
@@ -1551,6 +1716,69 @@ $(function() {
 			firstDrag = true;
 		});
 	artifactsDrake;
+	//Contacts Dragula
+	var contactDrake = dragula([contactBody[0], contactDeleteSpace[0]],{
+			moves: function(el,container,handle) {
+				return handle.classList.contains('mobile-handle');
+			}
+		}).on('drag', function(el,source) {
+			contactDeleteSpace.stop().slideToggle(150);
+			if ( firstDrag ) firstDrag = false;
+			if ( contactBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "31px";
+			else defaultContainerHeight = "161px";
+		}).on('shadow', function(el,container,source) {
+			if ( container.classList.contains('delete-space') ) {
+				if ( contactBody.children('tr:first-child').is(':visible') ) {
+					contactDeleteSpace.stop().animate({
+						'height' : $('.gu-transit').css('height')
+					}, 150);
+					contactList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
+				} else {
+					itemsDeleteSpace.stop().animate({
+						'height' : String(parseInt($('.gu-transit').css('height').replace('px','')) - 20) + 'px'
+					}, 150);
+					if ( !isEven(contactBody.children().length) || addContactButton.css('width') == "40px" ) contactList.css('padding-bottom', $('.gu-transit').outerHeight(true) + 11);
+					else contactList.css('padding-bottom', $('.gu-transit').outerHeight(true) - 208);
+				}
+			} else {
+				contactDeleteSpace.stop().animate({
+					'height' : defaultContainerHeight
+				}, 150);
+				contactList.css('padding-bottom', '');
+			}
+		}).on('drop', function(el,target,source,sibling) {
+			if ( target.classList.contains('delete-space') ) {
+				if ( source.children.length === 1 ) {
+						addContact();
+						contactList.removeAttr('style');
+				} else {
+					contactList.stop().animate({
+						'padding-bottom' : '0'
+					}, 300, function() {
+						$(this).removeAttr('style');
+					});
+				}
+				contactDrake.remove();
+			} else {
+				contactList.removeAttr('style');
+			}
+			contactDeleteSpace.stop().animate({
+				'height' : defaultContainerHeight
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).stop().slideToggle(200);
+			});
+			firstDrag = true;
+		}).on('cancel', function(el,container,source) {
+			contactDeleteSpace.stop().animate({
+				'height' : defaultContainerHeight
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).stop().slideToggle(200);
+			});
+			firstDrag = true;
+		});
+	contactDrake;
 	//Notes Dragula
 	var notesDrake = dragula([notesBody[0], notesDeleteSpace[0]],{
 			moves: function(el,container,handle) {
@@ -1798,6 +2026,7 @@ $(function() {
 	//Add notes and items when respective button is clicked
 	addItemButton.click( function() { addItem(); });
 	addArtifactButton.click( function() { addArtifact(); });
+	addContactButton.click( function() { addContact(); });
 	addNoteButton.click( function() { addNote(); });
 	addCyberwareButton.click( function() { 
 		var bodyPart = $(this).closest('.cyber-section').attr('id').replace('-cyberware','');
@@ -1805,6 +2034,9 @@ $(function() {
 		$('#cyber-mannequin img.' + bodyPart).addClass('modded');
 		if ( isTouchDevice() ) $('#cyberware-option em').show();
 	});	
+	statusSection.on('click', '.status-effect', function() {
+		$(this).toggleClass('active');
+	});
 	//Filter inputs for value fields
 	$('.item-list, #skill-list').on('keydown blur paste', '.value .editable', function(e){
 		var thisVal = $(this).html();
@@ -1856,11 +2088,13 @@ $(function() {
 		if ( modal.hasClass('visible') ) {
 			modal.removeClass('visible');
 			$('body').css('overflow-y','auto');
+			$('.spell.disabled', modal).hide();
 		} else {
 			modal.addClass('visible');
 			$('body').css('overflow-y','hidden');
 		}
 		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
+		if ( $(this).text().trim() == "New Abilities" ) spellbookButton.text('Abilities');
 	});
 	//Filter spells in spellbook based on selection
 	filterButtons.click( function() {
@@ -1903,6 +2137,7 @@ $(function() {
 		} 
 		thisButton.toggleClass('clicked');
 	});
+	//Add optional spells to item lists once selected
 	spellBook.on('click', 'li.selectable', function() {
 		var spellList = $(this).closest('ul');
 		var selectedSpellID = $(this).data('spellid');
@@ -1917,6 +2152,7 @@ $(function() {
 			}
 		});
 		populateSpellLists();
+		if ( $('img[src$="images/select.png"]', spellBook).length === $('.selected', spellBook).length ) spellbookButton.text('Abilities');
 	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
@@ -1974,18 +2210,18 @@ $(function() {
 			tooltip.css('left', fromLeft);
 			if ( !isHovering ) tooltip.addClass('visible');
 		}
-		spellHotbars.on('mouseenter', '.spell', function(targetElement) {
+		spellHotbars.on('mouseenter', '.spell, .status-effect', function(targetElement) {
 			var spellID = $(this).data('spellid');
 			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
 			tooltipPosition(targetElement,tooltip);
 		});
-		spellHotbars.on('mouseleave', '.spell', function(targetElement) {
+		spellHotbars.on('mouseleave', '.spell, .status-effect', function(targetElement) {
 			var spellID = $(this).data('spellid');
 			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
 			tooltip.removeClass('visible');
 			isHovering = false;
 		});
-		spellHotbars.on('mousemove', '.spell', function(targetElement){
+		spellHotbars.on('mousemove', '.spell, .status-effect', function(targetElement){
 			var spellID = $(this).data('spellid');
 			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
 			isHovering = true;
