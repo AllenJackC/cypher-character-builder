@@ -1,11 +1,14 @@
 ⚠️ THIS WEB APP IS STILL IN ALPHA – EXPECT ERRORS ⚠️
 
-# Cypher System – Character Builder v2.0
+# Character Builder v2.1
 Character Sheet:
 https://allenjackc.github.io/cypher-character-builder/charSheet.html
 
 Google Sheets Spell Database:
 https://docs.google.com/spreadsheets/d/1NWFhf8_oT5lvrNEN7cTAmRYnDHzGkD3Mw2P5nODXaCQ/edit?usp=sharing
+
+Blog:
+
 
 ## To-Do:
 * Save/load API
@@ -14,6 +17,7 @@ https://docs.google.com/spreadsheets/d/1NWFhf8_oT5lvrNEN7cTAmRYnDHzGkD3Mw2P5nODX
 * ~~Buffs~~
 * ~~Lore section~~
 * ~~Equipment (weapons/armour)~~
+* Dice roll
 * Cosmetic character sheet https://drive.google.com/file/d/0B_Pus_x_263yOV9vM3J6djN0bFE/view?usp=sharing
 * ~~Icons + assets~~
 * ~~Spell lists (status, actions, enablers)~~

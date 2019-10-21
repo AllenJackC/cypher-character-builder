@@ -914,6 +914,7 @@ function populateSpellLists() {
 				//Action spell hotbars & tooltips
 				if ( !spellOptional && typeCheck == "Action" && ($('#actions .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
 					var spellCost = '<span class="spell-handle">' + spellListDatabase[i].cost + '</span>';
+					if ( !spellDice ) tooltipDice = '<span class="type">Action</span>';
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
 							'<div class="wrapper spell-handle">' +
@@ -947,6 +948,7 @@ function populateSpellLists() {
 					}
 				//Talent spell hotbars & tooltips
 				} else if ( !spellOptional && typeCheck == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
+					if ( !spellDice ) tooltipDice = '<span class="type">Talent</span>';
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
 							'<div class="wrapper spell-handle">' +
@@ -962,9 +964,8 @@ function populateSpellLists() {
 							spellRange +
 							spellDuration +
 							spellCooldown +
+							spellTooltip +
 							tooltipDice +
-							spellTooltip + 
-							'<span class="type">Talent</span>' +
 							spellOrigin +
 						'</div>'
 					);
@@ -981,6 +982,7 @@ function populateSpellLists() {
 					}
 				//Status hotbars and tooltips
 				} else if ( !spellOptional && typeCheck == "Status" && $('#status .status-effect[data-spellid="' + spellID + '"]').length <= 0 ) {
+					if ( !spellDice ) tooltipDice = '<span class="type">Status</span>';
 					var statusToAdd =
 						'<div data-spellid="' + spellID + '" class="status-effect">' +
 							'<ul class="wrapper">' +
@@ -995,9 +997,8 @@ function populateSpellLists() {
 							spellRange +
 							spellDuration +
 							spellCooldown +
-							tooltipDice +
 							spellTooltip + 
-							'<span class="type">Status</span>' +
+							tooltipDice +
 							spellOrigin +
 						'</div>'
 					);
@@ -1101,13 +1102,13 @@ function populateSpellLists() {
 		}
 	});
 	//Remove any items or spells not in the current spelllist
-	$('.spell-list .spell, .item-list tr, .tooltip, .cyberware').each( function() {
+	$('.spell-list .spell, .spell-list .status-effect, #skill-list .spell, .item-list tr, .tooltip, .cyberware').each( function() {
 		var thisBar = $(this);
 		var thisHotbarList = thisBar.parent();
 		var thisSpellList = thisBar.closest('.spell-list');
 		var spellID = parseInt($(this).data('spellid'));
 		if ( spellID && $.inArray(spellID,spellsList) < 0 ) {
-			if ( thisBar.hasClass('spell') ) {
+			if ( thisBar.hasClass('spell') || thisBar.hasClass('status-effect') ) {
 				thisBar.stop().slideToggle({
 					duration: 300,
 					complete: function() {
