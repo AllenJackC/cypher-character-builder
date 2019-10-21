@@ -1,6 +1,11 @@
+⚠️ THIS WEB APP IS STILL IN ALPHA – EXPECT ERRORS ⚠️
+
 # Cypher System – Character Builder v2.0
-Google Sheets spell database:
-https://docs.google.com/spreadsheets/d/133J5k_1XfoPxFiWuVXcztwIunjamNA7YGTh11zS0U_M/edit?usp=sharing
+Character Sheet:
+https://allenjackc.github.io/cypher-character-builder/charSheet.html
+
+Google Sheets Spell Database:
+https://docs.google.com/spreadsheets/d/1NWFhf8_oT5lvrNEN7cTAmRYnDHzGkD3Mw2P5nODXaCQ/edit?usp=sharing
 
 ## To-Do:
 * Save/load API
