@@ -1058,6 +1058,7 @@ tr.gu-mirror {
 .spell .spell-handle {
 	pointer-events: auto;
 	touch-action: none;
+	padding-right: 10px;
 }
 .delete-space {
 	border: 3px dashed var(--secondary-button);
@@ -1192,10 +1193,13 @@ tr.gu-mirror {
 	margin-left: 25px;
     padding-left: 30px;
 }
+.details li:not(.selectable):nth-last-child(n+2) {
+	margin-bottom: 5px;
+}
 .details li:before {
 	content: '\272A';
     margin-left: -25px;
-    margin-right: 15px;
+    margin-right: 11px;
     font-size: 18px;
 }
 .details li.selectable {
@@ -1348,6 +1352,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	.hotbars, .hotbars .spell {
 		transition: width 0.2s linear;
 	}
+	.hotbars .spell {
+		width: 100%;
+	}
 	.spell-list {
 		flex-basis: calc(50% - 30px);
 	}
@@ -1369,6 +1376,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		position: relative;
 		top: -10px;
 		transition: width 0.2s linear;
+		width: calc( 100% - 40px );
 		z-index: -1;
 	}
 	.tooltip > * {
