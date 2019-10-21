@@ -2155,18 +2155,23 @@ $(function() {
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
 		//Show a sliding tooltip on click
-		spellHotbars.on('click', '.spell', function() {
+		spellHotbars.on('click', '.spell, .status-effect', function() {
 			var hotbar = $(this);
 			var spellID = hotbar.data('spellid');
 			var tooltip = $('.tooltip[data-spellid="' + spellID + '"]');
-			$('.tooltip:visible').not(tooltip).stop().slideToggle(500);
+			//$('.tooltip:visible').not(tooltip).stop().slideToggle(500);
 			if (tooltip.is(':visible')) {
 				tooltip.stop().slideToggle(500, function() {
 					tooltip.appendTo($('body'));
 				});
 			} else {
 				tooltip.appendTo(hotbar);
-				tooltip.stop().slideToggle(500);
+				tooltip.stop().slideToggle({
+					duration: 500,
+					start: function() {
+						tooltip.css('display','flex');
+					}
+				});
 			}
 		});
 		$( window ).resize(function() {

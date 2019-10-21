@@ -1402,7 +1402,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		text-align: left!important;
 	}
 	.tooltip .type {
-		color: var(--secondary-button-active);
+		color: var(--dark-grey);
 		flex-basis: calc(50% - 4px);
 		text-align: left!important;
 	}
@@ -1411,6 +1411,19 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		font-style: italic;
 		flex-basis: calc(50% - 4px);
 		text-align: right;
+	}
+	#status .tooltip {
+		background: none;
+		color: var(--white);		
+	}
+	#status .name {
+		color: var(--selected);		
+	}
+	#status .type  {
+		color: var(--secondary-button);		
+	}
+	#status .tier, #status .origin  {
+		color: var(--light-grey);		
 	}
 	tr .editable, tr.gu-mirror .editable, tr.gu-transit .editable {
 		border-color: var(--black);
