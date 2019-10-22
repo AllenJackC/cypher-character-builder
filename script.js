@@ -1151,7 +1151,7 @@ function addItem(spellID,itemName,itemValue,selectThisType) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
 	if ( !itemName ) itemName = "";
-	if ( !itemValue ) itemValue = "0";
+	if ( !itemValue ) itemValue = "";
 	var itemToAdd =
 		'<tr class="item"' + spellID + ' style="width: 0">' +
 			'<td class="arrow mobile-handle"></td>' +
@@ -1221,7 +1221,7 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue) {
 		contentEditable = true;
 	}
 	if ( !cyberwareFunction ) cyberwareFunction = "";
-	if ( !cyberwareValue ) cyberwareValue = "0";
+	if ( !cyberwareValue ) cyberwareValue = "";
 	var cyberwareToAdd =
 		'<div class="cyberware ' + bodyPart.replace('-cyberware','') + '"' + spellID + '>' +
 			'<div class="function">' +
@@ -1302,7 +1302,7 @@ function addContact(spellID,contactName,contactDescription,contactSkill) {
 				'<div class="mobile-label">Description:</div>' +
 				'<div class="editable mobile-handle" contenteditable="true">' + contactDescription + '</div>' +
 			'</td>' +
-			'<td class="effect">' +
+			'<td class="effect skill">' +
 				'<div class="mobile-label">Skill:</div>' +
 				'<div class="editable mobile-handle" contenteditable="true">' + contactSkill + '</div>' +
 			'</td>' +

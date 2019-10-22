@@ -283,7 +283,7 @@ td.equip {
 	text-align: right;
 }
 td.equip select {
-	min-width: 85px;
+	min-width: 82px;
 }
 td.name, td.function {
 	order: 1;
@@ -296,7 +296,10 @@ td.effect {
 	width: 50%;
 }
 td.type select {
-	min-width: 130px;
+	min-width: 77px;
+}
+#contacts td.type select {
+	min-width: 94px;
 }
 td.value {
 	text-align: right;
@@ -489,10 +492,13 @@ div.proficiency {
 	text-align: left;
 	width: fit-content;
 }
-#contacts td.name, #artifacts td.name {
-	width: 25%;
+#contacts td.effect {
+	width: 50%;
 }
-#contacts td.effect, #artifacts td.effect {
+#contacts td.name, #contacts td.skill, #artifacts td.name {
+	width: 20%;
+}
+#artifacts td.effect {
 	width: 75%;
 }
 #cyberware {
@@ -885,7 +891,7 @@ div.proficiency {
 	display: inline-block;
 	height: 100%;
 	margin-bottom: -1px;
-	min-width: 7px;
+	min-width: 21px;
 	pointer-events: auto;
 }
 .name .editable, .effect .editable, .function .editable {
@@ -1325,9 +1331,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 .gu-mirror:hover div.name, .gu-mirror:hover div.inability, .gu-transit:hover div.name, .gu-transit:hover div.inability {
 	border-color: var(--button);
 }
-.spell:hover div.handle, .gu-mirror div.handle, .gu-transit div.handle {
-	max-width: 35px;
-}
 .add-cyberware:hover {
 	color: var(--selected-hover);
 }
@@ -1360,6 +1363,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	.hotbars .spell {
 		width: 100%;
+	}
+	.spell div.handle, .gu-mirror div.handle, .gu-transit div.handle {
+		color: var(--white);
+		max-width: 35px;
 	}
 	.spell-list {
 		flex-basis: calc(50% - 30px);
@@ -1457,6 +1464,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	.hotbars .spell:hover, .hotbars .spell:active {
 		margin-right: -5px;
 		padding-left: 5px;
+	}
+	.spell:hover div.handle, .gu-mirror div.handle, .gu-transit div.handle {
+		max-width: 35px;
 	}
 	.tooltip, #hybrid-tooltip, #reset-tooltip, #cyberware-tooltip {
 		align-items: baseline;
@@ -1613,7 +1623,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	td.value .editable, td.cost .editable {
 		cursor: text;
-		min-width: 10px;
+		min-width: 21px;
 		width: auto!important;		
 	}
 	td.cost {
