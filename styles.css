@@ -184,8 +184,10 @@ label {
 	line-height: 1.1em;
     min-width: fit-content;
     padding: 5px 25px 5px 5px;
+	position: relative;
 	white-space: nowrap;
     width: 20%;
+	z-index: -1;
 }
 strong {
 	font-weight: 700;
@@ -413,6 +415,10 @@ div.proficiency {
 #extra-attributes .attribute {
 	padding-right: 8px;
 	width: 0;
+}
+#extra-attributes label {
+	padding-top: 0;
+	padding-bottom: 3px;
 }
 #dice-counters {
 	display: grid;
@@ -1561,7 +1567,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		text-align: center!important;
 		width: calc(100% - 20px)!important;
 	}
-	#inventory td.value, #artifacts td.effect, #contacts td.type {
+	#equipment td.value, #artifacts td.effect, #contacts td.type {
 		border-bottom: 0!important;
 	}
 	img.pin, .mobile-label {
