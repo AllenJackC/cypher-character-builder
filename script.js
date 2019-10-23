@@ -1318,10 +1318,18 @@ function addContact(spellID,contactName,contactDescription,contactSkill) {
 }
 function arrangeSpells() {
 	//Split Actions into columns of 10 or less
-	if ( $('.spell', actionsSection).length >= 30 && $(window).width() >= 1000 ) actionsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
-	else if ( $('.spell', actionsSection).length >= 20 && $(window).width() >= 800 ) actionsSection.css('grid-template-columns', '1fr 1fr 1fr');
-	else if ( $('.spell', actionsSection).length >= 10 && $(window).width() >= 637 ) actionsSection.css('grid-template-columns', '1fr 1fr');
-	else actionsSection.css('grid-template-columns', '1fr');
+	if ( $('.spell', actionsSection).length >= 30 && $(window).width() >= 1000 ) {
+		actionsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+		actionsSection.closest('item-list').css('width', '100%');
+	} else if ( $('.spell', actionsSection).length >= 20 && $(window).width() >= 800 ) {
+		actionsSection.css('grid-template-columns', '1fr 1fr 1fr');
+		if ( $(window).width() <= 1000 ) actionsSection.closest('item-list').css('width', '100%');
+	} else if ( $('.spell', actionsSection).length >= 10 && $(window).width() >= 637 ) {
+		actionsSection.css('grid-template-columns', '1fr 1fr');
+		if ( $(window).width() <= 800 ) actionsSection.closest('item-list').css('width', '100%');
+	} else {
+		actionsSection.css('grid-template-columns', '1fr');
+	}
 	//Split Talents into columns of 5 or less
 	if ( $('.spell', talentsSection).length >= 15 && $(window).width() >= 1000 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
 	else if ( $('.spell', talentsSection).length >= 10 && $(window).width() >= 800 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr');
