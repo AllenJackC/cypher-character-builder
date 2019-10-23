@@ -1375,6 +1375,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		pointer-events: auto;
 		touch-action: none;
 	}
+	.mobile-handle:before {
+		pointer-events: none;
+		touch-action: auto;
+	}
 	.tooltip {
 		background: var(--white);
 		color: var(--black);
