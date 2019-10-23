@@ -1548,7 +1548,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		margin: 0 15px;
 		text-align: center;
 	}
-	label {
+	label, table select {
 		width: fit-content;
 	}
 	table {
@@ -1561,13 +1561,11 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		flex-wrap: wrap;
 		justify-content: space-between;
 	}
-	tr {		
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-		border-radius: 0 0 5px 5px!important;
+	tr {
+		border-radius: 5px!important;
 		display: flex;
 		flex-basis: 48%;
-		flex-direction: column;
+		flex-wrap: wrap;
 		margin-bottom: 4%;
 	}
 	td {
@@ -1580,21 +1578,38 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#equipment td.value, #artifacts td.effect, #contacts td.type {
 		border-bottom: 0!important;
 	}
+	#equipment td.equip, #equipment td.type, .gu-mirror td.type, .gu-mirror td.equip {
+		width: calc(50% - 20px)!important;
+	}
 	img.pin, .mobile-label {
 		display: block;
 	}
 	td.arrow {
-		background: var(--button);
-		cursor: move;
+		background: var(--light-grey);
 		border: 0!important;
-		height: 0;
+		border-radius: 5px 0 0 5px!important;
+		cursor: move;
+		height: 50px!important;
+		left: -20px;
 		order: 0!important;
-		padding: 0 10px 0 10px!important;
-		transition: padding 0.2s linear;
+		padding: 0!important;
+		position: absolute;
+		top: 10px;
+		width: 20px!important;
+	}
+	tr:nth-child(odd) td.arrow {
+		border-radius: 0 5px 5px 0!important;
+		left: initial;
+		right: -20px
 	}
 	td.arrow:before {
-		left: calc(50% - 5px);
-		transform: scaleX(6);
+		color: var(--black);
+		left: 2px;
+		top: 25px;
+		transform: scaleY(3) scaleX(0.8) rotate(90deg);
+	}
+	td.name {
+		border-radius: 4px 4px 0 0!important;
 	}
 	td.name, td.function {
 		background: var(--button);
@@ -1763,8 +1778,8 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		align-self: stretch;
 	}
 	/* States */
-	tr:hover td.arrow {
-		padding: 10px!important;
+	tr:hover td.arrow:before {
+		color: var(--button-hover);
 	}
 	tr:hover td.name .editable, tr:hover td.function .editable {
 		border-color: var(--selected);
@@ -1772,7 +1787,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	tr.gu-mirror:hover td.name .editable, tr.gu-mirror:hover td.function .editable, tr.gu-transit:hover td.name .editable, tr.gu-transit:hover td.function .editable {
 		border-color: var(--button-hover);
 	}
-	tr:hover td.name, tr:hover td.function, tr:hover td.arrow {
+	tr:hover td.name, tr:hover td.function {
 		background: var(--button-hover);
 	}
 	td.name:active, td.function:active {
@@ -1823,5 +1838,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	.item-list:not(#notes) .delete-space {
 		width: 100%;
+	}
+	tr:nth-child(odd) td.arrow {
+		border-radius: 5px 0 0 5px!important;
+		left: -20px;
+		right: initial;
 	}
 }

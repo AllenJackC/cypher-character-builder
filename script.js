@@ -742,7 +742,7 @@ function populateSpells() {
 				if ( spellName == "<hide>" ) hideThis = " hidden-spell";
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-				if ( contactSkill ) contactSkill = '<span><strong>Skill: </strong>' + contactSkill + '</span>';
+				if ( contactSkill ) contactSkill = '<span><strong>Skills: </strong>' + contactSkill + '</span>';
 				if ( contactType ) contactType = '<span><strong>Type: </strong>' + contactType + '</span>';	
 				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
@@ -1163,7 +1163,7 @@ function addItem(spellID,itemName,itemValue,selectThisType) {
 				'</select>' +
 			'</td>' +
 			'<td class="name">' +
-				'<div class="editable mobile-handle" contenteditable="true">' + itemName + '</div>' +
+				'<div class="editable" contenteditable="true">' + itemName + '</div>' +
 			'</td>' +
 			'<td class="type">' +
 				'<select>' +
@@ -1191,7 +1191,7 @@ function addArtifact(spellID,itemName,itemEffect) {
 		'<tr class="item"' + spellID + '>' +
 			'<td class="arrow mobile-handle"></td>' +
 			'<td class="name">' +
-				'<div class="editable mobile-handle" contenteditable="true">' + itemName + '</div>' +
+				'<div class="editable" contenteditable="true">' + itemName + '</div>' +
 			'</td>' +
 			'<td class="effect">' +
 				'<div class="mobile-label">Effect:</div>' +
@@ -1296,15 +1296,15 @@ function addContact(spellID,contactName,contactDescription,contactSkill) {
 				'</select>' +
 			'</td>' +
 			'<td class="name">' +
-				'<div class="editable mobile-handle" contenteditable="true">' + contactName + '</div>' +
+				'<div class="editable" contenteditable="true">' + contactName + '</div>' +
 			'</td>' +
 			'<td class="effect">' +
 				'<div class="mobile-label">Description:</div>' +
-				'<div class="editable mobile-handle" contenteditable="true">' + contactDescription + '</div>' +
+				'<div class="editable" contenteditable="true">' + contactDescription + '</div>' +
 			'</td>' +
 			'<td class="effect skill">' +
 				'<div class="mobile-label">Skill:</div>' +
-				'<div class="editable mobile-handle" contenteditable="true">' + contactSkill + '</div>' +
+				'<div class="editable" contenteditable="true">' + contactSkill + '</div>' +
 			'</td>' +
 		'</tr>';
 	if ( spellID ) $(contactToAdd).insertAfter('#contacts table tr:first-child');
