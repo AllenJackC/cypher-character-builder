@@ -1043,6 +1043,8 @@ tr.gu-mirror {
 .hotbars {
 	margin-top: 15px;
 	position: relative;
+	display: grid;
+    grid-column-gap: 10px;
 }
 .hotbars .spell, .gu-mirror.spell, .gu-transit.spell {
 	display: flex;
@@ -1715,9 +1717,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	.spell-list, #skill-list {
 		width: calc(100% - 30px);
 	}
-	.hotbars .spell {
-		font-size: 14px!important;
-	}
 	.modal {
 		padding: 0;
 		width: auto;
@@ -1836,6 +1835,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		text-align: center;
 		top: 0;
 		width: 40px;
+	}
+	.hotbars .spell, .hotbars .status-effect {
+		font-size: 14px!important;
 	}
 	.item-list tr {
 		flex-basis: 100%;

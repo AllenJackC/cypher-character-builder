@@ -586,13 +586,16 @@ function populateSpells() {
 			var hideThis = "";
 			var spellName = spellListDatabase[i].name;
 			var spellTier = spellListDatabase[i].tier;
-			//Set the order of the spell in the flex-box by its Tier and name
-			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
 			var spellOptional = spellListDatabase[i].optional;
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
 			var typeCheck = spellListDatabase[i].type;
 			var spellType = '<img src="images/' + typeCheck.toLowerCase() + '.png">';
+			var isSelect;
+			if ( typeCheck == "Select" ) isSelect = 0;
+			else isSelect = 1;
+			//Set the order of the spell in the flex-box by its Tier and name
+			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + String(isSelect) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
 			var spellDescription = spellListDatabase[i].description;
 			var spellCost = spellListDatabase[i].cost;
 			var spellCasttime = spellListDatabase[i].casttime;
@@ -1134,6 +1137,8 @@ function populateSpellLists() {
 			}
 		}
 	});
+	//Arrange spell hotbars so they don't take up too much vertical-space
+	arrangeSpells();
 }
 //Populate all of the active item select fields
 function populateInventorySelect() {
@@ -1310,6 +1315,23 @@ function addContact(spellID,contactName,contactDescription,contactSkill) {
 	if ( spellID ) $(contactToAdd).insertAfter('#contacts table tr:first-child');
 	else contactList.append(contactToAdd);
 	populateContactSelect();
+}
+function arrangeSpells() {
+	//Split Actions into columns of 10 or less
+	if ( $('.spell', actionsSection).length >= 30 && $(window).width() >= 1000 ) actionsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+	else if ( $('.spell', actionsSection).length >= 20 && $(window).width() >= 800 ) actionsSection.css('grid-template-columns', '1fr 1fr 1fr');
+	else if ( $('.spell', actionsSection).length >= 10 && $(window).width() >= 637 ) actionsSection.css('grid-template-columns', '1fr 1fr');
+	else actionsSection.css('grid-template-columns', '1fr');
+	//Split Talents into columns of 5 or less
+	if ( $('.spell', talentsSection).length >= 15 && $(window).width() >= 1000 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+	else if ( $('.spell', talentsSection).length >= 10 && $(window).width() >= 800 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr');
+	else if ( $('.spell', talentsSection).length >= 5 && $(window).width() >= 637 ) talentsSection.css('grid-template-columns', '1fr 1fr');
+	else talentsSection.css('grid-template-columns', '1fr');
+	//Split Status Effects into columns of 5 or less
+	if ( $('.status-effect', statusSection).length >= 15 && $(window).width() >= 1000 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+	else if ( $('.status-effect', statusSection).length >= 10 && $(window).width() >= 800 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr');
+	else if ( $('.status-effect', statusSection).length >= 5 && $(window).width() >= 637 ) statusSection.css('grid-template-columns', '1fr 1fr');
+	else statusSection.css('grid-template-columns', '1fr');
 }
 //Primary on load function
 $(function() {
@@ -2152,6 +2174,8 @@ $(function() {
 		populateSpellLists();
 		if ( $('img[src$="images/select.png"]', spellBook).length === $('.selected', spellBook).length ) spellbookButton.text('Abilities');
 	});
+	//Re-arrange spell hotbars when window is resized
+	$( window ).resize(function() {arrangeSpells();});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
 		//Show a sliding tooltip on click
