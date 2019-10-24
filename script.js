@@ -372,6 +372,7 @@ function populateTypes() {
 }
 //Populate the contents of the focus dropdown lists
 function populateFoci() {
+	var descriptorVal = descriptors.val();
 	var typeVal = types.val();
 	var priSpeciesVal = priSpecies.val();
 	var secSpeciesVal = secSpecies.val();
@@ -489,6 +490,8 @@ function populateFoci() {
 			}
 		});
 	}
+	//If the "Wealthy" descriptor is selected
+	if ( descriptorVal === "M7" ) $('#foci option[value="E8"], #secondary-foci option[value="E8"]').prop('disabled', true);
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
 	hideOptions(fociOptions);
 	//Trigger an update of the contents
@@ -572,6 +575,9 @@ function populateSpells() {
 	//If the value of the field is not blank,
 	//add it to the array to look for spells
 	if ( descriptorVal ) selectedAttributes.push("D" + descriptorVal);
+	//If "Has More Money Than Sense" is selected, add the "Wealthy"
+	//descriptor to the list of attributes
+	if ( priFocusVal == "E8" || secFocusVal == "E8" ) selectedAttributes.push("DM7");
 	if ( priSpeciesVal && !secSpeciesVal ) selectedAttributes.push("S" + priSpeciesVal);
 	else if ( !priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + secSpeciesVal);
 	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
@@ -1073,10 +1079,8 @@ function populateSpellLists() {
 					var cyberwareLocation = bodyPart + "-cyberware";
 					var cyberwareFunction = spellListDatabase[i].itemeffect;
 					var cyberwareValue = spellListDatabase[i].itemvalue;
-					var cyberwareType = spellListDatabase[i].itemlevel;
 					var selectThisType;
-					var selectThisLocation;
-					switch ( cyberwareType ) {
+					switch ( itemName ) {
 						case "Weapon":
 						selectThisType = "WE";
 						break;
@@ -1086,12 +1090,7 @@ function populateSpellLists() {
 					addCyberware(cyberwareLocation,spellID,cyberwareFunction,cyberwareValue);
 					var thisCyberware = $('.cyberware[data-spellid="' + spellID + '"]');
 					$('.type select', thisCyberware).val(selectThisType);
-					if ( selectThisType == "ST" ) {
-						$('.' + bodyPart + ' option[value="ST"]:not(:selected)').prop('disabled', true);
-						$('.' + bodyPart + ' .type select').trigger('chosen:updated');
-					} else {
-						$('.type select', thisCyberware).trigger('chosen:updated');
-					}
+					$('.type select', thisCyberware).trigger('chosen:updated');
 					var bodyPartImg = $('#cyber-mannequin img.' + bodyPart);
 					bodyPartImg.addClass('modded');
 					enableCyberware.addClass('clicked');
@@ -1946,6 +1945,7 @@ $(function() {
 	//with, populate spells, and show the reset button
 	descriptors.on('change', function() {
 		resetSection.removeClass('hidden-section');
+		populateFoci();
 		populateSpells();
 	});
 	species.on('change', function() {
@@ -2016,6 +2016,14 @@ $(function() {
 				secFoci.val('');
 				hideExtraAttribute(secFociSection,true);
 			}
+		}
+		//If "Has More Money Than Sense" focus is selected
+		if ( curFocus === "E8" || secFoci.val() === "E8" ) {
+			$('#descriptors option[value="M7"]').prop('disabled', true);
+			descriptors.trigger('chosen:updated');
+		} else {
+			$('#descriptors option[value="M7"]').prop('disabled', false);
+			descriptors.trigger('chosen:updated');
 		}
 		resetSection.removeClass('hidden-section');
 		populateSpecies();
