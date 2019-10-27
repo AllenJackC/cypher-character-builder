@@ -334,15 +334,17 @@ div.handle {
 div.name {
 	width: 100%;
 }
-div.name, div.inability {
-	border-bottom: 1px dashed var(--button);
-	cursor: text;
+div.name {
 	flex-grow: 1;
 	margin-bottom: -1px;
 	margin-right: 5px;
 	min-height: 16px;
-	pointer-events: auto;
 	white-space: normal;
+}
+div.name.editable {
+	border-bottom: 1px dashed var(--button);
+	cursor: text;
+	pointer-events: auto;
 }
 div.proficiency {
 	align-items: center;
@@ -879,6 +881,7 @@ div.proficiency {
 }
 .spell-list .spell {
 	cursor: move;
+	max-height: 34px;
 }
 .mobile-label {
 	border: 0!important;
@@ -1327,7 +1330,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	color: var(--white)!important;
 	outline-color: var(--button)!important;
 }
-.spell:hover div.name, .spell:hover div.inability {
+.spell:hover div.name.editable {
 	border-color: var(--black);
 }
 .gu-mirror:hover div.name, .gu-mirror:hover div.inability, .gu-transit:hover div.name, .gu-transit:hover div.inability {
