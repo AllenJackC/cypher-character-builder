@@ -539,15 +539,22 @@ function populateSkillsSelect() {
 	});
 }
 //Add a blank skill, unless variables are parsed
-function addSkill(spellID,skillName) {
+function addSkill(spellID,skillName,customSkill) {
+	var defaultName = "";
 	if ( !skillName ) skillName = "";
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
+	if ( customSkill == "<default>" ) {
+		customSkill =  '" contenteditable="false"';
+		defaultName = ' data-default="' + skillName + '"'
+	} else {
+		customSkill = ' editable" contenteditable="true"';
+	}
 	var skillToAdd =
-		'<div class="spell"' + spellID + '>' +
+		'<div class="spell"' + defaultName + spellID + '>' +
 			'<div class="wrapper">' +
 				'<div class="handle">&#9776;</div>' +
-				'<div class="name" contenteditable="true">' + skillName + '</div>' +
+				'<div class="name' + customSkill + '">' + skillName + '</div>' +
 				'<div class="proficiency">' +
 						'<select>' +
 							'<option value="I">-1d</option>' +
@@ -582,12 +589,6 @@ function populateSpells() {
 	else if ( !priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + secSpeciesVal);
 	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
 	if ( typeVal ) selectedAttributes.push("T" + typeVal);
-	//If character has "Infected" descriptor and selects "Ascension",
-	//push "Recondite" type and "Worships Dark Beings" focus
-	if ( $('#1768', spellBook).hasClass('selected') ) {
-		selectedAttributes.push("TB0");
-		selectedAttributes.push("FO7");
-	};
 	if ( priFocusVal ) selectedAttributes.push("F" + priFocusVal);
 	if ( secFocusVal ) selectedAttributes.push("F" + secFocusVal);
 	//Run through each field in the character attributes section
@@ -598,7 +599,6 @@ function populateSpells() {
 			var hideThis = "";
 			var spellName = spellListDatabase[i].name;
 			var spellTier = spellListDatabase[i].tier;
-			var spellRank = spellListDatabase[i].rank;
 			var spellOptional = spellListDatabase[i].optional;
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
@@ -616,11 +616,12 @@ function populateSpells() {
 			var spellRange = spellListDatabase[i].range;
 			var spellCooldown = spellListDatabase[i].cooldown;
 			var spellDice = spellListDatabase[i].dice;
+			var itemName = spellListDatabase[i].itemname;
+			var itemEffect = spellListDatabase[i].itemeffect;
 			var spellOrigin;
 			//Check to see if these values exist to avoid
 			//empty line breaks in the spell card
 			if ( spellName == "<hide>" || typeCheck == "Status" ) hideThis = " hidden-spell";
-			if ( !spellRank ) spellRank = 7;
 			switch ( curOption.charAt(0) ) {
 				case "D":
 				spellOrigin = $('#descriptors option[value="' + optionID + '"]').text();
@@ -664,7 +665,7 @@ function populateSpells() {
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck) && spellRank > curTier ) {
+			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck)) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
@@ -674,6 +675,8 @@ function populateSpells() {
 				if ( spellRange ) spellRange = '<span><strong>Range: </strong>' + spellRange + ' range</span>';
 				if ( spellCooldown ) spellCooldown = '<span><strong>Cooldown: </strong>' + spellCooldown + '</span>';
 				if ( spellDice ) spellDice = '<span><strong>Roll: </strong>' + spellDice + '</span>';
+				if ( itemName && itemEffect == "<default>" ) itemName = ' data-default="' + itemName +'" ';
+				else itemName = "";
 				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
@@ -682,7 +685,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell' + hideThis + '" style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + '"' + itemName + 'style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									spellType +
@@ -860,7 +863,7 @@ function populateSpells() {
 				}
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
-			}
+			} 
 		}
 	});
 	//Remove any spells that are not
@@ -965,7 +968,7 @@ function populateSpellLists() {
 					}
 				//Talent spell hotbars & tooltips
 				} else if ( !spellOptional && typeCheck == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
-					if ( !spellDice ) tooltipDice = '<span class="type">Talent</span>';
+					if ( !spellDice ) tooltipDice = '<span class="type">Trait</span>';
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" class="spell">' +
 							'<div class="wrapper spell-handle">' +
@@ -1033,10 +1036,16 @@ function populateSpellLists() {
 				//Add skills to the skill list
 				} else if ( !spellOptional && typeCheck == "Skill" && $('#skill-list .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var skillProficiency = spellListDatabase[i].itemtype;
-					addSkill(spellID,itemName);
-					var thisSkill = $('#skill-list .spell[data-spellid="' + spellID + '"]');
-					$('.proficiency select', thisSkill).val(skillProficiency);
-					$('.proficiency select', thisSkill).trigger('chosen:updated');
+					var customSkill = spellListDatabase[i].itemeffect;
+					if ( $('.spell[data-default="' + itemName + '"]', spellBook).length > 1 ) {
+						$('#skill-list .spell[data-default="' + itemName + '"] .proficiency select').val("P");
+						$('#skill-list .spell[data-default="' + itemName + '"] .proficiency select').trigger('chosen:updated');
+					} else {
+						addSkill(spellID,itemName,customSkill);
+						var thisSkill = $('#skill-list .spell[data-spellid="' + spellID + '"]');
+						$('.proficiency select', thisSkill).val(skillProficiency);
+						$('.proficiency select', thisSkill).trigger('chosen:updated');
+					}
 				//Add items to the inventory list
 				} else if ( !spellOptional && typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var itemType = spellListDatabase[i].itemtype;
@@ -1114,6 +1123,7 @@ function populateSpellLists() {
 	//Remove any items or spells not in the current spelllist
 	$('.spell-list .spell, .spell-list .status-effect, #skill-list .spell, .item-list tr, .tooltip, .cyberware').each( function() {
 		var thisBar = $(this);
+		var emptySpell = $('.name',thisBar).html();
 		var thisHotbarList = thisBar.parent();
 		var thisSpellList = thisBar.closest('.spell-list');
 		var spellID = parseInt($(this).data('spellid'));
@@ -1123,9 +1133,7 @@ function populateSpellLists() {
 					duration: 300,
 					complete: function() {
 						thisBar.remove();
-						if( thisSpellList.is(':visible') && thisHotbarList.is(':empty') ) {
-							 thisSpellList.stop().slideToggle(200);
-						}
+						if( thisSpellList.is(':visible') && thisHotbarList.is(':empty') ) thisSpellList.stop().slideToggle(200);
 					}
 				});
 			} else if ( thisBar.hasClass('cyberware') ) {
@@ -1919,6 +1927,8 @@ $(function() {
 		var extraAttributesVisible = extraAttributes.is(':visible');
 		var hybridVisible = hybridSection.is(':visible');
 		var secFociVisible = secFociSection.is(':visible');
+		availSpellCount = 4;
+		selectedSpellCount = 0;
 		descriptors.val('');
 		priSpecies.val('');
 		secSpecies.val('');
@@ -1931,7 +1941,6 @@ $(function() {
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		$('.selected', spellBook).removeClass('selected');
 		populateSpells();
 		loreButton.text('Lore');
 		spellbookButton.text('Abilities');
@@ -2194,7 +2203,7 @@ $(function() {
 				else $('#' + spellID, spellBook).addClass('selected');
 			}
 		});
-		populateSpells();
+		populateSpellLists();
 		if ( $('img[src$="images/select.png"]', spellBook).length === $('.selected', spellBook).length ) spellbookButton.text('Abilities');
 	});
 	//Re-arrange spell hotbars when window is resized
