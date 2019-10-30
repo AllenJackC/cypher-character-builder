@@ -589,6 +589,12 @@ function populateSpells() {
 	else if ( !priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + secSpeciesVal);
 	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
 	if ( typeVal ) selectedAttributes.push("T" + typeVal);
+	//If character has "Infected" descriptor and selects "Ascension",
+	//push "Recondite" type and "Worships Dark Beings" focus
+	if ( $('#1768', spellBook).hasClass('selected') ) {
+		selectedAttributes.push("TB0");
+		selectedAttributes.push("FO7");
+	};
 	if ( priFocusVal ) selectedAttributes.push("F" + priFocusVal);
 	if ( secFocusVal ) selectedAttributes.push("F" + secFocusVal);
 	//Run through each field in the character attributes section
@@ -599,6 +605,7 @@ function populateSpells() {
 			var hideThis = "";
 			var spellName = spellListDatabase[i].name;
 			var spellTier = spellListDatabase[i].tier;
+			var spellRank = spellListDatabase[i].rank;
 			var spellOptional = spellListDatabase[i].optional;
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
@@ -622,6 +629,7 @@ function populateSpells() {
 			//Check to see if these values exist to avoid
 			//empty line breaks in the spell card
 			if ( spellName == "<hide>" || typeCheck == "Status" ) hideThis = " hidden-spell";
+			if ( !spellRank ) spellRank = 7;
 			switch ( curOption.charAt(0) ) {
 				case "D":
 				spellOrigin = $('#descriptors option[value="' + optionID + '"]').text();
@@ -665,7 +673,7 @@ function populateSpells() {
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck)) {
+			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck) && spellRank > curTier ) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
@@ -1037,7 +1045,7 @@ function populateSpellLists() {
 				} else if ( !spellOptional && typeCheck == "Skill" && $('#skill-list .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var skillProficiency = spellListDatabase[i].itemtype;
 					var customSkill = spellListDatabase[i].itemeffect;
-					if ( $('.spell[data-default="' + itemName + '"]', spellBook).length > 1 ) {
+					if ( $('.spell[data-default="' + itemName + '"]', spellBook).length > 1 && $('#skill-list .spell[data-default="' + itemName + '"]').length > 0 ) {
 						$('#skill-list .spell[data-default="' + itemName + '"] .proficiency select').val("P");
 						$('#skill-list .spell[data-default="' + itemName + '"] .proficiency select').trigger('chosen:updated');
 					} else {
@@ -1346,14 +1354,14 @@ function arrangeSpells() {
 		actionsSection.css('grid-template-columns', '1fr');
 	}
 	//Split Talents into columns of 5 or less
-	if ( $('.spell', talentsSection).length >= 15 && $(window).width() >= 1000 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
-	else if ( $('.spell', talentsSection).length >= 10 && $(window).width() >= 800 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr');
-	else if ( $('.spell', talentsSection).length >= 5 && $(window).width() >= 637 ) talentsSection.css('grid-template-columns', '1fr 1fr');
+	if ( $('.spell', talentsSection).length >= 30 && $(window).width() >= 1000 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+	else if ( $('.spell', talentsSection).length >= 20 && $(window).width() >= 800 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr');
+	else if ( $('.spell', talentsSection).length >= 10 && $(window).width() >= 637 ) talentsSection.css('grid-template-columns', '1fr 1fr');
 	else talentsSection.css('grid-template-columns', '1fr');
 	//Split Status Effects into columns of 5 or less
-	if ( $('.status-effect', statusSection).length >= 15 && $(window).width() >= 1000 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
-	else if ( $('.status-effect', statusSection).length >= 10 && $(window).width() >= 800 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr');
-	else if ( $('.status-effect', statusSection).length >= 5 && $(window).width() >= 637 ) statusSection.css('grid-template-columns', '1fr 1fr');
+	if ( $('.status-effect', statusSection).length >= 30 && $(window).width() >= 1000 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+	else if ( $('.status-effect', statusSection).length >= 20 && $(window).width() >= 800 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr');
+	else if ( $('.status-effect', statusSection).length >= 10 && $(window).width() >= 637 ) statusSection.css('grid-template-columns', '1fr 1fr');
 	else statusSection.css('grid-template-columns', '1fr');
 }
 //Primary on load function
@@ -1941,6 +1949,7 @@ $(function() {
 		populateSpecies();
 		populateTypes();
 		populateFoci();
+		$('.selected', spellBook).removeClass('selected');
 		populateSpells();
 		loreButton.text('Lore');
 		spellbookButton.text('Abilities');
@@ -2203,7 +2212,7 @@ $(function() {
 				else $('#' + spellID, spellBook).addClass('selected');
 			}
 		});
-		populateSpellLists();
+		populateSpells();
 		if ( $('img[src$="images/select.png"]', spellBook).length === $('.selected', spellBook).length ) spellbookButton.text('Abilities');
 	});
 	//Re-arrange spell hotbars when window is resized
