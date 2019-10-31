@@ -881,7 +881,6 @@ div.proficiency {
 }
 .spell-list .spell {
 	cursor: move;
-	max-height: 34px;
 }
 .mobile-label {
 	border: 0!important;
@@ -907,6 +906,7 @@ div.proficiency {
 .wrapper {
 	flex-basis: 100%;
 	pointer-events: auto;
+	max-height: 24px;
 }
 .plus-symbol, .inability  {
 	display: none;

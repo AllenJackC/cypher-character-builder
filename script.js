@@ -1340,29 +1340,37 @@ function addContact(spellID,contactName,contactDescription,contactSkill) {
 	populateContactSelect();
 }
 function arrangeSpells() {
-	//Split Actions into columns of 10 or less
-	if ( $('.spell', actionsSection).length >= 30 && $(window).width() >= 1000 ) {
-		actionsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
-		actionsSection.closest('item-list').css('width', '100%');
-	} else if ( $('.spell', actionsSection).length >= 20 && $(window).width() >= 800 ) {
-		actionsSection.css('grid-template-columns', '1fr 1fr 1fr');
-		if ( $(window).width() <= 1000 ) actionsSection.closest('item-list').css('width', '100%');
-	} else if ( $('.spell', actionsSection).length >= 10 && $(window).width() >= 637 ) {
-		actionsSection.css('grid-template-columns', '1fr 1fr');
-		if ( $(window).width() <= 800 ) actionsSection.closest('item-list').css('width', '100%');
+	if ( !isTouchDevice() ) {
+		//Split Actions into columns of 10 or less
+		if ( $('.spell', actionsSection).length >= 30 && $(window).width() >= 1000 ) {
+			actionsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+			actionsSection.closest('item-list').css('width', '100%');
+		} else if ( $('.spell', actionsSection).length >= 20 && $(window).width() >= 800 ) {
+			actionsSection.css('grid-template-columns', '1fr 1fr 1fr');
+			if ( $(window).width() <= 1000 ) actionsSection.closest('item-list').css('width', '100%');
+		} else if ( $('.spell', actionsSection).length >= 10 && $(window).width() >= 637 ) {
+			actionsSection.css('grid-template-columns', '1fr 1fr');
+			if ( $(window).width() <= 800 ) actionsSection.closest('item-list').css('width', '100%');
+		} else {
+			actionsSection.css('grid-template-columns', '1fr');
+		}
+		//Split Talents into columns of 5 or less
+		if ( $('.spell', talentsSection).length >= 30 && $(window).width() >= 1000 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+		else if ( $('.spell', talentsSection).length >= 20 && $(window).width() >= 800 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr');
+		else if ( $('.spell', talentsSection).length >= 10 && $(window).width() >= 637 ) talentsSection.css('grid-template-columns', '1fr 1fr');
+		else talentsSection.css('grid-template-columns', '1fr');
+		//Split Status Effects into columns of 5 or less
+		if ( $('.status-effect', statusSection).length >= 30 && $(window).width() >= 1000 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
+		else if ( $('.status-effect', statusSection).length >= 20 && $(window).width() >= 800 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr');
+		else if ( $('.status-effect', statusSection).length >= 10 && $(window).width() >= 637 ) statusSection.css('grid-template-columns', '1fr 1fr');
+		else statusSection.css('grid-template-columns', '1fr');
+	//If touch device, just one column to avoid tooltips
+	//moving stuff around too much
 	} else {
 		actionsSection.css('grid-template-columns', '1fr');
+		talentsSection.css('grid-template-columns', '1fr');
+		statusSection.css('grid-template-columns', '1fr');
 	}
-	//Split Talents into columns of 5 or less
-	if ( $('.spell', talentsSection).length >= 30 && $(window).width() >= 1000 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
-	else if ( $('.spell', talentsSection).length >= 20 && $(window).width() >= 800 ) talentsSection.css('grid-template-columns', '1fr 1fr 1fr');
-	else if ( $('.spell', talentsSection).length >= 10 && $(window).width() >= 637 ) talentsSection.css('grid-template-columns', '1fr 1fr');
-	else talentsSection.css('grid-template-columns', '1fr');
-	//Split Status Effects into columns of 5 or less
-	if ( $('.status-effect', statusSection).length >= 30 && $(window).width() >= 1000 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr 1fr');
-	else if ( $('.status-effect', statusSection).length >= 20 && $(window).width() >= 800 ) statusSection.css('grid-template-columns', '1fr 1fr 1fr');
-	else if ( $('.status-effect', statusSection).length >= 10 && $(window).width() >= 637 ) statusSection.css('grid-template-columns', '1fr 1fr');
-	else statusSection.css('grid-template-columns', '1fr');
 }
 //Primary on load function
 $(function() {
