@@ -1520,13 +1520,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	.tooltip .type {
 		color: var(--secondary-button);
-		flex-basis: calc(20% - 4px);
+		flex-basis: calc(27% - 4px);
 		text-align: left!important;
 	}
 	.tooltip .origin {
 		color: var(--light-grey);
 		font-style: italic;
-		flex-basis: calc(80% - 4px);
 		text-align: right;
 	}
 }
