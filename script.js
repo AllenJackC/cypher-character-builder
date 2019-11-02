@@ -1162,6 +1162,17 @@ function populateSpellLists() {
 	});
 	//Arrange spell hotbars so they don't take up too much vertical-space
 	arrangeSpells();
+	//If selectable option in select spells matches
+	//an existing ability that is already trained
+	//disable it
+	$('.selectable', spellBook).each( function() {
+		var skill = $(this).text().trim();
+		var skillTrained;
+		var skillExists = $('.spell[data-default="' + skill + '"]', skillList).length > 0;
+		if ( skillExists ) skillTrained = $('.spell[data-default="' + skill + '"] .proficiency select', skillList).val();
+		var selectedSkill = $(this).hasClass('selected');
+		if ( skillExists && !selectedSkill & skillTrained == "T" ) $(this).addClass('disabled');
+	});
 }
 //Populate all of the active item select fields
 function populateInventorySelect() {
