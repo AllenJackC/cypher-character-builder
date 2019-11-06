@@ -920,7 +920,7 @@ function populateSpellLists() {
 				var spellName = spellListDatabase[i].name;
 				var tooltipName = '<h4 class="name">' + spellName + '</h4>';
 				var statusName = '<li>' + spellName + '</li>';
-				spellName = '<span class="spell-handle">' + spellName + '</span>';
+				spellName = '<span>' + spellName + '</span>';
 				var itemName = spellListDatabase[i].itemname;
 				var spellTier = spellListDatabase[i].tier;
 				var typeCheck = spellListDatabase[i].type;
@@ -932,6 +932,7 @@ function populateSpellLists() {
 				var spellDice = spellListDatabase[i].dice;
 				var spellOptional = spellListDatabase[i].optional;
 				var tooltipDice = '<span class="type">' + spellDice + '</span>';
+				var spellOrder = parseInt(String(parseInt(spellTier) + 1) + '1' + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
 				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
 				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( spellDuration ) spellDuration = "<span>Lasts " + spellDuration + "</span>";
@@ -944,8 +945,8 @@ function populateSpellLists() {
 					var spellCost = '<span class="spell-handle">' + spellListDatabase[i].cost + '</span>';
 					if ( !spellDice ) tooltipDice = '<span class="type">Action</span>';
 					var spellToAdd =
-						'<div data-spellid="' + spellID + '" class="spell">' +
-							'<div class="wrapper spell-handle">' +
+						'<div data-spellid="' + spellID + '" style="order: ' + spellOrder +'" class="spell">' +
+							'<div class="wrapper">' +
 								spellName +
 								spellDice +
 							'</div>' +
@@ -978,10 +979,9 @@ function populateSpellLists() {
 				} else if ( !spellOptional && typeCheck == "Talent" && $('#talents .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
 					if ( !spellDice ) tooltipDice = '<span class="type">Trait</span>';
 					var spellToAdd =
-						'<div data-spellid="' + spellID + '" class="spell">' +
-							'<div class="wrapper spell-handle">' +
+						'<div data-spellid="' + spellID + '" style="order: ' + spellOrder +'" class="spell">' +
+							'<div class="wrapper">' +
 								spellName +
-								spellDice +
 							'</div>' +
 						'</div>';
 					talentsSection.after(
@@ -1012,7 +1012,7 @@ function populateSpellLists() {
 				} else if ( !spellOptional && typeCheck == "Status" && $('#status .status-effect[data-spellid="' + spellID + '"]').length <= 0 ) {
 					if ( !spellDice ) tooltipDice = '<span class="type">Status</span>';
 					var statusToAdd =
-						'<div data-spellid="' + spellID + '" class="status-effect">' +
+						'<div data-spellid="' + spellID + '" style="order: ' + spellOrder +'" class="status-effect">' +
 							'<ul class="wrapper">' +
 								statusName +
 							'</ul>' +
@@ -1510,18 +1510,6 @@ $(function() {
 	populateInventorySelect();
 	populateSkillsSelect();
 	populateContactSelect();
-	//Actions Dragula
-	dragula([actionsSection[0]], {
-		moves: function(el,container,handle) {
-			return handle.classList.contains('spell-handle');
-		}
-	});
-	//Talents Dragula
-	dragula([talentsSection[0]], {
-		moves: function(el,container,handle) {
-			return handle.classList.contains('spell-handle');
-		}
-	});
 	//Skills Dragula
 	var skillsDrake = dragula([skillList[0], skillsDeleteSpace[0]], {
 			accepts: function(el,target,source,sibling) {

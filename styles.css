@@ -880,7 +880,7 @@ div.proficiency {
 	justify-content: flex-start;
 }
 .spell-list .spell {
-	cursor: move;
+	cursor: help;
 }
 .mobile-label {
 	border: 0!important;
