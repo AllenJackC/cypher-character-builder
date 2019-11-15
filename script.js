@@ -676,8 +676,7 @@ function populateSpells() {
 			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck) && spellRank > curTier ) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
-				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
-				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( spellDuration ) spellDuration = '<span><strong>Duration:</strong> Lasts ' + spellDuration + '</span>';
 				if ( spellCasttime ) spellCasttime = '<span><strong>Cast Time:</strong> Takes ' + spellCasttime + '</span>';
 				if ( spellRange ) spellRange = '<span><strong>Range: </strong>' + spellRange + ' range</span>';
@@ -727,9 +726,9 @@ function populateSpells() {
 				var itemValue = spellListDatabase[i].itemvalue;
 				if ( itemType == "Artifact" ) spellType = '<img src="images/artifact.png">';
 				else spellType = '<img src="images/items.png">';
-				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
-				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-				if ( itemValue ) itemValue = '<span><strong>Value: </strong>' + itemValue + '₡</span>';				var newOrigin = spellOrigin;
+				if ( spellTier ) '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( itemValue ) itemValue = '<span><strong>Value: </strong>' + itemValue + '₡</span>';
+				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
 				//the origin name; otherwise, create a spell card
@@ -768,8 +767,7 @@ function populateSpells() {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellName == "<hide>" ) hideThis = " hidden-spell";
-				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
-				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( contactSkill ) contactSkill = '<span><strong>Skills: </strong>' + contactSkill + '</span>';
 				if ( contactType ) contactType = '<span><strong>Type: </strong>' + contactType + '</span>';	
 				var newOrigin = spellOrigin;
@@ -813,8 +811,7 @@ function populateSpells() {
 				spellType = '<img src="images/cyberware.png">';					
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
-				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
-				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( cyberwareValue ) cyberwareValue = '<span><strong>Value: </strong>' + cyberwareValue + '₡</span>';
 				if ( cyberwareType ) cyberwareType = '<span><strong>Type: </strong>' + cyberwareType + '</span>';
 				if ( cyberwareLocation ) cyberwareLocation = '<span><strong>Location: </strong>' + cyberwareLocation + '</span>';
@@ -933,8 +930,7 @@ function populateSpellLists() {
 				var spellOptional = spellListDatabase[i].optional;
 				var tooltipDice = '<span class="type">' + spellDice + '</span>';
 				var spellOrder = parseInt(String(parseInt(spellTier) + 1) + '1' + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
-				if ( spellTier == 0 ) spellTier = '<div class="tier">Baseline</div>';
-				else spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( spellDuration ) spellDuration = "<span>Lasts " + spellDuration + "</span>";
 				if ( spellRange ) spellRange = "<span>" + spellRange + " range</span>";
 				if ( spellCasttime ) spellCasttime = "<span>Takes " + spellCasttime + "</span>";
