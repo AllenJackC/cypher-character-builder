@@ -1402,19 +1402,16 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		z-index: -1;
 	}
 	.tooltip > * {
-		flex-basis: calc(50% - 4px);
 		margin: 0 2px;
 	}
 	.tooltip span:nth-child(even) {
 		text-align: right;
 	}
 	.tooltip .name {
-		flex-basis: calc(70% - 4px);
 		margin-bottom: 2px;
 	}
 	.tooltip .tier {
 		color: var(--dark-grey);
-		flex-basis: calc(30% - 4px);
 		text-align: right;
 		margin-bottom: 2px;
 	}
@@ -1425,13 +1422,11 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	.tooltip .type {
 		color: var(--dark-grey);
-		flex-basis: calc(50% - 4px);
 		text-align: left!important;
 	}
 	.tooltip .origin {
 		color: var(--dark-grey);
 		font-style: italic;
-		flex-basis: calc(50% - 4px);
 		text-align: right;
 	}
 	#status .tooltip {
@@ -1497,19 +1492,16 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		z-index: 5;
 	}
 	.tooltip > * {
-		flex-basis: calc(50% - 4px);
 		margin: 0 2px;
 	}
 	.tooltip span:nth-child(even) {
 		text-align: right;
 	}
 	.tooltip .name {
-		flex-basis: calc(70% - 4px);
 		margin-bottom: 2px;
 	}
 	.tooltip .tier {
 		color: var(--light-grey);
-		flex-basis: calc(30% - 4px);
 		text-align: right;
 		margin-bottom: 2px;
 	}
@@ -1520,7 +1512,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	.tooltip .type {
 		color: var(--secondary-button);
-		flex-basis: calc(27% - 4px);
 		text-align: left!important;
 	}
 	.tooltip .origin {
