@@ -588,7 +588,7 @@ function populateSpells() {
 	if ( priSpeciesVal && !secSpeciesVal ) selectedAttributes.push("S" + priSpeciesVal);
 	else if ( !priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + secSpeciesVal);
 	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
-	if ( typeVal ) selectedAttributes.push("T" + typeVal);
+	if ( typeVal && ['F8,G1'].includes(priFocusVal) == false && ['F8,G1'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
 	//If character has "Infected" descriptor and selects "Ascension",
 	//push "Recondite" type and "Worships Dark Beings" focus
 	if ( $('#1768', spellBook).hasClass('selected') ) {
@@ -603,6 +603,7 @@ function populateSpells() {
 		for (var i = 0; i < spellListDatabase.length; i++) {
 			//Define variables for the current spell
 			var hideThis = "";
+			var optionalSpell = "";
 			var spellName = spellListDatabase[i].name;
 			var spellTier = spellListDatabase[i].tier;
 			var spellRank = spellListDatabase[i].rank;
@@ -625,6 +626,7 @@ function populateSpells() {
 			var spellDice = spellListDatabase[i].dice;
 			var itemName = spellListDatabase[i].itemname;
 			var itemEffect = spellListDatabase[i].itemeffect;
+			var spellOptional = spellListDatabase[i].optional;
 			var spellOrigin;
 			//Check to see if these values exist to avoid
 			//empty line breaks in the spell card
@@ -632,43 +634,43 @@ function populateSpells() {
 			if ( !spellRank ) spellRank = 7;
 			switch ( curOption.charAt(0) ) {
 				case "D":
-				spellOrigin = $('#descriptors option[value="' + optionID + '"]').text();
+					spellOrigin = $('#descriptors option[value="' + optionID + '"]').text();
 				break;
 				case "S":
-				if ( optionID.length === 2 ) {
-					var priSpeciesID;
-					var secSpeciesID;
-					if ( optionID.charAt(0) < optionID.charAt(1) ) {
-						priSpeciesID = optionID.charAt(0);
-						secSpeciesID = optionID.charAt(1);
+					if ( optionID.length === 2 ) {
+						var priSpeciesID;
+						var secSpeciesID;
+						if ( optionID.charAt(0) < optionID.charAt(1) ) {
+							priSpeciesID = optionID.charAt(0);
+							secSpeciesID = optionID.charAt(1);
+						} else {
+							priSpeciesID = optionID.charAt(1);
+							secSpeciesID = optionID.charAt(0);
+						}
+						optionID = priSpeciesID + secSpeciesID;
+						curOption = "S" + optionID;
+						if ( spellListDatabase[i]["S" + priSpeciesID] == "TRUE" ) spellOrigin = $('#species option[value="' + priSpeciesID + '"]').text();
+						else if ( spellListDatabase[i]["S" + secSpeciesID] == "TRUE" ) spellOrigin = $('#secondary-species option[value="' + secSpeciesID + '"]').text();
 					} else {
-						priSpeciesID = optionID.charAt(1);
-						secSpeciesID = optionID.charAt(0);
+						spellOrigin = $('#species option[value="' + optionID + '"]').text();
 					}
-					optionID = priSpeciesID + secSpeciesID;
-					curOption = "S" + optionID;
-					if ( spellListDatabase[i]["S" + priSpeciesID] == "TRUE" ) spellOrigin = $('#species option[value="' + priSpeciesID + '"]').text();
-					else if ( spellListDatabase[i]["S" + secSpeciesID] == "TRUE" ) spellOrigin = $('#secondary-species option[value="' + secSpeciesID + '"]').text();
-				} else {
-					spellOrigin = $('#species option[value="' + optionID + '"]').text();
-				}
 				break;
 				case "T":
-				spellOrigin = $('#types option[value="' + optionID + '"]').text();
+					spellOrigin = $('#types option[value="' + optionID + '"]').text();
 				break;
 				case "F":
-				if ( priFoci.val() != "E2" ) {
-					spellOrigin = $('#foci option[value="' + optionID + '"]').text();
-				} else {
-					if ( spellListDatabase[i]["FE2"] == "TRUE" ) spellOrigin = $('#foci option[value="' + optionID + '"]').text();
-					else spellOrigin = $('#secondary-foci option[value="' + optionID + '"]').text();
-				}
+					if ( priFocusVal != "E2" ) {
+						spellOrigin = $('#foci option[value="' + optionID + '"]').text();
+					} else {
+						if ( spellListDatabase[i]["FE2"] == "TRUE" ) spellOrigin = $('#foci option[value="' + optionID + '"]').text();
+						else spellOrigin = $('#secondary-foci option[value="' + optionID + '"]').text();
+					}
 				break;
 				case "V":
-				spellOrigin = $('#foci option[value="' + optionID + '"]').text();
+					spellOrigin = $('#foci option[value="' + optionID + '"]').text();
 				break;
 				default:
-				spellOrigin = "";
+					spellOrigin = "";
 			}
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
@@ -682,8 +684,12 @@ function populateSpells() {
 				if ( spellRange ) spellRange = '<span><strong>Range: </strong>' + spellRange + ' range</span>';
 				if ( spellCooldown ) spellCooldown = '<span><strong>Cooldown: </strong>' + spellCooldown + '</span>';
 				if ( spellDice ) spellDice = '<span><strong>Roll: </strong>' + spellDice + '</span>';
-				if ( itemName && itemEffect == "<default>" ) itemName = ' data-default="' + itemName +'" ';
+				if ( itemName && itemEffect == "<default>" ) itemName = ' data-default="' + itemName + '" ';
 				else itemName = "";
+				if ( spellOptional ) {
+					spellOptional = '<span class="optional">Optional</span>';
+					optionalSpell = ' optional';
+				}
 				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
@@ -692,7 +698,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell' + hideThis + '"' + itemName + 'style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell + '"' + itemName + 'style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									spellType +
@@ -702,6 +708,7 @@ function populateSpells() {
 								'</div>' +
 							'<div class="details">' +
 								'<div class="stats">' +
+									spellOptional +
 									spellDuration +
 									spellCasttime +
 									spellRange +
@@ -726,8 +733,12 @@ function populateSpells() {
 				var itemValue = spellListDatabase[i].itemvalue;
 				if ( itemType == "Artifact" ) spellType = '<img src="images/artifact.png">';
 				else spellType = '<img src="images/items.png">';
-				if ( spellTier ) '<div class="tier">Tier ' + spellTier + '</div>';
+				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( itemValue ) itemValue = '<span><strong>Value: </strong>' + itemValue + '₡</span>';
+				if ( spellOptional ) {
+					spellOptional = '<span class="optional">Optional</span>';
+					optionalSpell = ' optional';
+				}
 				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
@@ -736,7 +747,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell' + hideThis + '" style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell + '" style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									spellType +
@@ -746,6 +757,7 @@ function populateSpells() {
 							'</div>' +
 							'<div class="details">' +
 								'<div class="stats">' +
+									spellOptional +
 									itemValue +
 								'</div>' +
 								'<div class="description">' +
@@ -769,7 +781,11 @@ function populateSpells() {
 				if ( spellName == "<hide>" ) hideThis = " hidden-spell";
 				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( contactSkill ) contactSkill = '<span><strong>Skills: </strong>' + contactSkill + '</span>';
-				if ( contactType ) contactType = '<span><strong>Type: </strong>' + contactType + '</span>';	
+				if ( contactType ) contactType = '<span><strong>Type: </strong>' + contactType + '</span>';
+				if ( spellOptional ) {
+					spellOptional = '<span class="optional">Optional</span>';
+					optionalSpell = ' optional';
+				}
 				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
@@ -778,7 +794,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell' + hideThis + '" style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell + '" style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									'<img src="images/contact.png">' +
@@ -788,6 +804,7 @@ function populateSpells() {
 							'</div>' +
 							'<div class="details">' +
 								'<div class="stats">' +
+									spellOptional +
 									contactType +
 									contactSkill +
 								'</div>' +
@@ -815,6 +832,10 @@ function populateSpells() {
 				if ( cyberwareValue ) cyberwareValue = '<span><strong>Value: </strong>' + cyberwareValue + '₡</span>';
 				if ( cyberwareType ) cyberwareType = '<span><strong>Type: </strong>' + cyberwareType + '</span>';
 				if ( cyberwareLocation ) cyberwareLocation = '<span><strong>Location: </strong>' + cyberwareLocation + '</span>';
+				if ( spellOptional ) {
+					spellOptional = '<span class="optional">Optional</span>';
+					optionalSpell = ' optional';
+				}
 				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
@@ -823,7 +844,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell' + hideThis + '" style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell +'" style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									spellType +
@@ -833,6 +854,7 @@ function populateSpells() {
 							'</div>' +
 							'<div class="details">' +
 								'<div class="stats">' +
+									spellOptional +
 									cyberwareLocation +
 									cyberwareType +
 									cyberwareValue +
@@ -931,10 +953,10 @@ function populateSpellLists() {
 				var tooltipDice = '<span class="type">' + spellDice + '</span>';
 				var spellOrder = parseInt(String(parseInt(spellTier) + 1) + '1' + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
 				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
-				if ( spellDuration ) spellDuration = "<span>Lasts " + spellDuration + "</span>";
-				if ( spellRange ) spellRange = "<span>" + spellRange + " range</span>";
-				if ( spellCasttime ) spellCasttime = "<span>Takes " + spellCasttime + "</span>";
-				if ( spellCooldown ) spellCooldown = "<span>" + spellCooldown + " cooldown</span>";
+				if ( spellDuration ) spellDuration = '<span>Lasts ' + spellDuration + '</span>';
+				if ( spellRange ) spellRange = '<span>' + spellRange + ' range</span>';
+				if ( spellCasttime ) spellCasttime = '<span>Takes ' + spellCasttime + '</span>';
+				if ( spellCooldown ) spellCooldown = '<span>' + spellCooldown + ' cooldown</span>';
 				if ( $('#' + spellID, spellBook).hasClass('selected') ) spellOptional = false;
 				//Action spell hotbars & tooltips
 				if ( !spellOptional && typeCheck == "Action" && ($('#actions .spell[data-spellid="' + spellID + '"]').length <= 0) ) {

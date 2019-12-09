@@ -581,6 +581,9 @@ div.proficiency {
 	justify-content: space-between;
 	padding: 12px 15px 15px 15px;
 }
+#spellbook .spell.optional .header {
+	background: var(--dark-grey);
+}
 #spellbook .tier {
     font-family: var(--header-font);
     font-size: 24px;
@@ -622,7 +625,7 @@ div.proficiency {
 #spellbook .description, #archives .description {
 	flex-basis: 100%;
 }
-#spellbook .origin {
+#spellbook span.origin, #spellbook span.optional {
 	color: var(--dark-grey);
 	font-style: italic;
 }
