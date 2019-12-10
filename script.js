@@ -588,7 +588,8 @@ function populateSpells() {
 	if ( priSpeciesVal && !secSpeciesVal ) selectedAttributes.push("S" + priSpeciesVal);
 	else if ( !priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + secSpeciesVal);
 	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
-	if ( typeVal && ['F8,G1'].includes(priFocusVal) == false && ['F8,G1'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
+	//If character has specialization foci, don't push Type
+	if ( typeVal && ['F8','G1','G2','G5','G6'].includes(priFocusVal) == false && ['F8','G1','G2','G5','G6'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
 	//If character has "Infected" descriptor and selects "Ascension",
 	//push "Recondite" type and "Worships Dark Beings" focus
 	if ( $('#1768', spellBook).hasClass('selected') ) {
@@ -937,9 +938,6 @@ function populateSpellLists() {
 		for (var i = 0; i < spellListDatabase.length; i++) {
 			if ( spellListDatabase[i].id === spellID ) {
 				var spellName = spellListDatabase[i].name;
-				var tooltipName = '<h4 class="name">' + spellName + '</h4>';
-				var statusName = '<li>' + spellName + '</li>';
-				spellName = '<span>' + spellName + '</span>';
 				var itemName = spellListDatabase[i].itemname;
 				var spellTier = spellListDatabase[i].tier;
 				var typeCheck = spellListDatabase[i].type;
@@ -952,6 +950,9 @@ function populateSpellLists() {
 				var spellOptional = spellListDatabase[i].optional;
 				var tooltipDice = '<span class="type">' + spellDice + '</span>';
 				var spellOrder = parseInt(String(parseInt(spellTier) + 1) + '1' + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+				var tooltipName = '<h4 class="name">' + spellName + '</h4>';
+				var statusName = '<li>' + spellName + '</li>';
+				spellName = '<span>' + spellName + '</span>';
 				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( spellDuration ) spellDuration = '<span>Lasts ' + spellDuration + '</span>';
 				if ( spellRange ) spellRange = '<span>' + spellRange + ' range</span>';
