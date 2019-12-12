@@ -316,21 +316,6 @@ td > div {
     height: 18px;
     line-height: 18px;
 }
-div.handle {
-	background: var(--black);
-	color: var(--button);
-	cursor: move;
-	flex-grow: 0;
-	left: -10px;
-	max-width: 0;
-	order: 0;
-	overflow: hidden;
-	pointer-events: auto;
-    position: relative;
-	text-align: center;
-	transition: max-width 0.2s linear;
-	width: 35px;
-}
 div.name {
 	width: 100%;
 }
@@ -467,14 +452,11 @@ div.proficiency {
 	justify-content: flex-start;
 	margin: 25px 15px 0 15px;
 }
-#skill-list, #cyberware, .item-list, .spell-list {
+#cyberware, .item-list, .spell-list {
 	flex-grow: 1;
 	margin: 15px 15px 10px 15px;
 }
-#skill-list {
-	max-width: 35%;
-}
-#skill-list .chosen-single, .item-list .chosen-single, .gu-mirror:not(.cyberware) .chosen-single, .gu-transit:not(.cyberware) .chosen-single {
+.item-list .chosen-single, .gu-mirror:not(.cyberware) .chosen-single, .gu-transit:not(.cyberware) .chosen-single {
 	border: 0!important;
 	box-shadow: none!important;
 	height: 18px;
@@ -482,15 +464,15 @@ div.proficiency {
 	padding: 0!important;
 	width: fit-content;
 }
-#skill-list .chosen-single span, .item-list .chosen-single span, .gu-mirror .chosen-single span, .gu-transit .chosen-single span {
+.item-list .chosen-single span, .gu-mirror .chosen-single span, .gu-transit .chosen-single span {
 	margin-right: 0!important;
 	text-align: center;
 	width: fit-content;
 }
-#skill-list .chosen-single > div, .item-list .chosen-single > div, .gu-mirror .chosen-single > div, .gu-transit .chosen-single > div {
+.item-list .chosen-single > div, .gu-mirror .chosen-single > div, .gu-transit .chosen-single > div {
 	display: none!important;
 }
-#skill-list .chosen-drop, .item-list .chosen-drop, .gu-mirror .chosen-drop, .gu-transit .chosen-drop {
+.item-list .chosen-drop, .gu-mirror .chosen-drop, .gu-transit .chosen-drop {
 	text-align: left;
 	width: fit-content;
 }
@@ -882,7 +864,7 @@ div.proficiency {
 .spell-list .list-header {
 	justify-content: flex-start;
 }
-.spell-list .spell {
+.spell-list .hotbars:not(#skills) .spell {
 	cursor: help;
 }
 .mobile-label {
@@ -1075,11 +1057,6 @@ tr.gu-mirror {
 	padding: 5px 10px;
 	white-space: nowrap;
 }
-.spell .spell-handle {
-	pointer-events: auto;
-	touch-action: none;
-	padding-right: 10px;
-}
 .delete-space {
 	border: 3px dashed var(--secondary-button);
     color: var(--secondary-button);
@@ -1090,9 +1067,6 @@ tr.gu-mirror {
 	overflow: hidden;
 	pointer-events: auto;
 	position: relative;
-}
-#skill-list .delete-space {
-	height: 34px;
 }
 #cyberware .delete-space {
 	height: 185px;
@@ -1105,9 +1079,6 @@ tr.gu-mirror {
 	text-align: center;
 	top: 0;
     width: 100%;
-}
-#skill-list .delete-space:after {
-	line-height: 34px;
 }
 #cyberware .delete-space:after {
 	line-height: 185px;
@@ -1314,12 +1285,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	background: var(--button-active);
 	box-shadow: none;
 }
-.spell-list .spell:hover .wrapper, .spell-list .spell:active .wrapper, #skill-list .spell:hover .wrapper, #skill-list .spell:active .wrapper {
+.spell-list .spell:hover .wrapper, .spell-list .spell:active .wrapper {
 	background: var(--selected);
 	color: var(--black);
-}
-#skill-list .spell:hover .handle {
-	color: var(--selected);
 }
 .spell:hover .chosen-single, .spell:hover .chosen-drop, .spell:hover .chosen-results, .spell:hover select {
 	background: var(--selected)!important;
@@ -1372,14 +1340,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	.hotbars .spell {
 		width: 100%;
 	}
-	.spell div.handle, .gu-mirror div.handle, .gu-transit div.handle {
-		color: var(--white);
-		max-width: 35px;
-	}
 	.spell-list {
 		flex-basis: calc(50% - 30px);
 	}
-	.handle, .mobile-handle {
+	.mobile-handle {
 		pointer-events: auto;
 		touch-action: none;
 	}
@@ -1472,9 +1436,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		margin-right: -5px;
 		padding-left: 5px;
 	}
-	.spell:hover div.handle, .gu-mirror div.handle, .gu-transit div.handle {
-		max-width: 35px;
-	}
 	.tooltip, #hybrid-tooltip, #reset-tooltip, #cyberware-tooltip {
 		align-items: baseline;
 		background: var(--black-translucent);
@@ -1527,9 +1488,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 @media only screen and (max-width: 1024px) {
 	#character-attributes, #dice-counters {
 		margin: 15px auto 0;
-	}
-	#skill-list {
-		max-width: unset;
 	}
 	#dice-attributes {
 		flex-basis: 100%;
@@ -1710,7 +1668,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	.secondary-button {
 		right: 0!important;
 	}
-	.spell-list, #skill-list {
+	.spell-list {
 		width: calc(100% - 30px);
 	}
 	.modal {

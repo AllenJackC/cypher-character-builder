@@ -37,6 +37,7 @@ var clearSearchButton;
 var loreButton;
 var enableCyberware;
 var cyberwareTooltip;
+var skillsSection;
 var actionsSection;
 var talentsSection;
 var statusSection;
@@ -531,44 +532,6 @@ function hideExtraAttribute(section,animate) {
 		section.removeAttr('style');
 	}
 }
-//Populate all of the active skill select fields
-function populateSkillsSelect() {
-	$('#skills .proficiency select').chosen({
-		disable_search: true,
-		width: "fit-content"
-	});
-}
-//Add a blank skill, unless variables are parsed
-function addSkill(spellID,skillName,customSkill) {
-	var defaultName = "";
-	if ( !skillName ) skillName = "";
-	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
-	else spellID = "";
-	if ( customSkill == "<default>" ) {
-		customSkill =  '" contenteditable="false"';
-		defaultName = ' data-default="' + skillName + '"'
-	} else {
-		customSkill = ' editable" contenteditable="true"';
-	}
-	var skillToAdd =
-		'<div class="spell"' + defaultName + spellID + '>' +
-			'<div class="wrapper">' +
-				'<div class="handle">&#9776;</div>' +
-				'<div class="name' + customSkill + '">' + skillName + '</div>' +
-				'<div class="proficiency">' +
-						'<select>' +
-							'<option value="I">-1d</option>' +
-							'<option selected value="P">&#10022;</option>' +
-							'<option value="T">+1d</option>' +
-						'</select>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-		'</div>';
-	if ( spellID ) $(skillToAdd).insertBefore('#skill-list .spell:first-child').stop().animate({'width' : '100%'},300);
-	else $(skillToAdd).appendTo(skillList).stop().animate({'width' : '100%'},300);
-	populateSkillsSelect();
-}
 //Populate the spell list based on the currently selected options
 function populateSpells() {
 	var descriptorVal = descriptors.val();
@@ -679,6 +642,7 @@ function populateSpells() {
 			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck) && spellRank > curTier ) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
+				var skillProficiency = spellListDatabase[i].itemtype;
 				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( spellDuration ) spellDuration = '<span><strong>Duration:</strong> Lasts ' + spellDuration + '</span>';
 				if ( spellCasttime ) spellCasttime = '<span><strong>Cast Time:</strong> Takes ' + spellCasttime + '</span>';
@@ -686,6 +650,7 @@ function populateSpells() {
 				if ( spellCooldown ) spellCooldown = '<span><strong>Cooldown: </strong>' + spellCooldown + '</span>';
 				if ( spellDice ) spellDice = '<span><strong>Roll: </strong>' + spellDice + '</span>';
 				if ( itemName && itemEffect == "<default>" ) itemName = ' data-default="' + itemName + '" ';
+				if ( skillProficiency ) skillProficiency =  ' data-proficiency="' + skillProficiency + '" ';
 				else itemName = "";
 				if ( spellOptional ) {
 					spellOptional = '<span class="optional">Optional</span>';
@@ -699,7 +664,7 @@ function populateSpells() {
 					$('#' + spellID + ' .origin').text(newOrigin);
 				} else {
 					$('#spellbook').append(
-						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell + '"' + itemName + 'style="order: ' + spellOrder + '">' +
+						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell + '"' + itemName + skillProficiency + 'style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
 								'<h3>' +
 									spellType +
@@ -933,6 +898,7 @@ function populateSpellLists() {
 		var talentsVisible = talentsSection.parent('.spell-list').is(':visible');
 		var actionsVisible = actionsSection.parent('.spell-list').is(':visible');
 		var statusVisible = statusSection.parent('.spell-list').is(':visible');
+		var skillsVisible = skillsSection.parent('.spell-list').is(':visible');
 		var spellID = $(this).attr('id');
 		var spellOrigin = '<span class="origin">' + $('.origin', this).text() + '</span>';
 		for (var i = 0; i < spellListDatabase.length; i++) {
@@ -1060,18 +1026,66 @@ function populateSpellLists() {
 							duration: 300
 						});
 					}
+				//Update proficiency if skill already exists
+				} else if ( !spellOptional && typeCheck == "Skill" && $('.spell[data-default="' + itemName + '"]', spellBook).length > 0 && $('#skills .spell[data-default="' + itemName + '"]').length > 0 ) {
+					var skillsArray = [];
+					var skillProficiency = 0;
+					$('.spell[data-default="' + itemName + '"]', spellBook).each( function() {
+						var thisProficiency = $(this).data('proficiency');
+						switch (thisProficiency) {
+							case "T":
+								thisProficiency = 1;
+							break;
+							case "I":
+								thisProficiency = -1;
+							break;
+							default:
+								thisProficiency = 0;
+						}
+						skillsArray.push(thisProficiency);
+					});
+					for ( var j = 0; j < skillsArray.length; j++ ) skillProficiency += skillsArray[j];
+					if ( skillProficiency > 0 ) skillProficiency = "+1d";
+					else if ( skillProficiency < 0 ) skillProficiency = "-1d";
+					else skillProficiency = "&#10022;";
+					$('#skills .spell[data-default="' + itemName + '"] .proficiency').html(skillProficiency);
 				//Add skills to the skill list
-				} else if ( !spellOptional && typeCheck == "Skill" && $('#skill-list .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( !spellOptional && typeCheck == "Skill" && $('#skills .spell[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var skillProficiency = spellListDatabase[i].itemtype;
 					var customSkill = spellListDatabase[i].itemeffect;
-					if ( $('.spell[data-default="' + itemName + '"]', spellBook).length > 1 && $('#skill-list .spell[data-default="' + itemName + '"]').length > 0 ) {
-						$('#skill-list .spell[data-default="' + itemName + '"] .proficiency select').val("P");
-						$('#skill-list .spell[data-default="' + itemName + '"] .proficiency select').trigger('chosen:updated');
+					var skillSpellOrder = parseInt((parseInt(itemName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(itemName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+					if ( customSkill == "<default>" ) {
+						customSkill =  '" contenteditable="false"';
+						defaultName = ' data-default="' + itemName + '"'
 					} else {
-						addSkill(spellID,itemName,customSkill);
-						var thisSkill = $('#skill-list .spell[data-spellid="' + spellID + '"]');
-						$('.proficiency select', thisSkill).val(skillProficiency);
-						$('.proficiency select', thisSkill).trigger('chosen:updated');
+						customSkill = ' editable" contenteditable="true"';
+					}
+					switch (skillProficiency) {
+						case "T":
+							skillProficiency = "+1d";
+						break;
+						case "I":
+							skillProficiency = "-1d";
+						break;
+						default:
+							skillProficiency = "&#10022;";
+					}
+					var skillToAdd =
+						'<div data-spellid="' + spellID + '" style="order: ' + skillSpellOrder +'" class="spell"' + defaultName +'>' +
+							'<div class="wrapper">' +
+								'<div class="name' + customSkill + '">' + itemName + '</div>' +
+								'<div class="proficiency">' + skillProficiency + '</div>' +
+							'</div>' +
+						'</div>';
+					if ( !skillsVisible ) {
+						$(skillToAdd).appendTo(skillsSection).css('width','100%');
+						skillsSection.parent('.spell-list').stop().slideToggle(300);
+					} else {
+						$(skillToAdd).appendTo(skillsSection).stop().animate({
+							'width' : '100%'
+						}, {
+							duration: 300
+						});
 					}
 				//Add items to the inventory list
 				} else if ( !spellOptional && typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
@@ -1148,7 +1162,7 @@ function populateSpellLists() {
 		}
 	});
 	//Remove any items or spells not in the current spelllist
-	$('.spell-list .spell, .spell-list .status-effect, #skill-list .spell, .item-list tr, .tooltip, .cyberware').each( function() {
+	$('.spell-list .spell, .spell-list .status-effect, .item-list tr, .tooltip, .cyberware').each( function() {
 		var thisBar = $(this);
 		var emptySpell = $('.name',thisBar).html();
 		var thisHotbarList = thisBar.parent();
@@ -1160,7 +1174,7 @@ function populateSpellLists() {
 					duration: 300,
 					complete: function() {
 						thisBar.remove();
-						if( thisSpellList.is(':visible') && thisHotbarList.is(':empty') ) thisSpellList.stop().slideToggle(200);
+						if ( thisSpellList.is(':visible') && thisHotbarList.is(':empty') ) thisSpellList.stop().slideToggle(200);
 					}
 				});
 			} else if ( thisBar.hasClass('cyberware') ) {
@@ -1432,15 +1446,13 @@ $(function() {
 	resetButton = $('#reset-button div');
 	resetTooltip = $('#reset-tooltip');
 	addSkillButton = $('#add-skill');
-	skillError = $('#skill-list .error');
-	skillList = $('#skill-list #skills');
-	skillsDeleteSpace = $('#skill-list .delete-space');
 	spellBook = $('#spellbook');
 	spellbookButton = $('#open-spellbook');
 	filterButtons = $('.filters .button');
 	loreButton = $('#open-archives');
 	enableCyberware = $('#enable-cyberware');
 	cyberwareTooltip = $('#cyberware-tooltip');
+	skillsSection = $('#skills');
 	actionsSection = $('#actions');
 	talentsSection = $('#talents');
 	statusSection = $('#status');
@@ -1527,75 +1539,7 @@ $(function() {
 	//and initate drag and drop
 	populateCyberwareSelect();
 	populateInventorySelect();
-	populateSkillsSelect();
 	populateContactSelect();
-	//Skills Dragula
-	var skillsDrake = dragula([skillList[0], skillsDeleteSpace[0]], {
-			accepts: function(el,target,source,sibling) {
-				if ( el.hasAttribute("data-spellid") && target.classList.contains('delete-space') ) return false;
-				else return true;
-			}, moves: function(el,container,handle) {
-				return handle.classList.contains('handle');
-			}
-		}).on('drag', function(el,source) {
-			el.style.display = "flex";
-			if ( el.hasAttribute('data-spellid') && skillError.is(':visible') == false ) skillError.stop().slideToggle(150);
-			else skillsDeleteSpace.stop().slideToggle(150);
-			if ( firstDrag ) {
-				firstDrag = false;
-				containerHeight = skillList.height();
-			}
-		}).on('shadow', function(el,container,source) {
-			if ( container.classList.contains('delete-space') ) {
-				skillsDeleteSpace.stop().animate({
-					'height' : $('.gu-transit').css('height')
-				}, 150);
-				skillList.css('height', containerHeight);
-			} else {
-				skillsDeleteSpace.stop().animate({
-					'height' : '34px'
-				}, 150);
-				skillList.css('height', '');
-			}
-		}).on('drop', function(el,target,source,sibling) {
-			if ( target.classList.contains('delete-space') ) {
-				if ( source.children.length === 0 ) {
-					addSkill();
-					skillList.removeAttr('style');
-				} else {
-					skillList.stop().animate({
-						'height' : containerHeight - skillsDeleteSpace.height()
-					}, 300, function() {
-						$(this).removeAttr('style');
-					});
-				}
-				skillsDrake.remove();
-			} else {
-				skillList.removeAttr('style');
-			}
-			if ( el.hasAttribute('data-spellid') && skillError.is(':visible') ) skillError.stop().slideToggle(300);
-			else if ( skillsDeleteSpace.is(':visible') ) {
-				skillsDeleteSpace.stop().animate({
-					'height' : '34px'
-				}, 100, function() {
-					$(this).css('height','');
-					$(this).stop().slideToggle(200);
-				});
-			}
-			firstDrag = true;
-		}).on('cancel', function(el,container,source) {
-			if ( el.hasAttribute('data-spellid') && skillError.is(':visible') ) skillError.stop().slideToggle(300);
-			else if ( skillsDeleteSpace.is(':visible') ) {
-				skillsDeleteSpace.stop().animate({
-					'height' : '34px'
-				}, 100, function() {
-					$(this).css('height','');
-					$(this).stop().slideToggle(200);
-				});
-			}
-			firstDrag = true;
-		});
-	skillsDrake;
 	//Cyberware Dragula
 	var cyberwareDrake = dragula([cyberwareDeleteSpace[0]],{
 			isContainer: function(el) {
@@ -2100,8 +2044,14 @@ $(function() {
 		}
 	});
 	//Focus editable div fields when clicking on outter cells
-	$('.item-list, #skill-list, #cyberware').on('click', 'td, div.spell, div.text-wrapper', function() {
+	$('.item-list, #skills, #cyberware').on('click', 'td, div.spell, div.text-wrapper', function() {
 		$('.editable', this).focus();
+	});
+	//Re-order skills on focus loss
+	$('#skills').on('blur', '.editable', function() {
+		var skillName = $(this).html();
+		var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+		$(this).closest('.spell').css('order', newOrder);
 	});
 	//Add skills when respective button is clicked
 	addSkillButton.click( function() { addSkill(); });
@@ -2120,7 +2070,7 @@ $(function() {
 		$(this).toggleClass('active');
 	});
 	//Filter inputs for value fields
-	$('.item-list, #skill-list').on('keydown blur paste', '.value .editable', function(e){
+	$('.item-list').on('keydown blur paste', '.value .editable', function(e){
 		var thisVal = $(this).html();
 		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
         var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
