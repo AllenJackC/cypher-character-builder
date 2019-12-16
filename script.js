@@ -1054,6 +1054,7 @@ function populateSpellLists() {
 					var skillProficiency = spellListDatabase[i].itemtype;
 					var customSkill = spellListDatabase[i].itemeffect;
 					var skillSpellOrder = parseInt((parseInt(itemName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(itemName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+					var defaultName = "";
 					if ( customSkill == "<default>" ) {
 						customSkill =  '" contenteditable="false"';
 						defaultName = ' data-default="' + itemName + '"'
