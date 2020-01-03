@@ -552,7 +552,7 @@ function populateSpells() {
 	else if ( !priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + secSpeciesVal);
 	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
 	//If character has specialization foci, don't push Type
-	if ( typeVal && ['F8','G1','G2','G5','G6'].includes(priFocusVal) == false && ['F8','G1','G2','G5','G6'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
+	if ( typeVal && ['F8','G1','G2','G5','G6','K9','O7'].includes(priFocusVal) == false && ['F8','G1','G2','G5','G6','K9','O7'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
 	//If character has "Infected" descriptor and selects "Ascension",
 	//push "Recondite" type and "Worships Dark Beings" focus
 	if ( $('#1768', spellBook).hasClass('selected') ) {
