@@ -17,12 +17,10 @@ var priFociOptions;
 var secFociOptions;
 var foci;
 var fociOptions;
-var extraAttributes;
 var secFociSection;
 var hybridSection;
 var hybridButton;
 var hybridTooltip;
-var resetSection;
 var resetButton;
 var resetTooltip;
 var addSkillButton;
@@ -499,39 +497,6 @@ function populateFoci() {
 	priFoci.trigger('chosen:updated');
 	secFoci.trigger('chosen:updated');
 }
-//Show extra attributes sections
-function showExtraAttribute(section,width,animate) {
-	if ( animate ) {
-		section.stop().animate({
-			'width' : width
-		}, {
-			duration: 300,
-			start: function() {
-				section.show();
-			}
-		});
-	} else {
-		section.css({
-			'display' : 'block',
-			'width' : width
-		});
-	}
-}
-//Hide extra attributes sections
-function hideExtraAttribute(section,animate) {
-	if ( animate ) {
-		section.stop().animate({
-			'width' : '0'
-		}, {
-			duration: 300,
-			complete: function() {
-				section.removeAttr('style');
-			}
-		});
-	} else {
-		section.removeAttr('style');
-	}
-}
 //Populate the spell list based on the currently selected options
 function populateSpells() {
 	var descriptorVal = descriptors.val();
@@ -554,9 +519,8 @@ function populateSpells() {
 	//If character has specialization foci, don't push Type
 	if ( typeVal && ['F8','G1','G2','G5','G6','K9','O7'].includes(priFocusVal) == false && ['F8','G1','G2','G5','G6','K9','O7'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
 	//If character has "Infected" descriptor and selects "Ascension",
-	//push "Recondite" type and "Worships Dark Beings" focus
-	if ( $('#1768', spellBook).hasClass('selected') ) {
-		selectedAttributes.push("TB0");
+	//push "Worships Dark Beings" focus
+	if ( $('#0515', spellBook).hasClass('selected') ) {
 		selectedAttributes.push("FO7");
 	};
 	if ( priFocusVal ) selectedAttributes.push("F" + priFocusVal);
@@ -1438,13 +1402,11 @@ $(function() {
 	secFociOptions = $('#secondary-foci option');
 	foci = $('#foci, #secondary-foci');
 	fociOptions = $('#foci option, #secondary-foci option');
-	extraAttributes = $('#extra-attributes');
-	secFociSection = $('#second-focus');
-	hybridSection = $('#hybrid-species');
+	secFociSection = $('#sec-focus-attribute');
+	hybridSection = $('#sec-species-attribute');
 	hybridButton = $('#hybrid-button div');
 	hybridTooltip = $('#hybrid-tooltip');
-	resetSection = $('#reset-button');
-	resetButton = $('#reset-button div');
+	resetButton = $('#reset-button');
 	resetTooltip = $('#reset-tooltip');
 	addSkillButton = $('#add-skill');
 	spellBook = $('#spellbook');
@@ -1485,7 +1447,7 @@ $(function() {
 	periodCount = 0;
 	//Initial variables
 	curArc = 2;
-	curTier = 6;
+	curTier = 1;
 	spellListDatabase = [];
 	//Setup spell list database
 	Tabletop.init({
@@ -1862,50 +1824,23 @@ $(function() {
 	//[H] button to show or hide secondary species dropdown and reset its value
 	hybridButton.click(function(){
 		var priSpeciesVal = priSpecies.val();
-		var extraAttributesVisible = extraAttributes.is(':visible');
-		var hybridVisible = hybridSection.is(':visible');
-		var secFociVisible = secFociSection.is(':visible');
 		$(this).toggleClass('clicked');
-		//Show the section and show the hybrid selector
-		if ( !extraAttributesVisible ) {
-			showExtraAttribute(hybridSection,"145px",false);
-			extraAttributes.stop().slideToggle({
-				duration: 300,
-				start: function() {
-					genderFocusRow.removeClass('last-row');
-				}
-			});
-		//Show the hybrid selector if it's not showing
-		} else if ( !hybridVisible ) {
-			showExtraAttribute(hybridSection,"145px",true);
-		//If no other attributes are showing except the hybrid selector
-		} else if ( hybridVisible && !secFociVisible ) {
-			extraAttributes.stop().slideToggle({
-				duration: 300,
-				done: function() {
-					secSpecies.val('');
-					hideExtraAttribute(hybridSection,false);
-					genderFocusRow.addClass('last-row');
-				}
-			});
-		//If only the secondary foci and hybrid selectors are showing
-		} else if ( hybridVisible && secFociVisible ) {
-			secSpecies.val('');
-			hideExtraAttribute(hybridSection,true);
-		}
-		//Repopulate all of the fields after cliking the toggle
+		if (hybridSection.is(':hidden')) $('#character-attributes').addClass('with-sec-species');
+		hybridSection.stop().slideToggle({
+			duration: 300,
+			done: function() {
+				if (hybridSection.is(':visible')) hybridSection.css('display','flex');
+				else $('#character-attributes').removeClass('with-sec-species');
+			}
+		});
+		secSpecies.val('');
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		//If only the secondary species is selected when clicked, hide the reset button
-		if ( secSpecies.val() && !priSpeciesVal && !types.val() ) resetSection.addClass('hidden-section');
 	});
 	//Reset button to reset all values and hide extra sections
 	//Does not affect hybrid toggle
 	resetButton.click(function(){
-		var extraAttributesVisible = extraAttributes.is(':visible');
-		var hybridVisible = hybridSection.is(':visible');
-		var secFociVisible = secFociSection.is(':visible');
 		availSpellCount = 4;
 		selectedSpellCount = 0;
 		descriptors.val('');
@@ -1914,7 +1849,7 @@ $(function() {
 		types.val('');
 		priFoci.val('');
 		secFoci.val('');
-		resetSection.addClass('hidden-section');
+		secFociSection.stop().hide();
 		descriptors.trigger('chosen:updated');
 		setStoryArc(curArc);
 		populateSpecies();
@@ -1925,32 +1860,14 @@ $(function() {
 		loreButton.text('Lore');
 		spellbookButton.text('Abilities');
 		filterButtons.addClass('clicked');
-		if ( hybridVisible ) {
-			if ( secFociVisible ) hideExtraAttribute(secFociSection,true);
-		} else if ( extraAttributesVisible ) {
-			extraAttributes.stop().slideToggle({
-				duration: 300,
-				start: function() {
-					if ( secFociVisible ) hideExtraAttribute(secFociSection,false);
-					genderFocusRow.removeClass('last-row');
-				}
-			});
-		}
 	});
 	//Populate relevant lists each time the select list is interacted
 	//with, populate spells, and show the reset button
 	descriptors.on('change', function() {
-		resetSection.removeClass('hidden-section');
 		populateFoci();
 		populateSpells();
 	});
 	species.on('change', function() {
-		var priSpeciesVal = priSpecies.val();
-		var secSpeciesVal = secSpecies.val();
-		var extraAttributesVisible = extraAttributes.is(':visible');
-		var hybridVisible = hybridSection.is(':visible');
-		var secFociVisible = secFociSection.is(':visible');
-		resetSection.removeClass('hidden-section');
 		populateSpecies();
 		populateTypes();
 		populateFoci();
@@ -1958,60 +1875,32 @@ $(function() {
 		loreButton.text('New Lore');
 	});
 	types.on('change', function() {
-		resetSection.removeClass('hidden-section');
 		populateSpecies();
 		populateFoci();
 		populateSpells();
 		loreButton.text('New Lore');
 	});
 	foci.on('change', function() {
-		var extraAttributesVisible = extraAttributes.is(':visible');
-		var hybridVisible = hybridSection.is(':visible');
-		var secFociVisible = secFociSection.is(':visible');
 		var curFocus = priFoci.val();
 		//If user picks Forges a New Bond, show second focus
 		if ( curFocus == "E2" && $(this).attr('id') == "foci" ) {
-			if ( !extraAttributesVisible ) {
-				showExtraAttribute(secFociSection,"241px",false);
-				extraAttributes.stop().slideToggle({
-					duration: 300,
-					start: function() {
-						genderFocusRow.removeClass('last-row');
-					}
-				});
-			//Show the second focus selector if it's not showing
-			} else if ( !secFociVisible ) {
-				showExtraAttribute(secFociSection,"241px",true);
-			//If no other attributes are showing except the second focus selector
-			} else if ( secFociVisible && !hybridVisible ) {
-				extraAttributes.stop().slideToggle({
-					duration: 300,
-					done: function() {
-						secFoci.val('');
-						hideExtraAttribute(secFociSection,false);
-						genderFocusRow.addClass('last-row');
-					}
-				});
-			//If either of the other selectors are showing
-			} else if ( secFociVisible && hybridVisible ) {
-				secFoci.val('');
-				hideExtraAttribute(secFociSection,true);
-			}
-		} else if ( $(this).attr('id') == "foci" ) {
-			if ( secFociVisible && !hybridVisible ) {
-				extraAttributes.stop().slideToggle({
-					duration: 300,
-					done: function() {
-						secFoci.val('');
-						hideExtraAttribute(secFociSection,false);
-						genderFocusRow.addClass('last-row');
-					}
-				});
-			//If either of the other selectors are showing
-			} else if ( secFociVisible && hybridVisible ) {
-				secFoci.val('');
-				hideExtraAttribute(secFociSection,true);
-			}
+			$('#character-attributes').addClass('with-sec-focus');
+			$('#sec-focus-connector').stop().slideToggle(300);
+			secFociSection.stop().slideToggle({
+				duration: 300,
+				done: function() {
+					secFociSection.css('display','flex');
+				}
+			});
+		} else if ( $(this).attr('id') == "foci" && secFociSection.is(':visible') ) {
+			secFoci.val('');
+			$('#sec-focus-connector').stop().slideToggle(300);
+			secFociSection.stop().slideToggle({
+				duration: 300,
+				done: function() {
+					$('#character-attributes').removeClass('with-sec-focus');
+				}
+			});
 		}
 		//If "Has More Money Than Sense" focus is selected
 		if ( curFocus === "E8" || secFoci.val() === "E8" ) {
@@ -2021,7 +1910,6 @@ $(function() {
 			$('#descriptors option[value="M7"]').prop('disabled', false);
 			descriptors.trigger('chosen:updated');
 		}
-		resetSection.removeClass('hidden-section');
 		populateSpecies();
 		populateTypes();
 		populateFoci();
