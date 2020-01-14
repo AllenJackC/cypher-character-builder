@@ -840,6 +840,12 @@ function populateSpells() {
 			$(this).find('.filters').addClass('hidden-section');
 		}
 	});
+	//Show or hide filters based on current level
+	for (var i = 0; i < $('.filters .button').length; i++) {
+		var filterTier = i + 1;
+		if ( filterTier <= curTier && curTier != 1 ) $('#filter-tier' + filterTier).removeClass('hidden-section');
+		else $('#filter-tier' + filterTier).addClass('hidden-section');
+	};
 	//If filters were enabled, honor the filters
 	//for any newly added spells
 	filterButtons.each( function() {
@@ -851,8 +857,8 @@ function populateSpells() {
 	});
 	//If there are select spells, update the abilities
 	//button to prompt user to make selections
-	if ( $('img[src$="images/select.png"]', spellBook).length != $('.selected', spellBook).length ) spellbookButton.text('Make Selections');
-	else spellbookButton.text('New Abilities');
+	if ( $('img[src$="images/select.png"]', spellBook).length != $('.selectable.selected', spellBook).length ) spellbookButton.text('Make Selections');
+	else spellbookButton.text('Abilities');
 	populateSpellLists();
 }
 //Populate each individual spell list on the main character sheet
@@ -1053,7 +1059,7 @@ function populateSpellLists() {
 						});
 					}
 				//Add items to the inventory list
-				} else if ( !spellOptional && typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( !spellOptional && typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 && $('#artifacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var itemType = spellListDatabase[i].itemtype;
 					var itemValue = spellListDatabase[i].itemvalue;
 					var itemEffect = spellListDatabase[i].itemeffect;
@@ -2082,6 +2088,13 @@ $(function() {
 	});
 	//Re-arrange spell hotbars when window is resized
 	$( window ).resize(function() {arrangeSpells();});
+	//Highlight selected dice number and then disabled
+	//the others
+	$('.dice-number').click( function() {
+		var parentSection = $(this).closest('.dice');
+		$('.dice-number', parentSection).not(this).addClass('disabled');
+		$(this).addClass('selected');
+	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
 		//Show a sliding tooltip on click

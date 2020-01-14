@@ -407,10 +407,10 @@ div.proficiency {
 }
 #dice-counters {
 	display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
 	max-width: 577px;
-    margin: 15px 15px 10px 15px;
+    margin: 0 15px 0 15px;
 }
 #might {
 	background: url('images/might-bg.png');
@@ -635,20 +635,77 @@ div.proficiency {
 .dice-counter {
 	min-width: 172px;
 }
-.dice-counter .label {
-    border-bottom: solid 3px var(--secondary-button);
-	padding: 10px 10px 10px 10px;
-	pointer-events: auto;
-    text-align: center;
-    text-transform: uppercase;
+.dice-counter h3, #tier h3 {
+	padding: 0;
+	margin: 15px -10px 15px 0;
+	text-transform: uppercase;
 }
 .dice {
-	align-items: center;
     color: var(--white);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+	text-align: center;
+	height: 252px;
+}
+.dice-number {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	pointer-events: auto;
+    cursor: pointer;
+	transition: margin 0.5s;
+}
+.dice-number .bar {
+    background-color: var(--white);
+    width: 80px;
+    height: 10px;
+	transition: width 0.5s, height 0.5s;
+}
+.dice-number .number {
+	margin-right: 10px;
+	font-size: 100%;
+	transition: font-size 0.5s, line-height 0.5s;
+	font-weight: 700;
+	line-height: 24px;
+}
+.dice-number.disabled {
+    pointer-events: none;
+	opacity: 0.4;
+}
+.dice-number.disabled .bar {
+	height: 5px;
+}
+.dice-number.disabled .number {
+	font-size: 95%;
+	line-height: 15px;
+}
+.dice-number.selected {
+    pointer-events: none;
+	color: var(--selected);
+	margin-left: -3px;
+}
+.dice-number.selected .bar {
+	width: 85px;
+	background-color: var(--selected);
+}
+.dice-number.selected .number {
+	font-size: 200%;
+	line-height: 24px;
+}
+.dice-number:hover {
+	margin-left: -2px;
+}
+.dice-number:hover .bar {
+	width: 85px;
+	background-color: var(--selected-hover);
+}
+.dice-number:hover .number {
+	font-size: 200%;
+	line-height: 24px;
+	color: var(--selected-hover);
+}
+#xp-up, #xp-down {
+	pointer-events: auto;
+	cursor: pointer;	
+	color: var(--white);
 }
 .current-value {
 	cursor: text;
@@ -1326,7 +1383,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		color: var(--button);
 		font-size: 18px;
 	}
-	#hybrid-tooltip, #reset-tooltip, #cyberware-tooltip {
+	#hybrid-tooltip, #reset-tooltip, #cyberware-tooltip, #magic-tooltip, #tech-tooltip, #logic-tooltip, #feelings-tooltip {
 		display: none;
 	}
 	#character-options > div {
@@ -1423,7 +1480,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 }
 /* Desktop tooltip CSS */
 @media (hover: hover) {
-	#hybrid-tooltip > *, #reset-tooltip > *, #cyberware-tooltip > * {
+	#hybrid-tooltip > *, #reset-tooltip > *, #cyberware-tooltip > *, #magic-tooltip > *, #tech-tooltip > *, #logic-tooltip > *, #feelings-tooltip > * {
 		flex-basis: 100%;
 		margin: 2px;
 		text-align: left!important;
@@ -1441,7 +1498,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		margin-right: -5px;
 		padding-left: 5px;
 	}
-	.tooltip, #hybrid-tooltip, #reset-tooltip, #cyberware-tooltip {
+	.tooltip, #hybrid-tooltip, #reset-tooltip, #cyberware-tooltip, #magic-tooltip, #tech-tooltip, #logic-tooltip, #feelings-tooltip {
 		align-items: baseline;
 		background: var(--black-translucent);
 		border: solid 1px var(--selected);

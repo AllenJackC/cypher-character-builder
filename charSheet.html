@@ -549,36 +549,114 @@
 					<label for="secondary-foci">SECONDARY FOCUS</label>
 				</div>
 			</div>
-			<!-- Dice 
+			<!-- Dice & Tier -->
 			<div id="dice-counters">
-				<!-- Logic & Feelings 
-				<div class="dice-counter" id="mundane">
-					<h2 class="label">Logic & Feelings</h2>
-					<div class="dice" style="color: white">
-						coin<br>
-						2 bar<br>
-						3 bar<br>
-						4 bar<br>
-						5 bar<br>
-						6 bar<br>
-						7 bar<br>
-						8 bar<br>
-						9 bar<br>
+				<!-- Logic & Feelings --> 
+				<div class="dice-counter" id="logic-feelings">
+					<div class="dice">
+						<h3>Logic</h3>
+						<div class="dice-number disabled blocked">
+							<span class="number">1</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-2">
+							<span class="number">2</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-3">
+							<span class="number">3</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-4">
+							<span class="number">4</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-5">
+							<span class="number">5</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number disabled blocked">
+							<span class="number">6</span>
+							<div class="bar"></div>
+						</div>
+						<h3>Feelings</h3>
+					</div>
+					<div id="logic-tooltip">
+						<h4>Logic</h4>
+						<span class="description">
+							Roll <strong>under</strong> <span id="logic-feelings-number">your number</span> to succeed on task rolls that uses Logic, including (but not limited to) anything that involves science, cold rationality, reasoning or calm, precise action.
+						</span>
+					</div>
+					<div id="feelings-tooltip">
+						<h4>Feelings</h4>
+						<span class="description">
+							Roll <strong>over</strong> <span id="logic-feelings-number">your number</span> to succeed on task rolls that use Feelings, including (but not limited to) anything that involves intuition, diplomacy, seduction or wild, passionate action.
+						</span>
 					</div>
 				</div>
-				<!-- Magic & Tech 
-				<div class="dice-counter" id="magic">
-					<h2 class="label">Magic & Tech</h2>
-					<div class="dice" style="color: white">
-						coin<br>
-						2 bar<br>
-						3 bar<br>
-						4 bar<br>
-						5 bar<br>
-						6 bar<br>
-						7 bar<br>
-						8 bar<br>
-						9 bar<br>
+				<!-- Magic & Tech --> 
+				<div class="dice-counter" id="magic-tech">
+					<div class="dice">
+						<h3>Magic</h3>
+						<div class="dice-number disabled blocked">
+							<span class="number">1</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-2">
+							<span class="number">2</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-3">
+							<span class="number">3</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-4">
+							<span class="number">4</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-5">
+							<span class="number">5</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-6">
+							<span class="number">6</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-7">
+							<span class="number">7</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number disabled blocked">
+							<span class="number">8</span>
+							<div class="bar"></div>
+						</div>
+						<h3>Tech</h3>
+					</div>
+					<div id="magic-tooltip">
+						<h4>Magic</h4>
+						<span class="description">
+							Roll <strong>under</strong> <span id="magic-tech-number">your number</span> to succeed on Magic rolls. Magic is a dangerous, unpredictable and powerful force. All sentient beings are attuned to some extent with a magical force.
+						</span>
+					</div>
+					<div id="tech-tooltip">
+						<h4>Tech</h4>
+						<span class="description">
+							Roll <strong>over</strong> <span id="magic-tech-number">your number</span> to succeed on Tech rolls. You can substitute Logic or Feelings rolls with a Tech roll when using advanced technology, such as firearms, computers or starships.
+						</span>
+					</div>
+				</div>
+				<!-- Tier -->
+				<div id="tier">
+					<h3>Tier</h3>
+					<div id="current-tier">1</div>
+					<div id="xp-section">
+						<div id="xp-up">&#x2BC5;</div>
+						<div id="xp-number">0</div>
+						<div id="xp-down">&#x2BC6;</div>
+						<div>XP Points</div>
+						<div class="button disabled" id="tier-button">
+							<div>Next Tier</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -922,27 +1000,27 @@
 			</div>
 			<div id="spellbook">
 				<div class="filters hidden-section">
-					<div class="button clicked" id="filter-tier1">
+					<div class="button clicked hidden-section" id="filter-tier1">
 						<div></div>
 						Tier 1
 					</div>
-					<div class="button clicked" id="filter-tier2">
+					<div class="button clicked hidden-section" id="filter-tier2">
 						<div></div>
 						Tier 2
 					</div>
-					<div class="button clicked" id="filter-tier3">
+					<div class="button clicked hidden-section" id="filter-tier3">
 						<div></div>
 						Tier 3
 					</div>
-					<div class="button clicked" id="filter-tier4">
+					<div class="button clicked hidden-section" id="filter-tier4">
 						<div></div>
 						Tier 4
 					</div>
-					<div class="button clicked" id="filter-tier5">
+					<div class="button clicked hidden-section" id="filter-tier5">
 						<div></div>
 						Tier 5
 					</div>
-					<div class="button clicked" id="filter-tier6">
+					<div class="button clicked hidden-section" id="filter-tier6">
 						<div></div>
 						Tier 6
 					</div>
