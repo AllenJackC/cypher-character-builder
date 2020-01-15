@@ -408,7 +408,7 @@ div.proficiency {
 #dice-counters {
 	display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
+    grid-gap: 15px;
 	max-width: 577px;
     margin: 0 15px 0 15px;
 }
@@ -632,18 +632,77 @@ div.proficiency {
 #footer-links a {
 	margin: 0 5px;
 }
-.dice-counter {
-	min-width: 172px;
+#tier {
+	padding-top: 30px;
+	text-align: center;
 }
-.dice-counter h3, #tier h3 {
+#tier h2 {
 	padding: 0;
-	margin: 15px -10px 15px 0;
+	margin: 15px 0;
 	text-transform: uppercase;
+	color: var(--white);
+}
+#current-tier {
+	color: var(--white);
+	font-size: 40px;
+	line-height: 1.5;
+}
+#xp-section {
+	margin: 0 auto;
+	display: grid;
+    grid-template-columns: 3fr 1fr;
+	grid-gap: 5px;
+	width: 92px;
+}
+#xp-number {
+    grid-row: span 2;
+	color: var(--white);
+    font-size: 24px;
+    line-height: 2;
+    text-align: right;
+}
+#xp-up {
+	line-height: 0.5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+	color: var(--white);
+}
+#xp-down {
+	line-height: 0.5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+	color: var(--white);
+}
+#xp-up:hover, #xp-down:hover {
+	color: var(--selected-hover);
+}
+#xp-up:active, #xp-down:active {
+	color: var(--selected-active);
+}
+#xp-up.disabled, #xp-down.disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
+#tier-button {
+	grid-column: span 2;
+	display: none;
+	margin-bottom: 15px;
+}
+.dice-counter h3 {
+	padding: 0;
+	margin: 15px -20px 15px 0;
+	text-transform: uppercase;
+	color: var(--white);
+}
+.dice-counter h3 {
+	pointer-events: auto;
+	cursor: help;
 }
 .dice {
-    color: var(--white);
 	text-align: center;
-	height: 252px;
+	margin-left: -20px;
 }
 .dice-number {
 	display: flex;
@@ -651,24 +710,27 @@ div.proficiency {
 	align-items: center;
 	pointer-events: auto;
     cursor: pointer;
-	transition: margin 0.5s;
+	transition: margin 0.3s;
 }
 .dice-number .bar {
     background-color: var(--white);
     width: 80px;
     height: 10px;
-	transition: width 0.5s, height 0.5s;
+	transition: width 0.3s, height 0.3s;
 }
 .dice-number .number {
+	color: var(--white);
 	margin-right: 10px;
-	font-size: 100%;
-	transition: font-size 0.5s, line-height 0.5s;
-	font-weight: 700;
+	font-size: 150%;
 	line-height: 24px;
+	font-weight: 700;
+	opacity: 0;
+	min-width: 13px;
+	transition: font-size 0.3s, line-height 0.3s;
 }
 .dice-number.disabled {
     pointer-events: none;
-	opacity: 0.4;
+	opacity: 0.5;
 }
 .dice-number.disabled .bar {
 	height: 5px;
@@ -676,31 +738,33 @@ div.proficiency {
 .dice-number.disabled .number {
 	font-size: 95%;
 	line-height: 15px;
+	opacity: 0;
+}
+.dice-number.blocked .number {
+	opacity: 1;
 }
 .dice-number.selected {
     pointer-events: none;
-	color: var(--selected);
-	margin-left: -3px;
+	color: var(--secondary-button-hover);
+	margin-left: 1px;
 }
 .dice-number.selected .bar {
 	width: 85px;
-	background-color: var(--selected);
+	background-color: var(--secondary-button-hover);
 }
 .dice-number.selected .number {
-	font-size: 200%;
-	line-height: 24px;
+	opacity: 1;
 }
 .dice-number:hover {
-	margin-left: -2px;
+	margin-left: 1px;
 }
 .dice-number:hover .bar {
 	width: 85px;
 	background-color: var(--selected-hover);
 }
 .dice-number:hover .number {
-	font-size: 200%;
-	line-height: 24px;
 	color: var(--selected-hover);
+	opacity: 1;
 }
 #xp-up, #xp-down {
 	pointer-events: auto;
@@ -1675,11 +1739,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		padding: 0;
 		width: auto;
 	}
-	#dice-counters {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
 	#character-attributes {
 		width: calc(100% - 30px);
 		max-width: unset;
@@ -1707,9 +1766,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	#footer p:not(:nth-child(5)) {
 		margin-bottom: 10px;
-	}
-	.dice-counter {
-		margin: 15px 15px 0 15px;
 	}
 	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop, .gu-transit .chosen-container, .gu-transit .chosen-single, .gu-transit .chosen-single span, .gu-transit .chosen-drop	{
 		width: 100%!important;
@@ -1833,6 +1889,20 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	h2 {
 		font-size: 28px;
 		line-height: 1em;
+	}
+	#dice-counters {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	#tier {
+		order: 0;
+		padding-top: 0;
+		margin-bottom: 15px;
+		flex-basis: 100%;
+	}
+	.dice-counter {
+		order: 1;
+		flex-basis: 50%;
 	}
 	.list-header img, .header img {
 		margin-top: -3px;

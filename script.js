@@ -1387,6 +1387,9 @@ function arrangeSpells() {
 		statusSection.css('grid-template-columns', '1fr');
 	}
 }
+function loadSavedData() {
+	//null
+};
 //Primary on load function
 $(function() {
 	popupError = $('#popup-error');
@@ -1412,6 +1415,19 @@ $(function() {
 	hybridSection = $('#sec-species-attribute');
 	hybridButton = $('#hybrid-button div');
 	hybridTooltip = $('#hybrid-tooltip');
+	tierNumber = $('#current-tier');
+	xpNumber = $('#xp-number');
+	xpUpButton = $('#xp-up');
+	xpDownButton = $('#xp-down');
+	nextTierButton = $('#tier-button');
+	magicTitle = $('#magic-tech div h3:first-child');
+	magicTooltip = $('#magic-tooltip');
+	techTitle = $('#magic-tech div h3:last-child');
+	techTooltip = $('#tech-tooltip');
+	logicTitle = $('#logic-feelings div h3:first-child');
+	logicTooltip = $('#logic-tooltip');
+	feelingsTitle = $('#logic-feelings div h3:last-child');
+	feelingsTooltip = $('#feelings-tooltip');
 	resetButton = $('#reset-button');
 	resetTooltip = $('#reset-tooltip');
 	addSkillButton = $('#add-skill');
@@ -1454,6 +1470,7 @@ $(function() {
 	//Initial variables
 	curArc = 2;
 	curTier = 1;
+	curXP = 0;
 	spellListDatabase = [];
 	//Setup spell list database
 	Tabletop.init({
@@ -1866,6 +1883,8 @@ $(function() {
 		loreButton.text('Lore');
 		spellbookButton.text('Abilities');
 		filterButtons.addClass('clicked');
+		$('.dice-number:not(.blocked)').removeClass('disabled');
+		$('.dice-number').removeClass('selected');
 	});
 	//Populate relevant lists each time the select list is interacted
 	//with, populate spells, and show the reset button
@@ -2088,12 +2107,43 @@ $(function() {
 	});
 	//Re-arrange spell hotbars when window is resized
 	$( window ).resize(function() {arrangeSpells();});
-	//Highlight selected dice number and then disabled
-	//the others
+	//Highlight selected dice number
+	//and then disable the others
 	$('.dice-number').click( function() {
 		var parentSection = $(this).closest('.dice');
 		$('.dice-number', parentSection).not(this).addClass('disabled');
 		$(this).addClass('selected');
+	});
+	//Increase and decrease XP amounts when buttons
+	//are pushed and check for XP amount for level up
+	xpUpButton.click( function() {
+		var displayedXP = xpNumber.text().replace(' XP', '');
+		xpDownButton.removeClass('disabled');
+		curXP++;
+		xpNumber.text(curXP + ' XP');
+		if ( curXP === (90 - ((curTier - 1) * 16)) ) xpUpButton.addClass('disabled');
+		if ( curXP >= 16 && nextTierButton.is(':hidden') ) nextTierButton.slideToggle(150);
+	});
+	xpDownButton.click( function() {
+		var displayedXP = xpNumber.text().replace(' XP', '');
+		xpUpButton.removeClass('disabled');
+		curXP--;
+		xpNumber.text(curXP + ' XP');
+		if ( curXP === 0 ) xpDownButton.addClass('disabled');
+		else if ( curXP < 16 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
+	});
+	//Click to advance to the next tier
+	//and run spell function to populate new spells
+	nextTierButton.click( function() {
+		var displayedTier = tierNumber.text();
+		var displayedXP = xpNumber.text().replace(' XP', '');
+		curTier++;
+		curXP = curXP - 16;
+		tierNumber.text(curTier);
+		xpNumber.text(curXP + ' XP');
+		populateSpells();
+		if ( curXP < 16 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
+		if ( curXP === 0 ) xpDownButton.addClass('disabled');
 	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {
@@ -2194,6 +2244,46 @@ $(function() {
 		enableCyberware.mousemove( function(targetElement){
 			isHovering = true;
 			tooltipPosition(targetElement,cyberwareTooltip);
+		});
+		magicTitle.hover( function(targetElement){
+			tooltipPosition(targetElement,magicTooltip);
+		}, function() {
+			isHovering = false;
+			magicTooltip.removeClass('visible');
+		});
+		magicTitle.mousemove( function(targetElement){
+			isHovering = true;
+			tooltipPosition(targetElement,magicTooltip);
+		});
+		techTitle.hover( function(targetElement){
+			tooltipPosition(targetElement,techTooltip);
+		}, function() {
+			isHovering = false;
+			techTooltip.removeClass('visible');
+		});
+		techTitle.mousemove( function(targetElement){
+			isHovering = true;
+			tooltipPosition(targetElement,techTooltip);
+		});
+		logicTitle.hover( function(targetElement){
+			tooltipPosition(targetElement,logicTooltip);
+		}, function() {
+			isHovering = false;
+			logicTooltip.removeClass('visible');
+		});
+		logicTitle.mousemove( function(targetElement){
+			isHovering = true;
+			tooltipPosition(targetElement,logicTooltip);
+		});
+		feelingsTitle.hover( function(targetElement){
+			tooltipPosition(targetElement,feelingsTooltip);
+		}, function() {
+			isHovering = false;
+			feelingsTooltip.removeClass('visible');
+		});
+		feelingsTitle.mousemove( function(targetElement){
+			isHovering = true;
+			tooltipPosition(targetElement,feelingsTooltip);
 		});
 	}
 });
