@@ -665,7 +665,7 @@ div.proficiency {
     text-align: right;
 }
 #xp-up {
-	line-height: 0.5;
+	line-height: 1;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -673,12 +673,11 @@ div.proficiency {
 	font-family: 'Arial', sans-serif;
 }
 #xp-down {
-	line-height: 0.5;
+	line-height: 0.7;
     display: flex;
     justify-content: center;
     align-items: flex-start;
 	color: var(--white);
-	font-family: 'Arial', sans-serif;
 }
 #xp-up:hover, #xp-down:hover {
 	color: var(--selected-hover);
