@@ -17,8 +17,8 @@
 	--remove: #EF4B39;
 	--remove-hover: #F7A399;
 	--remove-active: #F37668;
-	--body-font: 'Roboto Condensed', sans-serif;
-	--header-font: 'Oswald', sans-serif;
+	--body-font: 'Roboto Condensed', 'Verdana', sans-serif;
+	--header-font: 'Oswald', 'Verdana', sans-serif;
 }
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -529,7 +529,7 @@ div.proficiency {
 #cyber-mods {
 	color: var(--white);
 	font-size: 14px;
-	font-family: 'Consolas', monospace;
+	font-family: 'Consolas', 'Courier New', monospace;
 	margin-left: 20px;
 	max-width: 300px;
 	min-width: 250px;

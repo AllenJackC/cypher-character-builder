@@ -1388,7 +1388,17 @@ function arrangeSpells() {
 	}
 }
 function loadSavedData() {
-	//null
+	curName = localStorage.getItem("name");
+	curDescriptor = localStorage.getItem("descriptor");
+	curPriSpecies = localStorage.getItem("pri-species");
+	isHybrid = localStorage.getItem("is-hybrid");
+	curSecSpecies = localStorage.getItem("sec-species");
+	curType = localStorage.getItem("type");
+	curPriFocus = localStorage.getItem("pri-focus");
+	curSecFocus = localStorage.getItem("sec-focus");
+	curTier = localStorage.getItem("tier");
+	logicNumber = localStorage.getItem("logic-number");
+	magicNumber = localStorage.getItem("magic-number");
 };
 //Primary on load function
 $(function() {
