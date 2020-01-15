@@ -1286,7 +1286,7 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue) {
 			'<div class="value">' +
 				'<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>' +
 				'<div class="text-wrapper">' +
-					'<span class="blue-text">return</span> <div contenteditable="' + contentEditable + '" class="editable">' + cyberwareValue + '</div>&#8353;' +
+					'<span class="blue-text">return</span> <div contenteditable="' + contentEditable + '" class="editable">' + cyberwareValue + '</div><span class="cyber-currency">&#8353;</span>' +
 				'</div>' +
 			'</div>' +
 		'</div>'
