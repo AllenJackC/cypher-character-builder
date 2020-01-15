@@ -670,20 +670,13 @@ div.proficiency {
     justify-content: center;
     align-items: flex-end;
 	color: var(--white);
-	font-family: 'Arial', sans-serif;
 }
 #xp-down {
-	line-height: 0.7;
+	line-height: 1;
     display: flex;
     justify-content: center;
     align-items: flex-start;
 	color: var(--white);
-}
-#xp-up:hover, #xp-down:hover {
-	color: var(--selected-hover);
-}
-#xp-up:active, #xp-down:active {
-	color: var(--selected-active);
 }
 #xp-up.disabled, #xp-down.disabled {
 	opacity: 0.5;
@@ -1464,6 +1457,21 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		font-style: italic;
 		margin-top: 10px;
 	}
+	#tier-button {
+		margin-top: 10px;
+	}
+	#xp-number {
+		text-align: center;
+		line-height: 2.3;
+	}
+	#xp-up {
+		line-height: 1.5;
+		background-color: var(--button);
+	}
+	#xp-down {
+		line-height: 1.5;
+		background-color: var(--button);
+	}
 	.hotbars, .hotbars .spell {
 		transition: width 0.2s linear;
 	}
@@ -1612,6 +1620,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		color: var(--light-grey);
 		font-style: italic;
 		text-align: right;
+	}
+	#xp-up:hover, #xp-down:hover {
+		color: var(--selected-hover);
+	}
+	#xp-up:active, #xp-down:active {
+		color: var(--selected-active);
 	}
 }
 /* Responsive CSS */
