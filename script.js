@@ -1870,6 +1870,7 @@ $(function() {
 		populateSpecies();
 		populateTypes();
 		populateFoci();
+		populateSpells();
 	});
 	//Reset button to reset all values and hide extra sections
 	//Does not affect hybrid toggle
