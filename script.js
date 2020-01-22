@@ -829,17 +829,15 @@ function populateSpells() {
 		var spellID = parseInt($(this).attr('id'));
 		if ( spellID && $.inArray(spellID,spellsList) < 0 ) $(this).remove();
 	});
-	//Hide placeholder if there are spells or lore,
+	//Hide placeholder if there are spells
 	//and show the filters in the spellbook
-	$('.modal').each( function() {
-		if ( $(this).find('.spell').length != 0 || $(this).find('.lore').length != 0 ) {
-			$(this).find('.placeholder').addClass('hidden-section');
-			$(this).find('.filters').removeClass('hidden-section');
-		} else {
-			$(this).find('.placeholder').removeClass('hidden-section');
-			$(this).find('.filters').addClass('hidden-section');
-		}
-	});
+	if ( $('.spell', spellBook).length != 0 ) {
+		$('.placeholder', spellBook).addClass('hidden-section');
+		$('.filters', spellBook).removeClass('hidden-section');
+	} else {
+		$('.placeholder', spellBook).removeClass('hidden-section');
+		$('.filters', spellBook).addClass('hidden-section');
+	}
 	//Show or hide filters based on current level
 	for (var i = 0; i < $('.filters .button').length; i++) {
 		var filterTier = i + 1;
@@ -1387,19 +1385,6 @@ function arrangeSpells() {
 		statusSection.css('grid-template-columns', '1fr');
 	}
 }
-function loadSavedData() {
-	curName = localStorage.getItem("name");
-	curDescriptor = localStorage.getItem("descriptor");
-	curPriSpecies = localStorage.getItem("pri-species");
-	isHybrid = localStorage.getItem("is-hybrid");
-	curSecSpecies = localStorage.getItem("sec-species");
-	curType = localStorage.getItem("type");
-	curPriFocus = localStorage.getItem("pri-focus");
-	curSecFocus = localStorage.getItem("sec-focus");
-	curTier = localStorage.getItem("tier");
-	logicNumber = localStorage.getItem("logic-number");
-	magicNumber = localStorage.getItem("magic-number");
-};
 //Primary on load function
 $(function() {
 	popupError = $('#popup-error');

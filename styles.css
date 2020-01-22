@@ -371,13 +371,16 @@ div.proficiency {
 	margin: 10px auto 5px;
 }
 #dice-attributes {
-	flex-basis: 0;
+	flex-basis: 100%;
     flex-grow: 1;
 	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
 }
 #character-attributes {
 	max-width: 577px;
-	margin: 15px 15px 10px 15px;
+	margin: 15px 15px 30px 15px;
 	display: grid;
     grid-template-columns: 24px 147px 30px 104px 161px 30px;
     grid-gap: 15px;
@@ -410,39 +413,21 @@ div.proficiency {
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 15px;
 	max-width: 577px;
-    margin: 0 15px 0 15px;
-}
-#might {
-	background: url('images/might-bg.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-#speed {
-	background: url('images/speed-bg.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-#intellect {
-	background: url('images/intellect-bg.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
+    margin: 0 30px 0 30px;
+	flex-grow: 1;
 }
 #character-options {
 	display: none;
     flex-basis: calc(100% - 30px);
     flex-wrap: wrap;
     justify-content: flex-start;
-    margin: 15px 15px 15px 30px;
+    margin: 15px 0 0 15px;
 }
 #buttons {
 	display: flex;
-	flex-basis: calc(100% - 30px);
+	flex-basis: 100%;
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	margin: 25px 15px 0 15px;
 }
 #cyberware, .item-list, .spell-list {
 	flex-grow: 1;
@@ -1001,7 +986,6 @@ div.proficiency {
 .wrapper {
 	flex-basis: 100%;
 	pointer-events: auto;
-	max-height: 24px;
 }
 .plus-symbol, .inability  {
 	display: none;
@@ -1324,7 +1308,8 @@ tr.gu-mirror {
 	content: '\2718';
 }
 .hotbars .spell .wrapper span:first-child {
-	white-space: normal;
+	white-space: nowrap;
+	margin-right: 20px;
 }
 /* States */
 .with-sec-species #sec-species-attribute, .with-sec-species #type-attribute, .with-sec-focus #pri-focus-attribute {
@@ -1636,6 +1621,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#dice-attributes {
 		flex-basis: 100%;
 		width: 100%;
+		display: block;
 	}
 	#cyber-content {
 		display: block;
@@ -1645,6 +1631,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	#cyber-mods {
 		margin: 0 auto;
+	}
+	#buttons {
+		margin: 15px 15px 0;
 	}
 }
 @media only screen and (max-width: 637px) {
@@ -1831,7 +1820,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		margin: 0!important;
 	}
 	#spellbook .details, #archives .details {
-		padding: 30px;
+		padding: 0 30px;
 	}
 	#spellbook .spell .header, #archives .lore .header {
 		padding: 12px 30px 15px;
