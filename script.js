@@ -890,7 +890,7 @@ function populateSpells() {
 		spellbookButton.text('Make Selections');
 		$('.spell:not(.optional), .spell.optional.selected', spellBook).not(selectSpells).addClass('hide-for-select');
 	} else {
-		spellbookButton.text('New Abilities');
+		spellbookButton.text('Abilities');
 		$('.spell', spellBook).removeClass('hide-for-select');
 	}
 	populateSpellLists();
@@ -2075,7 +2075,6 @@ $(function() {
 			$('body').css('overflow-y','hidden');
 		}
 		if ( $(this).attr('id') == "open-archives" ) loreButton.text('Lore');
-		if ( $(this).text().trim() == "New Abilities" ) spellbookButton.text('Abilities');
 	});
 	//Filter spells in spellbook based on selection
 	filterButtons.click( function() {
