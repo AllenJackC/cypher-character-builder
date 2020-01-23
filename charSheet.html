@@ -554,43 +554,49 @@
 				<!-- Logic & Feelings --> 
 				<div class="dice-counter" id="logic-feelings">
 					<div class="dice">
-						<h3>Logic</h3>
+						<h3 id="logic-title">Logic</h3>
 						<div class="dice-number disabled blocked">
-							<span class="number">1</span>
-							<div class="bar"></div>
-						</div>
-						<div class="dice-number" id="die-2">
-							<span class="number">2</span>
-							<div class="bar"></div>
-						</div>
-						<div class="dice-number" id="die-3">
-							<span class="number">3</span>
-							<div class="bar"></div>
-						</div>
-						<div class="dice-number" id="die-4">
-							<span class="number">4</span>
+							<span class="number">6</span>
 							<div class="bar"></div>
 						</div>
 						<div class="dice-number" id="die-5">
 							<span class="number">5</span>
 							<div class="bar"></div>
 						</div>
-						<div class="dice-number disabled blocked">
-							<span class="number">6</span>
+						<div class="dice-number" id="die-4">
+							<span class="number">4</span>
 							<div class="bar"></div>
 						</div>
-						<h3>Feelings</h3>
+						<div class="dice-number" id="die-3">
+							<span class="number">3</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-2">
+							<span class="number">2</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number disabled blocked">
+							<span class="number">1</span>
+							<div class="bar"></div>
+						</div>
+						<h3 id="feelings-title">Feelings</h3>
 					</div>
 					<div id="logic-tooltip">
 						<h4>Logic</h4>
-						<span class="description">
-							Roll <strong>under</strong> <span id="logic-feelings-number">your number</span> to succeed at tasks that involve science, cold rationality, reasoning, or any kind of calm, precise action.
+						<span class="description pre-selection">
+							The higher the number, the better you are at Logic (science, cold rationality, reasoning, or any kind of calm, precise action).
+						</span>
+						<span class="description after-selection">
+							Roll <strong>under</strong> <span class="logic-feelings-number"></span> to succeed at tasks that involve science, cold rationality, reasoning, or any kind of calm, precise action.
 						</span>
 					</div>
 					<div id="feelings-tooltip">
 						<h4>Feelings</h4>
-						<span class="description">
-							Roll <strong>over</strong> <span id="logic-feelings-number">your number</span> to succeed at tasks that involve intuition, diplomacy, socia, or any kind of wild, passionate action.
+						<span class="description pre-selection">
+							The lower the number, the better you are at Feelings (intuition, diplomacy, physical activity, or any kind of wild, passionate action).
+						</span>
+						<span class="description after-selection">
+							Roll <strong>over</strong> <span class="logic-feelings-number"></span> to succeed at tasks that involve intuition, diplomacy, physical activity, or any kind of wild, passionate action.
 						</span>
 					</div>
 				</div>
@@ -610,51 +616,57 @@
 				<!-- Magic & Tech --> 
 				<div class="dice-counter" id="magic-tech">
 					<div class="dice">
-						<h3>Magic</h3>
+						<h3 id="tech-title">Tech</h3>
 						<div class="dice-number disabled blocked">
-							<span class="number">1</span>
-							<div class="bar"></div>
-						</div>
-						<div class="dice-number" id="die-2">
-							<span class="number">2</span>
-							<div class="bar"></div>
-						</div>
-						<div class="dice-number" id="die-3">
-							<span class="number">3</span>
-							<div class="bar"></div>
-						</div>
-						<div class="dice-number" id="die-4">
-							<span class="number">4</span>
-							<div class="bar"></div>
-						</div>
-						<div class="dice-number" id="die-5">
-							<span class="number">5</span>
-							<div class="bar"></div>
-						</div>
-						<div class="dice-number" id="die-6">
-							<span class="number">6</span>
+							<span class="number">8</span>
 							<div class="bar"></div>
 						</div>
 						<div class="dice-number" id="die-7">
 							<span class="number">7</span>
 							<div class="bar"></div>
 						</div>
-						<div class="dice-number disabled blocked">
-							<span class="number">8</span>
+						<div class="dice-number" id="die-6">
+							<span class="number">6</span>
 							<div class="bar"></div>
 						</div>
-						<h3>Tech</h3>
+						<div class="dice-number" id="die-5">
+							<span class="number">5</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-4">
+							<span class="number">4</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-3">
+							<span class="number">3</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number" id="die-2">
+							<span class="number">2</span>
+							<div class="bar"></div>
+						</div>
+						<div class="dice-number disabled blocked">
+							<span class="number">1</span>
+							<div class="bar"></div>
+						</div>
+						<h3 id="magic-title">Magic</h3>
 					</div>
 					<div id="magic-tooltip">
 						<h4>Magic</h4>
-						<span class="description">
-							Roll <strong>under</strong> <span id="magic-tech-number">your number</span> to succeed on Magic rolls. Magic is an unpredictable, yet powerful force. All sentient beings are attuned with a magical force to some extent.
+						<span class="description pre-selection">
+							The lower the number, the better you are at Magic (unpredictable, yet powerful force).
+						</span>
+						<span class="description after-selection">
+							Roll <strong>over</strong> <span class="magic-tech-number"></span> to succeed on Magic rolls. Magic is an unpredictable, yet powerful force. All sentient beings are attuned with a magical force to some extent.
 						</span>
 					</div>
 					<div id="tech-tooltip">
 						<h4>Tech</h4>
-						<span class="description">
-							Roll <strong>over</strong> <span id="magic-tech-number">your number</span> to succeed on Tech rolls. You can substitute Logic or Feelings rolls with a Tech roll when using advanced technology, such as firearms, computers or starships.
+						<span class="description pre-selection">
+							The higher the number, the better you are at Tech (advanced technology, such as firearms, computers or starships).
+						</span>
+						<span class="description after-selection">
+							Roll <strong>under</strong> <span class="magic-tech-number"></span> to succeed on Tech rolls. You roll for Tech when using advanced technology, such as firearms, computers or starships.
 						</span>
 					</div>
 				</div>

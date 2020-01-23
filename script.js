@@ -540,11 +540,8 @@ function populateSpells() {
 			var optionID = curOption.substring(1);
 			var typeCheck = spellListDatabase[i].type;
 			var spellType = '<img src="images/' + typeCheck.toLowerCase() + '.png">';
-			var isSelect;
-			if ( typeCheck == "Select" ) isSelect = 0;
-			else isSelect = 1;
 			//Set the order of the spell in the flex-box by its Tier and name
-			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + String(isSelect) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
 			var spellDescription = spellListDatabase[i].description;
 			var spellCost = spellListDatabase[i].cost;
 			var spellCasttime = spellListDatabase[i].casttime;
@@ -838,6 +835,10 @@ function populateSpells() {
 		$('.placeholder', spellBook).removeClass('hidden-section');
 		$('.filters', spellBook).addClass('hidden-section');
 	}
+	//Hide stats section if empty
+	$('.stats').each( function() {
+		if ( $(this).is(':empty') ) $(this).hide();
+	});
 	//Show or hide filters based on current level
 	for (var i = 0; i < $('.filters .button').length; i++) {
 		var filterTier = i + 1;
@@ -846,17 +847,52 @@ function populateSpells() {
 	};
 	//If filters were enabled, honor the filters
 	//for any newly added spells
+	$('.spell.hidden', spellBook).hide();
 	filterButtons.each( function() {
-		var spellState = $(this).attr('id');
-		if ( $(this).hasClass('clicked') === false ) {
-			if ( spellState != "available" ) $('#spellbook .spell.' + spellState).hide();
-			else $('#spellbook .spell').hide();
+		var thisButton = $(this);
+		var thisModal = $(this).closest('.modal');
+		var filter = $(this).attr('id');
+		var tier;
+		switch (filter) {
+			case "filter-tier1":
+				tier = "Tier 1";
+			break;
+			case "filter-tier2":
+				tier = "Tier 2";
+			break;
+			case "filter-tier2":
+				tier = "Tier 2";
+			break;
+			case "filter-tier3":
+				tier = "Tier 3";
+			break;
+			case "filter-tier4":
+				tier = "Tier 4";
+			break;
+			case "filter-tier5":
+				tier = "Tier 5";
+			break;
+			case "filter-tier6":
+				tier = "Tier 6";
+			break;
 		}
+		if ( thisButton.hasClass('clicked') === false ) {
+			$('.spell', thisModal).each( function() {
+				if ( $(this).hasClass('hidden') == false ) $(this).addClass('hidden ' + filter);
+			});
+		} 
 	});
 	//If there are select spells, update the abilities
 	//button to prompt user to make selections
-	if ( $('img[src$="images/select.png"]', spellBook).length != $('.selectable.selected', spellBook).length ) spellbookButton.text('Make Selections');
-	else spellbookButton.text('Abilities');
+	if ( $('img[src$="images/select.png"]', spellBook).length != $('.selectable.selected', spellBook).length ) {
+		var selectionMade = $('.selectable.selected', spellBook).closest('.spell');
+		var selectSpells = $('img[src$="images/select.png"]', spellBook).closest('.spell').not(selectionMade);
+		spellbookButton.text('Make Selections');
+		$('.spell:not(.optional), .spell.optional.selected', spellBook).not(selectSpells).addClass('hide-for-select');
+	} else {
+		spellbookButton.text('New Abilities');
+		$('.spell', spellBook).removeClass('hide-for-select');
+	}
 	populateSpellLists();
 }
 //Populate each individual spell list on the main character sheet
@@ -1415,13 +1451,13 @@ $(function() {
 	xpUpButton = $('#xp-up');
 	xpDownButton = $('#xp-down');
 	nextTierButton = $('#tier-button');
-	magicTitle = $('#magic-tech div h3:first-child');
+	magicTitle = $('#magic-title');
 	magicTooltip = $('#magic-tooltip');
-	techTitle = $('#magic-tech div h3:last-child');
+	techTitle = $('#tech-title');
 	techTooltip = $('#tech-tooltip');
-	logicTitle = $('#logic-feelings div h3:first-child');
+	logicTitle = $('#logic-title');
 	logicTooltip = $('#logic-tooltip');
-	feelingsTitle = $('#logic-feelings div h3:last-child');
+	feelingsTitle = $('#feelings-title');
 	feelingsTooltip = $('#feelings-tooltip');
 	resetButton = $('#reset-button');
 	resetTooltip = $('#reset-tooltip');
@@ -1881,6 +1917,9 @@ $(function() {
 		filterButtons.addClass('clicked');
 		$('.dice-number:not(.blocked)').removeClass('disabled');
 		$('.dice-number').removeClass('selected');
+		$('.dice h3').removeAttr('style');
+		$('.pre-selection').show();
+		$('.after-selection').hide();
 	});
 	//Populate relevant lists each time the select list is interacted
 	//with, populate spells, and show the reset button
@@ -2090,16 +2129,21 @@ $(function() {
 			if ( spellID.length > 4 ) {
 				spellID = spellID.split(',');
 				for (i = 0; i < spellID.length; i++) {
-					if ( !isSelected ) $('#' + spellID[i], spellBook).addClass('disabled');
-					else $('#' + spellID[i], spellBook).addClass('selected');
+					if ( !isSelected ) {
+						$('#' + spellID[i], spellBook).stop().slideToggle(500, function() {
+							$('#' + spellID[i], spellBook).addClass('hidden-spell');
+						});
+					} else $('#' + spellID[i], spellBook).addClass('selected');
 				}
 			} else {
-				if ( !isSelected ) $('#' + spellID, spellBook).addClass('disabled');
-				else $('#' + spellID, spellBook).addClass('selected');
+				if ( !isSelected ) {
+					$('#' + spellID, spellBook).stop().slideToggle(500, function() {
+						$('#' + spellID, spellBook).addClass('hidden-spell');
+					});
+				} else $('#' + spellID, spellBook).addClass('selected');
 			}
 		});
 		populateSpells();
-		if ( $('img[src$="images/select.png"]', spellBook).length === $('.selected', spellBook).length ) spellbookButton.text('Abilities');
 	});
 	//Re-arrange spell hotbars when window is resized
 	$( window ).resize(function() {arrangeSpells();});
@@ -2107,8 +2151,16 @@ $(function() {
 	//and then disable the others
 	$('.dice-number').click( function() {
 		var parentSection = $(this).closest('.dice');
+		var diceSection = $(this).closest('.dice-counter');
+		var diceType = diceSection.attr('id');
+		var diceNumber = $('.number', this).text();
 		$('.dice-number', parentSection).not(this).addClass('disabled');
 		$(this).addClass('selected');
+		$('.' + diceType + '-number').text(diceNumber);
+		$('h3:first-child', parentSection).css('order','3');
+		$('h3:last-child', parentSection).css('order','1');
+		$('.after-selection', diceSection).show();
+		$('.pre-selection', diceSection).hide();
 	});
 	//Increase and decrease XP amounts when buttons
 	//are pushed and check for XP amount for level up

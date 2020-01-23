@@ -623,6 +623,7 @@ div.proficiency {
 #tier {
 	padding-top: 30px;
 	text-align: center;
+	margin-left: -20px;
 }
 #tier h2 {
 	padding: 0;
@@ -672,19 +673,29 @@ div.proficiency {
 	display: none;
 	margin-bottom: 15px;
 }
-.dice-counter h3 {
+.dice {
+	text-align: center;
+	margin-left: -20px;
+	display: flex;
+	flex-direction: column;
+}
+.dice h3 {
 	padding: 0;
 	margin: 15px -20px 15px 0;
 	text-transform: uppercase;
 	color: var(--white);
-}
-.dice-counter h3 {
 	pointer-events: auto;
 	cursor: help;
+	transition: order 0.5s;
 }
-.dice {
-	text-align: center;
-	margin-left: -20px;
+.dice h3:first-child {
+	order: 1;
+}
+.dice h3:last-child {
+	order: 3;
+}
+.after-selection {
+	display: none;
 }
 .dice-number {
 	display: flex;
@@ -693,6 +704,7 @@ div.proficiency {
 	pointer-events: auto;
     cursor: pointer;
 	transition: margin 0.3s;
+	order: 2;
 }
 .dice-number .bar {
     background-color: var(--white);
@@ -1265,7 +1277,7 @@ tr.gu-mirror {
 .lore .description {
 	flex-basis: 100%;
 }
-.hidden-spell {
+.hidden-spell, .hide-for-select {
 	height: 0;
 	margin: 0!important;
 	opacity: 0;
@@ -1819,7 +1831,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#spellbook .spell, #archives .lore, .details li {
 		margin: 0!important;
 	}
-	#spellbook .details, #archives .details {
+	#spellbook .details {
+		padding: 30px;
+	}
+	#archives .details { 
 		padding: 0 30px;
 	}
 	#spellbook .spell .header, #archives .lore .header {
@@ -1906,6 +1921,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		padding-top: 0;
 		margin-bottom: 15px;
 		flex-basis: 100%;
+		margin-left: auto;
 	}
 	.dice-counter {
 		order: 1;
