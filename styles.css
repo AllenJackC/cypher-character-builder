@@ -19,6 +19,7 @@
 	--remove-active: #F37668;
 	--body-font: 'Roboto Condensed', sans-serif;
 	--header-font: 'Oswald', sans-serif;
+	--droid-font: 'Droid Sans', sans-serif;
 }
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -400,7 +401,7 @@ div.proficiency {
     margin-right: 15px;
     font-size: 16px;
     font-weight: 700;
-	font-family: unset;
+	font-family: var(--droid-font);
 }
 .status-effect.active li {
 	color: var(--selected);
@@ -408,6 +409,7 @@ div.proficiency {
 .status-effect.active li:before {
     content: '\1F5F9';
 	margin-right: 14px;
+	font-family: var(--droid-font);
 }
 #dice-counters {
 	display: grid;
@@ -521,7 +523,7 @@ div.proficiency {
 	min-width: 250px;
 }
 .cyber-currency {
-	font-family: body-font;
+	font-family: var(--droid-font);
 }
 #spellbook, #archives{
 	display: flex;
