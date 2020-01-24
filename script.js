@@ -878,7 +878,8 @@ function populateSpells() {
 		}
 		if ( thisButton.hasClass('clicked') === false ) {
 			$('.spell', thisModal).each( function() {
-				if ( $(this).hasClass('hidden') == false ) $(this).addClass('hidden ' + filter);
+				var spellTier = $('.tier', this).text();
+				if ( spellTier === tier && $(this).hasClass('hidden') == false ) $(this).addClass('hidden ' + filter);
 			});
 		} 
 	});
