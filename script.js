@@ -891,7 +891,7 @@ function populateSpells() {
 		spellbookButton.text('Make Selections');
 		$('.spell:not(.optional), .spell.optional.selected', spellBook).not(selectSpells).addClass('hide-for-select');
 	} else {
-		spellbookButton.text('Abilities');
+		spellbookButton.text('Ability List');
 		$('.spell', spellBook).removeClass('hide-for-select');
 	}
 	populateSpellLists();
@@ -933,7 +933,7 @@ function populateSpellLists() {
 				//Action spell hotbars & tooltips
 				if ( !spellOptional && typeCheck == "Action" && ($('#actions .spell[data-spellid="' + spellID + '"]').length <= 0) ) {
 					var spellCost = '<span class="spell-handle">' + spellListDatabase[i].cost + '</span>';
-					if ( !spellDice ) tooltipDice = '<span class="type">Action</span>';
+					if ( !spellDice ) tooltipDice = '<span class="type">Abilities</span>';
 					var spellToAdd =
 						'<div data-spellid="' + spellID + '" style="order: ' + spellOrder +'" class="spell">' +
 							'<div class="wrapper">' +
@@ -1914,7 +1914,7 @@ $(function() {
 		$('.selected', spellBook).removeClass('selected');
 		populateSpells();
 		loreButton.text('Lore');
-		spellbookButton.text('Abilities');
+		spellbookButton.text('Ability List');
 		filterButtons.addClass('clicked');
 		$('.dice-number:not(.blocked)').removeClass('disabled');
 		$('.dice-number').removeClass('selected');
