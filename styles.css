@@ -425,6 +425,7 @@ div.proficiency {
     flex-wrap: wrap;
     justify-content: flex-start;
     margin: 15px 0 0 15px;
+	align-items: baseline;
 }
 #buttons {
 	display: flex;
@@ -834,7 +835,7 @@ div.proficiency {
 	color: var(--white);
 	cursor: pointer;
     display: flex;
-    margin-right: 10px;
+    margin-right: 15px;
 	pointer-events: auto;
 }
 .checkbox {
@@ -1450,13 +1451,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#character-options > div {
 		max-width: 230px;
 	}
-	#character-options em {
-		color: var(--secondary-button);
-		display: none;
-		font-size: 12px;
-		font-style: italic;
-		margin-top: 10px;
-	}
 	#tier-button {
 		margin-top: 10px;
 	}
@@ -1566,9 +1560,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		display: none;
 		font-style: italic;
 		margin-top: 10px;
-	}
-	.character-option > em {
-		display: none!important;
 	}
 	.hotbars .spell:hover, .hotbars .spell:active {
 		margin-right: -5px;
