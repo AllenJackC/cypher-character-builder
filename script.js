@@ -1098,6 +1098,7 @@ function populateSpellLists() {
 					var itemType = spellListDatabase[i].itemtype;
 					var itemValue = spellListDatabase[i].itemvalue;
 					var itemEffect = spellListDatabase[i].itemeffect;
+					if ( !itemValue ) itemValue = 0;
 					if ( itemType == "Artifact" ) {
 						addArtifact(spellID,itemName,itemEffect);
 					} else {
@@ -1112,10 +1113,12 @@ function populateSpellLists() {
 							default:
 							selectThisType = "IT";
 						}
-						addItem(spellID,itemName,itemValue,selectThisType);
+						addItem(spellID,itemName);
 						var thisItem = $('#equipment tr[data-spellid="' + spellID + '"]');
 						$('.type select', thisItem).val(selectThisType);
 						$('.type select', thisItem).trigger('chosen:updated');
+						$('.value select', thisItem).val(itemValue);
+						$('.value select', thisItem).trigger('chosen:updated');
 					}
 				//Add to contact list
 				} else if ( !spellOptional && typeCheck == "Contact" && $('#contacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
@@ -1151,7 +1154,7 @@ function populateSpellLists() {
 						default:
 						selectThisType = "UT";
 					}
-					addCyberware(cyberwareLocation,spellID,cyberwareFunction,cyberwareValue);
+					addCyberware(cyberwareLocation,spellID,cyberwareFunction);
 					var thisCyberware = $('.cyberware[data-spellid="' + spellID + '"]');
 					$('.type select', thisCyberware).val(selectThisType);
 					$('.type select', thisCyberware).trigger('chosen:updated');
@@ -1223,13 +1226,16 @@ function populateInventorySelect() {
 		disable_search: true,
 		width: "fit-content"
 	});
+	$('#equipment .value select').chosen({
+		disable_search: true,
+		width: "fit-content"
+	});
 }
 //Add a blank item, unless variables are parsed
-function addItem(spellID,itemName,itemValue,selectThisType) {
+function addItem(spellID,itemName) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
 	if ( !itemName ) itemName = "";
-	if ( !itemValue ) itemValue = "";
 	var itemToAdd =
 		'<tr class="item"' + spellID + ' style="width: 0">' +
 			'<td class="arrow mobile-handle"></td>' +
@@ -1251,8 +1257,14 @@ function addItem(spellID,itemName,itemValue,selectThisType) {
 				'</select>' +
 			'</td>' +
 			'<td class="value">' +
-				'<div class="editable" contenteditable="true">' + itemValue + '</div>' +
-				'<div class="credits">&#8353;</div>' +
+				'<select>' +
+					'<option selected value="0">Priceless</option>' +
+					'<option value="1">Inexpensive</option>' +
+					'<option value="2">Moderately Priced</option>' +
+					'<option value="3">Expensive</option>' +
+					'<option value="4">Very Expensive</option>' +
+					'<option value="5">Exorbitant</option>' +
+				'</select>' +
 			'</td>' +
 		'</tr>';
 	if ( spellID ) $(itemToAdd).insertAfter('#equipment table tr:first-child');
@@ -1288,7 +1300,7 @@ function populateCyberwareSelect() {
 	});
 }
 //Add a blank cyberware, unless variables are parsed
-function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue) {
+function addCyberware(bodyPart,spellID,cyberwareFunction) {
 	var contentEditable;
 	var disabledSelect;
 	if ( spellID ) {
@@ -1299,7 +1311,6 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue) {
 		contentEditable = true;
 	}
 	if ( !cyberwareFunction ) cyberwareFunction = "";
-	if ( !cyberwareValue ) cyberwareValue = "";
 	var cyberwareToAdd =
 		'<div class="cyberware ' + bodyPart.replace('-cyberware','') + '"' + spellID + '>' +
 			'<div class="function">' +
@@ -1316,12 +1327,6 @@ function addCyberware(bodyPart,spellID,cyberwareFunction,cyberwareValue) {
 						'<option value="WE">"Weapon"</option>' +
 						'<option value="UT">"Utility"</option>' +
 					'</select>' +
-				'</div>' +
-			'</div>' +
-			'<div class="value">' +
-				'<div class="cyber-label"><span class="blue-text">print</span> VALUE</div>' +
-				'<div class="text-wrapper">' +
-					'<span class="blue-text">return</span> <div contenteditable="' + contentEditable + '" class="editable">' + cyberwareValue + '</div><span class="cyber-currency">&#8353;</span>' +
 				'</div>' +
 			'</div>' +
 		'</div>'

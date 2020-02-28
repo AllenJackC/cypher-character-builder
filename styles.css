@@ -302,9 +302,6 @@ td.type select {
 #contacts td.type select {
 	min-width: 94px;
 }
-td.value {
-	text-align: right;
-}
 td.cost {
 	border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
