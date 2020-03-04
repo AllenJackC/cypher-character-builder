@@ -2072,7 +2072,7 @@ $(function() {
 		} else {
 			modal = $(this);
 		}
-		if ( modal.hasClass('visible') ) {
+		if ( modal.hasClass('visible') && $(this).find('#rules').length < 1 ) {
 			modal.removeClass('visible');
 			$('body').css('overflow-y','auto');
 			$('.spell.disabled', modal).hide();
@@ -2197,6 +2197,36 @@ $(function() {
 		populateSpells();
 		if ( curXP < 16 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
 		if ( curXP === 0 ) xpDownButton.addClass('disabled');
+	});
+	//Click headers to expand sub-headers and content in the rules
+	//and check for any visible 'child' headers or topics to
+	//collapse when closing a section
+	function toggleRules(child) {
+		var childID = child.attr('id');
+		child.stop().slideToggle(300);
+		childExists(childID);
+	}
+	function childExists(childID) {
+		if ( childID ) {
+			var child = $('.' + childID);
+			if ( child.is(':visible') ) {
+				child.each( function() {
+					toggleRules($(this));
+					$(this).removeClass('expanded');
+				});		
+			}				
+		};
+	}
+	$('#rules *').click( function() {
+		var elementID = $(this).attr('id');
+		if ( elementID ) {
+			var child = $('.' + elementID);
+			child.each( function() {
+				toggleRules($(this));
+				$(this).removeClass('expanded');
+			});
+			if ( $(this).is('h5') ) $(this).toggleClass('expanded');
+		}
 	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {

@@ -595,6 +595,117 @@ div.proficiency {
 #spellbook .spell span:nth-child(odd).origin {
 	flex-basis: 100%;
 }
+#rules {
+	color: var(--white);
+}
+#rules h3 {
+    padding: 10px;
+    text-transform: uppercase;
+    background-color: var(--button);
+    margin: 5px 0;
+    line-height: 0.9em;
+    cursor: pointer;
+    pointer-events: auto;
+}
+#rules h3:hover {
+	background-color: var(--button-hover);
+}
+#rules h3:active {
+	background-color: var(--button-active);
+}
+#rules h4 {
+    padding: 10px;
+    text-transform: uppercase;
+    background-color: var(--selected);
+    margin: 5px 0;
+    line-height: 0.9em;
+    cursor: pointer;
+    pointer-events: auto;
+    color: var(--black);
+    font-size: 18px;
+}
+#rules h4:hover {
+	background-color: var(--selected-hover);
+}
+#rules h4:active {
+	background-color: var(--selected-active);
+}
+#rules h5 {
+    color: var(--white);
+    margin: 20px 15px;
+    line-height: 0.9em;
+    cursor: pointer;
+    pointer-events: auto;
+    font-size: 18px;
+    font-weight: 800;
+}
+#rules h5:after {
+    content: '\2b9f';
+	margin-left: 5px;
+}
+#rules h5.expanded:after {
+    content: '\2b9d';
+}
+#rules h5:hover {
+	color: var(--selected-hover);
+}
+#rules h5:active {
+	color: var(--selected-active);
+}
+#rules .expandable {
+	display: none;
+}
+#rules p {
+	margin: 15px;
+}
+#rules ul {
+	margin: -5px 15px 15px 70px;
+}
+#rules li:before {
+	content: '\272A';
+    margin-left: -25px;
+    margin-right: 11px;
+    font-size: 18px;
+}
+#rules li ul {
+	margin: 0 5px 0 25px;
+}
+#rules li ul li:before {
+	content: '\2b9e';
+}
+#rules em {
+	color: var(--secondary-button-hover);
+	font-style: italic;
+}
+#rules a.items-link, #rules a.skills-link {
+	cursor: pointer;
+}
+#rules li#zero-dice:before {
+	content: '0';
+	font-weight: 700;
+	color: var(--remove-hover);
+}
+#rules li#one-die:before {
+	content: '1';
+	font-weight: 700;
+	color: var(--secondary-button-hover);
+}
+#rules li#two-dice:before {
+	content: '2';
+	font-weight: 700;
+}
+#rules li#three-dice:before {
+	content: '3';
+	font-weight: 700;
+	color: var(--selected-hover);
+}
+#rules li#exact-die:before {
+	content: '\2713';
+	font-weight: 700;
+	color: var(--selected-hover);
+	margin-left: -27px;
+    margin-right: 8px;
+}
 #footer {
 	color: var(--light-grey);
     font-size: 12px;
@@ -602,13 +713,13 @@ div.proficiency {
     margin: 30px;
 	text-align: center;
 }
-#footer a {
+#footer a, #rules a {
 	color: var(--secondary-button);
 }
-#footer a:hover {
+#footer a:hover, #rules a:hover {
 	color: var(--secondary-button-hover);
 }
-#footer a:active {
+#footer a:active, #rules a:active {
 	color: var(--secondary-button-active);
 }
 #footer-links {
@@ -1644,6 +1755,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		margin: 0 15px;
 		text-align: center;
 	}
+	#rules h3, #rules h4 {
+		text-align: center;
+	}
 	label, table select {
 		width: fit-content;
 	}
@@ -1776,6 +1890,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	#footer p:not(:nth-child(5)) {
 		margin-bottom: 10px;
+	}
+	#rules p {
+		margin: 15px 30px;
+	}
+	#rules ul {
+		margin: -5px 30px 15px 70px;
 	}
 	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop, .gu-transit .chosen-container, .gu-transit .chosen-single, .gu-transit .chosen-single span, .gu-transit .chosen-drop	{
 		width: 100%!important;

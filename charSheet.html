@@ -680,6 +680,15 @@
 				<div class="button modal-button" id="open-archives">
 					Lore
 				</div>
+				<div class="button modal-button" id="open-rules">
+					Rules
+				</div>
+				<div class="button" id="open-items">
+					Items List
+				</div>
+				<div class="button" id="open-skills">
+					Skills List
+				</div>
 				<div class="button" id="open-options">
 					Optional
 				</div>
@@ -692,7 +701,7 @@
 				<div id="reset-tooltip">
 					<h4>Reset Attributes & Abilities</h4>
 					<span class="description">
-						Click to reset all character attributes, abillities and dice numbers, and remove any items gained from attributes. Nothing else is reset or deleted in the process.
+						Click to reset all character attributes, Abillities and dice numbers, and remove any Items gained from attributes. Nothing else is reset or deleted in the process.
 					</span>
 				</div>
 				<div id="cyberware-option">
@@ -703,8 +712,8 @@
 					<div id="cyberware-tooltip">
 						<h4>Cyberware Interface</h4>
 						<span class="description">
-							Toggle the cyberware interface. Cyberware is an additional customization option, but has some drawbacks.
-							<em>You cannot disable the cyberware interface while you have cyberware installed.</em>
+							Toggle the Cyberware interface. Cyberware is an additional customization option, but has some drawbacks.
+							<em>You cannot disable the Cyberware interface while you have Cyberware installed.</em>
 						</span>
 					</div>
 				</div>
@@ -1070,6 +1079,172 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Rules Modal -->
+	<div class="modal-background">
+		<div class="modal">
+			<div class="modal-header">
+				<div class="header">
+					<img src="images/rules.png">
+					<h2>Rules</h2>
+				</div>
+				<div class="close button">
+					Close
+				</div>
+			</div>
+			<div id="rules">
+				<p>Immortal Freedom primarily uses the <a target="_blank" href="http://www.onesevendesign.com/laserfeelings">Lasers & Feelings</a> game system, with supporting mechanics from <a target="_blank" href="http://apocalypse-world.com">Powered by the Apocalypse</a>, and content from the <a target="_blank" href="https://www.cypher-system.com">Cypher System</a> and <a target="_blank" href="https://www.shadowruntabletop.com">Shadowrun</a>. The rules are intentionally made simple, with focus on allowing players to create a narrative with the Game Master (GM) instead of worrying about numbers.</p>
+				<h3 id="creation-rules">Character Creation</h3>
+				<h4 id="attributes-rules" class="expandable creation-rules">Character Attributes</h4>
+				<h5 id="species-rules" class="expandable attributes-rules">Step #1 – Select a Species</h5>
+				<p class="expandable species-rules">Your character’s <em>Species</em> provides a background to your character, giving you something to build on—though it doesn’t determine who they are. Selecting a <em>Species</em> grants <em>Tier 1 Abilities</em>. Your character is fluent in their <em>Species'</em> primary language, and is trained in the lore and civil norms of their civilization.</p>
+				<p class="expandable species-rules">You can also click or tap the 🄷 button if your character has parents from two different <em>Species</em>. Selecting a secondary <em>Species</em> unlocks additional options, but may come with some drawbacks.</p>
+				<h5 id="type-rules" class="expandable attributes-rules">Step #2 – Select a Type</h5>
+				<p class="expandable type-rules">Your character’s <em>Type</em> helps determine your character’s place in the world and relationship with other people in the setting, and is the core of your character. Your character is granted new <em>Abilities</em> specific to their selected <em>Type</em> every time they ascend to a new <em>Tier</em>.</p>
+				<h5 id="descriptor-rules" class="expandable attributes-rules">Step #3 – Select a Descriptor</h5>
+				<p class="descriptor-rules expandable">Your character's <em>Descriptor</em> places your character in the situation and helps provide motivation. It flavours everything they do and helps to define them. Selecting a <em>Descriptor</em> grants <em>Tier 1 Abilities</em>.</p>
+				<h5 id="focus-rules" class="expandable attributes-rules">Step #4 – Select a Focus</h5>
+				<p class="focus-rules expandable">Your character's <em>Focus</em> makes them unique, whether among others of the same <em>Type</em>, or just within your group. Your character is granted new <em>Abilities</em> specific to their selected <em>Focus</em> every time they ascend to a new <em>Tier</em>.</p>
+				<h5 id="selections-rules" class="expandable attributes-rules">Step #5 – Make Selections</h5>
+				<p class="selections-rules expandable">Some of your character attribute choices may allow you to select between different <em>Abilities</em> or <em>Items</em>. You may notice occasionally that you'll receive a <em>Skill</em> or <em>Item</em> labelled with <em>(of your choice)</em> or similar. Replace the text with something appropriate; feel free to consult the <a class="items-link">Items List</a> or <a class="skills-link">Skills List</a> if needed. You may also notice that the <em>Abilities</em> button sometimes becomes a <em>Make Selections</em> button. Click or tap this button to choose between different options for your character.</p>
+				<h5 id="choose-numbers-rules" class="expandable attributes-rules">Step #6 – Choose Your Numbers</h5>
+				<p class="choose-numbers-rules expandable">Choose a number from 2 to 5. The higher the number, the better your character is at <em><strong>LOGIC</strong></em> (science, cold rationality, reasoning, or any kind of calm, precise action). The lower the number, the better your character is at <em><strong>FEELINGS</strong></em> (intuition, diplomacy, physical activity, or any kind of wild, passionate action). Select the appropriate number bar on the scale once you've made your choice.</p>
+				<p class="choose-numbers-rules expandable">Choose a number from 2 to 7. The higher the number, the better your character is at <em><strong>TECH</strong></em> (advanced technology, such as firearms, computers or starships). The lower the number, the better your character is at <em><strong>MAGIC</strong></em> (unpredictable, yet powerful force). Select the appropriate number bar on the scale once you've made your choice.</p>
+				<p class="choose-numbers-rules expandable">Until you select a number, the scales are arranged by how adept your character is in each respective aspect. Once you select a number, the aspects will flip and you can use the scale to visually determine if your roll was successful.</p>
+				<h5 id="name-rules" class="expandable attributes-rules">Give Your Character a Name</h5>
+				<p class="name-rules expandable">Doesn't really matter what it is, but try to stay respectful. If you need some help, here are some suggestions:</p>
+				<ul class="name-rules expandable">
+					<li><em>Aeyan</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/dark-elf-names.php">Dark Elf Names</a></li>
+					<li><em>Erelan</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/elf_names.php)">Elf Names Generator</a></li>
+					<li><em>K'ohma</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/troll_names.php)">Troll Names Generator</a></li>
+					<li><em>Terran</em> - <a target="_blank" href="https://www.behindthename.com/random/random.php?number=1&amp;sets=1&amp;gender=both&amp;surname=&amp;randomsurname=yes&amp;all=yes">Name Generator</a></li>
+					<li><em>T'av</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/minotaur-names.php)">Minotaur Name Generator</a></li>
+					<li><em>Alternative Surnames</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/fantasy-surnames.php">Fantasy Surnames Generator</a>
+					</li>
+				</ul>
+				<h5 id="sensitive-rules" class="expandable attributes-rules">On Sensitive Subjects</h5>
+				<p class="sensitive-rules expandable">Within the extensive range of character choices available, some choices can touch on sensitive topics, such as the <em>Experiences Savant Syndrome</em> or <em>Wrestles with Multiple Personalities Foci</em>—which deal with autism and dissociative identity disorder, respectively. These are not meant as complete representations of individuals in the real world, nor are they meant as commentary or judgment on these same individuals. I strongly suggest you avoid making any character choices in poor taste, and try to be sensitive to the struggles real people face every day. If you make character choices that include sensitive topics, your goal should be empowerment and representation, not ridicule.</p>
+				<h4 id="arc-rules" class="expandable creation-rules">Character Arcs</h4>
+				<p class="expandable arc-rules">When first creating your character, you can choose a <em>Character Arcs</em> at no cost. Subsequent <em>Character Arcs</em> cost 1 XP. <em>Character Arcs</em> give your character direction within the story, while allowing you to gain some extra XP along the way. You don’t need to know how your <em>Arc</em> ends, but you should have a general goal to aim for. <em>Character Arcs</em> have different steps that mark your character’s progress through the <em>Arc</em>. Each <em>Arc</em> eventually reaches a climax, and then finishes with a final resolution.</p>
+				<ul class="expandable arc-rules">
+					<li><em>Opening (0 XP)</em> – Your character agrees to do a task or undertake a mission.</li>
+					<li><em>Step(s) (2 XP)</em> – Actions that move your character towards the climax. There should be at least one step on the way to the climax.</li>
+					<li><em>Climax (4 XP or 2 XP)</em> – The point at which your character succeeds or fails at their goal. If successful, earn 4 XP. If you fail, earn 2 XP instead.</li>
+					<li><em>Resolution (1 XP)</em> – Your character reflects on what happened, ties up any loose ends, and figures out what happens next.</li>
+				</ul>
+				<p class="expandable arc-rules"><em>Character Arcs</em> are not mandatory. Keep track of your <em>Character Arc</em> in your notes. Feel free to consult <em>Page 242</em> of the <a target="_blank" href="https://www.montecookgames.com/store/product/cypher-system-rulebook-2">Revised Cypher System Rulebook</a> for examples.</p>
+				<h4 id="starting-equipment-rules" class="expandable creation-rules">Starting Equipment</h4>
+				<p class="expandable starting-equipment-rules">Selecting a <em>Type</em> gives your character the following:</p>
+				<ul class="expandable starting-equipment-rules">
+					<li>Appropriate clothing for the selected <em>Type</em>. This can be anything you desire, but should fit your character.</li>
+					<li>An <em>Expensive Item</em>, such as a small weapon, expensive clothing, a Magical ward, or a small piece of technology.
+						<ul>
+							<li>It is highly recommended that you use your expensive <em>Item</em> for an automatic translator if you're likely to interact with civilized aliens.</li>
+						</ul>
+					</li>
+					<li>Two <em>Inexpensive Items</em>, such as a small bag, a small primitive weapon, rations, ammo or a light source.</li>
+					<li>A weapon of your choice, depending on your character's <em>Type</em>. <em>Magic</em> users do not get a weapon by default.</li>
+				</ul>
+				<p class="expandable starting-equipment-rules">You may also get additional <em>Items</em> from your character's <em>Descriptor</em>, <em>Species</em> or <em>Focus</em>. Feel free to consult the <a class="items-link">Items List</a> for suggestions if you're unsure what to give your character.</p>
+				<h3 id="game-rules">Playing the Game</h3>
+				<h4 id="encounters-rules" class="expandable game-rules">Encounters</h4>
+				<p class="expandable encounters-rules">Immortal Freedom is primarily experienced as a series of encounters strung together to build a narrative. Here's how most encounters are carried out:</p>
+				<ul class="expandable encounters-rules">
+					<li>The GM sets up a scene.</li>
+					<li>You tell the GM what you want to do.</li>
+					<li>The GM determines if the <em>Task</em> requires a roll to perform, and tells you whether the <em>Task</em> is best suited for <em>Logic</em> or <em>Feelings</em>.</li>
+					<li>You (with help from the GM) determine if any of your <em>Abilities</em> or <em>Items</em> can be used to add (or remove) dice from your dice pool.</li>
+					<li>You roll your dice pool to take an <em>Action</em>. If you succeed, you accomplish what you set out to do.</li>
+					<li>Once your turn is resolved, someone else is allowed their turn.</li>
+				</ul>
+				<p class="expandable encounters-rules">You can only take one <em>Action</em> on your turn, unless modified by an <em>Ability</em> or a voluntary penalty. Once everyone has had their turn, opponents (if any) then take their turn in unison. There is no set order for player actions. Opponents always act last (unless they get the drop on you).</p>
+				<h5 id="magic-rules" class="expandable encounters-rules">The Impact of Magic</h5>
+				<p class="expandable magic-rules">While most civilized species are aware of <em>Magic</em>, very few actively study and utilize it. Those that study <em>Magic</em> understand its potential for creation, as well as its prepotency for destruction. For all others, <em>Magic</em> is mysterious and often intimidating. Not all cultures vilify <em>Magic</em>, but almost all civilized beings regard <em>Magic</em> with caution if uninitiated to its intricacies. For this reason, the effects of using <em>Magic</em> extend beyond just its contingencies; there may be social ramifications for using <em>Magic</em> around people who revile or fear its use.</p>
+				<p class="expandable magic-rules">If your character has access to <em>Magic</em>, there's a chance that friendly or neutral NPCs will turn hostile if your character uses <em>Magic</em> in their presence if they harbor hatred towards <em>Magic</em>. Similarly, an agreeable opponent may become entirely antagonistic if they do not approve of the use of <em>Magic</em>. Even in cases where characters or creatures simply fear <em>Magic</em>, they may act differently towards your character when you use <em>Magic</em>, treating them with undue difference. This has no direct impact on your character's <em>Abilities</em>, but may shape how encounters unfold.</p>
+				<p class="expandable magic-rules">Whenever you wish—and with the GM's approval—your character can attempt to use <em>Magic</em> in a clandestine manner by removing a die from your dice pool on a <em>Magic</em> roll.</p>
+				<h5 id="tech-rules" class="expandable encounters-rules">Technology—How Does It Work?</h5>
+				<p class="expandable tech-rules">Technology is the great equalizer of the modern age. With it, any individual can rise from a trash heap to the top of the world. However, the use of <em>Tech</em> requires access to advanced technology suitable for space-faring beings, and the materials to build or power it. A K'ohma native to Erelon—as an example—is unlikely to have access to an energy rifle. However, a Terran colonist on Kiplar is likely to have a datapad somewhere in their home. This should be taken into consideration when using <em>Tech Abilities</em>, or performing <em>Tasks</em> that involve technology. <em>Tech</em> is not <em>Magic</em>; your character needs to have access to the actual physical technology to perform <em>Tech Actions</em>.</p>
+				<h4 id="roll-rules" class="expandable game-rules">Rolling the Dice</h4>
+				<p class="expandable roll-rules">When you perform a <em>Task</em>, roll <strong>1d6</strong> <em>(Logic/Feelings)</em> or <strong>1d8</strong> <em>(Magic/Tech)</em> to find out how it goes. Your character's <em>Abilities</em> modify how many dice you roll, can affect the outcome, or may change the requirements for success.</p>
+				<h5 id="scales-rules" class="expandable roll-rules">Dice Scales</h5>
+				<p class="expandable scales-rules">You must almost always roll <strong>1d6</strong> for <em>Logic</em> or <em>Feelings</em> when you roll for a <em>Task</em>.</p>
+				<ul class="expandable scales-rules">
+					<li>If you're using <em><strong>LOGIC</strong></em> (science, reason), you want to roll <strong>under</strong> your number.</li>
+					<li>If you're using <em><strong>FEELINGS</strong></em> (rapport, passion), you want to roll <strong>over</strong> your number.</li>
+				</ul>
+				<p class="expandable scales-rules">Your <strong>1d8</strong> <em>Magic</em> or <em>Tech</em> die is primarily used to enhance your regular rolls, but it can also replace your <strong>1d6</strong> in certain circumstances.</p>
+				<ul class="expandable scales-rules">
+					<li>If you're using <em><strong>MAGIC</strong></em> (character or situation dependant), you want to roll <strong>over</strong> your number.</li>
+					<li>If you're using <em><strong>TECH</strong></em> (advanced technology), you want to roll <strong>under</strong> your number.</li>
+				</ul>
+				<p class="expandable scales-rules">Until you select a number, the scales are arranged by how adept you are in each respective aspect. Once you select a number, the aspects will flip and you can use the scale to visually determine if your roll was successful.</p>
+				<h5 id="success-rules" class="expandable roll-rules">Measuring Success</h5>
+				<ul class="expandable success-rules">
+					<li id="zero-dice"><strong>If none of your dice succeed,</strong> it goes horribly wrong. The GM incurs an <em>Intrusion</em> on your character.</li>
+					<li id="one-die"><strong>If only one die succeeds,</strong> you barely manage it; it's a <em>Mixed Success</em>. The GM inflicts a complication, harm or cost.</li>
+					<li id="two-dice"><strong>If two dice succeed,</strong> your character does it well. Good job, it's a regular <em>Success</em>!</li>
+					<li id="three-dice"><strong>If three or more dice succeed,</strong> you get a <em>Critical Success</em>! The GM tells you some extra effect you get.</li>
+					<li id="exact-die"><strong>If you roll your number exactly,</strong> you gain free <em>Insight</em>. Ask the GM a question and they'll answer you honestly.
+						<ul>
+							<li>You can also choose to succeed on the die instead of asking a question.</li>
+						</ul>
+					</li>
+				</ul>
+				<h5 id="reroll-rules" class="expandable roll-rules">Re-rolling</h5>
+				<p class="expandable reroll-rules">If ever you are unsatisfied with the results of your roll, you can pay 1 XP to roll again to take the same <em>Action</em> (or a different <em>Action</em>) within the same round. You can do this as often as you want within the same round, though it may end up costing you a lot of XP.</p>
+				<p class="expandable reroll-rules">If you retry the same <em>Action</em> multiple rounds in a row after failing the first time, remove a die from your dice pool for each successive repeat attempt.</p>
+				<p class="expandable reroll-rules"><strong>Example:</strong> If you rolled two dice to climb over a fence and failed, you only roll one die the next time you attempt it in the next round (does not apply if you re-roll in the same round).</p>
+				<h4 id="xp-rules" class="expandable game-rules">Experience Points</h4>
+				<p class="expandable xp-rules">Experience points (XP) are the currency by which players gain benefits for their characters. The most common ways to earn XP are through <em>Intrusions</em> and by accomplishing things within the world. Sometimes, experience points are earned during a game session, and sometimes they're earned between sessions.</p>
+				<h5 id="gainxp-rules" class="expandable xp-rules">Gaining XP</h5>
+				<p class="expandable gainxp-rules">Anytime a player gets an <em>Intrusion</em>, they get 2 XP. They keep 1 XP, and immediately give 1 XP to another player and justify the gift (perhaps the other player had a good idea, told a joke, or performed an action that saved a life).</p>
+				<p class="expandable gainxp-rules">Other sources of XP:</p>
+				<ul class="expandable gainxp-rules">
+					<li><strong>Character Arcs</strong>
+						<ul>
+							<li><em>Opening</em> – 0 XP</li>
+							<li><em>Step(s)</em> – 2 XP each</li>
+							<li><em>Climax</em> – 4 XP on success, 2 XP on failure</li>
+							<li><em>Resolution</em> – 1 XP</li>
+						</ul>
+					</li>
+					<li><strong>Finding an Artifact</strong> – 1 XP</li>
+					<li><strong>Other Discoveries</strong> – 1 XP</li>
+					<li><strong>Mission Completion</strong> – 1XP</li>
+				</ul>
+				<h4 id="harm-rules" class="expandable game-rules">Harm & Damage</h4>
+				<p class="expandable harm-rules">Whenever any character—including yours—is attacked, they take <em>Harm</em>. You shouldn't worry about tracking your character's <em>Harm</em>; the GM will do this for you, or may not track <em>Harm</em> at all. The main purpose of <em>Harm</em> is to keep track of wounds inflicted on your character to create narrative moments.</p>
+				<h5 id="sustainability-rules" class="expandable harm-rules">Sustainability</h5>
+				<p class="expandable sustainability-rules">Injury severity depends on how much <em>Harm</em> your character has suffered:</p>
+				<ul class="expandable sustainability-rules">
+					<li><strong>At 0 to 3 <em>Harm</em></strong>, wounds have only minor, short term effects, and can usually be ignored.</li>
+					<li><strong>At 4 or 5 <em>Harm</em></strong>, wounds begin to cause complications, so that you remove a die from your dice pool on most rolls.</li>
+					<li><strong>At 6 or 7 <em>Harm</em></strong>, wounds are serious and unstable. You remove two dice from your dice pool on most rolls.</li>
+					<li><strong>At 8 <em>Harm</em></strong>, your character is dead.</li>
+				</ul>
+				<p class="expandable sustainability-rules">NPC's in the world can sustain the same amount of <em>Harm</em> as your character. Non-humanoid creatures may be able to sustain more (or less) <em>Harm</em>, depending on their size and relative strength. Some <em>Abilities</em> allow you to mitigate complications from sustaining <em>Harm</em>.</p>
+				<h5 id="healing-rules" class="expandable harm-rules">Healing</h5>
+				<p class="expandable healing-rules">There are four ways to heal <em>Harm</em>:</p>
+				<ul class="expandable healing-rules">
+					<li><em>Short Rest</em> – Whenever your character performs a <em>Short Rest</em>, they heal <em>Harm</em> equal to their <em>Tier</em>, divided by 2, rounded up.</li>
+					<li><em>Long Rest</em> – Whenever your character performs a <em>Long Rest</em>, they heal up to the next stage of <em>Harm</em>, plus their <em>Tier</em>, divided by 2, rounded up. So a <em>Tier 3</em> character with 7 <em>Harm</em> would heal up to 5 <em>Harm</em>, then heal another 2 <em>Harm</em> for a final <em>Harm</em> count of 3.</li>
+					<li><em>Healing Task</em> – As a <em>Task</em> roll, someone can heal <em>Harm</em> equal to their <em>Tier</em>, divided by 2, rounded up.</li>
+					<li><em>Healing Abilities</em> – Heal <em>Harm</em> equal to an <em>Ability's Tier</em> (unless otherwise modified in the <em>Ability</em> description).</li>
+				</ul>
+				<h5 id="sources-rules" class="expandable harm-rules">Sources of Harm</h5>
+				<p class="expandable sources-rules">Most of the <em>Harm</em> your character receives will be from enemy <em>Attacks</em>, but experiences such as falling from a great height, being burned in a fire, and spending time in severe weather also cause <em>Harm</em>. Most environmental effects such as winter cold, high temperatures, or background radiation indirectly affect everything in the area. The amount of <em>Harm</em> received depends greatly on how protected your character is from the environment.</p>
+				<h5 id="tracking-rules" class="expandable harm-rules">Keeping Track of Harm</h5>
+				<p class="expandable tracking-rules">It's highly recommended that you don't track your character's <em>Harm</em>, allowing the GM to keep track of <em>Harm</em> whenever they sustain injuries instead—if they choose to use <em>Harm</em> at all. As an example:</p>
+				<ul class="expandable tracking-rules">
+					<li>Your character enters a combat encounter already having sustained 3 <em>Harm</em>.</li>
+					<li>They try to run at an outlaw, but you fail your roll and get an Intrusion.</li>
+					<li>For your Intrusion, the GM says: "The outlaw fires their laser pistol at you in response. The force of the blast is enough for you to drop your sword. Your arm is now bleeding profusely."</li>
+					<li>In practice, this adds 2 <em>Harm</em>, for a total of 5 <em>Harm</em>.</li>
+					<li>The GM follows up by saying: "You're now suffering complications from your arm injury. Remove one die from your dice pool until you can get your arm healed."</li>
+				</ul>
+				<p class="expandable tracking-rules">Alternatively, the GM can just tell you what your character's <em>Harm</em> numbers are. However, the focus should be on building a narrative, and not on keeping track of numbers.</p>
 			</div>
 		</div>
 	</div>
