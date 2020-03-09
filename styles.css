@@ -47,10 +47,6 @@ blockquote:before, blockquote:after, q:before, q:after {
 	content: '';
 	content: none;
 }
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
 /* Scrollbar CSS */
 ::-webkit-scrollbar {
   width: 10px;
@@ -196,7 +192,6 @@ strong {
 table {
 	border-spacing: 0 5px;
 	border-collapse: separate;
-	padding-left: 6px;
 	width: 100%;
 }
 tr, td {
@@ -659,7 +654,7 @@ div.proficiency {
 	margin: 15px;
 }
 #rules ul {
-	margin: -5px 15px 15px 70px;
+	margin: -5px 15px 15px 50px;
 }
 #rules li:before {
 	content: '\272A';
@@ -705,6 +700,47 @@ div.proficiency {
 	color: var(--selected-hover);
 	margin-left: -27px;
     margin-right: 8px;
+}
+#rules table {
+	display: table;
+    border-collapse: collapse;
+    width: fit-content;
+    margin: 0 auto;
+}
+#rules tr:first-child {
+	background: var(--white);
+}
+#rules tr {
+	border-top: 1px solid var(--white);
+}
+#rules th {
+	font-weight: 800;
+    font-variant: small-caps;
+    font-size: 18px;
+    line-height: 1.5em;
+    vertical-align: middle;
+    color: var(--black);
+    padding: 0 15px;
+}
+#rules th:first-child {
+	padding-left: 30px;
+}
+#rules th:last-child {
+	padding-right: 30px;
+}
+#rules td {
+	color: var(--white);
+    height: auto;
+    font-size: 16px;
+    line-height: 1em;
+    vertical-align: middle;
+    padding: 5px 15px;
+}
+#rules td:first-child {
+	padding-left: 30px;
+}
+#rules td:last-child {
+	padding-right: 30px;
 }
 #footer {
 	color: var(--light-grey);
@@ -1749,6 +1785,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#buttons {
 		margin: 15px 15px 0;
 	}
+	#rules th {
+		vertical-align: bottom;
+	}
+	#rules th:nth-child(n+2) {
+		white-space: normal;
+	}
 }
 @media only screen and (max-width: 637px) {
 	h5 {
@@ -1758,27 +1800,27 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#rules h3, #rules h4 {
 		text-align: center;
 	}
-	label, table select {
+	label, .item-list table select {
 		width: fit-content;
 	}
-	table {
+	.item-list table {
 		border-spacing: 0;
 		padding: 0;
 		width: 100%;
 	}
-	tbody  {
+	.item-list tbody  {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
 	}
-	tr {
+	.item-list tr {
 		border-radius: 5px!important;
 		display: flex;
 		flex-basis: 48%;
 		flex-wrap: wrap;
 		margin-bottom: 4%;
 	}
-	td {
+	.item-list td {
 		border-radius: 0!important;
 		display: block;
 		padding: 10px!important;
@@ -1807,7 +1849,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		top: 10px;
 		width: 20px!important;
 	}
-	tr:nth-child(odd) td.arrow {
+	.item-list tr:nth-child(odd) td.arrow {
 		border-radius: 0 5px 5px 0!important;
 		left: initial;
 		right: -20px
@@ -1895,7 +1937,48 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		margin: 15px 30px;
 	}
 	#rules ul {
-		margin: -5px 30px 15px 70px;
+		margin: -5px 30px 15px 60px;
+	}
+	#rules table {
+		display: block;
+		width: 100%;
+	}
+	#rules tbody {
+		display: block;
+	}
+	#rules tr {
+		border-top: 1px solid var(--white);
+		display: block;
+	}
+	#rules td {
+		border-top: 1px solid var(--white);
+		position: relative;
+		display: block;
+		text-align: left;
+	}
+	#rules td:before {
+		position: absolute;
+		top: 5px;
+		left: 30px;
+		font-weight: 800;
+	}
+	.vox-rules td {
+		padding: 5px 30px 5px 60%!important;
+	}
+	.vox-rules td:before {
+		width: calc(60% - 45px);
+	}
+	.vox-rules td:nth-of-type(1):before {
+		content: 'Vox Speed';
+	}
+	.vox-rules td:nth-of-type(2):before {
+		content: 'Speed (c)';
+	}
+	.vox-rules td:nth-of-type(3):before {
+		content: 'Travel Time (Interplanetary)*';
+	}
+	.vox-rules td:nth-of-type(4):before {
+		content: 'Travel Time (Interstellar)**';
 	}
 	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop, .gu-transit .chosen-container, .gu-transit .chosen-single, .gu-transit .chosen-single span, .gu-transit .chosen-drop	{
 		width: 100%!important;
@@ -2033,6 +2116,20 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		margin-bottom: 15px;
 		flex-basis: 100%;
 		margin-left: auto;
+	}
+	#rules td {
+		font-size: 14px;
+		line-height: 1em;
+	}
+	#rules td:before {
+		font-size: 14px;
+		line-height: 1em;
+	}
+	.vox-rules td {
+		padding-left: 65%!important;
+	}
+	.vox-rules td:before {
+		width: calc(65% - 45px);
 	}
 	.dice-counter {
 		order: 1;
