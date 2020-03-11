@@ -686,8 +686,14 @@
 				<div class="button" id="open-items">
 					Items List
 				</div>
-				<div class="button" id="open-skills">
+				<div class="button rules-anchor" data-rule="skills-list-rules">
 					Skills List
+				</div>
+				<div class="button rules-anchor" data-rule="minor-effect-rules">
+					Minor Effects
+				</div>
+				<div class="button rules-anchor" data-rule="major-effect-rules">
+					Major Effects
 				</div>
 				<div class="button" id="open-options">
 					Optional
@@ -1108,7 +1114,7 @@
 				<h5 id="focus-rules" class="expandable attributes-rules">Step #4 – Select a Focus</h5>
 				<p class="focus-rules expandable">Your character's <em>Focus</em> makes them unique, whether among others of the same <em>Type</em>, or just within your group. Your character is granted new <em>Abilities</em> specific to their selected <em>Focus</em> every time they ascend to a new <em>Tier</em>.</p>
 				<h5 id="selections-rules" class="expandable attributes-rules">Step #5 – Make Selections</h5>
-				<p class="selections-rules expandable">Some of your character attribute choices may allow you to select between different <em>Abilities</em> or <em>Items</em>. You may notice occasionally that you'll receive a <em>Skill</em> or <em>Item</em> labelled with <em>(of your choice)</em> or similar. Replace the text with something appropriate; feel free to consult the <a class="items-link">Items List</a> or <a class="skills-link">Skills List</a> if needed. You may also notice that the <em>Abilities</em> button sometimes becomes a <em>Make Selections</em> button. Click or tap this button to choose between different options for your character.</p>
+				<p class="selections-rules expandable">Some of your character attribute choices may allow you to select between different <em>Abilities</em> or <em>Items</em>. You may notice occasionally that you'll receive a <em>Skill</em> or <em>Item</em> labelled with <em>(of your choice)</em> or similar. Replace the text with something appropriate; feel free to consult the <a class="items-link">Items List</a> or <a class="rules-anchor" data-rule="skills-list-rules">Skills List</a> if needed. You may also notice that the <em>Abilities</em> button sometimes becomes a <em>Make Selections</em> button. Click or tap this button to choose between different options for your character.</p>
 				<h5 id="choose-numbers-rules" class="expandable attributes-rules">Step #6 – Choose Your Numbers</h5>
 				<p class="choose-numbers-rules expandable">Choose a number from 2 to 5. The higher the number, the better your character is at <em><strong>LOGIC</strong></em> (science, cold rationality, reasoning, or any kind of calm, precise action). The lower the number, the better your character is at <em><strong>FEELINGS</strong></em> (intuition, diplomacy, physical activity, or any kind of wild, passionate action). Select the appropriate number bar on the scale once you've made your choice.</p>
 				<p class="choose-numbers-rules expandable">Choose a number from 2 to 7. The higher the number, the better your character is at <em><strong>TECH</strong></em> (advanced technology, such as firearms, computers or starships). The lower the number, the better your character is at <em><strong>MAGIC</strong></em> (unpredictable, yet powerful force). Select the appropriate number bar on the scale once you've made your choice.</p>
@@ -1241,13 +1247,15 @@
 				<h5 id="vox-rules" class="expandable distance-rules">Vox Travel</h5>
 				<p class="expandable vox-rules">Space travel relies on the ability for starships to travel at Vox speeds. Most starships have a max speed of Vox VI or Vox VII. The maximum speed for any manned starship at this moment in history is Vox XI. Travelling between planets within the same solar system generally takes between a few minutes to a few hours, depending on the type of ship and its cargo. Travel between solar systems can take between a few hours to multiple days for the same reasons.</p>
 				<table class="expandable vox-rules">
-					<tbody>
+					<thead>
 						<tr>
 							<th>Vox Speed</th>
 							<th>Speed (c)</th>
 							<th>Travel Time (Interplanetary)*</th>
 							<th>Travel Time (Interstellar)**</th>
 						</tr>
+					</thead>
+					</tbody>
 						<tr>
 							<td>Vox I</td>
 							<td>0.01c</td>
@@ -1380,6 +1388,119 @@
 					<li>The GM follows up by saying: "You're now suffering complications from your arm injury. Remove one die from your dice pool until you can get your arm healed."</li>
 				</ul>
 				<p class="expandable tracking-rules">Alternatively, the GM can just tell you what your character's <em>Harm</em> numbers are. However, the focus should be on building a narrative, and not on keeping track of numbers.</p>
+				<h3 id="action-rules">Taking Actions</h3>
+				<p class="expandable action-rules">Anything your character does in a given round is an <em>Action</em>. It’s easiest to think of an <em>Action</em> as a single thing that your character can do in five to ten seconds.</p>
+				<p class="expandable action-rules">On your turn, your character can either perform a <em>Feat</em> or a <em>Task</em>.</p>
+				<p class="expandable action-rules"><em>Feats</em> are granted by character attributes. <em>Tasks</em> are anything your character does that requires a roll, such as <em>Attacking</em> an opponent, persuading a shopkeep to sell you something, or picking a lock to enter a room. Some <em>Feats</em> may allow your character to act more than once per turn—but generally speaking—your character can only do one thing per round. However, you can modify your intended <em>Action</em> with any combination of the following:</p>
+				<ul class="expandable action-rules">
+					<li>A single related <em>Skill</em>.</li>
+					<li>Any related <em>Items</em>.</li>
+					<li>Any related <em>Cyberware</em>.</li>
+					<li>Any related <em>Artifacts</em>.</li>
+					<li>Any related <em>Traits</em>.</li>
+				</ul>
+				<p class="expandable action-rules">Only one <em>Skill</em> can apply to any <em>Action</em> your character performs. If the only applicable <em>Skill</em> is one you have inability in, you must use it. You can use any number of <em>Items</em>, <em>Cyberware</em> or <em>Artifacts</em> that apply to the situation. Any and all related <em>Traits</em> should be used—if the situation warrants their use—even if some have negative effects.</p>
+				<h4 id="attack-rules" class="expandable action-rules">Action: Attack</h4>
+				<p class="expandable attack-rules">An <em>Attack</em> is anything your character does to someone that they don’t want to happen. You either roll for <em>Logic</em> or <em>Feelings</em> when <em>Attacking</em>. Generally speaking, ranged <em>Attacks</em> require <em>Logic</em>, while melee <em>Attacks</em> use <em>Feelings</em>. If your character has access to <em>Magic</em>, you can roll for <em>Magic</em> when <em>Attacking</em> instead. If your character has a weapon that uses advanced technology—or weaponized <em>Cyberware</em>—you can roll for <em>Tech</em> instead when <em>Attacking</em>.</p>
+				<h5 id="attack-damage-rules" class="expandable attack-rules">Damage & Harm</h5>
+				<p class="expandable attack-damage-rules">Damage is based on your character's current <em>Tier</em> and how successful your roll is. If your GM is using <em>Harm</em> in their game, a <em>Tier 1</em> character would deal 1 <em>Harm</em> against a target, while a <em>Tier 6</em> character would deal up to 6 <em>Harm</em>. Similarly to how <em>Harm</em> is tracked for player characters, GMs are encouraged not to divulge damage numbers or enemy <em>Harm</em> counts, focusing on the narrative aspects of combat instead.</p>
+				<h5 id="minor-effect-rules" class="expandable attack-rules">Minor Effects</h5>
+				<p class="expandable minor-effect-rules">Anytime your character <em>Attacks</em>—for any type of <em>Attack</em>—you can trade the ability to deal damage and remove a die from your dice pool in exchange for a minor effect. A minor effect is anything that would cause the target to be disadvantaged the next time they act, but won’t prevent them from taking <em>Actions</em> entirely.</p>
+				<ul class="expandable minor-effect-rules">
+					<li><strong>Bleed</strong> – Target recieves <em>Harm</em> each round until healed, or the effect expires.</li>
+					<li><strong>Blind</strong> – Target is unable to see, and has disadvantage on all rolls involving sight.</li>
+					<li><strong>Daze</strong> – Target removes a die from their dice pool on any roll until the effect expires.</li>
+					<li><strong>Disarm</strong> – Target has their weapon removed, and must spend an <em>Action</em> to re-equip the weapon before they can use it again.</li>
+					<li><strong>Move</strong> – Target is moved to a desired position as specified by the attacker.</li>
+					<li><strong>Taunt</strong> – Target is forced to focus on a specific threat, though they can take any <em>Action</em> as long as they don't focus another target.</li>
+					<li><strong>Pin</strong> – Target is unable to move, but can still take any other <em>Action</em> that does not require movement.</li>
+				</ul>
+				<h5 id="major-effect-rules" class="expandable attack-rules">Major Effects</h5>
+				<p class="expandable major-effect-rules">Major effects can only be inflicted through specific <em>Abilities</em>, a critical success, or special circumstance. Major effects take away a target's agency, limiting what they can do, or preventing them from taking any <em>Actions</em> at all.</p>
+				<ul class="expandable major-effect-rules">
+					<li><strong>Banish</strong> – Target is displaced to another plane of existence for a short period of time.</li>
+					<li><strong>Confuse</strong> – Target <em>Attacks</em> other targets at random—allies and foes alike.</li>
+					<li><strong>Control</strong> – Target follows the verbal or mental commands of the character or creature who controls them.</li>
+					<li><strong>Fear</strong> – Target runs away from a perceived threat, taking no other <em>Action</em>.</li>
+					<li><strong>Intimidate</strong> – Target takes no other <em>Action</em> other than to defend itself from a perceived threat. They are focused entirely on the perceived threat.</li>
+					<li><strong>Pacify</strong> – Target is unable to <em>Attack</em>, but can take other <em>Actions</em> and use <em>Abilities</em>.</li>
+					<li><strong>Prone</strong> – Target is knocked down and becomes prone. Prone targets must spend an <em>Action</em> to get up before they can move or make most physical <em>Actions</em>.</li>
+					<li><strong>Silence</strong> – Target is unable to use <em>Abilities</em> or speak, but can take physical <em>Actions</em> and perform physical <em>Attacks</em>.</li>
+					<li><strong>Stasis</strong> – Target is unable to take any <em>Action</em>, cannot be interacted with and is immune to all damage.</li>
+					<li><strong>Stun</strong> – Target is unable to take any <em>Action</em>.</li>
+				</ul>
+				<h5 id="cover-rules" class="expandable attack-rules">Cover</h5>
+				<p class="expandable cover-rules">While in full cover, a target cannot be target by direct <em>Attacks</em>. While in half cover, a target avoids the negative effects of mixed successes from combat.</p>
+				<h4 id="feat-rules" class="expandable action-rules">Action: Perform a Feat</h4>
+				<p class="expandable feat-rules"><em>Feats</em> are granted by character attributes. If a <em>Feat</em> affects another character in any kind of unwanted manner, it’s considered an <em>Attack</em> when used. This is true even if the <em>Feat</em> is normally not considered an <em>Attack</em>. For example, if a character has a healing touch, and their friend doesn’t want to be healed for some reason, an attempt to heal their unwilling friend is handled as an <em>Attack</em>.</p>
+				<p class="expandable feat-rules">You’re not constrained by your <em>Feats</em>; you should instead take them as suggestions of what your character is capable of—especially if they can use <em>Magic</em>. For example, a <em>Tier 1</em> Recondite has access to Psi Slice to damage foes. You may decide your character prefers to set things on fire. In that case, your character could try to burn your foes from within using <em>Magic</em>. The GM has final say on what is possible, but you should try to experiment as much as possible.</p>
+				<h4 id="movement-rules" class="expandable action-rules">Action: Move</h4>
+				<p class="expandable movement-rules">Moving distance is simplified into three basic categories:</p>
+				<ul class="expandable movement-rules">
+					<li><strong>Immediate</strong> – Up to 10 feet (3 m). Also called melee range or touching distance. Your character can move an immediate distance as part of another <em>Action</em> on your turn.</li>
+					<li><strong>Short</strong> – Up to 50 feet (15 m). Your character can move a short range as their entire <em>Action</em> on your turn.</li>
+					<li><strong>Long</strong> – Up to 100 feet (30 m). Your character can move a long range on your turn if you roll for it.</li>
+				</ul>
+				<p class="expandable movement-rules">Any movement distance beyond what is listed above is specified within <em>Ability</em> descriptions.</p>
+				<h5 id="terrain-rules" class="expandable movement-rules">Difficult Terrain</h5>
+				<p class="expandable terrain-rules">An area with obstacles that hinders movement, or causes complications when characters or creatures attempt to move through it. Examples include: swampland, uneven terrain, high gravity, knee-deep water, cramped spaces, and so on. Every range category has stricter requirements.</p>
+				<ul class="expandable terrain-rules">
+					<li><strong>Immediate</strong> – Your character cannot move an immediate distance as part of another <em>Action</em> on your turn while traversing difficult or rough terrain. Your character can only move an immediate distance as your entire <em>Action</em> on your turn.</li>
+					<li><strong>Short</strong> – You must roll if you want your character to move a short distance as their <em>Action</em> on your turn while traversing difficult or rough terrain.</li>
+					<li><strong>Long</strong> – It is (basically) impossible to move a long distance while traversing difficult or rough terrain. Your character may be able to move a long distance if you critically succeed on your roll to move a short distance.</li>
+				</ul>
+				<h5 id="swimming-rules" class="expandable movement-rules">Swimming</h5>
+				<p class="expandable swimming-rules">If submerged in a liquid (like water), movement is handled through swimming <em>Tasks</em>. Ranges are slightly smaller, but the <em>Actions</em> you can take remain the same.</p>
+				<ul class="expandable swimming-rules">
+					<li><strong>Immediate</strong> – Up to 2 feet (60 cm). Also called melee range or touching distance. Your character can move an immediate distance as part of another <em>Action</em> on your turn.</li>
+					<li><strong>Short</strong> – Up to 12 feet (4 m). Your character can move a short range as their entire <em>Action</em> on your turn.</li>
+					<li><strong>Long</strong> – Up to 25 feet (7.5 m). Your character can move a long range on your turn if you roll for it.</li>
+				</ul>				
+				<h5 id="low-gravity-rules" class="expandable movement-rules">Low Gravity</h5>
+				<p class="low-gravity-rules expandable">Movement in low gravity is easier, but ranges stay the same. Add a die to your dice pool for all movement rolls while in low gravity. Examples include: some starships and satellites, moons, asteroids, and so on.</p>
+				<h5 id="zero-gravity-rules" class="expandable movement-rules">Zero Gravity</h5>
+				<p class="expandable zero-gravity-rules">In an environment with no gravity, characters cannot move normally. Ranges stay the same, but your character must push themselves off of surfaces or objects to move around. Unless the character’s movement takes them to a stable object that they can grab or land against, they continue to drift in that direction each round.</p>
+				<h4 id="help-rules" class="expandable action-rules">Action: Help</h4>
+				<p class="expandable help-rules">You can use your character’s <em>Action</em> on your turn to help someone else with their <em>Task</em>. Like most <em>Actions</em>, you must roll to help. If you succeed, you add a die to the target’s dice pool for whatever <em>Task</em> they want to achieve. However, there’s some risk involved; if the target fails on their roll, you will also incur consequences of that failure. By default, achieving a critical success on a <em>Help</em> roll has no impact.</p>
+				<h4 id="resting-rules" class="expandable action-rules">Action: Rest</h4>
+				<p class="expandable resting-rules">Your character can recover from <em>Harm</em> and reset the cooldowns on some <em>Abilities</em> by <em>Resting</em>.</p>
+				<h5 id="short-rest-rules" class="expandable resting-rules">Short Rest</h5>
+				<p class="expandable short-rest-rules">It takes only a few seconds for your character to catch their breath when <em>Short Resting</em>. If your character <em>Rests</em> this way in the middle of an encounter, it takes one <em>Action</em> on your turn. Your character can generally only <em>Short Rest</em> once between each <em>Long Rest</em>. Whenever your character performs a <em>Short Rest</em>, they heal <em>Harm</em> equal to their <em>Tier</em>, divided by 2, rounded up. So a <em>Tier 3</em> character would heal 2 <em>Harm</em>, while a <em>Tier 6</em> character would heal 3.</p>
+				<h5 id="long-rest-rules" class="expandable resting-rules">Long Rest</h5>
+				<p class="expandable long-rest-rules">Once every 12 hours, your character can <em>Rest</em> for at least 8 hours. Usually, this occurs when they stop for the day to eat and sleep. There may be consequences if your character goes more than 24 hours without <em>Long Resting</em>; it'll be up to the GM to decide if this has any effect. Whenever your character performs a <em>Long Rest</em>, they heal up to the next stage of <em>Harm</em>, plus their <em>Tier</em>, divided by 2, rounded up. So a <em>Tier 3</em> character with 7 <em>Harm</em> would heal up to 5 <em>Harm</em>, then heal another 2 <em>Harm</em> for a final <em>Harm</em> count of 3.</p>
+				<h4 id="task-rules" class="expandable action-rules">Do Something Else</h4>
+				<p class="expandable task-rules">Players can try anything they can think of, although that doesn’t mean anything is possible. Players should not feel constrained by game mechanics when taking <em>Actions</em>. <em>Skills</em> are not required to attempt a <em>Task</em>; they are suggestions as to possible <em>Actions</em> one can take. Someone who’s never picked a lock can still try, as an example.</p>
+				<h5 id="insight-rules" class="expandable task-rules">Gain Insight</h5>
+				<p class="expandable insight-rules">At any time, you can spend 2 XP and roll to gain <em>Insight</em> related to your character's current mission or goal. If your character has an <em>Ability</em> that gives <em>Insight</em>, or you roll your character’s exact number, you don’t need to spend the 2 XP.</p>
+				<h5 id="healing-task-rules" class="expandable task-rules">Heal</h5>
+				<p class="expandable healing-task-rules">Your character can administer aid through bandaging and other succor, attempting to heal a patient—including themselves. Your character can heal <em>Harm</em> equal to their <em>Tier</em>, divided by 2, rounded up. So for example, a <em>Tier 3</em> character can heal up to 2 <em>Harm</em>, while a <em>Tier 6</em> character can heal up to 3.</p>
+				<h5 id="guard-rules" class="expandable task-rules">Guard</h5>
+				<p class="expandable guard-rules">In a combat encounter, a character can stand <em>Guard</em> as their <em>Action</em>. They do not make attacks, but instead stand still to reduce the amount of damage they take from opponents in combat. This is useful for blocking a doorway, guarding a friend, and so forth. By default, <em>Guarding</em> halves the amount of <em>Harm</em> received from <em>Attacks</em>. Your character generally cannot <em>Guard</em> and <em>Take an Attack</em> in the same round.</p>
+				<h5 id="take-attack-rules" class="expandable task-rules">Take an Attack</h5>
+				<p class="expandable take-attack-rules">A character can use their <em>Action</em> to throw themselves in front of a foe’s <em>Attack</em> to save a nearby comrade. Your character generally cannot <em>Guard</em> and <em>Take an Attack</em> in the same round.</p>
+				<h3 id="sheet-rules">Character Sheet</h3>
+				<h4 id="sheet-skills-rules" class="expandable sheet-rules">Skills</h4>
+				<p class="expandable sheet-skills-rules"><em>Skills</em> modify your character’s ability to perform specific <em>Tasks</em>, by adding or removing a die from your dice pool when performing the <em>Task</em>. <em>Skills</em> are granted by character attributes and—for the most part—cannot be changed. However, there will be occasions where you can choose which <em>Skill</em> from a specific category of <em>Skills</em> you want for your character. There is no set list of <em>Skills</em>; anything your character can perform is feasibly something they could be skilled at. <em>Skills</em> should never be too broad or too narrow. For example, saying your character is skilled in “Attacks” is too broad, but saying they’re skilled at “Kicking” is too narrow.</p>
+				<h5 id="skills-list-rules" class="expandable sheet-skills-rules">Skills List</h5>
+				<p class="expandable skills-list-rules">This is not a comprehensive list of <em>Skills</em>; it’s a list of suggestions for <em>Skill</em> choices, as well as definitions for existing <em>Skills</em>. More <em>Skills</em> will be added over time.</p>
+				<input type="text" class="filter-input expandable skills-list-rules" placeholder="Filter skills by name or category..." id="skills-search">
+				<label class="filter-label expandable skills-list-rules" for="skills-search">Filter:</label>
+				<table class="expandable skills-list-rules">
+					<thead>
+						<tr>
+							<th>Skill</th>
+							<th>Category</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Aeyan Civil Norms</td>
+							<td>Social</td>
+							<td>Familiarity with the laws, culture and societal norms of the Aeyen.</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

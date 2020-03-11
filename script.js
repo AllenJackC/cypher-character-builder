@@ -2212,6 +2212,7 @@ $(function() {
 			if ( child.is(':visible') ) {
 				child.each( function() {
 					toggleRules($(this));
+					$(this).removeClass('active');
 					$(this).removeClass('expanded');
 				});		
 			}				
@@ -2219,14 +2220,81 @@ $(function() {
 	}
 	$('#rules *').click( function() {
 		var elementID = $(this).attr('id');
+		$(this).toggleClass('active');
 		if ( elementID ) {
 			var child = $('.' + elementID);
 			child.each( function() {
 				toggleRules($(this));
+				$(this).removeClass('active');
 				$(this).removeClass('expanded');
 			});
 			if ( $(this).is('h5') ) $(this).toggleClass('expanded');
 		}
+	});
+	//Open to the specific area in the rules for the clicked button
+	//expanding and scrolling down to the specific section as necessary
+	$('.rules-anchor').click( function() {
+		var ruleSection = $('.' + $(this).data('rule'));
+		var ruleTitle = $('#' + $(this).data('rule'));
+		var modal = $('#rules').closest('.modal-background');
+		if ( modal.hasClass('visible') === false ) {
+			modal.addClass('visible');
+			$('body').css('overflow-y','hidden');
+		}
+		if ( ruleSection.is(':visible') === false && ruleTitle.is('h3') ) {
+			ruleTitle.addClass('active');
+			ruleSection.stop().slideToggle(300, function() {
+				modal.animate({
+					scrollTop: (ruleTitle.offset().top)
+				},500);
+			});
+		} else if ( ruleSection.is(':visible') === false && ruleTitle.is('h4') ) {
+			var h3Title = $('#' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			var h3Section = $('.' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			if ( h3Title.hasClass('active') === false ) {
+				h3Title.addClass('active');
+				h3Section.stop().slideToggle(300);
+			}
+			ruleTitle.addClass('active');
+			ruleSection.stop().slideToggle(300, function() {
+				modal.animate({
+					scrollTop: (ruleTitle.offset().top)
+				},500);
+			});
+		} else if ( ruleSection.is(':visible') === false && ruleTitle.is('h5') ){
+			var h4Title = $('#' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace('expanded','').replace(/\s/g,''));
+			var h4Section = $('.' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			var h3Title = $('#' + h4Title.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			var h3Section = $('.' + h4Title.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			if ( h3Title.hasClass('active') === false ) {
+				h3Title.addClass('active');
+				h3Section.stop().slideToggle(300);
+			}
+			if ( h4Title.hasClass('active') === false ) {
+				h4Title.addClass('active');
+				h4Section.stop().slideToggle(300);
+			}
+			ruleTitle.addClass('active expanded');
+			ruleSection.stop().slideToggle(300, function() {
+				modal.animate({
+					scrollTop: (ruleTitle.offset().top)
+				},500);
+			});
+		} else {
+			modal.animate({
+				scrollTop: (ruleTitle.offset().top)
+			},500);
+		}
+	});
+	//Search through tables in the Rules modal
+	//and filter results based on input
+	$('#rules .filter-input').keyup( function() {
+		var inputClass = $(this).attr('class').replace('expandable','').replace('active','').replace('expanded','').replace('filter-input','').replace(/\s/g,'');
+		var tableRow = $('table.' + inputClass + ' tbody tr');
+		var value = $(this).val().toLowerCase();
+		tableRow.filter( function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+		});
 	});
 	//Listeners for mobile vs listeners for desktop
 	if ( isTouchDevice() ) {

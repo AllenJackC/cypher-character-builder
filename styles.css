@@ -602,22 +602,25 @@ div.proficiency {
     cursor: pointer;
     pointer-events: auto;
 }
-#rules h3:hover {
+#rules h3:hover, #rules h3.active:hover {
 	background-color: var(--button-hover);
 }
-#rules h3:active {
+#rules h3:active, #rules h3.active {
 	background-color: var(--button-active);
 }
 #rules h4 {
     padding: 10px;
     text-transform: uppercase;
-    background-color: var(--selected);
+    background-color: var(--white);
     margin: 5px 0;
     line-height: 0.9em;
     cursor: pointer;
     pointer-events: auto;
     color: var(--black);
     font-size: 18px;
+}
+#rules h4.active {
+	background-color: var(--selected);
 }
 #rules h4:hover {
 	background-color: var(--selected-hover);
@@ -640,6 +643,9 @@ div.proficiency {
 }
 #rules h5.expanded:after {
     content: '\2b9d';
+}
+#rules h5.active {
+	color: var(--selected);
 }
 #rules h5:hover {
 	color: var(--selected-hover);
@@ -672,7 +678,7 @@ div.proficiency {
 	color: var(--secondary-button-hover);
 	font-style: italic;
 }
-#rules a.items-link, #rules a.skills-link {
+.rules-anchor {
 	cursor: pointer;
 }
 #rules li#zero-dice:before {
@@ -701,13 +707,32 @@ div.proficiency {
 	margin-left: -27px;
     margin-right: 8px;
 }
+.filter-label {
+    background: none;
+    width: auto;
+    padding: 4px 0 0 0;
+    margin-right: 10px;
+    margin-left: 10px;
+    float: right;
+    margin-bottom: 10px;
+	margin-left: 30px;
+}
+.filter-input {
+    max-width: 300px;
+    float: right;
+    margin-bottom: 10px;
+}
 #rules table {
 	display: table;
     border-collapse: collapse;
     width: fit-content;
     margin: 0 auto;
+	clear: both;
 }
-#rules tr:first-child {
+#rules table.skills-list-rules tr > *:last-child {
+	text-align: left;
+}
+#rules thead {
 	background: var(--white);
 }
 #rules tr {
@@ -735,6 +760,7 @@ div.proficiency {
     line-height: 1em;
     vertical-align: middle;
     padding: 5px 15px;
+	pointer-events: none;
 }
 #rules td:first-child {
 	padding-left: 30px;
@@ -1791,6 +1817,9 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#rules th:nth-child(n+2) {
 		white-space: normal;
 	}
+	#rules td {
+		white-space: normal;
+	}
 }
 @media only screen and (max-width: 637px) {
 	h5 {
@@ -1942,16 +1971,17 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#rules table {
 		display: block;
 		width: 100%;
+		border: none;
 	}
 	#rules tbody {
 		display: block;
 	}
 	#rules tr {
-		border-top: 1px solid var(--white);
+		border: none;
 		display: block;
 	}
 	#rules td {
-		border-top: 1px solid var(--white);
+		border-top: none;
 		position: relative;
 		display: block;
 		text-align: left;
@@ -1961,6 +1991,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		top: 5px;
 		left: 30px;
 		font-weight: 800;
+	}
+	#rules .vox-rules tr, #rules table.vox-rules {
+		border-top: 1px solid var(--white);
+		border-bottom: 1px solid var(--white);
+		padding-top: 3px;
+		padding-bottom: 3px;
 	}
 	.vox-rules td {
 		padding: 5px 30px 5px 60%!important;
@@ -1998,7 +2034,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		padding-bottom: 10px;
 		width: 100%!important;
 	}
-	.connector, #extra-attributes-header, table tr:first-child, .hide-me {
+	.connector, #extra-attributes-header, .item-list table tr:first-child, #rules thead, .hide-me {
 		display: none!important;
 	}
 	.secondary-button {
@@ -2021,6 +2057,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	.filters .button {
 		margin: 5px;
 		width: 95px;
+	}
+	.filter-input {
+		max-width: 190px;
+		margin-right: 30px;
 	}
 	#spellbook .spell, #archives .lore, .details li {
 		margin: 0!important;
