@@ -2237,6 +2237,7 @@ $(function() {
 		var ruleSection = $('.' + $(this).data('rule'));
 		var ruleTitle = $('#' + $(this).data('rule'));
 		var modal = $('#rules').closest('.modal-background');
+		var counter = 0;
 		if ( modal.hasClass('visible') === false ) {
 			modal.addClass('visible');
 			$('body').css('overflow-y','hidden');
@@ -2244,9 +2245,12 @@ $(function() {
 		if ( ruleSection.is(':visible') === false && ruleTitle.is('h3') ) {
 			ruleTitle.addClass('active');
 			ruleSection.stop().slideToggle(300, function() {
-				modal.animate({
-					scrollTop: (ruleTitle.offset().top)
-				},500);
+				if ( !counter ) {
+					modal.animate({
+						scrollTop: (ruleTitle.offset().top - 15)
+					},500);
+					counter++;
+				}
 			});
 		} else if ( ruleSection.is(':visible') === false && ruleTitle.is('h4') ) {
 			var h3Title = $('#' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
@@ -2257,9 +2261,12 @@ $(function() {
 			}
 			ruleTitle.addClass('active');
 			ruleSection.stop().slideToggle(300, function() {
-				modal.animate({
-					scrollTop: (ruleTitle.offset().top)
-				},500);
+				if ( !counter ) {
+					modal.animate({
+						scrollTop: (ruleTitle.offset().top - 15)
+					},500);
+					counter++;
+				}
 			});
 		} else if ( ruleSection.is(':visible') === false && ruleTitle.is('h5') ){
 			var h4Title = $('#' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace('expanded','').replace(/\s/g,''));
@@ -2276,14 +2283,20 @@ $(function() {
 			}
 			ruleTitle.addClass('active expanded');
 			ruleSection.stop().slideToggle(300, function() {
-				modal.animate({
-					scrollTop: (ruleTitle.offset().top)
-				},500);
+				if ( !counter ) {
+					modal.animate({
+						scrollTop: (ruleTitle.offset().top - 15)
+					},500);
+					counter++;
+				}
 			});
 		} else {
-			modal.animate({
-				scrollTop: (ruleTitle.offset().top)
-			},500);
+			if ( !counter ) {
+				modal.animate({
+					scrollTop: (ruleTitle.offset().top - 15)
+				},500);
+				counter++;
+			}
 		}
 	});
 	//Search through tables in the Rules modal

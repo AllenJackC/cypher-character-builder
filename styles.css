@@ -729,8 +729,8 @@ div.proficiency {
     margin: 0 auto;
 	clear: both;
 }
-#rules table.skills-list-rules tr > *:last-child {
-	text-align: left;
+#rules table:not(.vox-rules) tr > *:last-child {
+	white-space: normal;
 }
 #rules thead {
 	background: var(--white);
@@ -745,13 +745,14 @@ div.proficiency {
     line-height: 1.5em;
     vertical-align: middle;
     color: var(--black);
-    padding: 0 15px;
+    padding: 0 5px;
+	text-align: left;
 }
 #rules th:first-child {
-	padding-left: 30px;
+	padding-left: 10px;
 }
 #rules th:last-child {
-	padding-right: 30px;
+	padding-right: 10px;
 }
 #rules td {
 	color: var(--white);
@@ -759,14 +760,15 @@ div.proficiency {
     font-size: 16px;
     line-height: 1em;
     vertical-align: middle;
-    padding: 5px 15px;
+    padding: 5px;
 	pointer-events: none;
+	text-align: left;
 }
 #rules td:first-child {
-	padding-left: 30px;
+	padding-left: 10px;
 }
 #rules td:last-child {
-	padding-right: 30px;
+	padding-right: 10px;
 }
 #footer {
 	color: var(--light-grey);
@@ -1814,10 +1816,7 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#rules th {
 		vertical-align: bottom;
 	}
-	#rules th:nth-child(n+2) {
-		white-space: normal;
-	}
-	#rules td {
+	#rules .vox-rules td {
 		white-space: normal;
 	}
 }
@@ -1986,17 +1985,57 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		display: block;
 		text-align: left;
 	}
+	#rules th:first-child {
+		padding-left: 30px;
+	}
+	#rules th:last-child {
+		padding-right: 30px;
+	}
+	#rules td:first-child {
+		padding-left: 30px;
+	}
+	#rules td:last-child {
+		padding-right: 30px;
+	}
 	#rules td:before {
 		position: absolute;
 		top: 5px;
 		left: 30px;
 		font-weight: 800;
+		white-space: nowrap;
 	}
-	#rules .vox-rules tr, #rules table.vox-rules {
+	#rules tr, #rules table {
 		border-top: 1px solid var(--white);
 		border-bottom: 1px solid var(--white);
 		padding-top: 3px;
 		padding-bottom: 3px;
+	}
+	.dice-roll-rules td {
+		padding: 5px 30px 5px 30%!important;
+	}
+	.dice-roll-rules td:before {
+		width: calc(30% - 45px);
+	}
+	.dice-roll-rules td:nth-of-type(1):before {
+		content: 'Dice Roll';
+	}
+	.dice-roll-rules td:nth-of-type(2):before {
+		content: 'Effect';
+	}
+	.skills-list-rules td {
+		padding: 5px 30px 5px 30%!important;
+	}
+	.skills-list-rules td:before {
+		width: calc(30% - 45px);
+	}
+	.skills-list-rules td:nth-of-type(1):before {
+		content: 'Skill';
+	}
+	.skills-list-rules td:nth-of-type(2):before {
+		content: 'Type';
+	}
+	.skills-list-rules td:nth-of-type(3):before {
+		content: 'Description';
 	}
 	.vox-rules td {
 		padding: 5px 30px 5px 60%!important;
@@ -2164,6 +2203,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	#rules td:before {
 		font-size: 14px;
 		line-height: 1em;
+	}
+	.skills-list-rules td, .dice-roll-rules td {
+		padding-left: 40%!important;
+	}
+	.skills-list td:before, .dice-roll-rules td:before {
+		width: calc(40% - 45px);
 	}
 	.vox-rules td {
 		padding-left: 65%!important;

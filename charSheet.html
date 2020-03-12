@@ -687,7 +687,7 @@
 					Items List
 				</div>
 				<div class="button rules-anchor" data-rule="skills-list-rules">
-					Skills List
+					Skill List
 				</div>
 				<div class="button rules-anchor" data-rule="minor-effect-rules">
 					Minor Effects
@@ -1421,13 +1421,15 @@
 					<li><strong>Banish</strong> – Target is displaced to another plane of existence for a short period of time.</li>
 					<li><strong>Confuse</strong> – Target <em>Attacks</em> other targets at random—allies and foes alike.</li>
 					<li><strong>Control</strong> – Target follows the verbal or mental commands of the character or creature who controls them.</li>
+					<li><strong>Distract</strong> – Target takes no other <em>Action</em> other than to defend itself. They are focused entirely on the source of the distraction.</li>
 					<li><strong>Fear</strong> – Target runs away from a perceived threat, taking no other <em>Action</em>.</li>
 					<li><strong>Intimidate</strong> – Target takes no other <em>Action</em> other than to defend itself from a perceived threat. They are focused entirely on the perceived threat.</li>
 					<li><strong>Pacify</strong> – Target is unable to <em>Attack</em>, but can take other <em>Actions</em> and use <em>Abilities</em>.</li>
 					<li><strong>Prone</strong> – Target is knocked down and becomes prone. Prone targets must spend an <em>Action</em> to get up before they can move or make most physical <em>Actions</em>.</li>
 					<li><strong>Silence</strong> – Target is unable to use <em>Abilities</em> or speak, but can take physical <em>Actions</em> and perform physical <em>Attacks</em>.</li>
-					<li><strong>Stasis</strong> – Target is unable to take any <em>Action</em>, cannot be interacted with and is immune to all damage.</li>
+					<li><strong>Stasis</strong> – Target is unable to take any <em>Action</em>, cannot be interacted with, and is immune to all damage.</li>
 					<li><strong>Stun</strong> – Target is unable to take any <em>Action</em>.</li>
+					<li><strong>Topple</strong> – Target is knocked down and becomes prone. Prone targets must spend an <em>Action</em> to get up before they can move or take most physical <em>Actions</em>.</li>
 				</ul>
 				<h5 id="cover-rules" class="expandable attack-rules">Cover</h5>
 				<p class="expandable cover-rules">While in full cover, a target cannot be target by direct <em>Attacks</em>. While in half cover, a target avoids the negative effects of mixed successes from combat.</p>
@@ -1478,26 +1480,895 @@
 				<p class="expandable guard-rules">In a combat encounter, a character can stand <em>Guard</em> as their <em>Action</em>. They do not make attacks, but instead stand still to reduce the amount of damage they take from opponents in combat. This is useful for blocking a doorway, guarding a friend, and so forth. By default, <em>Guarding</em> halves the amount of <em>Harm</em> received from <em>Attacks</em>. Your character generally cannot <em>Guard</em> and <em>Take an Attack</em> in the same round.</p>
 				<h5 id="take-attack-rules" class="expandable task-rules">Take an Attack</h5>
 				<p class="expandable take-attack-rules">A character can use their <em>Action</em> to throw themselves in front of a foe’s <em>Attack</em> to save a nearby comrade. Your character generally cannot <em>Guard</em> and <em>Take an Attack</em> in the same round.</p>
-				<h3 id="sheet-rules">Character Sheet</h3>
-				<h4 id="sheet-skills-rules" class="expandable sheet-rules">Skills</h4>
-				<p class="expandable sheet-skills-rules"><em>Skills</em> modify your character’s ability to perform specific <em>Tasks</em>, by adding or removing a die from your dice pool when performing the <em>Task</em>. <em>Skills</em> are granted by character attributes and—for the most part—cannot be changed. However, there will be occasions where you can choose which <em>Skill</em> from a specific category of <em>Skills</em> you want for your character. There is no set list of <em>Skills</em>; anything your character can perform is feasibly something they could be skilled at. <em>Skills</em> should never be too broad or too narrow. For example, saying your character is skilled in “Attacks” is too broad, but saying they’re skilled at “Kicking” is too narrow.</p>
-				<h5 id="skills-list-rules" class="expandable sheet-skills-rules">Skills List</h5>
-				<p class="expandable skills-list-rules">This is not a comprehensive list of <em>Skills</em>; it’s a list of suggestions for <em>Skill</em> choices, as well as definitions for existing <em>Skills</em>. More <em>Skills</em> will be added over time.</p>
-				<input type="text" class="filter-input expandable skills-list-rules" placeholder="Filter skills by name or category..." id="skills-search">
+				<h3 id="skills-list-rules">Skill List</h3>
+				<p class="expandable skills-list-rules">This is not a comprehensive list of all of the <em>Skills</em> available to your character; it’s a just a list of suggestions, as well as definitions for existing <em>Skills</em> granted by character attributes.</p>
+				<input type="text" class="filter-input expandable skills-list-rules" placeholder="Filter by Skill name or type..." id="skills-search">
 				<label class="filter-label expandable skills-list-rules" for="skills-search">Filter:</label>
 				<table class="expandable skills-list-rules">
 					<thead>
 						<tr>
 							<th>Skill</th>
-							<th>Category</th>
+							<th>Type</th>
 							<th>Description</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>Aeyan Civil Norms</td>
-							<td>Social</td>
+							<td>Social Skill</td>
 							<td>Familiarity with the laws, culture and societal norms of the Aeyen.</td>
+						</tr>
+						<tr>
+							<td>Aeyan Language</td>
+							<td>Language Skill</td>
+							<td>Ability to speak the Aeyan language.</td>
+						</tr>
+						<tr>
+							<td>Aeyan Lore</td>
+							<td>Knowledge Skill</td>
+							<td>Familiarity with Aeyan lore.</td>
+						</tr>
+						<tr>
+							<td>Animal Handling</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to work with, respond to, and interact with animals within their surroundings.</td>
+						</tr>
+						<tr>
+							<td>Art</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to produce works of visual art to sell, gift or present to people.</td>
+						</tr>
+						<tr>
+							<td>Astronomy</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Branch of science which deals with celestial objects, space, and the physical universe as a whole.</td>
+						</tr>
+						<tr>
+							<td>Aura Magic</td>
+							<td>Magic Skill</td>
+							<td>Affinity to <em>Aura Magic</em> reduces the difficulty of using and defending against <em>Aura Magic</em>.</td>
+						</tr>
+						<tr>
+							<td>Automatic Weapons</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with handheld rapid-fire guns, such as machine pistols, submachine guns, and automatic rifles.</td>
+						</tr>
+						<tr>
+							<td>Balance</td>
+							<td>Physical Skill</td>
+							<td>Ability to balance on ledges, on the tip of one's toes or tight platforms.</td>
+						</tr>
+						<tr>
+							<td>Bartering</td>
+							<td>Social Skill</td>
+							<td>Ability to haggle with traders over prices.</td>
+						</tr>
+						<tr>
+							<td>Biology</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>The study of living organisms, including their morphology, physiology, anatomy, behavior, origin, and distribution.</td>
+						</tr>
+						<tr>
+							<td>Blades</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with melee bladed weapons, such as daggers, swords or spears.</td>
+						</tr>
+						<tr>
+							<td>Blunt Weapons</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with melee blunt weapons, such as sticks, maces or staves.</td>
+						</tr>
+						<tr>
+							<td>Botany</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Scientific study of plants, including their physiology, structure, genetics, ecology, distribution, classification, and economic importance.</td>
+						</tr>
+						<tr>
+							<td>Bows</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with long bows or short bows.</td>
+						</tr>
+						<tr>
+							<td>Breaking Things</td>
+							<td>Physical Skill</td>
+							<td>Proficiency in breaking things apart or reducing objects to rubble.</td>
+						</tr>
+						<tr>
+							<td>Bureaucracy</td>
+							<td>Knowledge Skill</td>
+							<td>Familiarity with procedure necessary for running an organization or government.</td>
+						</tr>
+						<tr>
+							<td>Carpentry</td>
+							<td>Crafting Skill</td>
+							<td>Ability to make or repair objects in wood.</td>
+						</tr>
+						<tr>
+							<td>Carrying</td>
+							<td>Physical Skill</td>
+							<td>Ability to carry a large amount of objects or people for extended periods.</td>
+						</tr>
+						<tr>
+							<td>Chemistry</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Science that deals with the identification of the substances of which matter is composed; the investigation of their properties and the ways in which they interact, combine, and change; and the use of these processes to form new substances.</td>
+						</tr>
+						<tr>
+							<td>Civil Norms</td>
+							<td>Social Skill</td>
+							<td>Familiarity with the laws, culture and societal norms of a specific civilization.</td>
+						</tr>
+						<tr>
+							<td>Civility</td>
+							<td>Social Skill</td>
+							<td>Proficiency in formal politeness and courtesy in behavior or speech.</td>
+						</tr>
+						<tr>
+							<td>Climbing</td>
+							<td>Physical Skill</td>
+							<td>Ability to climb sheer surfaces.</td>
+						</tr>
+						<tr>
+							<td>Computers</td>
+							<td>Knowledge Skill</td>
+							<td>Familiarity with computers and networks, as well as the ability to repair or improve existing systems.</td>
+						</tr>
+						<tr>
+							<td>Conduct Tests</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Ability to conduct experiments or tests to discover proof, discern the truth, or glean information.</td>
+						</tr>
+						<tr>
+							<td>Crossbows</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with one-handed or two-handed crossbows.</td>
+						</tr>
+						<tr>
+							<td>Deception</td>
+							<td>Negative Social Skill</td>
+							<td>Ability to deceive someone into believing something that is not true. Otherwise known as lying.</td>
+						</tr>
+						<tr>
+							<td>Disguise</td>
+							<td>Social Skill</td>
+							<td>Ability to disguise one's self to appear as someone else, or to blend in with a crowd.</td>
+						</tr>
+						<tr>
+							<td>Divine Magic</td>
+							<td>Magic Skill</td>
+							<td>Affinity to the Divine reduces the difficulty of using and defending against <em>Divine Magic</em>, and their <em>Magic</em> is more effective against <em>Psi Magic</em>, artificial lifeforms or cyborgs.</td>
+						</tr>
+						<tr>
+							<td>Domestic Duties</td>
+							<td>Physical Skill</td>
+							<td>Proficiency with cleaning, tidying up or organizing a space.</td>
+						</tr>
+						<tr>
+							<td>Earth Magic</td>
+							<td>Magic Skill</td>
+							<td>Affinity to the Earth element reduces the difficulty of using and defending against <em>Earth Magic</em>.</td>
+						</tr>
+						<tr>
+							<td>Electronics</td>
+							<td>Crafting Skill</td>
+							<td>Familiarity with various electronic components, as well as the ability to repair or improve existing systems.</td>
+						</tr>
+						<tr>
+							<td>Empathy</td>
+							<td>Positive Social Skill</td>
+							<td>Ability to understand the feelings and emotional states of others.</td>
+						</tr>
+						<tr>
+							<td>Energy Bow Crafting</td>
+							<td>Crafting Skill</td>
+							<td>Ability to craft energy bows.</td>
+						</tr>
+						<tr>
+							<td>Energy Cell Crafting</td>
+							<td>Crafting Skill</td>
+							<td>Ability to craft energy cells using crystals and the proper materials for housing them.</td>
+						</tr>
+						<tr>
+							<td>Engineering</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Science concerned with the design, building, and use of engines, machines, and structures.</td>
+						</tr>
+						<tr>
+							<td>Erelan Civil Norms</td>
+							<td>Social Skill</td>
+							<td>Familiarity with the laws, culture and societal norms of the Erelen.</td>
+						</tr>
+						<tr>
+							<td>Erelan Language</td>
+							<td>Language Skill</td>
+							<td>Ability to speak the Erelan language.</td>
+						</tr>
+						<tr>
+							<td>Erelan Lore</td>
+							<td>Knowledge Skill</td>
+							<td>Familiarity with Erelan lore.</td>
+						</tr>
+						<tr>
+							<td>Escape</td>
+							<td>Physical Skill</td>
+							<td>Ability to escape bonds, danger or immediate capture by individuals.</td>
+						</tr>
+						<tr>
+							<td>Explosives</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with grenades, explosives and mines.</td>
+						</tr>
+						<tr>
+							<td>Finesse</td>
+							<td>Physical Skill</td>
+							<td>Ability to perform <em>Tasks</em> in a subtle and delicate manner.</td>
+						</tr>
+						<tr>
+							<td>Fire Magic</td>
+							<td>Magic Skill</td>
+							<td>Affinity to the Fire element reduces the difficulty of using and defending against <em>Fire Magic</em>.</td>
+						</tr>
+						<tr>
+							<td>Frost Magic</td>
+							<td>Magic Skill</td>
+							<td>Affinity to the Frost element reduces the difficulty of using and defending against <em>Frost Magic</em>.</td>
+						</tr>
+						<tr>
+							<td>Geography</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Study of the physical features of planets and their atmosphere, and of civilized activity as it affects and is affected by these, including the distribution of populations and resources, land use, and industries.</td>
+						</tr>
+						<tr>
+							<td>Geology</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Science that deals with a planet's physical structure and substance, its history, and the processes that act on it.</td>
+						</tr>
+						<tr>
+							<td>Healing</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to heal <em>Harm</em> on characters and creatures.</td>
+						</tr>
+						<tr>
+							<td>History</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Study of past events, particularly in the affairs of civilized beings.</td>
+						</tr>
+						<tr>
+							<td>Hunting</td>
+							<td>Physical Skill</td>
+							<td>Ability to hunt animals in the wild.</td>
+						</tr>
+						<tr>
+							<td>Identify</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to identify the quality, importance, function, or power of things, characters or creatures.</td>
+						</tr>
+						<tr>
+							<td>Insight</td>
+							<td>Positive Social Skill</td>
+							<td>Ability to see through lies and deception, and—to a certain extent—discern feelings, beliefs or plans.</td>
+						</tr>
+						<tr>
+							<td>Intimidation</td>
+							<td>Negative Social Skill</td>
+							<td>Ability to intimidate others to get them to do what you want, or to instill fear in them.</td>
+						</tr>
+						<tr>
+							<td>Jumping</td>
+							<td>Physical Skill</td>
+							<td>Ability to jump vertically or horizontally.</td>
+						</tr>
+						<tr>
+							<td>K'ohman Civil Norms</td>
+							<td>Social Skill</td>
+							<td>Familiarity with the laws, culture and societal norms of the K'ohma.</td>
+						</tr>
+						<tr>
+							<td>K'ohman Language</td>
+							<td>Language Skill</td>
+							<td>Ability to speak the K'ohman language.</td>
+						</tr>
+						<tr>
+							<td>K'ohman Lore</td>
+							<td>Knowledge Skill</td>
+							<td>Familiarity with K'ohman lore.</td>
+						</tr>
+						<tr>
+							<td>Land Vehicle Piloting</td>
+							<td>Physical Skill</td>
+							<td>Ability to pilot land-based vehicles when on the surface of planets or moons.</td>
+						</tr>
+						<tr>
+							<td>Leatherworking</td>
+							<td>Crafting Skill</td>
+							<td>Ability to make or repair objects from leather.</td>
+						</tr>
+						<tr>
+							<td>Lifting</td>
+							<td>Physical Skill</td>
+							<td>Ability to lift heavy objects for an extended period of time.</td>
+						</tr>
+						<tr>
+							<td>Lockpicking</td>
+							<td><br>
+							Physical</td>
+							<td>Ability to unlock a lock by manipulating the components of the lock device without the original key.</td>
+						</tr>
+						<tr>
+							<td>Low Gravity Maneuvers</td>
+							<td>Physical Skill</td>
+							<td>Ability to perform physical <em>Actions</em> while in low or zero gravity environments.</td>
+						</tr>
+						<tr>
+							<td>Machines</td>
+							<td>Crafting Skill</td>
+							<td>Ability to build, repair or tinker with machines.</td>
+						</tr>
+						<tr>
+							<td>Mathematics</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Science of numbers, quantity, and space.</td>
+						</tr>
+						<tr>
+							<td>Metalworking</td>
+							<td>Crafting Skill</td>
+							<td>Ability to make or repair objects from metal.</td>
+						</tr>
+						<tr>
+							<td>Pathfinding</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to navigate natural locales, like forests, jungles or deserts.</td>
+						</tr>
+						<tr>
+							<td>Perception</td>
+							<td>Physical Skill</td>
+							<td>Ability to see in hard to see places, or to find objects hidden in plain view.</td>
+						</tr>
+						<tr>
+							<td>Performance</td>
+							<td>Social Skill</td>
+							<td>Ability to perform for audiences for the purpose of entertainment, including dancing and interpretive works.</td>
+						</tr>
+						<tr>
+							<td>Persuasion</td>
+							<td>Positive Social Skill</td>
+							<td>Ability to persuade an individual to do what you want through logic or empathy.</td>
+						</tr>
+						<tr>
+							<td>Philosophy</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Study of the fundamental nature of knowledge, reality, and existence, especially when considered as an academic discipline.</td>
+						</tr>
+						<tr>
+							<td>Physics</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Science concerned with the nature and properties of matter and energy. The subject matter of physics includes mechanics, heat, light and other radiation, sound, electricity, magnetism, and the structure of atoms.</td>
+						</tr>
+						<tr>
+							<td>Pickpocketing</td>
+							<td>Physical Skill</td>
+							<td>Ability to steal from a person's pockets without them noticing.</td>
+						</tr>
+						<tr>
+							<td>Pistols</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with small, one-handed firearms, such as handguns, revolvers or semi-automatic pistols.</td>
+						</tr>
+						<tr>
+							<td>Plumbing</td>
+							<td>Crafting Skill</td>
+							<td>Ability to setup or repair plumbing systems.</td>
+						</tr>
+						<tr>
+							<td>Poisons</td>
+							<td>Crafting Skill</td>
+							<td>Ability to craft poisons to imbue weapons and for ingestion.</td>
+						</tr>
+						<tr>
+							<td>Primal Magic</td>
+							<td>Magic Skill</td>
+							<td>Affinity to Primal nature reduces the difficulty of using and defending against <em>Primal Magic</em>.</td>
+						</tr>
+						<tr>
+							<td>Primitive Construction</td>
+							<td>Crafting Skill</td>
+							<td>Ability to craft using natural materials like animal hides and bones, dirt, rocks and trees.</td>
+						</tr>
+						<tr>
+							<td>Psi Magic</td>
+							<td>Magic Skill</td>
+							<td>Affinity to Psi reduces the difficulty of using and defending against <em>Psi Magic</em>.</td>
+						</tr>
+						<tr>
+							<td>Research</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to find information from a database of knowledge.</td>
+						</tr>
+						<tr>
+							<td>Riding</td>
+							<td>Physical Skill</td>
+							<td>Ability to ride animals for transportation.</td>
+						</tr>
+						<tr>
+							<td>Rifles</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with using heavy, long-range firearms, such as sniper rifles, semi-automatic rifles or battle rifles.</td>
+						</tr>
+						<tr>
+							<td>Robotics</td>
+							<td>Crafting Skill</td>
+							<td>Ability to build and program robots, as well as the ability to repair or improve existing systems.</td>
+						</tr>
+						<tr>
+							<td>Rolling</td>
+							<td>Physical Skill</td>
+							<td>Ability to dodge or move in a specific distance by rolling on the ground.</td>
+						</tr>
+						<tr>
+							<td>Running</td>
+							<td>Physical Skill</td>
+							<td>Proficiency in running long distances.</td>
+						</tr>
+						<tr>
+							<td>Sabotage</td>
+							<td>Physical Skill</td>
+							<td>Ability to cause something to malfunction without being detected.</td>
+						</tr>
+						<tr>
+							<td>Scavenging</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to scavenge <em>Items</em> or technology from unclaimed material, or to gather food when in the wild.</td>
+						</tr>
+						<tr>
+							<td>Seduction</td>
+							<td>Social Skill</td>
+							<td>Ability to seduce others using sensuality alone, convincing them to do something they'd otherwise not choose to do on their own.</td>
+						</tr>
+						<tr>
+							<td>Shotguns</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with using medium, close-range firearms, such as automatic shotguns or pump-action shotguns.</td>
+						</tr>
+						<tr>
+							<td>Sleight of Hand</td>
+							<td>Physical Skill</td>
+							<td>Ability to fool someone using only hands and the power of misdirection.</td>
+						</tr>
+						<tr>
+							<td>Starship Engineering</td>
+							<td>Science Skill<br>Knowledge Skill</td>
+							<td>Familiarity with the inner workings of starships, as well as the ability to repair or improve them.</td>
+						</tr>
+						<tr>
+							<td>Starship Piloting</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to pilot starships and shuttles.</td>
+						</tr>
+						<tr>
+							<td>Starship Sensors</td>
+							<td>Knowledge Skill</td>
+							<td>Familiarity with sensor systems on shuttles and interstellar ships to help in perceiving outside entities.</td>
+						</tr>
+						<tr>
+							<td>Starship Weapons System</td>
+							<td>Knowledge Skill</td>
+							<td>Proficiency with the targeting systems on shuttles and interstellar ships.</td>
+						</tr>
+						<tr>
+							<td>Stealth</td>
+							<td>Physical Skill</td>
+							<td>Ability to sneak past individuals or security systems without alerting them.</td>
+						</tr>
+						<tr>
+							<td>Storm Magic</td>
+							<td>Magic Skill</td>
+							<td>Affinity to Storm elements reduces the difficulty of using and defending against <em>Storm Magic</em>.</td>
+						</tr>
+						<tr>
+							<td>Storytelling</td>
+							<td>Social Skill</td>
+							<td>Ability to create a narrative (such as a story, play, or scenario).</td>
+						</tr>
+						<tr>
+							<td>Survival</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to survive out in the wild, with sub-skills such as camping, water collection, animal avoidance and more.</td>
+						</tr>
+						<tr>
+							<td>Swimming</td>
+							<td>Physical Skill</td>
+							<td>Ability to swim in liquid substances.</td>
+						</tr>
+						<tr>
+							<td>T'av Civil Norms</td>
+							<td>Social Skill</td>
+							<td>Familiarity with the laws, culture and societal norms of the T'av.</td>
+						</tr>
+						<tr>
+							<td>T'av Language</td>
+							<td>Language Skill</td>
+							<td>Ability to speak the T'av language.</td>
+						</tr>
+						<tr>
+							<td>T'av Lore</td>
+							<td>Knowledge Skill</td>
+							<td>Familiarity with T'av lore.</td>
+						</tr>
+						<tr>
+							<td>Terran Civil Norms</td>
+							<td>Social Skill</td>
+							<td>Familiarity with the laws, culture and societal norms of the Terran.</td>
+						</tr>
+						<tr>
+							<td>Terran Language</td>
+							<td>Language Skill</td>
+							<td>Ability to speak the Terran language.</td>
+						</tr>
+						<tr>
+							<td>Terran Lore</td>
+							<td>Knowledge Skill</td>
+							<td>Familiarity with Terran lore.</td>
+						</tr>
+						<tr>
+							<td>Throwing</td>
+							<td>Physical Skill</td>
+							<td>Ability to throw objects with strength without necessarily worrying about accuracy.</td>
+						</tr>
+						<tr>
+							<td>Throwing Weapons</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with throwing weapons, such as throwing knives, ninja stars or darts.</td>
+						</tr>
+						<tr>
+							<td>Torture</td>
+							<td>Physical Skill</td>
+							<td>Ability to inflict mental or physical pain on another person.</td>
+						</tr>
+						<tr>
+							<td>Tracking</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to follow or find a specific creature or character.</td>
+						</tr>
+						<tr>
+							<td>Trivia</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to call up pieces of trivia or gain <em>Insight</em>.</td>
+						</tr>
+						<tr>
+							<td>Unarmed Attacks</td>
+							<td>Combat Skill</td>
+							<td>Proficiency with using one's body as a weapon, including actions such as kicking, punching or wrestling.</td>
+						</tr>
+						<tr>
+							<td>Urban Navigation</td>
+							<td>Knowledge Skill</td>
+							<td>Ability to navigate cities, towns and urban locales.</td>
+						</tr>
+						<tr>
+							<td>Whips</td>
+							<td>Combat Skill</td>
+							<td>Proficiency at <em>Attacking</em> or performing actions with whips.</td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="ability-rules">Feats, Traits & Statuses</h3>
+				<p class="expandable ability-rules">The majority of your character’s <em>Abilities</em> are <em>Feats</em> and <em>Traits</em>, which are granted by character attributes. <em>Feats</em> count as an entire <em>Action</em> when used, while a <em>Trait</em> is a passive <em>Ability</em> that changes how your character functions.</p>
+				<p class="expandable ability-rules"><em>Statuses</em> are passive <em>Abilities</em> that have specific conditions, such as only being active for a certain amount of time. Once activated, they act like <em>Traits</em>, passively changing how your character functions. Once their condition has expired or has been met, the <em>Status</em> no longer has an effect until re-activated.</p>
+				<h4 id="dice-roll-rules" class="expandable ability-rules">Dice Rolls</h4>
+				<p class="expandable dice-roll-rules">Every <em>Ability</em> either modifies your dice pool, gives you an extra effect or allows your character to do something they’d otherwise not be able to do. Check the description of each <em>Ability</em> by clicking the <em>Abilities</em> button to know exactly what it does. You can also review the table below for an overview of what each dice roll means.</p>
+				<input type="text" class="filter-input expandable dice-roll-rules" placeholder="Filter by dice roll name or effect..." id="dice-roll-search">
+				<label class="filter-label expandable dice-roll-rules" for="dice-roll-search">Filter:</label>
+				<table class="expandable dice-roll-rules">
+					<thead>
+						<tr>
+							<th>Dice Roll</th>
+							<th>Effect</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>-1d</td>
+							<td>Remove any one die from your dice pool.</td>
+						</tr>
+						<tr>
+							<td>+1d</td>
+							<td>Add a die to your dice pool. This can be a <strong>1d6</strong> or <strong>1d8</strong>, depending on the type of roll.</td>
+						</tr>
+						<tr>
+							<td>+2d</td>
+							<td>Add two dice to your dice pool. These can be <strong>1d6s</strong> or <strong>1d8s</strong>, depending on the type of roll.</td>
+						</tr>
+						<tr>
+							<td>+3d</td>
+							<td>Add three dice to your dice pool. These can be <strong>1d6s</strong> or <strong>1d8s</strong>, depending on the type of roll.</td>
+						</tr>
+						<tr>
+							<td>½ Time</td>
+							<td>The associated <em>Task</em> takes half the amount of time to complete.</td>
+						</tr>
+						<tr>
+							<td>½ Time/XP</td>
+							<td>The associated <em>Task</em> takes half the amount of time and XP to complete.</td>
+						</tr>
+						<tr>
+							<td>1d</td>
+							<td>Roll at least one die.</td>
+						</tr>
+						<tr>
+							<td>2d</td>
+							<td>Roll at least twice dice.</td>
+						</tr>
+						<tr>
+							<td>3d</td>
+							<td>Roll at least three dice.</td>
+						</tr>
+						<tr>
+							<td>1d2</td>
+							<td>Roll <strong>1d2</strong> (or flip a coin).</td>
+						</tr>
+						<tr>
+							<td>1d4</td>
+							<td>Roll <strong>1d4</strong>.</td>
+						</tr>
+						<tr>
+							<td>1d6</td>
+							<td>Roll <strong>1d6</strong>.</td>
+						</tr>
+						<tr>
+							<td>Extra 1d6</td>
+							<td>Add a <strong>1d6</strong> with special attributes to your dice pool.</td>
+						</tr>
+						<tr>
+							<td>1d10</td>
+							<td>Roll <strong>1d10</strong>.</td>
+						</tr>
+						<tr>
+							<td>2x Action</td>
+							<td>Perform up to two <em>Actions</em> this round. One of the <em>Actions</em> your character performs cannot be a <em>Feat</em>.</td>
+						</tr>
+						<tr>
+							<td>Multi Action</td>
+							<td>Perform multiple <em>Actions</em> this round. One of the <em>Actions</em> your character performs cannot be a <em>Feat</em>.</td>
+						</tr>
+						<tr>
+							<td>2x Magic</td>
+							<td>Roll at least two Magic dice (<strong>1d8</strong>) instead of rolling for Logic or Feelings (<strong>1d6</strong>).</td>
+						</tr>
+						<tr>
+							<td>2x Attack</td>
+							<td><em>Attack</em> up to two times this round. Your character cannot perform any other <em>Actions</em> other than <em>Attacking</em>.</td>
+						</tr>
+						<tr>
+							<td>3x Attack</td>
+							<td><em>Attack</em> up to three times this round. Your character cannot perform any other <em>Actions<em> other than <em>Attacking</em>.</td>
+						</tr>
+						<tr>
+							<td>2x Target</td>
+							<td>Target up to two targets this round with a single <em>Attack</em>, or with whatever effect this <em>Ability</em> has. You roll once for the entire <em>Action</em>.</td>
+						</tr>
+						<tr>
+							<td>3x Target</td>
+							<td>Target up to three targets this round with a single <em>Attack</em>, or with whatever effect this <em>Ability</em> has. You roll once for the entire <em>Action</em>.</td>
+						</tr>
+						<tr>
+							<td>5x Target</td>
+							<td>Target up to five targets this round with a single <em>Attack</em>, or with whatever effect this <em>Ability</em> has. You roll once for the entire <em>Action</em>.</td>
+						</tr>
+						<tr>
+							<td>6x Target</td>
+							<td>Target up to six targets this round with a single <em>Attack</em>, or with whatever effect this <em>Ability</em> has. You roll once for the entire <em>Action</em>.</td>
+						</tr>
+						<tr>
+							<td>Target All</td>
+							<td>Target all targets within range this round with a single <em>Attack</em>, or with whatever effect this <em>Ability</em> has. You roll once for the entire <em>Action</em>.</td>
+						</tr>
+						<tr>
+							<td>Advantage</td>
+							<td>Roll your dice pool twice, and select the more favourable result.</td>
+						</tr>
+						<tr>
+							<td>Blind</td>
+							<td>Blind the target when <em>Attacking</em>, causing them to have disadvantage on all rolls involving sight. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>Control</td>
+							<td>Control the actions of the target.</td>
+						</tr>
+						<tr>
+							<td>Daze</td>
+							<td>Daze the target when <em>Attacking</em>, causing them to remove a die from their dice pool on any roll. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>Die</td>
+							<td>Kill your character.</td>
+						</tr>
+						<tr>
+							<td>Disadvantage</td>
+							<td>Roll your dice pool twice, and select the least favourable result.</td>
+						</tr>
+						<tr>
+							<td>Disarm</td>
+							<td>Disarm the target's weapon when <em>Attacking</em>, so that they must spend an <em>Action</em> to re-equip their weapon. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>Disrupt</td>
+							<td>Cause a specific set of effects when <em>Attacking</em>. You don't need to remove a die from your dice pool to cause these minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>Distract</td>
+							<td>Distract the target when <em>Attacking<em>, so that they take no other <em>Action</em> other than to defend itself, and become focused entirely on the source of the distraction.</td>
+						</tr>
+						<tr>
+							<td>Fear</td>
+							<td>Instill fear in the target when <em>Attacking<em>, causing them to run away as their <em>Action</em>.</td>
+						</tr>
+						<tr>
+							<td>Feelings</td>
+							<td>Roll for <em>Feelings</em> (<strong>1d6</strong>). Or, the associated <em>Ability</em> has something to do with <em>Feelings</em> that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Guard</td>
+							<td><em>Guard</em> against <em>Attacks</em> made against your character, halving the amount of <em>Harm</em> received.</td>
+						</tr>
+						<tr>
+							<td>Heal</td>
+							<td>Modifies how healing <em>Tasks</em> work. Or, the associated <em>Ability</em> has something to do with healing that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Help</td>
+							<td>Modifies how helping <em>Actions</em> work. Or, the associated <em>Ability</em> has something to do with helping that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Insight</td>
+							<td>Get <em>Insight</em> without needing to roll your exact number or without needing to pay 2 XP. Or, the associated <em>Ability</em> has something to do with <em>Insight</em> that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Intrusion</td>
+							<td>Inflict the equivalent of a GM <em>Intrusion</em> onto the target.</td>
+						</tr>
+						<tr>
+							<td>Intrusions</td>
+							<td>Modifies how <em>Intrusions</em> work.</td>
+						</tr>
+						<tr>
+							<td>Investigate</td>
+							<td>Modifies how investigation <em>Tasks</em> work.  Or, the associated <em>Ability</em> has something to do with investigating that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Logic</td>
+							<td>Roll for <em>Logic</em> (<strong>1d6</strong>). Or, the associated <em>Ability</em> has something to do with <em>Logic</em> that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Loot</td>
+							<td>Modifies how looting works. Or, the associated <em>Ability</em> has something to do with looting that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Magic</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Or, the associated <em>Ability</em> has something to do with Magic that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>M-Banish</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Banish the target when <em>Attacking<em/>, displacing them to another plane of existence for a short period of time.</td>
+						</tr>
+						<tr>
+							<td>M-Blind</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Blind the target when <em>Attacking</em>, causing them to have disadvantage on all rolls involving sight. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>M-Confuse</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Confuse the target when <em>Attacking</em>, so that they <em>Attack</em> allies and foes at random.</td>
+						</tr>
+						<tr>
+							<td>M-Control</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Control the actions of the target.</td>
+						</tr>
+						<tr>
+							<td>M-Daze</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Daze the target when <em>Attacking</em>, causing them to remove a die from their dice pool on any roll. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>M-Fear</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Fear the target when <em>Attacking</em>, causing them to run away as their <em>Action</em>.</td>
+						</tr>
+						<tr>
+							<td>M-Guard</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). <em>Guard</em> against <em>Attacks</em> made against your character, halving the amount of <em>Harm</em> received.</td>
+						</tr>
+						<tr>
+							<td>M-Insight</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Gives you <em>Insight</em> without needing to roll your exact number or without needing to pay 2 XP.</td>
+						</tr>
+						<tr>
+							<td>M-Move</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Move the target into a desired position when <em>Attacking</em>. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>M-Pacify</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Pacify the target when <em>Attacking</em>, so that they cannot <em>Attack</em>, but can still take other <em>Actions</em> and use <em>Abillities</em>.</td>
+						</tr>
+						<tr>
+							<td>M-Pin</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Pin the target when <em>Attacking</em>, so that they can't move. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>M-Stasis</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Cause the target to enter a state of stasis. While in stasis, a target is unable to take any <em>Action</em>, cannot be interacted with, and is immune to all damage.</td>
+						</tr>
+						<tr>
+							<td>M-Stun</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Stun the target when <em>Attacking</em>, so that they can't take any <em>Actions</em>.</td>
+						</tr>
+						<tr>
+							<td>M-Topple</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Knock down the target so they become prone when <em>Attacking</em>.</td>
+						</tr>
+						<tr>
+							<td>Move</td>
+							<td>Move the target into a desired position when <em>Attacking</em>. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>Pacify</td>
+							<td>Pacify the target when <em>Attacking</em>, so that they cannot <em>Attack</em>, but can still take other <em>Actions</em> and use <em>Abillities</em>.</td>
+						</tr>
+						<tr>
+							<td>Pin</td>
+							<td>Pin the target when <em>Attacking</em>, so that they can't move. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>Re-roll</td>
+							<td>Modifies your ability to re-roll <em>Task</em> rolls. Or, the associated <em>Ability</em> has something to do with re-rolling that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Rest</td>
+							<td>Take an additional <em>Short Rest</em>. Or, the associated <em>Ability</em> has something to do with <em>Rests</em> that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Stun</td>
+							<td>Stun the target when <em>Attacking</em>, so that they can't take any <em>Actions</em>.</td>
+						</tr>
+						<tr>
+							<td>Success</td>
+							<td>Automatically succeed on a <em>Task</em> without needing to roll. Or, the associated <em>Ability</em> has something to do with successful or critically successful rolls that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>Take Attack</td>
+							<td><em>Take an Attack</em> aimed at another target.</td>
+						</tr>
+						<tr>
+							<td>Taunt</td>
+							<td>Taunt the target when <em>Attacking</em>, forcing them to focus on your character. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>Tech</td>
+							<td>Roll for <em>Tech</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>eelings</em> (<strong>1d6</strong>). Or, the associated <em>Ability</em> has something to do with <em>Tech</em> that isn't directly related to your roll.</td>
+						</tr>
+						<tr>
+							<td>T-Control</td>
+							<td>Roll for <em>Tech</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>eelings</em> (<strong>1d6</strong>).Control the actions of the target.</td>
+						</tr>
+						<tr>
+							<td>T-Insight</td>
+							<td>Roll for <em>Tech</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>eelings</em> (<strong>1d6</strong>). Gives you <em>Insight</em> without needing to roll your exact number or without needing to pay 2 XP.</td>
+						</tr>
+						<tr>
+							<td>T-Move</td>
+							<td>Roll for <em>Tech</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>eelings</em> (<strong>1d6</strong>). Move the target into a desired position when you <strong>Attack</strong>. You don't need to remove a die from your dice pool to cause this minor effect.</td>
+						</tr>
+						<tr>
+							<td>T-Pin</td>
+							<td>Roll for <em>Tech</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>eelings</em> (<strong>1d6</strong>). Pin the target when <em>Attacking</em>, so that they can't move. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>T-Stun</td>
+							<td>Roll for <em>Tech</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>eelings</em> (<strong>1d6</strong>). Stun the target when <em>Attacking</em>, so that they can't take any <em>Actions</em>. You don't need to remove a die from your dice pool to cause this minor effect, though your character doesn't deal damage to the target (unless otherwise stated in the <em>Ability</em> description).</td>
+						</tr>
+						<tr>
+							<td>Topple</td>
+							<td>Knock down the target so that they become prone when <em>Attacking</em>.</td>
+						</tr>
+						<tr>
+							<td>XP</td>
+							<td>Get XP. Or, the associated <em>Ability</em> has something to do with XP that isn't directly related to your roll.</td>
 						</tr>
 					</tbody>
 				</table>
