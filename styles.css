@@ -1500,6 +1500,9 @@ tr.gu-mirror {
 	margin-right: 20px;
 }
 /* States */
+.ensure-block {
+	display: block!important;
+}
 .with-sec-species #sec-species-attribute, .with-sec-species #type-attribute, .with-sec-focus #pri-focus-attribute {
 	grid-column-end: span 2;
 }
@@ -2010,10 +2013,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		padding-top: 3px;
 		padding-bottom: 3px;
 	}
-	.dice-roll-rules td {
+	.dice-roll-rules td, .skills-list-rules td {
 		padding: 5px 30px 5px 30%!important;
 	}
-	.dice-roll-rules td:before {
+	.dice-roll-rules td:before, .skills-list-rules td:before {
 		width: calc(30% - 45px);
 	}
 	.dice-roll-rules td:nth-of-type(1):before {
@@ -2022,11 +2025,23 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	.dice-roll-rules td:nth-of-type(2):before {
 		content: 'Effect';
 	}
-	.skills-list-rules td {
-		padding: 5px 30px 5px 30%!important;
+	.items-list-rules td {
+		padding: 5px 30px 5px 35%!important;
 	}
-	.skills-list-rules td:before {
-		width: calc(30% - 45px);
+	.items-list-rules td:before {
+		width: calc(35% - 45px);
+	}
+	.items-list-rules td:nth-of-type(1):before {
+		content: 'Item';
+	}
+	.items-list-rules td:nth-of-type(2):before {
+		content: 'Type';
+	}
+	.items-list-rules td:nth-of-type(3):before {
+		content: 'Price Category';
+	}
+	.items-list-rules td:nth-of-type(4):before {
+		content: 'Description';
 	}
 	.skills-list-rules td:nth-of-type(1):before {
 		content: 'Skill';
@@ -2204,10 +2219,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		font-size: 14px;
 		line-height: 1em;
 	}
-	.skills-list-rules td, .dice-roll-rules td {
+	.skills-list-rules td, .dice-roll-rules td, .items-list-rules td {
 		padding-left: 40%!important;
 	}
-	.skills-list td:before, .dice-roll-rules td:before {
+	.skills-list td:before, .dice-roll-rules td:before, .items-list-rules td:before {
 		width: calc(40% - 45px);
 	}
 	.vox-rules td {

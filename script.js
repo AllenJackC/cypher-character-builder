@@ -2203,7 +2203,15 @@ $(function() {
 	//collapse when closing a section
 	function toggleRules(child) {
 		var childID = child.attr('id');
-		child.stop().slideToggle(300);
+		child.stop().slideToggle({
+			duration: 300,
+			start: function() {
+				if ( child.is('table') ) child.addClass('ensure-block');
+			},
+			complete: function() {
+				child.removeClass('ensure-block');
+			}
+		});
 		childExists(childID);
 	}
 	function childExists(childID) {
@@ -2245,7 +2253,7 @@ $(function() {
 		if ( ruleSection.is(':visible') === false && ruleTitle.is('h3') ) {
 			ruleTitle.addClass('active');
 			ruleSection.stop().slideToggle(300, function() {
-				if ( !counter ) {
+				if ( counter === 0 ) {
 					modal.animate({
 						scrollTop: (ruleTitle.offset().top - 15)
 					},500);
@@ -2261,7 +2269,7 @@ $(function() {
 			}
 			ruleTitle.addClass('active');
 			ruleSection.stop().slideToggle(300, function() {
-				if ( !counter ) {
+				if ( counter === 0 ) {
 					modal.animate({
 						scrollTop: (ruleTitle.offset().top - 15)
 					},500);
@@ -2283,7 +2291,7 @@ $(function() {
 			}
 			ruleTitle.addClass('active expanded');
 			ruleSection.stop().slideToggle(300, function() {
-				if ( !counter ) {
+				if ( counter === 0 ) {
 					modal.animate({
 						scrollTop: (ruleTitle.offset().top - 15)
 					},500);
@@ -2291,7 +2299,7 @@ $(function() {
 				}
 			});
 		} else {
-			if ( !counter ) {
+			if ( counter === 0 ) {
 				modal.animate({
 					scrollTop: (ruleTitle.offset().top - 15)
 				},500);

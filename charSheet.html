@@ -683,11 +683,14 @@
 				<div class="button modal-button" id="open-rules">
 					Rules
 				</div>
-				<div class="button" id="open-items">
-					Items List
+				<div class="button rules-anchor" data-rule="items-list-rules">
+					Item List
 				</div>
 				<div class="button rules-anchor" data-rule="skills-list-rules">
 					Skill List
+				</div>
+				<div class="button rules-anchor" data-rule="dice-roll-rules">
+					Dice Rolls
 				</div>
 				<div class="button rules-anchor" data-rule="minor-effect-rules">
 					Minor Effects
@@ -1114,7 +1117,7 @@
 				<h5 id="focus-rules" class="expandable attributes-rules">Step #4 – Select a Focus</h5>
 				<p class="focus-rules expandable">Your character's <em>Focus</em> makes them unique, whether among others of the same <em>Type</em>, or just within your group. Your character is granted new <em>Abilities</em> specific to their selected <em>Focus</em> every time they ascend to a new <em>Tier</em>.</p>
 				<h5 id="selections-rules" class="expandable attributes-rules">Step #5 – Make Selections</h5>
-				<p class="selections-rules expandable">Some of your character attribute choices may allow you to select between different <em>Abilities</em> or <em>Items</em>. You may notice occasionally that you'll receive a <em>Skill</em> or <em>Item</em> labelled with <em>(of your choice)</em> or similar. Replace the text with something appropriate; feel free to consult the <a class="items-link">Items List</a> or <a class="rules-anchor" data-rule="skills-list-rules">Skills List</a> if needed. You may also notice that the <em>Abilities</em> button sometimes becomes a <em>Make Selections</em> button. Click or tap this button to choose between different options for your character.</p>
+				<p class="selections-rules expandable">Some of your character attribute choices may allow you to select between different <em>Abilities</em> or <em>Items</em>. You may notice occasionally that you'll receive a <em>Skill</em> or <em>Item</em> labelled with <em>(of your choice)</em> or similar. Replace the text with something appropriate; feel free to consult the <a class="rules-anchor" data-rule="items-list-rules">Item List</a> or <a class="rules-anchor" data-rule="skills-list-rules">Skill List</a> if needed. You may also notice that the <em>Abilities</em> button sometimes becomes a <em>Make Selections</em> button. Click or tap this button to choose between different options for your character.</p>
 				<h5 id="choose-numbers-rules" class="expandable attributes-rules">Step #6 – Choose Your Numbers</h5>
 				<p class="choose-numbers-rules expandable">Choose a number from 2 to 5. The higher the number, the better your character is at <em><strong>LOGIC</strong></em> (science, cold rationality, reasoning, or any kind of calm, precise action). The lower the number, the better your character is at <em><strong>FEELINGS</strong></em> (intuition, diplomacy, physical activity, or any kind of wild, passionate action). Select the appropriate number bar on the scale once you've made your choice.</p>
 				<p class="choose-numbers-rules expandable">Choose a number from 2 to 7. The higher the number, the better your character is at <em><strong>TECH</strong></em> (advanced technology, such as firearms, computers or starships). The lower the number, the better your character is at <em><strong>MAGIC</strong></em> (unpredictable, yet powerful force). Select the appropriate number bar on the scale once you've made your choice.</p>
@@ -1153,7 +1156,7 @@
 					<li>Two <em>Inexpensive Items</em>, such as a small bag, a small primitive weapon, rations, ammo or a light source.</li>
 					<li>A weapon of your choice, depending on your character's <em>Type</em>. <em>Magic</em> users do not get a weapon by default.</li>
 				</ul>
-				<p class="expandable starting-equipment-rules">You may also get additional <em>Items</em> from your character's <em>Descriptor</em>, <em>Species</em> or <em>Focus</em>. Feel free to consult the <a class="items-link">Items List</a> for suggestions if you're unsure what to give your character.</p>
+				<p class="expandable starting-equipment-rules">You may also get additional <em>Items</em> from your character's <em>Descriptor</em>, <em>Species</em> or <em>Focus</em>. Feel free to consult the <a class="rules-anchor" data-rule="items-list-rules">Item List</a> for suggestions if you're unsure what to give your character.</p>
 				<h3 id="game-rules">Playing the Game</h3>
 				<h4 id="encounters-rules" class="expandable game-rules">Encounters</h4>
 				<p class="expandable encounters-rules">Immortal Freedom is primarily experienced as a series of encounters strung together to build a narrative. Here's how most encounters are carried out:</p>
@@ -1231,9 +1234,6 @@
 					<li><strong>Craft Artifact</strong> – 4 XP</li>
 					<li><strong>Ascend to New Tier</strong> – 16 XP</li>
 				</ul>
-				<h4 id="skills-rules" class="expandable game-rules">Skills</h4>
-				<p class="expandable skills-rules"><em>Skills</em> are what your character is capable at doing. They can either be trained, practiced or have inability in a <em>Skill</em>. If they're trained in a <em>Skill</em> (<strong>+1d</strong>), you add a die to your dice pool when performing a related <em>Task</em>. If they have an inability in a <em>Skill</em> (<strong>-1d</strong>), you remove a die instead. Being practiced (<strong>✦</strong>) has no effect, with the exception of languages. Your character must be practiced in a language to speak it.</p>
-				<p class="expandable skills-rules">When tackling a <em>Task</em>, you can only choose one applicable <em>Skill</em>, though you sometimes have some space to decide which <em>Skill</em> is appropriate. In general, <em>Skills</em> should never be too broad or too narrow. For example, saying your character is skilled in "Attacks" is too broad, but saying they're skilled at "Kicking" is too narrow.</p>
 				<h4 id="distance-rules" class="expandable game-rules">Distance & Ranges</h4>
 				<p class="expandable distance-rules">Distance is simplified into three basic categories:</p>
 				<ul class="expandable distance-rules">
@@ -1480,7 +1480,11 @@
 				<p class="expandable guard-rules">In a combat encounter, a character can stand <em>Guard</em> as their <em>Action</em>. They do not make attacks, but instead stand still to reduce the amount of damage they take from opponents in combat. This is useful for blocking a doorway, guarding a friend, and so forth. By default, <em>Guarding</em> halves the amount of <em>Harm</em> received from <em>Attacks</em>. Your character generally cannot <em>Guard</em> and <em>Take an Attack</em> in the same round.</p>
 				<h5 id="take-attack-rules" class="expandable task-rules">Take an Attack</h5>
 				<p class="expandable take-attack-rules">A character can use their <em>Action</em> to throw themselves in front of a foe’s <em>Attack</em> to save a nearby comrade. Your character generally cannot <em>Guard</em> and <em>Take an Attack</em> in the same round.</p>
-				<h3 id="skills-list-rules">Skill List</h3>
+				<h3 id="sheet-rules">Character Sheet Sections</h3>
+				<h4 class="expandable sheet-rules" id="skills-rules">Skills</h4>
+				<p class="expandable skills-rules"><em>Skills</em> are what your character is capable at doing. They can either be trained, practiced or have inability in a <em>Skill</em>. If they're trained in a <em>Skill</em> (<strong>+1d</strong>), you add a die to your dice pool when performing a related <em>Task</em>. If they have an inability in a <em>Skill</em> (<strong>-1d</strong>), you remove a die instead. Being practiced (<strong>✦</strong>) has no effect, with the exception of languages. Your character must be practiced in a language to speak it.</p>
+				<p class="expandable skills-rules">When tackling a <em>Task</em>, you can only choose one applicable <em>Skill</em>, though you sometimes have some space to decide which <em>Skill</em> is appropriate. In general, <em>Skills</em> should never be too broad or too narrow. For example, saying your character is skilled in "Attacks" is too broad, but saying they're skilled at "Kicking" is too narrow.</p>
+				<h5 class="expandable skills-rules" id="skills-list-rules">Skill List</h5>
 				<p class="expandable skills-list-rules">This is not a comprehensive list of all of the <em>Skills</em> available to your character; it’s a just a list of suggestions, as well as definitions for existing <em>Skills</em> granted by character attributes.</p>
 				<input type="text" class="filter-input expandable skills-list-rules" placeholder="Filter by Skill name or type..." id="skills-search">
 				<label class="filter-label expandable skills-list-rules" for="skills-search">Filter:</label>
@@ -2051,11 +2055,11 @@
 						</tr>
 					</tbody>
 				</table>
-				<h3 id="ability-rules">Feats, Traits & Statuses</h3>
+				<h4 class="expandable sheet-rules" id="ability-rules">Feats, Traits & Statuses</h4>
 				<p class="expandable ability-rules">The majority of your character’s <em>Abilities</em> are <em>Feats</em> and <em>Traits</em>, which are granted by character attributes. <em>Feats</em> count as an entire <em>Action</em> when used, while a <em>Trait</em> is a passive <em>Ability</em> that changes how your character functions.</p>
 				<p class="expandable ability-rules"><em>Statuses</em> are passive <em>Abilities</em> that have specific conditions, such as only being active for a certain amount of time. Once activated, they act like <em>Traits</em>, passively changing how your character functions. Once their condition has expired or has been met, the <em>Status</em> no longer has an effect until re-activated.</p>
-				<h4 id="dice-roll-rules" class="expandable ability-rules">Dice Rolls</h4>
-				<p class="expandable dice-roll-rules">Every <em>Ability</em> either modifies your dice pool, gives you an extra effect or allows your character to do something they’d otherwise not be able to do. Check the description of each <em>Ability</em> by clicking the <em>Abilities</em> button to know exactly what it does. You can also review the table below for an overview of what each dice roll means.</p>
+				<h5 id="dice-roll-rules" class="expandable ability-rules">Ability Dice Rolls</h5>
+				<p class="expandable dice-roll-rules">Every <em>Ability</em> either modifies your dice pool, gives you an extra effect or allows your character to do something they’d otherwise not be able to do. Check the description of each <em>Ability</em> by clicking the <em>Abilities</em> button to know exactly what it does. You can also review the table below for an overview of what effect each dice roll has.</p>
 				<input type="text" class="filter-input expandable dice-roll-rules" placeholder="Filter by dice roll name or effect..." id="dice-roll-search">
 				<label class="filter-label expandable dice-roll-rules" for="dice-roll-search">Filter:</label>
 				<table class="expandable dice-roll-rules">
@@ -2248,7 +2252,7 @@
 						</tr>
 						<tr>
 							<td>M-Banish</td>
-							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Banish the target when <em>Attacking<em/>, displacing them to another plane of existence for a short period of time.</td>
+							<td>Roll for <em>Magic</em> (<strong>1d8</strong>) instead of rolling for <em>Logic</em> or <em>Feelings</em> (<strong>1d6</strong>). Banish the target when <em>Attacking</em>, displacing them to another plane of existence for a short period of time.</td>
 						</tr>
 						<tr>
 							<td>M-Blind</td>
@@ -2370,6 +2374,686 @@
 							<td>XP</td>
 							<td>Get XP. Or, the associated <em>Ability</em> has something to do with XP that isn't directly related to your roll.</td>
 						</tr>
+					</tbody>
+				</table>
+				<h5 id="aoe-rules" class="expandable ability-rules">Area of Effect (AoE)</h5>
+				<p class="expandable aoe-rules"><em>Abilities</em> that affect an area or have the “Target All” dice roll damage everything within range of the <em>Attack</em>, including allies and objects. You can spend an <em>Action</em> setting up the <em>Attack</em> to only hit foes or warn allies to move, or you can remove a die from your dice pool to focus the <em>Attack</em> only on enemies. Otherwise, allies take as much damage as all other characters, creatures or objects within range.</p>
+				<p class="expandable aoe-rules">You only roll once when using <em>Abilities</em> that affect multiple targets.</p>
+				<h4 class="expandable sheet-rules" id="items-rules">Inventory & Artifacts</h4>
+				<p class="expandable items-rules"><em>Items</em> only play a small role in the game, and are mostly available so you can customize your character, or to allow them to perform specific actions. An <em>Item</em> is any object that your character can feasibly claim to own. This could be something as simple as a rock or a water bottle, to assets like starships or a house.</p>
+				<p class="expandable items-rules"><em>Artifacts</em> are more powerful than equipment, with effects equivalent or surpassing the capabilities of character <em>Abilities</em>. <em>Artifacts</em> can be found on adventures—or in rare circumstances, purchased—and must be identified before they can be used properly. They can also be crafted, though this takes a long time and requires expensive materials.</p>
+				<h5 id="currency-rules" class="expandable items-rules">Currency & Prices</h5>
+				<p class="expandable currency-rules">The primary currency within the star cluster are <strong>Credits (Є)</strong>, which were introduced by the Terran Republic during the formation of the Coalition of Planets. Regardless of whether or not a specific civilization uses credits, all <em>Items</em> are valued in credits. There are five price categories for goods and services:</p>
+				<ul class="expandable currency-rules">
+					<li><em>Inexpensive Items</em> – up to 1000Є</li>
+					<li><em>Moderately Priced Items</em> – 1000Є to 100,000Є</li>
+					<li><em>Expensive Items</em> – 100,000Є to 1,000,000Є</li>
+					<li><em>Very Expensive Items</em> – 1,000,000Є to 1,000,000,000Є</li>
+					<li><em>Exorbitant Items</em> – over 1,000,000,000Є</li>
+				</ul>
+				<p class="expandable currency-rules">All <em>Items</em> are bought and sold using the price categories above, though non-player characters and player characters are welcome to refer to the value of <em>Items</em> by their credit value.</p>
+				<h5 class="expandable items-rules" id="items-list-rules">Item List</h5>
+				<p class="expandable items-list-rules">This is not a comprehensive list of <em>Items</em>, but rather a list of suggestions, with prices for common <em>Items</em> within the star cluster. The prices are also simply examples; price categories may vary slightly by location, quality of the <em>Item</em> and bartering <em>Skill</em>.</p>
+				<input type="text" class="filter-input expandable items-list-rules" placeholder="Filter by Item name, type or price..." id="items-search">
+				<label class="filter-label expandable items-list-rules" for="items-search">Filter:</label>
+				<table class="expandable items-list-rules">
+					<thead>
+						<tr>
+							<th>Item</th>
+							<th>Type</th>
+							<th>Price Category</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>A.A.D.A</td>
+							<td>Contact</td>
+							<td>Expensive</td>
+							<td>A.A.D.A. (Autonomous Aerial Drone Assistant) is a tiny robot assistant that follows your character closely. It cannot take independent <em>Actions</em> or leave your character’s immediate area.</td>
+						</tr>
+						<tr>
+							<td>Advanced Battleaxe</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Battleaxe made from advanced materials, or that includes technology to make it more effective.</td>
+						</tr>
+						<tr>
+							<td>Advanced Staff</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Staff made from advanced materials, or that includes technology to make it more effective.</td>
+						</tr>
+						<tr>
+							<td>Advanced Sword</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Sword made from advanced materials, or that includes technology to make it more effective.</td>
+						</tr>
+						<tr>
+							<td>AEG Membership Card</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Marks your character as a member of the Archeology and Exploration Guild (AEG) and allows them to benefit from several benefits, including a base of operations, somewhere to conduct research on a variety of geographical and historical topics, <em>Contacts</em> among other members of the AEG, and access to a variety of leads about sites of interest that no one else has yet explored.</td>
+						</tr>
+						<tr>
+							<td>All-Terrain Land Vehicle</td>
+							<td>Item</td>
+							<td>Very Expensive</td>
+							<td>All-terrain land vehicle capable of carrying between two to six people, depending on the size of the vehicle. Requires some kind of fuel source to function.</td>
+						</tr>
+						<tr>
+							<td>Android Assistant</td>
+							<td>Contact</td>
+							<td>Very Expensive</td>
+							<td>Humanoid android that follows your character around and acts as you direct.</td>
+						</tr>
+						<tr>
+							<td>Armored Envirosuit</td>
+							<td>Clothing</td>
+							<td>Very Expensive</td>
+							<td>Allows your character to survive in harsh environments and to take a few hits from weapons. Has limited air supply and can shield them from the elements, up to a certain extent.</td>
+						</tr>
+						<tr>
+							<td>Automatic Machine Gun</td>
+							<td>Weapon</td>
+							<td>Very Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Automatic Translator</td>
+							<td>Item</td>
+							<td>Expensive</td>
+							<td>Powerful and compact translator, generally made to fit around the ear. Translates all verbal communication into a language your character can understand. Can also be used to translate your character's speech into something the recipient can understand. Requires that the language you want to translate to or from exist within its database.</td>
+						</tr>
+						<tr>
+							<td>Bag of Heavy Tools</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Tools that allow your character to craft, tinker and repair a variety of large machines and constructs.</td>
+						</tr>
+						<tr>
+							<td>Bag of Light Tools</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Tools that allow your character to craft, tinker and repair a variety of Items, machines or other objects.</td>
+						</tr>
+						<tr>
+							<td>Beast Rations</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Food meant for animals.</td>
+						</tr>
+						<tr>
+							<td>Bedroll</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Binoculars</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Blowgun</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Bolt Cutters</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Book</td>
+							<td>Item</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Business Suit</td>
+							<td>Clothing</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Candle</td>
+							<td>Item</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Cannon Turret</td>
+							<td>Item</td>
+							<td>Exorbitant</td>
+							<td>Mounted turret capable of shooting down shuttles, land vehicles and even small starships.</td>
+						</tr>
+						<tr>
+							<td>Climate Controlled Jumpsuit</td>
+							<td>Clothing</td>
+							<td>Expensive</td>
+							<td>Simple envirosuit that allows your character to remain comfortable in environments with higher or lower average temperatures.</td>
+						</tr>
+						<tr>
+							<td>Climbing Gear</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Combat Uniform</td>
+							<td>Clothing</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Communicator</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Small communicator meant for staying in contact on a single communication channel.</td>
+						</tr>
+						<tr>
+							<td>Compass</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Construction Hammer</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Crafting Tools</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Tools that allow your character to craft a specific type of object.</td>
+						</tr>
+						<tr>
+							<td>Crowbar</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Dagger</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Datapad</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Handheld computing device with networking capabilities.</td>
+						</tr>
+						<tr>
+							<td>Deck Computer</td>
+							<td>Item</td>
+							<td>Very Expensive</td>
+							<td>Portable but advanced computer used primarily by IT techs, engineers and hackers.</td>
+						</tr>
+						<tr>
+							<td>Disguise Kit</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Small kit that allows your character to craft disguises.</td>
+						</tr>
+						<tr>
+							<td>Diving Suit</td>
+							<td>Clothing</td>
+							<td colspan="2">Expensive</td>
+						</tr>
+						<tr>
+							<td>Drink</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Water or some other kind of potable liquid.</td>
+						</tr>
+						<tr>
+							<td>Duct Tape</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Multi-purpose and ubiquitous.</td>
+						</tr>
+						<tr>
+							<td>Energy Bow</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Bow that fires energy projectiles instead of physical ammo using energy cells.</td>
+						</tr>
+						<tr>
+							<td>Energy Crossbow</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Crossbow that fires energy projectiles instead of physical ammo using energy cells.</td>
+						</tr>
+						<tr>
+							<td>Energy Cell</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Ammo for energy-based weapons. Like most ammo, you should only need to "reload" your weapon when you get an <em>Intrusion</em> or mixed success roll, or a significant amount of time has passed since the last "reload".</td>
+						</tr>
+						<tr>
+							<td>Enviro Scanner</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>This multifunction device can receive radio transmissions, automatically map locations the wearer has visited, play various forms of media, and keep voice and written records. Also, the wearer can scan for specific materials, toxic traces, and life forms within short range.</td>
+						</tr>
+						<tr>
+							<td>Envirosuit</td>
+							<td>Clothing</td>
+							<td>Very Expensive</td>
+							<td>Allows your character to survive in harsh environments. Has limited air supply and can shield you from the elements, up to a certain extent.</td>
+						</tr>
+						<tr>
+							<td>Expandable Baton</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Explorer's Pack</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>A backpack used to store other Items. Allows characters to carry more Items than they would normally.</td>
+						</tr>
+						<tr>
+							<td>Field Science Kit</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>A portable science lab which can be used to make calculations, take measurements or conduct tests.</td>
+						</tr>
+						<tr>
+							<td>First Aid Kit</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Makes it possible for your character to heal someone without the use of Magic.</td>
+						</tr>
+						<tr>
+							<td>Flashlight</td>
+							<td>Item</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Fuel</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>A micro-unit of fuel equals about 10 miles (16 km) of distance in any vehicle. In starships, fuel is only used for small distances, though a small amount of fuel is also spent when going at Vox speeds. Generally speaking, you only need to refuel when you get a mixed success or Intrusion on a roll, or a significant amount of time has passed since the last refueling.</td>
+						</tr>
+						<tr>
+							<td>Handaxe</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Handcuffs</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Hand Grenade</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Heavy Handgun</td>
+							<td>Weapon</td>
+							<td>Very Expensive</td>
+							<td>Large single-action handgun primarily used for sport or for punching holes in starships. Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Heavy Rifle</td>
+							<td>Weapon</td>
+							<td>Very Expensive</td>
+							<td>Large single-action rifle primarily used for sport or for punching holes in starships. Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Hourglass</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Interstellar Passports</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Papers needed to land on any occupied planet within the Coalition of Planets.</td>
+						</tr>
+						<tr>
+							<td>Invisibility Suit</td>
+							<td>Clothing</td>
+							<td>Very Expensive</td>
+							<td>Allows your character to turn completely invisible to physical perception.</td>
+						</tr>
+						<tr>
+							<td>Jetpack</td>
+							<td>Item</td>
+							<td colspan="2">Very Expensive</td>
+						</tr>
+						<tr>
+							<td>Large Black Cloak</td>
+							<td>Clothing</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Leather Jacket</td>
+							<td>Clothing</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Machine Tools</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Tools that allow your character to build, tinker or repair machines.</td>
+						</tr>
+						<tr>
+							<td>Magic Inhibitor</td>
+							<td>Item</td>
+							<td>Expensive</td>
+							<td>Small device that can be attached to a <em>Magic</em> user to stop them from being able to use <em>Magic</em> for at least 24 hours, or until the device is removed. Is spent after use.</td>
+						</tr>
+						<tr>
+							<td>Magical Ward</td>
+							<td>Item</td>
+							<td>Expensive</td>
+							<td>Small device that blocks any incoming harmful <em>Magic Attack</em>. Is spent after use.</td>
+						</tr>
+						<tr>
+							<td>Night Vision Goggles</td>
+							<td>Item</td>
+							<td colspan="2">Expensive</td>
+						</tr>
+						<tr>
+							<td>Padlock</td>
+							<td>Item</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Power Armour</td>
+							<td>Item</td>
+							<td>Very Expensive</td>
+							<td>Provides breathable air for up to eight hours and a comfortable environment even in bitter heat, cold, or underwater to a depth of 4 miles (6 km); and it allows your character to see in the dark up to a short distance.</td>
+						</tr>
+						<tr>
+							<td>Precursor Envirosuit</td>
+							<td>Clothing</td>
+							<td>Exorbitant</td>
+							<td>Allows your character to survive in the vacuum of space using suit reserves for up to twelve hours at a time, with enough fuel to get around in zero gravity on jets of ionized gas for that same period.</td>
+						</tr>
+						<tr>
+							<td>Primitive Arrows</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Ammo for primitive bows. Like most ammo, you should only need to "reload" your quiver when you get an Intrusion or mixed success roll, or a significant amount of time has passed since the last "reload".</td>
+						</tr>
+						<tr>
+							<td>Primitive Battleaxe</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Primitive Bow</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Primitive Crossbow</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Primitive Crossbow Bolts</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Ammo for primitive crossbows. Like most ammo, you should only need to "reload" your quiver when you get an Intrusion or mixed success roll, or a significant amount of time has passed since the last "reload".</td>
+						</tr>
+						<tr>
+							<td>Primitive Outfit</td>
+							<td>Clothing</td>
+							<td>Moderately Priced</td>
+							<td>Made up of hides, furs and leaves.</td>
+						</tr>
+						<tr>
+							<td>Primitive Staff</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Primitive Sword</td>
+							<td>Weapon</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Psi Field Generator</td>
+							<td>Item</td>
+							<td>Very Expensive</td>
+							<td>Generates a dome-shaped force field around the user using <em>Psi Magic</em>.</td>
+						</tr>
+						<tr>
+							<td>Pump Action Shotgun</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Rations</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Enough food for one day.</td>
+						</tr>
+						<tr>
+							<td>Respirator</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Filters air so your character can breathe in toxic or dangerous environments. Does not have a dedicated air supply.</td>
+						</tr>
+						<tr>
+							<td>Revolver</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Robotics Tool Kit</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Tools required to repair, tinker with or build robots.</td>
+						</tr>
+						<tr>
+							<td>Rope</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Semi-Automatic Pistol</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Semi-Automatic Rifle</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Semi-Automatic Shotgun</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Shiv</td>
+							<td>Weapon</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Signal Horn</td>
+							<td>Item</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Simple Bag</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Enough to carry a meal or some other small objects.</td>
+						</tr>
+						<tr>
+							<td>Simple Knife</td>
+							<td>Weapon</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Simple Meal</td>
+							<td>Item</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Single-Shot Rifle</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Slug Ammo</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Ammo for projectile-based ranged weapons. Like most ammo, you should only need to reload your weapon when you get an Intrusion or mixed success roll, or a significant amount of time has passed since the last reload.</td>
+						</tr>
+						<tr>
+							<td>Small Pack</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Small tote bag, purse, fanny pack, etc.</td>
+						</tr>
+						<tr>
+							<td>Sniper Rifle</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Spare Parts</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>A collection of various machine parts used to repair or build machines or robots.</td>
+						</tr>
+						<tr>
+							<td>Straightjacket</td>
+							<td>Clothing</td>
+							<td colspan="2">Moderately Priced</td>
+						</tr>
+						<tr>
+							<td>Stun Baton</td>
+							<td>Weapon</td>
+							<td>Moderately Priced</td>
+							<td>Can cause damage or stun an opponent with electrical damage.</td>
+						</tr>
+						<tr>
+							<td>Surveillance Equipment</td>
+							<td>Item</td>
+							<td colspan="2">Expensive</td>
+						</tr>
+						<tr>
+							<td>Survival Tools</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Tools for surviving in the wild.</td>
+						</tr>
+						<tr>
+							<td>Starship</td>
+							<td>Item</td>
+							<td>Exorbitant</td>
+							<td>From large starships to small shuttles.</td>
+						</tr>
+						<tr>
+							<td>Submachine Gun</td>
+							<td>Weapon</td>
+							<td>Expensive</td>
+							<td>Can use energy cells or slug ammo.</td>
+						</tr>
+						<tr>
+							<td>Survival Tools</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>A collection of tools that facilitate excursions into the wilderness.</td>
+						</tr>
+						<tr>
+							<td>Tent</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Enough for 2-3 people to Long Rest.</td>
+						</tr>
+						<tr>
+							<td>Thievery Kit</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Has the tools necessary to break into buildings or to open locked containers.</td>
+						</tr>
+						<tr>
+							<td>Throwing Knife</td>
+							<td>Weapon</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Throwing Star</td>
+							<td>Weapon</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Tinker Tools</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>Tools used for tinkering with machines or robots.</td>
+						</tr>
+						<tr>
+							<td>Toolbox</td>
+							<td>Item</td>
+							<td>Moderately Priced</td>
+							<td>A collection of basic tradesman tools in a nifty toolbox.</td>
+						</tr>
+						<tr>
+							<td>Torch</td>
+							<td>Item</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Underwater Breathing Device</td>
+							<td>Item</td>
+							<td>Expensive</td>
+							<td>When fitted in your character's mouth, allows them to breathe underwater. The device functions for up to four hours at a time, after which you must wait four hours before they can use it again.</td>
+						</tr>
+						<tr>
+							<td>Wooden Club</td>
+							<td>Weapon</td>
+							<td colspan="2">Inexpensive</td>
+						</tr>
+						<tr>
+							<td>Writing Instruments</td>
+							<td>Item</td>
+							<td>Inexpensive</td>
+							<td>Some kind of writing instrument such as a pen, quill or pen, with something to write on, like paper, parchment or the like.</td>
+						</tr>
+						<tr>
+							<td>Xibogen Fiber Armor</td>
+							<td>Clothing</td>
+							<td>Expensive</td>
+							<td>Flexible armor made from xibogen fibers, capable of absorbing some damage.</td>
+						</tr>
+					</tbody>
+				</table>
+				<h4 class="expandable sheet-rules" id="contacts-rules">Contacts</h4>
+				<p class="expandable contacts-rules"><em>Contacts</em> are non-player characters that your character has become familiar with. You can add <em>Contacts</em> to the <em>Contacts</em> list on your character sheet to keep track of them. <em>Contacts</em> can have <em>Skills</em>, such as crafting <em>Items</em>, navigating a jungle or bartering for an auction item on your behalf. <em>Contacts</em> with <em>Skills</em> may only assist your character if they trust your character, or if the <em>Contact</em> is acquired through an <em>Ability</em>.</p>
+				<p class="expandable contacts-rules">Some non-player characters can also become <em>Companions</em>. <em>Companions</em> travel with your character and act independently of them, but you have control over their <em>Actions</em> during encounters, unless otherwise stated in an <em>Ability’s</em> description. If your character’s <em>Companions</em> need to perform an <em>Action</em>, you roll for them. They follow the same rules as player characters when it comes to taking <em>Actions</em> and taking <em>Harm</em>.</p>
+				<h4 class="expandable sheet-rules" id="cyberware-rules">Cyberware</h4>
+				<p class="expandable cyberware-rules"><em>Cyberware</em> allows you to augment your current abilities, or make up for missing limbs and organs. Civilized beings are generally accepting of cybernetic enhancements, though prejudice is common, especially against those who choose to modify their bodies beyond what's considered necessary for everyday life. The more a person changes their appearance through cybernetics, the more they'll be treated differently by the majority of civilized beings in the star cluster.</p>
+				<p class="expandable cyberware-rules">Installing <em>Cyberware</em> costs at least the equivalent of a <em>Very Expensive Item</em>, with some of the more advanced <em>Cyberware</em> costing as much as an <em>Exorbitant Item</em> instead. Unless otherwise agreed upon by the GM, <em>Cyberware</em> only allows you to perform actions you would normally not be able to do, such as accessing a network without need of a separate device, see in the dark or run a long distance without needing to roll. More expensive <em>Cyberware</em> acquired at higher <em>Tiers</em> may give flat bonuses to <em>Task</em> rolls instead.</p>
+				<p class="expandable cyberware-rules">Click or tap the <strong>Optional</strong> button, then click or tap <strong>Cyberware</strong> to enable the section. You are not able to disable the <em>Cyberware</em> section if your character has received <em>Cyberware</em> from character attributes. To install <em>Cyberware</em>, click or tap the body part you’d like to modify, and click or tap <strong>AddMod()</strong>.</p>
+				<h3 id="glossary-rules">Glossary</h3>
+				<input type="text" class="filter-input expandable glossary-rules" placeholder="Enter keywords to begin searching..." id="glossary-search">
+				<label class="filter-label expandable glossary-rules" for="glossary-search">Search:</label>
+				<table class="expandable glossary-rules">
+					<thead>
+						<tr>
+							<th>Item</th>
+							<th>Type</th>
+							<th>Price Category</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
 					</tbody>
 				</table>
 			</div>
