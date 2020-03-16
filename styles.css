@@ -640,6 +640,9 @@ div.proficiency {
 #rules h5:after {
     content: '\2b9f';
 	margin-left: 5px;
+	font-size: 16px;
+    font-weight: 700;
+	font-family: var(--droid-font);
 }
 #rules h5.expanded:after {
     content: '\2b9d';
