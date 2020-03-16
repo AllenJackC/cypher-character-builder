@@ -767,11 +767,28 @@ div.proficiency {
 	pointer-events: none;
 	text-align: left;
 }
-#rules td:first-child {
+#rules table:not(.glossary-rules) td:first-child {
 	padding-left: 10px;
 }
-#rules td:last-child {
+#rules table:not(.glossary-rules) td:last-child {
 	padding-right: 10px;
+}
+#rules h3#glossary-rules {
+	margin-bottom: 20px;
+}
+.glossary-rules thead {
+	display: none!important;
+}
+#rules .glossary-rules tr, #rules .glossary-rules td {
+	display: block;
+	border: none;
+	padding-top: 0;
+}
+#rules .glossary-rules tr {
+	padding: 0 15px 15px;
+}
+.glossary-rules td:first-child {
+	font-weight: 800;
 }
 #footer {
 	color: var(--light-grey);
@@ -1985,32 +2002,32 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		border: none;
 		display: block;
 	}
-	#rules td {
+	#rules table:not(.glossary-rules) td {
 		border-top: none;
 		position: relative;
 		display: block;
 		text-align: left;
 	}
-	#rules th:first-child {
+	#rules table:not(.glossary-rules) th:first-child {
 		padding-left: 30px;
 	}
-	#rules th:last-child {
+	#rules table:not(.glossary-rules) th:last-child {
 		padding-right: 30px;
 	}
-	#rules td:first-child {
+	#rules table:not(.glossary-rules) td:first-child {
 		padding-left: 30px;
 	}
-	#rules td:last-child {
+	#rules table:not(.glossary-rules) td:last-child {
 		padding-right: 30px;
 	}
-	#rules td:before {
+	#rules table:not(.glossary-rules) td:before {
 		position: absolute;
 		top: 5px;
 		left: 30px;
 		font-weight: 800;
 		white-space: nowrap;
 	}
-	#rules tr, #rules table {
+	#rules table:not(.glossary-rules) tr, #rules table:not(.glossary-rules) table {
 		border-top: 1px solid var(--white);
 		border-bottom: 1px solid var(--white);
 		padding-top: 3px;
@@ -2072,6 +2089,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	}
 	.vox-rules td:nth-of-type(4):before {
 		content: 'Travel Time (Interstellar)**';
+	}
+	#rules .glossary-rules tr {
+		padding-left: 30px;
+		padding-right: 30px;
 	}
 	.item-list .chosen-container, .item-list .chosen-single, .item-list .chosen-single span, .item-list .chosen-drop, .gu-mirror .chosen-container, .gu-mirror .chosen-single, .gu-mirror .chosen-single span, .gu-mirror .chosen-drop, .gu-transit .chosen-container, .gu-transit .chosen-single, .gu-transit .chosen-single span, .gu-transit .chosen-drop	{
 		width: 100%!important;
@@ -2214,11 +2235,11 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 		flex-basis: 100%;
 		margin-left: auto;
 	}
-	#rules td {
+	#rules table:not(.glossary-rules) td {
 		font-size: 14px;
 		line-height: 1em;
 	}
-	#rules td:before {
+	#rules table:not(.glossary-rules) td:before {
 		font-size: 14px;
 		line-height: 1em;
 	}
