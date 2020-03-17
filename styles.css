@@ -81,12 +81,14 @@ blockquote:before, blockquote:after, q:before, q:after {
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+/* Tags */
 body {
 	color: var(--black);
 	background: var(--black);
 	font-family: var(--body-font);
 	line-height: 1.5em;
 	overflow-x: hidden;
+	padding: 44px 30px 0;
 	pointer-events: none;
 	text-align: left;
 	-webkit-touch-callout: none;
@@ -96,6 +98,46 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
+/* Header */
+#warning {
+	background: red;
+	color: white;
+	left: 0;
+	padding: 10px 5px;
+	position: fixed;
+	text-align: center;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+}
+#title {
+	color: var(--white);
+    font-family: var(--header-font);
+    font-size: 11vmin;
+    line-height: 11vmin;
+	margin: 15px auto 0;
+    text-align: center;
+    text-transform: uppercase;
+	width: 84vmin;
+}
+#subtitle {
+	color: var(--light-grey);
+    flex-basis: 100%;
+    font-size: 18px;
+    line-height: 18px;
+    margin: 0 auto 15px;
+    text-align: left;
+	width: 82vmin;
+}
+/* Character Sheet */
+#main {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 auto;
+	max-width: 960px;
+}
+
+/*Old CSS*/
 h1 {
 	color: var(--white);
     font-family: var(--header-font);
@@ -330,7 +372,7 @@ div.proficiency {
 	min-height: 16px;
 	min-width: fit-content;
 }
-#title {
+/*#title {
 	margin: 15px auto 10px;
 	width: fit-content;
 }
@@ -343,7 +385,7 @@ div.proficiency {
 	margin: 15px auto;
 	max-width: 996px;
 	padding: 0 15px;
-}
+}*/
 #popup-error {
 	background: var(--black);
 	border: 2px solid var(--secondary-button);
