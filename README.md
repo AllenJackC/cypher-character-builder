@@ -5,9 +5,6 @@ https://allenjackc.github.io/cypher-character-builder/charSheet.html
 Google Sheets Spell Database:
 https://docs.google.com/spreadsheets/d/1NWFhf8_oT5lvrNEN7cTAmRYnDHzGkD3Mw2P5nODXaCQ/edit?usp=sharing
 
-Blog:
-
-
 ## To-Do:
 * Save/load API
 * Discord integration
