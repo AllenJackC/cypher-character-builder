@@ -1,5 +1,3 @@
-⚠️ THIS WEB APP IS STILL IN ALPHA – EXPECT ERRORS ⚠️
-
 # Character Builder v2.1
 Character Sheet:
 https://allenjackc.github.io/cypher-character-builder/charSheet.html
@@ -21,9 +19,9 @@ Blog:
 * Cosmetic character sheet https://drive.google.com/file/d/0B_Pus_x_263yOV9vM3J6djN0bFE/view?usp=sharing
 * ~~Icons + assets~~
 * ~~Spell lists (status, actions, enablers)~~
-* Tiers & advancement
+* ~~Tiers & advancement~~
 * ~~Contact list~~
 * ~~Skill list~~
-* Credit plugins
-* Rules and guide
+* ~~Credit plugins~~
+* ~~Rules and guide~~
 * Starship builder
