@@ -42,21 +42,17 @@
 	<div id="title">Immortal Freedom</div>
 	<div id="subtitle">a digital character sheet for a homebrew campaign</div>
 	<div id="main">
-		<!-- Attributes & Dice -->
-		<div id="dice-attributes">
-			<!-- Character Attributes -->
+		<div id="attributes-buttons">
 			<div id="character-attributes">
-				<!-- NAME -->
 				<div class="attribute" id="name-attribute">
-					<div class="border">
+					<div class="attribute-border">
 						<input id="name">
 					</div>
-					<label for="name">NAME</label>
+					<label class="attribute-label" for="name">Name</label>
 				</div>
-				<div class="connector">IS A</div>
-				<!-- DESCRIPTOR -->
+				<div class="connector">is a</div>
 				<div class="attribute" id="descriptor-attribute">
-					<div class="border">
+					<div class="attribute-border">
 						<select id="descriptors">
 							<option></option>
 							<option value="A1">Abrasive</option>
@@ -180,11 +176,10 @@
 							<option value="N2">Young</option>
 						</select>
 					</div>
-					<label for="descriptors">DESCRIPTOR</label>
+					<label class="attribute-label" for="descriptors">Descriptor</label>
 				</div>
-				<!-- SPECIES -->
 				<div class="attribute" id="pri-species-attribute">
-					<div class="border">
+					<div class="attribute-border">
 						<select id="species">
 							<option></option>
 							<option value="0">Aeyan</option>
@@ -198,11 +193,8 @@
 							<option data-arc="2" value="8">Zao</option>
 						</select>
 					</div>
-					<label for="species">SPECIES</label>
-					<!-- HYBRID TOGGLE -->
-					<div class="secondary-button" id="hybrid-button">
-						<div>H</div>
-					</div>
+					<label class="attribute-label" for="species">SPECIES</label>
+					<div class="secondary-button" id="hybrid-button">H</div>
 					<div id="hybrid-tooltip">
 						<h4>Hybrid Character</h4>
 						<span class="description">
@@ -212,7 +204,7 @@
 				</div>
 				<!-- SECONDARY SPECIES -->
 				<div class="attribute" id="sec-species-attribute">
-					<div class="border">
+					<div class="attribute-border">
 						<select id="secondary-species">
 							<option></option>
 							<option value="0">Aeyan</option>
@@ -226,11 +218,11 @@
 							<option data-arc="2" value="8">Zao</option>
 						</select>
 					</div>
-					<label for="secondary-species">SECONDARY SPECIES</label>
+					<label class="attribute-label" for="secondary-species">SECONDARY SPECIES</label>
 				</div>
 				<!-- TYPE -->
 				<div class="attribute" id="type-attribute">
-					<div class="border">
+					<div class="attribute-border">
 						<select id="types">
 							<option></option>
 							<option data-secondary-species="012345678" data-primary-species="012345678" value="A0">Citizen</option>
@@ -251,12 +243,12 @@
 							<option data-secondary-species="016" data-primary-species="06" data-arc="2" value="B5">Vindicator</option>
 						</select>
 					</div>
-					<label for="types">TYPE</label>
+					<label class="attribute-label" for="types">TYPE</label>
 				</div>
 				<div class="connector">WHO</div>
 				<!-- PRIMARY FOCUS -->
 				<div class="attribute" id="pri-focus-attribute">
-					<div class="border">
+					<div class="attribute-border">
 						<select id="foci">
 							<option></option>
 							<option value="A1">Assists a Mad Genius</option>
@@ -396,12 +388,12 @@
 							<option value="O9">Wrestles with Multiple Personalities</option>
 						</select>
 					</div>
-					<label for="foci">FOCUS</label>
+					<label class="attribute-label" for="foci">FOCUS</label>
 				</div>
 				<div class="connector" id="sec-focus-connector">AND</div>
 				<!-- SECONDARY FOCUS -->
 				<div class="attribute" id="sec-focus-attribute">
-					<div class="border">
+					<div class="attribute-border">
 						<select id="secondary-foci">
 							<option></option>
 							<option value="A1">Assists a Mad Genius</option>
@@ -540,7 +532,7 @@
 							<option value="O9">Wrestles with Multiple Personalities</option>
 						</select>
 					</div>
-					<label for="secondary-foci">SECONDARY FOCUS</label>
+					<label class="attribute-label" for="secondary-foci">SECONDARY FOCUS</label>
 				</div>
 			</div>
 			<!-- Dice & Tier -->

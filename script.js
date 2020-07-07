@@ -1450,7 +1450,7 @@ $(function() {
 	fociOptions = $('#foci option, #secondary-foci option');
 	secFociSection = $('#sec-focus-attribute');
 	hybridSection = $('#sec-species-attribute');
-	hybridButton = $('#hybrid-button div');
+	hybridButton = $('#hybrid-button');
 	hybridTooltip = $('#hybrid-tooltip');
 	tierNumber = $('#current-tier');
 	xpNumber = $('#xp-number');
