@@ -232,6 +232,60 @@ select {
 	box-shadow: none;
 	color: var(--white);
 }
+/* Desktop tooltip CSS */
+@media (hover: hover) {
+	.tooltip {
+		align-items: baseline;
+		background: var(--black-translucent);
+		border: solid 1px var(--selected);
+		border-radius: 5px;
+		color: var(--white);
+		display: flex;
+		flex-wrap: wrap;
+		font-size: 14px;
+		justify-content: space-between;
+		line-height: 1.5em;
+		opacity: 0;
+		padding: 8px;
+		position: absolute;
+		transition: visibility 0.2s, opacity 0.1s linear;
+		width: 280px;
+		visibility: hidden;
+		z-index: 5;
+	}
+	.tooltip > * {
+		margin: 2px;
+	}
+	.tooltip span:nth-child(even) {
+		text-align: right;
+	}
+	.tooltip .name {
+		text-align: left!important;
+	}
+	.tooltip .description {
+		flex-basis: 100%;
+		text-align: left!important;
+	}
+	.tooltip .tier {
+		color: var(--light-grey);
+		text-align: right;
+	}
+	.tooltip .type {
+		color: var(--secondary-button);
+		text-align: left!important;
+	}
+	.tooltip .origin {
+		color: var(--light-grey);
+		font-style: italic;
+		text-align: right;
+	}
+	.tooltip em {
+		color: var(--secondary-button);
+		display: none;
+		font-style: italic;
+		margin-top: 10px;
+	}
+}
 /*Responsive*/
 @media only screen and (max-width: 1023px) {
 	#attributes-buttons {
@@ -1807,67 +1861,10 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 }
 /* Desktop tooltip CSS */
 @media (hover: hover) {
-	#hybrid-tooltip > *, #reset-tooltip > *, #cyberware-tooltip > *, #magic-tooltip > *, #tech-tooltip > *, #logic-tooltip > *, #feelings-tooltip > * {
-		flex-basis: 100%;
-		margin: 2px;
-		text-align: left!important;
-	}
-	#cyberware-tooltip em {
-		color: var(--secondary-button);
-		display: none;
-		font-style: italic;
-		margin-top: 10px;
-	}
+
 	.hotbars .spell:hover, .hotbars .spell:active {
 		margin-right: -5px;
 		padding-left: 5px;
-	}
-	.tooltip, #hybrid-tooltip, #reset-tooltip, #cyberware-tooltip, #magic-tooltip, #tech-tooltip, #logic-tooltip, #feelings-tooltip {
-		align-items: baseline;
-		background: var(--black-translucent);
-		border: solid 1px var(--selected);
-		border-radius: 5px;
-		color: var(--white);
-		display: flex;
-		flex-wrap: wrap;
-		font-size: 14px;
-		justify-content: space-between;
-		line-height: 1.5em;
-		opacity: 0;
-		padding: 7px;
-		position: absolute;
-		transition: visibility 0.2s, opacity 0.1s linear;
-		width: 280px;
-		visibility: hidden;
-		z-index: 5;
-	}
-	.tooltip > * {
-		margin: 0 2px;
-	}
-	.tooltip span:nth-child(even) {
-		text-align: right;
-	}
-	.tooltip .name {
-		margin-bottom: 2px;
-	}
-	.tooltip .tier {
-		color: var(--light-grey);
-		text-align: right;
-		margin-bottom: 2px;
-	}
-	.tooltip .description {
-		flex-basis: 100%;
-		margin: 5px 2px;
-		text-align: left!important;
-	}
-	.tooltip .type {
-		color: var(--secondary-button);
-		text-align: left!important;
-	}
-	.tooltip .origin {
-		color: var(--light-grey);
-		font-style: italic;
-		text-align: right;
 	}
 	#xp-up:hover, #xp-down:hover {
 		color: var(--selected-hover);
