@@ -921,7 +921,7 @@ function populateSpellLists() {
 				var spellOptional = spellListDatabase[i].optional;
 				var tooltipDice = '<span class="type">' + spellDice + '</span>';
 				var spellOrder = parseInt(String(parseInt(spellTier) + 1) + '1' + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
-				var tooltipName = '<h4 class="name">' + spellName + '</h4>';
+				var tooltipName = '<div class="name">' + spellName + '</div>';
 				var statusName = '<li>' + spellName + '</li>';
 				spellName = '<span>' + spellName + '</span>';
 				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
@@ -2162,8 +2162,8 @@ $(function() {
 		$('.dice-number', parentSection).not(this).addClass('disabled');
 		$(this).addClass('selected');
 		$('.' + diceType + '-number').text(diceNumber);
-		$('h3:first-child', parentSection).css('order','3');
-		$('h3:last-child', parentSection).css('order','1');
+		$('.die-name:first-child', parentSection).css('order','3');
+		$('.die-name:last-child', parentSection).css('order','1');
 		$('.after-selection', diceSection).show();
 		$('.pre-selection', diceSection).hide();
 	});
@@ -2236,7 +2236,7 @@ $(function() {
 				$(this).removeClass('active');
 				$(this).removeClass('expanded');
 			});
-			if ( $(this).is('h5') ) $(this).toggleClass('expanded');
+			if ( $(this).is('h4') ) $(this).toggleClass('expanded');
 		}
 	});
 	//Open to the specific area in the rules for the clicked button
@@ -2250,7 +2250,7 @@ $(function() {
 			modal.addClass('visible');
 			$('body').css('overflow-y','hidden');
 		}
-		if ( ruleSection.is(':visible') === false && ruleTitle.is('h3') ) {
+		if ( ruleSection.is(':visible') === false && ruleTitle.is('h2') ) {
 			ruleTitle.addClass('active');
 			ruleSection.stop().slideToggle(300, function() {
 				if ( counter === 0 ) {
@@ -2260,34 +2260,34 @@ $(function() {
 					counter++;
 				}
 			});
-		} else if ( ruleSection.is(':visible') === false && ruleTitle.is('h4') ) {
-			var h3Title = $('#' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+		} else if ( ruleSection.is(':visible') === false && ruleTitle.is('h3') ) {
+			var h2Title = $('#' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			var h2Section = $('.' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			if ( h2Title.hasClass('active') === false ) {
+				h2Title.addClass('active');
+				h2Section.stop().slideToggle(300);
+			}
+			ruleTitle.addClass('active');
+			ruleSection.stop().slideToggle(300, function() {
+				if ( counter === 0 ) {
+					modal.animate({
+						scrollTop: (ruleTitle.offset().top - 15)
+					},500);
+					counter++;
+				}
+			});
+		} else if ( ruleSection.is(':visible') === false && ruleTitle.is('h4') ){
+			var h3Title = $('#' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace('expanded','').replace(/\s/g,''));
 			var h3Section = $('.' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			var h2Title = $('#' + h3Title.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			var h2Section = $('.' + h3Title.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
+			if ( h2Title.hasClass('active') === false ) {
+				h2Title.addClass('active');
+				h2Section.stop().slideToggle(300);
+			}
 			if ( h3Title.hasClass('active') === false ) {
 				h3Title.addClass('active');
 				h3Section.stop().slideToggle(300);
-			}
-			ruleTitle.addClass('active');
-			ruleSection.stop().slideToggle(300, function() {
-				if ( counter === 0 ) {
-					modal.animate({
-						scrollTop: (ruleTitle.offset().top - 15)
-					},500);
-					counter++;
-				}
-			});
-		} else if ( ruleSection.is(':visible') === false && ruleTitle.is('h5') ){
-			var h4Title = $('#' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace('expanded','').replace(/\s/g,''));
-			var h4Section = $('.' + ruleTitle.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
-			var h3Title = $('#' + h4Title.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
-			var h3Section = $('.' + h4Title.attr('class').replace('expandable','').replace('active','').replace(/\s/g,''));
-			if ( h3Title.hasClass('active') === false ) {
-				h3Title.addClass('active');
-				h3Section.stop().slideToggle(300);
-			}
-			if ( h4Title.hasClass('active') === false ) {
-				h4Title.addClass('active');
-				h4Section.stop().slideToggle(300);
 			}
 			ruleTitle.addClass('active expanded');
 			ruleSection.stop().slideToggle(300, function() {
