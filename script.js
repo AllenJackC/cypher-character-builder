@@ -1515,8 +1515,6 @@ $(function() {
 		download: true,
 		complete: function(results) {
 			spellListDatabase = results.data;
-			$('#warning').text('👍 DATABASE PULLED 👍');
-			$('#warning').css('background-color','green');
 			console.log(spellListDatabase);
 		}
 	});
