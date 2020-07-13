@@ -202,17 +202,6 @@ h4:active {
 	color: var(--selected-active);
 }
 /* Header */
-#warning {
-	background: red;
-	color: white;
-	left: 0;
-	padding: 10px 5px;
-	position: fixed;
-	text-align: center;
-	top: 0;
-	width: 100%;
-	z-index: 10;
-}
 #title {
 	color: var(--white);
     font-family: var(--header-font);
