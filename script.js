@@ -1510,13 +1510,14 @@ $(function() {
 	curXP = 0;
 	spellListDatabase = [];
 	//Setup spell list database
-	Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTHzDDM21e8YZBD28PcoHnbjIHWSxPt_uR_2c3qluxUpWAYl5-weDktVE02N3ddIlnzg_9VpsoXF18F/pub?gid=0&single=true&output=csv', {
-		download: true,
+	Papa.parse('/databases/spell-list.csv', {
 		header: true,
+		download: true,
 		complete: function(results) {
-			spellListDatabase = data;
+			spellListDatabase = results.data;
 			$('#warning').text('👍 DATABASE PULLED 👍');
 			$('#warning').css('background-color','green');
+			console.log(spellListDatabase);
 		}
 	});
 	//Set story arc to hide elements not in current arc
