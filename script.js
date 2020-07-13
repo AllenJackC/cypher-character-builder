@@ -1510,7 +1510,7 @@ $(function() {
 	curXP = 0;
 	spellListDatabase = [];
 	//Setup spell list database
-	Papa.parse('/databases/spell-list.csv', {
+	Papa.parse('/cypher-character-builder/databases/spell-list.csv', {
 		header: true,
 		download: true,
 		complete: function(results) {
