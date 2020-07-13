@@ -2457,4 +2457,135 @@ $(function() {
 			tooltipPosition(targetElement,feelingsTooltip);
 		});
 	}
+	/*var Airtable = require('airtable');
+	var spellListAirtable = [];
+	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appflIqvezjUl84h0');
+	base('Spell List').select({
+		view: 'Grid view',
+		filterByFormula: "OR(NOT({TA1} = ''),NOT({DC5} = ''))"
+	}).eachPage(function page(records, fetchNextPage) {
+		records.forEach(function(record) {
+			spellListAirtable.push(record.get('id'));
+		});
+		fetchNextPage();
+	}, function done(err) {
+		if (err) { console.error(err); return; }
+		for (var i = 0; i < spellListAirtable.length; i++) {
+			thisRecord = "{id} = " + spellListAirtable[i];
+			base('Spell List').select({
+				view: 'Grid view',
+				filterByFormula: thisRecord
+			}).firstPage(function(err, records) {
+				if (err) { console.error(err); return; }
+				records.forEach(function(record) {
+					console.log(record.get('name'));
+					console.log(record.get('description'));
+				});
+			});
+		};
+	});*/
+	//Filter inputs sheet id field
+	$('#sheet-id').on('keydown blur paste', function(e){
+		var thisVal = $(this).html();
+		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
+        var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
+        var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (keycode > 64 && keycode < 91) || (e.keyCode >=96 && e.keyCode <= 105);
+        var vKey = 86, cKey = 67, aKey = 65;
+		switch(true){
+            case isCursorMoveOrDeleteAction:
+            case isModifierkeyPressed == false && isNumKeyPressed:
+            case (e.metaKey || e.ctrlKey) && ([vKey,cKey,aKey].indexOf(e.keyCode) != -1):
+                break;
+            default:
+                e.preventDefault();
+        }
+	});
+	//Character Sheet Saving
+	var Airtable = require('airtable');
+	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
+	$('#submit-sheet').click( function() {
+		var charaName = $('#name').val();
+		var sheetID = $('#sheet-id').val();
+		var sheetList = [];
+		var recordID;
+		base('Sheets').select({
+			view: 'Grid view',
+			filterByFormula: "{id} = '" + sheetID + "'"
+		}).eachPage(function page(records, fetchNextPage) {
+		records.forEach(function(record) {
+			recordID = record.id;
+			sheetList.push(recordID);
+		});
+			fetchNextPage();
+		}, function done(err) {
+			if (err) { console.error(err); return; }
+			if ( sheetList.length <= 0 ) {
+				base('Sheets').create([
+					{
+						"fields": {
+						  "id": sheetID,
+						  "name": charaName
+						}
+					}
+				], function(err, records) {
+					if (err) { console.error(err); return; }
+					alert('Character sheet saved!');
+				});
+			} else {
+				var confirmDialog = confirm('That sheet already exists. Update?');
+				if (confirmDialog) {
+					base('Sheets').replace([
+						{
+							"id": recordID,
+							"fields": {
+								"id": sheetID,
+								"name": charaName
+							}
+						}
+					], function (err) {
+						if (err) { console.error(err); return; }
+						alert('Character sheet saved!');
+					});
+				}
+			}
+		});
+	});
+	
+	
+	/*var Airtable = require('airtable');
+	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
+	var atRecordId;
+	var sheetID = 'test';
+	base('Sheets').select({
+		view: 'Grid view',
+		filterByFormula: "{id} = '" + sheetID + "'"
+	}).eachPage(function page(records, fetchNextPage) {
+		records.forEach(function(record) {
+			atRecordId = record.id;
+		});
+		fetchNextPage();
+	}, function done(err) {
+		if (err) { console.error(err); return; }
+		base('Sheets').replace([
+		{
+			"id": atRecordId,
+			"fields": {
+				"id": sheetID,
+				"name": "Four",
+				"descriptor": "Aggressive",
+				"species": "Erelan",
+				"hybrid": "FALSE",
+				"secondary-species": "",
+				"focus": "Dragoon",
+				"secondary-focus": "",
+				"feelings-logic": "4",
+				"magic-tech": "5",
+				"tier": "1",
+				"xp": "14"
+			}
+		}
+		], function (err) {
+			if (err) { console.error(err); return; }
+		});
+	});*/
 });
