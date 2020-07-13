@@ -1510,14 +1510,14 @@ $(function() {
 	curXP = 0;
 	spellListDatabase = [];
 	//Setup spell list database
-	Tabletop.init({
-		key: 'https://docs.google.com/spreadsheets/d/1NWFhf8_oT5lvrNEN7cTAmRYnDHzGkD3Mw2P5nODXaCQ/edit?usp=sharing',
-		callback: function (data, tabletop) {
+	Papa.parse('https://docs.google.com/spreadsheets/d/e/2PACX-1vTHzDDM21e8YZBD28PcoHnbjIHWSxPt_uR_2c3qluxUpWAYl5-weDktVE02N3ddIlnzg_9VpsoXF18F/pub?gid=0&single=true&output=csv', {
+		download: true,
+		header: true,
+		complete: function(results) {
 			spellListDatabase = data;
 			$('#warning').text('👍 DATABASE PULLED 👍');
 			$('#warning').css('background-color','green');
-		},
-		simpleSheet: true
+		}
 	});
 	//Set story arc to hide elements not in current arc
 	setStoryArc(curArc);
