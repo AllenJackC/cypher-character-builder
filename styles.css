@@ -1635,6 +1635,13 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 .cyberware > div:hover .editable, .dice-counter:hover .current-value {
 	border-color: var(--white);	
 }
+#sheet-id.loaded {
+	pointer-events: none;
+	cursor: default;
+	color: var(--white);
+	background-color: transparent;
+	border: none;
+}
 @media (hover: none) {
 	h4 {
 		color: var(--button);

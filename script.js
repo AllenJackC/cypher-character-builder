@@ -2489,11 +2489,11 @@ $(function() {
 		var thisVal = $(this).html();
 		var isModifierkeyPressed = (e.metaKey || e.ctrlKey || e.shiftKey);
         var isCursorMoveOrDeleteAction = ([116,9,46,8,37,38,39,40].indexOf(e.keyCode) != -1);
-        var isNumKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (keycode > 64 && keycode < 91) || (e.keyCode >=96 && e.keyCode <= 105);
+        var isAlphaKeyPressed = (e.keyCode >= 48 && e.keyCode <= 58) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >=96 && e.keyCode <= 105);
         var vKey = 86, cKey = 67, aKey = 65;
 		switch(true){
             case isCursorMoveOrDeleteAction:
-            case isModifierkeyPressed == false && isNumKeyPressed:
+            case isModifierkeyPressed == false && isAlphaKeyPressed:
             case (e.metaKey || e.ctrlKey) && ([vKey,cKey,aKey].indexOf(e.keyCode) != -1):
                 break;
             default:
@@ -2503,8 +2503,25 @@ $(function() {
 	//Character Sheet Saving
 	var Airtable = require('airtable');
 	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
+	var currentSheetID;
+/*if (confirmDialog) {
+	var doubleConfirm = confirm('Note: all information on the previously saved character sheet will be replaced by the information you entered on the current character sheet! Are you sure you want to proceed?');
+	if (doubleConfirm) {
+		base('Sheets').replace([
+		{
+			"id": recordID,
+			"fields": {
+				"id": sheetID,
+				"name": charaName
+			}
+		}
+		], function (err) {
+			if (err) { console.error(err); return; }
+			alert('Character sheet saved!');
+		});
+	}
+}*/
 	$('#submit-sheet').click( function() {
-		var charaName = $('#name').val();
 		var sheetID = $('#sheet-id').val();
 		var sheetList = [];
 		var recordID;
@@ -2523,34 +2540,80 @@ $(function() {
 				base('Sheets').create([
 					{
 						"fields": {
-						  "id": sheetID,
-						  "name": charaName
+						  "id": sheetID
 						}
 					}
 				], function(err, records) {
 					if (err) { console.error(err); return; }
-					alert('Character sheet saved!');
+					alert('Character sheet created!');
+					$('#submit-sheet').slideToggle();
+					$('#new-sheet').slideToggle();
+					$('#sheet-id').addClass('loaded');
 				});
 			} else {
-				var confirmDialog = confirm('That sheet already exists. Update?');
-				if (confirmDialog) {
-					base('Sheets').replace([
-						{
-							"id": recordID,
-							"fields": {
-								"id": sheetID,
-								"name": charaName
-							}
-						}
-					], function (err) {
-						if (err) { console.error(err); return; }
-						alert('Character sheet saved!');
-					});
-				}
+				alert('That character sheet already exists. Click Open to load an existing one, or type in a different name.');
 			}
 		});
 	});
-	
+	//Character Sheet Loading
+	$('#load-sheet').click( function() {
+		if ( $('#sheet-id').hasClass('loaded') ) {
+			currentSheetID = $('#sheet-id').val();
+			$('#sheet-id').removeClass('loaded');
+			if ( $('#new-sheet').is(':visible') ) $('#new-sheet').stop().slideToggle();
+			if ( $('#cancel-submit').is(':hidden') ) $('#cancel-submit').stop().slideToggle();
+		} else {
+			var sheetID = $('#sheet-id').val();
+			var sheetList = [];
+			var recordID;
+			base('Sheets').select({
+				view: 'Grid view',
+				filterByFormula: "{id} = '" + sheetID + "'"
+			}).eachPage(function page(records, fetchNextPage) {
+			records.forEach(function(record) {
+				recordID = record.id;
+				sheetList.push(recordID);
+			});
+				fetchNextPage();
+			}, function done(err) {
+				if (err) { console.error(err); return; }
+				if ( sheetList.length > 0 ) {
+					base('Sheets').find(recordID, function(err, record) {
+						if (err) { console.error(err); return; }
+						var confirmDialog = confirm('Load previously saved character sheet?');
+							if (confirmDialog) {
+								var doubleConfirm = confirm('Note: loading an existing character sheet will erase all information you entered on the current character sheet! Are you sure you want to proceed?');
+								if (doubleConfirm) {
+									$('#name').val(record.get('name'));
+									$('#sheet-id').addClass('loaded');
+									if ( $('#submit-sheet').is(':visible') ) $('#submit-sheet').stop().slideToggle();
+									if ( $('#new-sheet').is(':hidden') ) $('#new-sheet').stop().slideToggle();
+									if ( $('#cancel-submit').is(':visible') ) $('#cancel-submit').stop().slideToggle();
+								}
+							}
+					});
+				} else {alert('Unable to find character sheet. Please try a different sheet name, or save the sheet instead.');}
+			});
+		}
+	});
+	//New Button
+	$('#new-sheet').click( function() {
+		currentSheetID = $('#sheet-id').val();
+		$(this).slideToggle();
+		$('#submit-sheet').stop().slideToggle();
+		$('#load-sheet').stop().slideToggle();
+		$('#sheet-id').removeClass('loaded');
+		if ( $('#cancel-submit').is(':hidden') ) $('#cancel-submit').stop().slideToggle();
+	});
+	//Cancel Button
+	$('#cancel-submit').click( function() {
+		$('#sheet-id').val(currentSheetID);
+		$(this).stop().slideToggle();
+		if ( $('#new-sheet').is(':hidden') ) $('#new-sheet').stop().slideToggle();
+		if ( $('#load-sheet').is(':hidden') ) $('#load-sheet').stop().slideToggle();
+		if ( $('#submit-sheet').is(':visible') ) $('#submit-sheet').stop().slideToggle();
+		$('#sheet-id').addClass('loaded');
+	});
 	
 	/*var Airtable = require('airtable');
 	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');

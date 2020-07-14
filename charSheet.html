@@ -39,8 +39,12 @@
 </head>
 <body>
 	<div id="sheet-header">
+		<label for="sheet-id">Character Sheet ID:</label>
 		<input id="sheet-id" />
-		<button style="pointer-events: auto" id="submit-sheet">Submit</button>
+		<button style="pointer-events: auto; display:none" id="new-sheet">New</button>
+		<button style="pointer-events: auto" id="load-sheet">Open</button>
+		<button style="pointer-events: auto" id="submit-sheet">Save</button>
+		<button style="pointer-events: auto; display:none" id="cancel-submit">Cancel</button>
 	</div>
 	<div id="title">
 		<h1>Immortal Freedom</h1>
