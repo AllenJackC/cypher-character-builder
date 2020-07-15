@@ -2457,4 +2457,9 @@ $(function() {
 			tooltipPosition(targetElement,feelingsTooltip);
 		});
 	}
+	//Pick random name based on species selected
+	$('#random-name').click( function() {
+		if ( priSpecies.val() ) nameGen(priSpecies.val());
+		else alert('Select a species first!');
+	});
 });
