@@ -1324,7 +1324,7 @@ tr.gu-mirror {
 	line-height: 18px;
     pointer-events: auto;
 	text-align: center;
-	width: 16px;
+	width: 40px;
 }
 .secondary-button .clicked {
 	background: var(--button);
@@ -1634,6 +1634,12 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 }
 .cyberware > div:hover .editable, .dice-counter:hover .current-value {
 	border-color: var(--white);	
+}
+#random-name {
+	display: none;
+}
+#random-name > div {
+	width: 46px;
 }
 @media (hover: none) {
 	h4 {
