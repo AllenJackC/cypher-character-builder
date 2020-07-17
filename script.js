@@ -2462,10 +2462,10 @@ $(function() {
 	}
 	//Pick random name based on species selected
 	randomNameButton.click( function() { 
-		/*if ( secSpecies.val() ) {
-			nameGen(priSpecies.val(),secSpecies.val());
-		} else {*/
-			nameGen(priSpecies.val());
-		/*}*/
+		if ( secSpecies.val() ) {
+			randomName(priSpecies.val(),secSpecies.val());
+		} else {
+			randomName(priSpecies.val());
+		}
 	});
 });
