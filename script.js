@@ -2457,33 +2457,6 @@ $(function() {
 			tooltipPosition(targetElement,feelingsTooltip);
 		});
 	}
-	/*var Airtable = require('airtable');
-	var spellListAirtable = [];
-	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appflIqvezjUl84h0');
-	base('Spell List').select({
-		view: 'Grid view',
-		filterByFormula: "OR(NOT({TA1} = ''),NOT({DC5} = ''))"
-	}).eachPage(function page(records, fetchNextPage) {
-		records.forEach(function(record) {
-			spellListAirtable.push(record.get('id'));
-		});
-		fetchNextPage();
-	}, function done(err) {
-		if (err) { console.error(err); return; }
-		for (var i = 0; i < spellListAirtable.length; i++) {
-			thisRecord = "{id} = " + spellListAirtable[i];
-			base('Spell List').select({
-				view: 'Grid view',
-				filterByFormula: thisRecord
-			}).firstPage(function(err, records) {
-				if (err) { console.error(err); return; }
-				records.forEach(function(record) {
-					console.log(record.get('name'));
-					console.log(record.get('description'));
-				});
-			});
-		};
-	});*/
 	//Filter inputs sheet id field
 	$('#sheet-id').on('keydown blur paste', function(e){
 		var thisVal = $(this).html();
@@ -2504,30 +2477,13 @@ $(function() {
 	var Airtable = require('airtable');
 	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
 	var currentSheetID;
-/*if (confirmDialog) {
-	var doubleConfirm = confirm('Note: all information on the previously saved character sheet will be replaced by the information you entered on the current character sheet! Are you sure you want to proceed?');
-	if (doubleConfirm) {
-		base('Sheets').replace([
-		{
-			"id": recordID,
-			"fields": {
-				"id": sheetID,
-				"name": charaName
-			}
-		}
-		], function (err) {
-			if (err) { console.error(err); return; }
-			alert('Character sheet saved!');
-		});
-	}
-}*/
+	var saveInterval;
 	$('#submit-sheet').click( function() {
-		var sheetID = $('#sheet-id').val();
 		var sheetList = [];
 		var recordID;
 		base('Sheets').select({
 			view: 'Grid view',
-			filterByFormula: "{id} = '" + sheetID + "'"
+			filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
 		}).eachPage(function page(records, fetchNextPage) {
 		records.forEach(function(record) {
 			recordID = record.id;
@@ -2536,19 +2492,23 @@ $(function() {
 			fetchNextPage();
 		}, function done(err) {
 			if (err) { console.error(err); return; }
-			if ( sheetList.length <= 0 ) {
+			if ( sheetList.length === 0 ) {
 				base('Sheets').create([
 					{
 						"fields": {
-						  "id": sheetID
+						  "id": $('#sheet-id').val(),
+						  "name": $('#name').val()
 						}
 					}
 				], function(err, records) {
 					if (err) { console.error(err); return; }
 					alert('Character sheet created!');
-					$('#submit-sheet').slideToggle();
-					$('#new-sheet').slideToggle();
+					$('#submit-sheet').addClass('disabled');
+					$('#cancel-submit').addClass('disabled');
+					$('#new-sheet').removeClass('disabled');
+					$('#load-sheet').removeClass('disabled');
 					$('#sheet-id').addClass('loaded');
+					autoSave();
 				});
 			} else {
 				alert('That character sheet already exists. Click Open to load an existing one, or type in a different name.');
@@ -2557,23 +2517,23 @@ $(function() {
 	});
 	//Character Sheet Loading
 	$('#load-sheet').click( function() {
+		clearInterval(saveInterval);
 		if ( $('#sheet-id').hasClass('loaded') ) {
 			currentSheetID = $('#sheet-id').val();
 			$('#sheet-id').removeClass('loaded');
-			if ( $('#new-sheet').is(':visible') ) $('#new-sheet').stop().slideToggle();
-			if ( $('#cancel-submit').is(':hidden') ) $('#cancel-submit').stop().slideToggle();
+			$('#new-sheet').addClass('disabled');
+			$('#cancel-submit').removeClass('disabled');
 		} else {
-			var sheetID = $('#sheet-id').val();
 			var sheetList = [];
 			var recordID;
 			base('Sheets').select({
 				view: 'Grid view',
-				filterByFormula: "{id} = '" + sheetID + "'"
+				filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
 			}).eachPage(function page(records, fetchNextPage) {
-			records.forEach(function(record) {
-				recordID = record.id;
-				sheetList.push(recordID);
-			});
+				records.forEach(function(record) {
+					recordID = record.id;
+					sheetList.push(recordID);
+				});
 				fetchNextPage();
 			}, function done(err) {
 				if (err) { console.error(err); return; }
@@ -2585,10 +2545,14 @@ $(function() {
 								var doubleConfirm = confirm('Note: loading an existing character sheet will erase all information you entered on the current character sheet! Are you sure you want to proceed?');
 								if (doubleConfirm) {
 									$('#name').val(record.get('name'));
+									$('#descriptors').val(record.get('descriptor'));
+									$('#descriptors').trigger('chosen:updated');
+									
 									$('#sheet-id').addClass('loaded');
-									if ( $('#submit-sheet').is(':visible') ) $('#submit-sheet').stop().slideToggle();
-									if ( $('#new-sheet').is(':hidden') ) $('#new-sheet').stop().slideToggle();
-									if ( $('#cancel-submit').is(':visible') ) $('#cancel-submit').stop().slideToggle();
+									$('#submit-sheet').addClass('disabled');
+									$('#new-sheet').removeClass('disabled');
+									$('#cancel-submit').addClass('disabled');
+									autoSave();
 								}
 							}
 					});
@@ -2598,57 +2562,48 @@ $(function() {
 	});
 	//New Button
 	$('#new-sheet').click( function() {
+		clearInterval(saveInterval);
 		currentSheetID = $('#sheet-id').val();
-		$(this).slideToggle();
-		$('#submit-sheet').stop().slideToggle();
-		$('#load-sheet').stop().slideToggle();
+		$(this).addClass('disabled');
+		$('#submit-sheet').removeClass('disabled');
+		$('#load-sheet').addClass('disabled');
 		$('#sheet-id').removeClass('loaded');
-		if ( $('#cancel-submit').is(':hidden') ) $('#cancel-submit').stop().slideToggle();
+		$('#cancel-submit').removeClass('disabled');
 	});
 	//Cancel Button
 	$('#cancel-submit').click( function() {
 		$('#sheet-id').val(currentSheetID);
-		$(this).stop().slideToggle();
-		if ( $('#new-sheet').is(':hidden') ) $('#new-sheet').stop().slideToggle();
-		if ( $('#load-sheet').is(':hidden') ) $('#load-sheet').stop().slideToggle();
-		if ( $('#submit-sheet').is(':visible') ) $('#submit-sheet').stop().slideToggle();
+		$(this).addClass('disabled');
+		$('#new-sheet').removeClass('disabled');
+		$('#load-sheet').removeClass('disabled');
+		$('#submit-sheet').addClass('disabled');
 		$('#sheet-id').addClass('loaded');
+		autoSave();
 	});
-	
-	/*var Airtable = require('airtable');
-	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
-	var atRecordId;
-	var sheetID = 'test';
-	base('Sheets').select({
-		view: 'Grid view',
-		filterByFormula: "{id} = '" + sheetID + "'"
-	}).eachPage(function page(records, fetchNextPage) {
-		records.forEach(function(record) {
-			atRecordId = record.id;
-		});
-		fetchNextPage();
-	}, function done(err) {
-		if (err) { console.error(err); return; }
-		base('Sheets').replace([
-		{
-			"id": atRecordId,
-			"fields": {
-				"id": sheetID,
-				"name": "Four",
-				"descriptor": "Aggressive",
-				"species": "Erelan",
-				"hybrid": "FALSE",
-				"secondary-species": "",
-				"focus": "Dragoon",
-				"secondary-focus": "",
-				"feelings-logic": "4",
-				"magic-tech": "5",
-				"tier": "1",
-				"xp": "14"
-			}
-		}
-		], function (err) {
-			if (err) { console.error(err); return; }
-		});
-	});*/
+	function autoSave() {
+		saveInterval = setInterval( function() {
+			base('Sheets').select({
+				view: 'Grid view',
+				filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
+			}).eachPage(function page(records, fetchNextPage) {
+				records.forEach(function(record) {
+					recordID = record.id;
+				});
+				fetchNextPage();
+			}, function done(err) {
+				if (err) { console.error(err); return; }
+				base('Sheets').update([
+				{
+					"id": recordID,
+					"fields": {
+						"id": $('#sheet-id').val(),
+						"name": $('#name').val(),
+						"descriptor": $('#descriptors').val()
+					}
+				}
+				], function (err) {	if (err) { console.error(err); return; }
+				});
+			});
+		}, 5000);
+	}
 });
