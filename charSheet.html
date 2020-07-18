@@ -61,6 +61,9 @@
 						<input id="name">
 					</div>
 					<label for="name">NAME</label>
+					<div class="secondary-button" id="random-name">
+						<div>Random</div>
+					</div>
 				</div>
 				<div class="connector">IS A</div>
 				<!-- DESCRIPTOR -->
@@ -210,7 +213,7 @@
 					<label for="species">SPECIES</label>
 					<!-- HYBRID TOGGLE -->
 					<div class="secondary-button" id="hybrid-button">
-						<div>H</div>
+						<div>Hybrid</div>
 					</div>
 					<div id="hybrid-tooltip">
 						<h4>Hybrid Character</h4>
@@ -1007,6 +1010,7 @@
 		<p><a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a></p>
 		<p><span xmlns:dct="http://purl.org/dc/terms" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Immortal Freedom Character Builder</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://allenchristianson.weebly.com" property="cc:attributionName" rel="cc:attributionURL">Allen Christianson</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0 License</a>.</p>
 		<p><a target="blank" href="https://game-icons.net">Icons</a> by <a target="_blank" href="https://delapouite.com">Delapouite</a>, <a target="_blank" href="https://lorcblog.blogspot.com">Lorc</a> and <a target="_blank" href="https://game-icons.net">Skoll</a> are licensed under a <a target="blank" href="https://www.creativecommons.org/licenses/by/3.0">CC BY 3.0 License</a>. Some icons have been modified.</p>
+		<p>Name generation possible thanks to <a target="_blank" href="https://www.fantasynamegenerators.com/">FantasyNameGenerators.com</a>.
 		<p>Built with the help of <a target="_blank" href="https://www.jquery.com">JQuery</a>, <a target="_blank" href="https://www.papaparse.com">Papa Parse</a>, <a target="_blank" href="https://harvesthq.github.io/chosen">Chosen.js</a> & <a target="_blank" href="https://bevacqua.github.io/dragula">Dragula.js</a>.</p>
 		<p>Initial game systems and content pulled from:</p>
 		<p id="footer-links">
@@ -1128,10 +1132,10 @@
 				<p class="name-rules expandable">Doesn't really matter what it is, but try to stay respectful. If you need some help, here are some suggestions:</p>
 				<ul class="name-rules expandable">
 					<li><em>Aeyan</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/dark-elf-names.php">Dark Elf Names</a></li>
-					<li><em>Erelan</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/elf_names.php)">Elf Names Generator</a></li>
-					<li><em>K'ohma</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/troll_names.php)">Troll Names Generator</a></li>
+					<li><em>Erelan</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/elf_names.php">Elf Names Generator</a></li>
+					<li><em>K'ohma</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/troll_names.php">Troll Names Generator</a></li>
 					<li><em>Terran</em> - <a target="_blank" href="https://www.behindthename.com/random/random.php?number=1&amp;sets=1&amp;gender=both&amp;surname=&amp;randomsurname=yes&amp;all=yes">Name Generator</a></li>
-					<li><em>T'av</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/minotaur-names.php)">Minotaur Name Generator</a></li>
+					<li><em>T'av</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/minotaur-names.php">Minotaur Name Generator</a></li>
 					<li><em>Alternative Surnames</em> - <a target="_blank" href="https://www.fantasynamegenerators.com/fantasy-surnames.php">Fantasy Surnames Generator</a>
 					</li>
 				</ul>
@@ -3361,6 +3365,7 @@
 	<script src="plugins/papaparse.min.js" type="text/javascript"></script>
 	<script src="plugins/airtable.browser.js" type="text/javascript"></script>
 	<script src="plugins/dragula.min.js" type="text/javascript"></script>
+	<script src="plugins/namegenerator.js" type="text/javascript"></script>
 	<script src="script.js" type="text/javascript"></script>
 </body>
 </html>

@@ -1503,6 +1503,7 @@ $(function() {
 	notesBody = $('#notes tbody');
 	notesDeleteSpace = $('#notes .delete-space');
 	firstDrag = true;
+	randomNameButton = $('#random-name');
 	periodCount = 0;
 	//Initial variables
 	curArc = 2;
@@ -1925,6 +1926,7 @@ $(function() {
 		$('.dice h3').removeAttr('style');
 		$('.pre-selection').show();
 		$('.after-selection').hide();
+		randomNameButton.hide();
 	});
 	//Populate relevant lists each time the select list is interacted
 	//with, populate spells, and show the reset button
@@ -1938,6 +1940,7 @@ $(function() {
 		populateFoci();
 		populateSpells();
 		loreButton.text('New Lore');
+		randomNameButton.css('display','flex');
 	});
 	types.on('change', function() {
 		populateSpecies();
@@ -2710,4 +2713,12 @@ $(function() {
 			});
 		}, 5000);
 	}
+	//Pick random name based on species selected
+	randomNameButton.click( function() { 
+		if ( secSpecies.val() ) {
+			randomName(priSpecies.val(),secSpecies.val());
+		} else {
+			randomName(priSpecies.val());
+		}
+	});
 });
