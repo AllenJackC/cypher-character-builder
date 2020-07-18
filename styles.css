@@ -1648,6 +1648,7 @@ button {
 button.disabled {
 	filter: brightness(75%) grayscale(85%); 
 	pointer-events: none;
+}
 #random-name {
 	display: none;
 }
