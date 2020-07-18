@@ -2547,12 +2547,100 @@ $(function() {
 									$('#name').val(record.get('name'));
 									$('#descriptors').val(record.get('descriptor'));
 									$('#descriptors').trigger('chosen:updated');
-									
+									$('#species').val(record.get('species'));
+									$('#secondary-species').val(record.get('secondary-species'));
+									$('#types').val(record.get('type'));
+									$('#foci').val(record.get('focus'));
+									$('#secondary-foci').val(record.get('secondary-focus'));
+									if ( record.get('tier') ) $('#current-tier').text(record.get('tier'));
+									if ( record.get('xp') ) $('#xp-number').text(record.get('xp'));
+									curXP = parseInt(xpNumber.text().replace(' XP', ''));
+									if ( curXP === (90 - ((parseInt($('#current-tier').text()) - 1) * 16)) ) xpUpButton.addClass('disabled');
+									else xpUpButton.removeClass('disabled');
+									if ( curXP >= 16 && nextTierButton.is(':hidden') ) nextTierButton.slideToggle(150);
+									if ( curXP === 0 ) xpDownButton.addClass('disabled');
+									else xpDownButton.removeClass('disabled');
+									if ( curXP < 16 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
+									if ( record.get('hybrid') === "true" ) {
+										$('#hybrid-button div').addClass('clicked');
+										if (hybridSection.is(':hidden')) {
+											$('#character-attributes').addClass('with-sec-species');
+											hybridSection.stop().slideToggle({
+												duration: 300,
+												done: function() {
+													hybridSection.css('display','flex');
+												}
+											});
+										} 
+									} else {
+										$('#hybrid-button div').removeClass('clicked');
+										if (hybridSection.is(':visible')) {
+											hybridSection.stop().slideToggle({
+												duration: 300,
+												done: function() {
+													$('#character-attributes').removeClass('with-sec-species');
+												}
+											});
+										}
+									}
+									//If user picks Forges a New Bond, show second focus
+									if ( $('#foci').val() === "E2" && secFociSection.is(':hidden') ) {
+										$('#character-attributes').addClass('with-sec-focus');
+										if ($('#sec-focus-connector').is(':hidden')) $('#sec-focus-connector').stop().slideToggle(300);
+										secFociSection.stop().slideToggle({
+											duration: 300,
+											done: function() {
+												secFociSection.css('display','flex');
+											}
+										});
+									} else if ( $('#foci').val() === "E2" && secFociSection.is(':visible') ) {
+										if ($('#sec-focus-connector').is(':visible')) $('#sec-focus-connector').stop().slideToggle(300);
+										secFociSection.stop().slideToggle({
+											duration: 300,
+											done: function() {
+												$('#character-attributes').removeClass('with-sec-focus');
+											}
+										});
+									}
+									//If "Has More Money Than Sense" focus is selected
+									if ( $('#foci').val() === "E8" || $('#secondary-foci').val() === "E8" ) {
+										$('#descriptors option[value="M7"]').prop('disabled', true);
+										descriptors.trigger('chosen:updated');
+									} else {
+										$('#descriptors option[value="M7"]').prop('disabled', false);
+										descriptors.trigger('chosen:updated');
+									}
+									populateSpecies();
+									populateTypes();
+									populateFoci();
+									populateSpells();
 									$('#sheet-id').addClass('loaded');
 									$('#submit-sheet').addClass('disabled');
 									$('#new-sheet').removeClass('disabled');
 									$('#cancel-submit').addClass('disabled');
 									autoSave();
+									if ( record.get('feelings-logic') ) {
+										var diceNumber = record.get('feelings-logic');
+										$('#logic-feelings .dice-number').removeClass('selected disabled');
+										$('#logic-feelings .dice-number[data-number="' + diceNumber + '"]').addClass('selected');
+										$('#logic-feelings .dice-number').not('.selected').addClass('disabled');
+										$('.logic-feelings-number').text(diceNumber);
+										$('#logic-feelings h3:first-child').css('order','3');
+										$('#logic-feelings h3:last-child').css('order','1');
+										$('#logic-feelings .after-selection').show();
+										$('#logic-feelings .pre-selection').hide();
+									}
+									if ( record.get('magic-tech') ) {
+										var diceNumber = record.get('magic-tech');
+										$('#magic-tech .dice-number').removeClass('selected disabled');
+										$('#magic-tech .dice-number[data-number="' + diceNumber + '"]').addClass('selected');
+										$('#magic-tech .dice-number').not('.selected').addClass('disabled');
+										$('.magic-tech-number').text(diceNumber);
+										$('#magic-tech h3:first-child').css('order','3');
+										$('#magic-tech h3:last-child').css('order','1');
+										$('#magic-tech .after-selection').show();
+										$('#magic-tech .pre-selection').hide();
+									}
 								}
 							}
 					});
@@ -2592,13 +2680,29 @@ $(function() {
 				fetchNextPage();
 			}, function done(err) {
 				if (err) { console.error(err); return; }
+				var isHybrid = "false";
+				var feelingsLogic = "";
+				var magicTech = "";
+				if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
+				if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
+				if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
 				base('Sheets').update([
 				{
 					"id": recordID,
 					"fields": {
 						"id": $('#sheet-id').val(),
 						"name": $('#name').val(),
-						"descriptor": $('#descriptors').val()
+						"descriptor": $('#descriptors').val(),
+						"species": $('#species').val(),
+						"hybrid": isHybrid,
+						"secondary-species": $('#secondary-species').val(),
+						"type": $('#types').val(),
+						"focus": $('#foci').val(),
+						"secondary-focus": $('#secondary-foci').val(),
+						"feelings-logic": feelingsLogic,
+						"magic-tech": magicTech,
+						"tier": $('#current-tier').text(),
+						"xp": $('#xp-number').text()
 					}
 				}
 				], function (err) {	if (err) { console.error(err); return; }
