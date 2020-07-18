@@ -1635,19 +1635,6 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 .cyberware > div:hover .editable, .dice-counter:hover .current-value {
 	border-color: var(--white);	
 }
-input#sheet-id.loaded {
-	pointer-events: none;
-	cursor: default;
-	color: var(--white);
-	background-color: transparent;
-	border: none;
-}
-button {
-	pointer-events: auto;
-}
-button.disabled {
-	filter: brightness(75%) grayscale(85%); 
-	pointer-events: none;
 #random-name {
 	display: none;
 }
