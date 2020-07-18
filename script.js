@@ -2692,6 +2692,9 @@ $(function() {
 				$('#skills spell:not([data-default])').each( function() {
 					skillArray.push($('.name',this).text());
 				});
+				if ( skillArray.length < 1 ) skillArray = "";
+				else skillArray = skillArray.join(',');
+				console.log(skillArray);
 				base('Sheets').update([
 				{
 					"id": recordID,
@@ -2709,7 +2712,7 @@ $(function() {
 						"magic-tech": magicTech,
 						"tier": $('#current-tier').text(),
 						"xp": $('#xp-number').text(),
-						"skills": skillArray.join(',')
+						"skills": skillArray
 					}
 				}
 				], function (err) {	if (err) { console.error(err); return; }
