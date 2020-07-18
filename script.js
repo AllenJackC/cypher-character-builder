@@ -2686,9 +2686,13 @@ $(function() {
 				var isHybrid = "false";
 				var feelingsLogic = "";
 				var magicTech = "";
+				var skillArray = [];
 				if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
 				if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
 				if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
+				$('#skills spell:not([data-default])').each( function() {
+					skillArray.push($('.name',this).text());
+				});
 				base('Sheets').update([
 				{
 					"id": recordID,
@@ -2705,7 +2709,8 @@ $(function() {
 						"feelings-logic": feelingsLogic,
 						"magic-tech": magicTech,
 						"tier": $('#current-tier').text(),
-						"xp": $('#xp-number').text()
+						"xp": $('#xp-number').text(),
+						"skills": skillArray
 					}
 				}
 				], function (err) {	if (err) { console.error(err); return; }

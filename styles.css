@@ -1642,6 +1642,9 @@ input#sheet-id.loaded {
 	background-color: transparent;
 	border: none;
 }
+input#sheet-id {
+	text-transform: lowercase;
+}
 button {
 	pointer-events: auto;
 }
