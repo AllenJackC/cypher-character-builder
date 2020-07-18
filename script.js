@@ -1516,7 +1516,6 @@ $(function() {
 		download: true,
 		complete: function(results) {
 			spellListDatabase = results.data;
-			console.log(spellListDatabase);
 		}
 	});
 	//Set story arc to hide elements not in current arc
@@ -2710,7 +2709,7 @@ $(function() {
 						"magic-tech": magicTech,
 						"tier": $('#current-tier').text(),
 						"xp": $('#xp-number').text(),
-						"skills": skillArray
+						"skills": skillArray.join(',')
 					}
 				}
 				], function (err) {	if (err) { console.error(err); return; }
