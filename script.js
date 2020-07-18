@@ -2692,9 +2692,9 @@ $(function() {
 				$('#skills spell:not([data-default])').each( function() {
 					skillArray.push($('.name',this).text());
 				});
+				console.log($('#skills spell:not([data-default])').length);
 				if ( skillArray.length < 1 ) skillArray = "";
 				else skillArray = skillArray.join(',');
-				console.log(skillArray);
 				base('Sheets').update([
 				{
 					"id": recordID,
