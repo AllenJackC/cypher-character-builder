@@ -2689,10 +2689,9 @@ $(function() {
 				if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
 				if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
 				if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
-				$('#skills spell:not([data-default])').each( function() {
+				$('#skills .spell:not([data-default])').each( function() {
 					skillArray.push($('.name',this).text());
 				});
-				console.log($('#skills spell:not([data-default])').length);
 				if ( skillArray.length < 1 ) skillArray = "";
 				else skillArray = skillArray.join(',');
 				base('Sheets').update([
