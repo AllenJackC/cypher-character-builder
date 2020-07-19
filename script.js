@@ -3003,50 +3003,60 @@ $(function() {
 	$('#submit-sheet').click( function() {
 		var sheetList = [];
 		var recordID;
-		base('Sheets').select({
-			view: 'Grid view',
-			filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
-		}).eachPage(function page(records, fetchNextPage) {
-		records.forEach(function(record) {
-			recordID = record.id;
-			sheetList.push(recordID);
-		});
-			fetchNextPage();
-		}, function done(err) {
-			if (err) { console.error(err); return; }
-			if ( sheetList.length === 0 ) {
-				base('Sheets').create([
-					{
-						"fields": {
-						  "id": $('#sheet-id').val()
+		var sheetID = $('#sheet-id').val();
+		if ( !sheetID ) {
+			alert('Please enter a sheet ID!');
+		} else {
+			base('Sheets').select({
+				view: 'Grid view',
+				filterByFormula: "{id} = '" + sheetID + "'"
+			}).eachPage(function page(records, fetchNextPage) {
+			records.forEach(function(record) {
+				recordID = record.id;
+				sheetList.push(recordID);
+			});
+				fetchNextPage();
+			}, function done(err) {
+				if (err) { console.error(err); return; }
+				if ( sheetList.length === 0 ) {
+					base('Sheets').create([
+						{
+							"fields": {
+							  "id": $('#sheet-id').val()
+							}
 						}
-					}
-				], function(err, records) {
-					if (err) { console.error(err); return; }
-					alert('Character sheet created!');
-					$('#submit-sheet').addClass('disabled');
-					$('#cancel-submit').addClass('disabled');
-					$('#new-sheet').removeClass('disabled');
-					$('#load-sheet').removeClass('disabled');
-					$('#sheet-id').addClass('loaded');
-					autoSave();
-					Cookies.set('sheetID',$('#sheet-id').val(),{ expires: Infinity });
-				});
-			} else {
-				alert('That character sheet already exists. Click Open to load an existing one, or type in a different name.');
-			}
-		});
+					], function(err, records) {
+						if (err) { console.error(err); return; }
+						alert('Character sheet created!');
+						$('#submit-sheet').addClass('disabled');
+						$('#cancel-submit').addClass('disabled');
+						$('#new-sheet').removeClass('disabled');
+						$('#load-sheet').removeClass('disabled');
+						$('#sheet-id').addClass('loaded');
+						autoSave();
+						Cookies.set('sheetID',$('#sheet-id').val(),{ expires: Infinity });
+					});
+				} else {
+					alert('That character sheet already exists. Click Open to load an existing one, or type in a different name.');
+				}
+			});
+		}
 	});
 	//Character Sheet Loading
 	$('#load-sheet').click( function() {
-		clearInterval(saveInterval);
-		if ( $('#sheet-id').hasClass('loaded') ) {
-			currentSheetID = $('#sheet-id').val();
-			$('#sheet-id').removeClass('loaded');
-			$('#new-sheet').addClass('disabled');
-			$('#cancel-submit').removeClass('disabled');
+		var sheetID = $('#sheet-id').val();
+		if ( !sheetID ) {
+			alert('Please enter a sheet ID!');
 		} else {
-			loadCharaSheet($('#sheet-id').val());
+			clearInterval(saveInterval);
+			if ( $('#sheet-id').hasClass('loaded') ) {
+				currentSheetID = sheetID;
+				$('#sheet-id').removeClass('loaded');
+				$('#new-sheet').addClass('disabled');
+				$('#cancel-submit').removeClass('disabled');
+			} else {
+				loadCharaSheet(sheetID);
+			}
 		}
 	});
 	//New Button
