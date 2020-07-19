@@ -2025,10 +2025,13 @@ $(function() {
 	populateCyberwareSelect();
 	populateInventorySelect();
 	populateContactSelect();
+	//Autoload sheet if accessing from existing device
 	if ( Cookies.get('sheetID') ) {
-		$('#sheet-id').val(Cookies.get('sheetID'));
-		$('#sheet-header').removeClass('toggled');
-		loadCharaSheet(Cookies.get('sheetID'),true);
+		setTimeout( function() {
+			$('#sheet-id').val(Cookies.get('sheetID'));
+			$('#sheet-header').removeClass('toggled');
+			loadCharaSheet(Cookies.get('sheetID'),true);
+		}, 1000);
 	}
 	//Cyberware Dragula
 	var cyberwareDrake = dragula([cyberwareDeleteSpace[0]],{
