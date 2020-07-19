@@ -1102,38 +1102,36 @@ function populateSpellLists() {
 					if ( itemType == "Artifact" ) {
 						addArtifact(spellID,itemName,itemEffect);
 					} else {
-						var selectThisType;
 						switch ( itemType ) {
 							case "Weapon":
-							selectThisType = "WE";
+							itemType = "WE";
 							break;
 							case "Clothing":
-							selectThisType = "CL";
+							itemType = "CL";
 							break;
 							default:
-							selectThisType = "IT";
+							itemType = "IT";
 						}
-						addItem(spellID,itemName,selecThisType,itemValue);
+						addItem(spellID,itemName,itemType,itemValue);
 					}
 				//Add to contact list
 				} else if ( !spellOptional && typeCheck == "Contact" && $('#contacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var contactType = spellListDatabase[i].itemtype;
 					var contactSkill = spellListDatabase[i].itemvalue;
 					var contactDescription = spellListDatabase[i].itemeffect;
-					var selectThisType;
 					switch ( contactType ) {
 						case "Contact":
-						selectThisType = "CT";
+						contactType = "CT";
 						break;
 						case "Companion":
-						selectThisType = "CP";
+						contactType = "CP";
 						break;
 						default:
-						selectThisType = "OT";
+						contactType = "OT";
 					}
 					addContact(spellID,itemName,contactDescription,contactSkill);
 					var thisContact = $('#contacts tr[data-spellid="' + spellID + '"]');
-					$('.type select', thisContact).val(selectThisType);
+					$('.type select', thisContact).val(contactType);
 					$('.type select', thisContact).trigger('chosen:updated');
 				//Add cyberware to the cyberware
 				} else if ( !spellOptional && typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
@@ -1141,17 +1139,16 @@ function populateSpellLists() {
 					var cyberwareLocation = bodyPart + "-cyberware";
 					var cyberwareFunction = spellListDatabase[i].itemeffect;
 					var cyberwareValue = spellListDatabase[i].itemvalue;
-					var selectThisType;
 					switch ( itemName ) {
 						case "Weapon":
-						selectThisType = "WE";
+						itemName = "WE";
 						break;
 						default:
-						selectThisType = "UT";
+						itemName = "UT";
 					}
 					addCyberware(cyberwareLocation,spellID,cyberwareFunction);
 					var thisCyberware = $('.cyberware[data-spellid="' + spellID + '"]');
-					$('.type select', thisCyberware).val(selectThisType);
+					$('.type select', thisCyberware).val(itemName);
 					$('.type select', thisCyberware).trigger('chosen:updated');
 					var bodyPartImg = $('#cyber-mannequin img.' + bodyPart);
 					bodyPartImg.addClass('modded');
@@ -1266,7 +1263,6 @@ function addItem(spellID,itemName,itemType,itemValue,itemState) {
 	else inventoryList.append(itemToAdd);
 	if ( itemName ) {
 		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
-		console.log(thisItem);
 		$('.type select', thisItem).val(itemType);
 		$('.type select', thisItem).trigger('chosen:updated');
 		$('.value select', thisItem).val(itemValue);
