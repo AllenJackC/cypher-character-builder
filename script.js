@@ -2619,7 +2619,10 @@ $(function() {
 										var skillsArray = record.get('skills').split('¬');
 										var editableSkills = $('#skills .spell:not([data-default]) .name');
 										for (var i = 0; i < editableSkills.length; i++) {
-											editableSkills.eq(i).text(skillsArray[i]);
+											var skillName = skillsArray[i];
+											var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+											editableSkills.eq(i).text(skillName);
+											editableSkills.eq(i).closest('.spell').css('order', newOrder);
 										}
 									}
 									$('#sheet-id').addClass('loaded');
