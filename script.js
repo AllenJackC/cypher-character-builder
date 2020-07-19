@@ -76,6 +76,7 @@ var Airtable;
 var base;
 var currentSheetID;
 var saveInterval;
+var recordID;
 //Check if an integer is even
 function isEven(value) {
 	if (value%2 == 0)
