@@ -1129,16 +1129,12 @@ function populateSpellLists() {
 						default:
 						contactType = "OT";
 					}
-					addContact(spellID,itemName,contactDescription,contactSkill);
-					var thisContact = $('#contacts tr[data-spellid="' + spellID + '"]');
-					$('.type select', thisContact).val(contactType);
-					$('.type select', thisContact).trigger('chosen:updated');
+					addContact(spellID,itemName,contactDescription,contactSkill,contactType);
 				//Add cyberware to the cyberware
 				} else if ( !spellOptional && typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var bodyPart = spellListDatabase[i].itemtype;
 					var cyberwareLocation = bodyPart + "-cyberware";
 					var cyberwareFunction = spellListDatabase[i].itemeffect;
-					var cyberwareValue = spellListDatabase[i].itemvalue;
 					switch ( itemName ) {
 						case "Weapon":
 						itemName = "WE";
@@ -1146,10 +1142,7 @@ function populateSpellLists() {
 						default:
 						itemName = "UT";
 					}
-					addCyberware(cyberwareLocation,spellID,cyberwareFunction);
-					var thisCyberware = $('.cyberware[data-spellid="' + spellID + '"]');
-					$('.type select', thisCyberware).val(itemName);
-					$('.type select', thisCyberware).trigger('chosen:updated');
+					addCyberware(spellID,cyberwareLocation,cyberwareFunction,itemName);
 					var bodyPartImg = $('#cyber-mannequin img.' + bodyPart);
 					bodyPartImg.addClass('modded');
 					enableCyberware.addClass('clicked');
@@ -1303,7 +1296,7 @@ function populateCyberwareSelect() {
 	});
 }
 //Add a blank cyberware, unless variables are parsed
-function addCyberware(bodyPart,spellID,cyberwareFunction) {
+function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareType) {
 	var contentEditable;
 	var disabledSelect;
 	if ( spellID ) {
@@ -1332,13 +1325,18 @@ function addCyberware(bodyPart,spellID,cyberwareFunction) {
 					'</select>' +
 				'</div>' +
 			'</div>' +
-		'</div>'
-	$(cyberwareToAdd).appendTo($('#' + bodyPart)).slideToggle({
+		'</div>';
+	$(cyberwareToAdd).appendTo($('#' + bodyPart)).stop().slideToggle({
 		duration: 300,
 		complete: function() {
-			$(this).css('min-height','130px');
+			$(this).css('min-height','75px');
 		}
 	});
+	if ( cyberwareFunction && cyberwareType ) {
+		var thisCyberware = $('.cyberware .editable:contains("' + cyberwareFunction + '")').closest('.cyberware');
+		$('.type select', thisCyberware).val(cyberwareType);
+		$('.type select', thisCyberware).trigger('chosen:updated');
+	}
 	populateCyberwareSelect();
 }
 //Add a blank note, unless variables are parsed
@@ -1365,7 +1363,7 @@ function populateContactSelect() {
 	});
 }
 //Add a blank skill, unless variables are parsed
-function addContact(spellID,contactName,contactDescription,contactSkill) {
+function addContact(spellID,contactName,contactDescription,contactSkill,contactType) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
 	if ( !contactName ) contactName = "";
@@ -1396,6 +1394,12 @@ function addContact(spellID,contactName,contactDescription,contactSkill) {
 	if ( spellID ) $(contactToAdd).insertAfter('#contacts table tr:first-child');
 	else contactList.append(contactToAdd);
 	populateContactSelect();
+	if ( contactName && contactType ) {
+		var thisContact = $('.name .editable:contains("' + contactName + '")').closest('.item');
+		$('.type select', thisContact).val(contactType);
+		$('.type select', thisContact).trigger('chosen:updated');
+	}
+	populateInventorySelect();
 }
 function arrangeSpells() {
 	if ( !isTouchDevice() ) {
@@ -2021,7 +2025,7 @@ $(function() {
 	addNoteButton.click( function() { addNote(); });
 	addCyberwareButton.click( function() { 
 		var bodyPart = $(this).closest('.cyber-section').attr('id').replace('-cyberware','');
-		addCyberware($(this).closest('.cyber-section').attr('id'));
+		addCyberware(undefined,$(this).closest('.cyber-section').attr('id'));
 		$('#cyber-mannequin img.' + bodyPart).addClass('modded');
 		if ( isTouchDevice() ) $('#cyberware-option em').show();
 	});	
@@ -2689,6 +2693,72 @@ $(function() {
 											}
 										}
 									}
+									//Load cyberware
+									if ( record.get('cyberwares') ) {
+										if ($('#cyberware').is(':hidden')) $('#cyberware').stop().slideToggle(300);
+										enableCyberware.addClass('clicked');
+										$('.cyberware').each( function() {
+											$(this).remove();
+										});
+										var cyberwareDescriptions = record.get('cyberwares').split('¬');
+										var cyberwareTypes = record.get('cyberware-types').split('¬');
+										var cyberwareBodyParts = record.get('cyberware-bodyparts').split('¬');
+										if ( record.get('cyberware-ids') ) {
+											var cyberwareIDs = record.get('cyberware-ids').split('¬');
+											for (var i = 0; i < cyberwareDescriptions.length; i++) {
+												var cyberImage = $('#cyber-mannequin img.' + cyberwareBodyParts[i]);
+												var cyberwareBodyPart = cyberwareBodyParts[i] + "-cyberware";
+												addCyberware(cyberwareIDs[i],cyberwareBodyPart,cyberwareDescriptions[i],cyberwareTypes[i]);
+												cyberImage.addClass('modded');
+												cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
+											}
+										} else {
+											for (var i = 0; i < cyberwareDescriptions.length; i++) {
+												var cyberImage = $('#cyber-mannequin img.' + cyberwareBodyParts[i]);
+												var cyberwareBodyPart = cyberwareBodyParts[i] + "-cyberware";
+												addCyberware(undefined,cyberwareBodyPart,cyberwareDescriptions[i],cyberwareTypes[i]);
+												cyberImage.addClass('modded active');
+												cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
+											}
+										}
+									}
+									//Load contacts
+									if ( record.get('contacts') ) {
+										$('#contacts .item').each( function() {
+											$(this).remove();
+										});
+										var contactNames = record.get('contacts').split('¬');
+										var contactTypes = record.get('contact-types').split('¬');
+										var contactDescriptions = record.get('contact-descriptions').split('¬');
+										var contactSkills = record.get('contact-skills').split('¬');
+										if ( record.get('contact-ids') ) {
+											var contactIDs = record.get('contact-ids').split('¬');
+											for (var i = 0; i < contactNames.length; i++) {
+												addContact(contactIDs[i],contactNames[i],contactDescriptions[i],contactSkills[i],contactTypes[i]);
+											}
+										} else {
+											for (var i = 0; i < contactNames.length; i++) {
+												addContact(undefined,contactNames[i],contactDescriptions[i],contactSkills[i],contactTypes[i]);
+											}
+										}
+									}
+									//Load notes
+									if ( record.get('notes') ) {
+										$('#notes .item').each( function() {
+											$(this).remove();
+										});
+										var notesArray = record.get('notes').split('¬');
+										if ( record.get('note-ids') ) {
+											var noteIDs = record.get('note-ids').split('¬');
+											for (var i = 0; i < notesArray.length; i++) {
+												addNote(noteIDs[i],notesArray[i]);
+											}
+										} else {
+											for (var i = 0; i < notesArray.length; i++) {
+												addNote(undefined,notesArray[i]);
+											}
+										}
+									}
 									$('#sheet-id').addClass('loaded');
 									$('#submit-sheet').addClass('disabled');
 									$('#new-sheet').removeClass('disabled');
@@ -2750,12 +2820,12 @@ $(function() {
 				var contactTypes = [];
 				var contactDescriptions = [];
 				var contactSkills = [];
-				var cyberwareNames = [];
+				var cyberwareBodyParts = [];
 				var cyberwareIDs = [];
 				var cyberwareTypes = [];
 				var cyberwareDescriptions = [];
 				var notesArray = [];
-				var notesIDs = [];
+				var noteIDs = [];
 				if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
 				if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
 				if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
@@ -2815,6 +2885,75 @@ $(function() {
 					artifactIDs = artifactIDs.join('¬');
 					artifactEffects = artifactEffects.join('¬');
 				}
+				//Building cyberware arrays
+				$('.cyberware .editable').each( function() {
+					cyberwareDescriptions.push($(this).text());
+				});
+				$('.cyberware').each( function() {
+					var thisBodyPart = $(this).attr('class').replace('cyberware','').replace(/\s/g,'');
+					cyberwareBodyParts.push(thisBodyPart);
+					if ( $(this).attr('data-default') ) cyberwareIDs.push($(this).attr('data-default'));
+					else cyberwareIDs.push('');
+				});
+				$('.cyberware .type select').each( function() {
+					cyberwareTypes.push($(this).val());
+				});
+				if ( cyberwareDescriptions.length < 1 ) {
+					cyberwareDescriptions = "";
+					cyberwareIDs = "";
+					cyberwareTypes = "";
+					cyberwareBodyParts = "";
+				} else {
+					cyberwareDescriptions = cyberwareDescriptions.join('¬');
+					cyberwareIDs = cyberwareIDs.join('¬');
+					cyberwareTypes = cyberwareTypes.join('¬');
+					cyberwareBodyParts = cyberwareBodyParts.join('¬');
+				}
+				//Building contacts arrays
+				$('#contacts .item .name .editable').each( function() {
+					contactNames.push($(this).text());
+				});
+				$('#contacts .item').each( function() {
+					if ( $(this).attr('data-default') ) contactIDs.push($(this).attr('data-default'));
+					else contactIDs.push('');
+				});
+				$('#contacts .item .type select').each( function() {
+					contactTypes.push($(this).val());
+				});
+				$('#contacts .item .effect:not(.skill) .editable').each( function() {
+					contactDescriptions.push($(this).text());
+				});
+				$('#contacts .item .skill .editable').each( function() {
+					contactSkills.push($(this).text());
+				});
+				if ( contactNames.length < 1 ) {
+					contactNames = "";
+					contactIDs = "";
+					contactTypes = "";
+					contactDescriptions = "";
+					contactSkills = "";
+				} else {
+					contactNames = contactNames.join('¬');
+					contactIDs = contactIDs.join('¬');
+					contactTypes = contactTypes.join('¬');
+					contactDescriptions = contactDescriptions.join('¬');
+					contactSkills = contactSkills.join('¬');
+				}
+				//Building notes arrays
+				$('#notes .item .editable').each( function() {
+					notesArray.push($(this).text());
+				});
+				$('#notes .item').each( function() {
+					if ( $(this).attr('data-default') ) noteIDs.push($(this).attr('data-default'));
+					else noteIDs.push('');
+				});
+				if ( notesArray.length < 1 ) {
+					notesArray = "";
+					noteIDs = "";
+				} else {
+					notesArray = notesArray.join('¬');
+					noteIDs = noteIDs.join('¬');
+				}
 				base('Sheets').update([
 				{
 					"id": recordID,
@@ -2839,18 +2978,18 @@ $(function() {
 						"item-costs": itemCosts,
 						"artifacts": artifactNames,
 						"artifact-ids": artifactIDs,
-						"artifact-effects": artifactEffects/*,
+						"artifact-effects": artifactEffects,
 						"contacts": contactNames,
 						"contact-ids": contactIDs,
 						"contact-types": contactTypes,
 						"contact-descriptions": contactDescriptions,
 						"contact-skills":contactSkills,
-						"cyberwares": cyberwareNames,
+						"cyberwares": cyberwareDescriptions,
 						"cyberware-ids": cyberwareIDs,
 						"cyberware-types": cyberwareTypes,
-						"cyberware-descriptions":cyberwareDescriptions,
+						"cyberware-bodyparts": cyberwareBodyParts,
 						"notes": notesArray,
-						"note-ids": noteIDs*/
+						"note-ids": noteIDs
 					}
 				}
 				], function (err) {	if (err) { console.error(err); return; }
