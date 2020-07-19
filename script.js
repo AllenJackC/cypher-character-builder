@@ -1646,7 +1646,7 @@ function autoSave() {
 	}, 5000);
 }
 //Load character sheet function
-function loadCharaSheet(sheetID) {
+function loadCharaSheet(sheetID,autoLoad) {
 	var sheetList = [];
 	var recordID;
 	base('Sheets').select({
@@ -1664,8 +1664,10 @@ function loadCharaSheet(sheetID) {
 			base('Sheets').find(recordID, function(err, record) {
 				if (err) { console.error(err); return; }
 				var confirmDialog = confirm('Load previously saved character sheet?');
+				if (autoLoad) confirmDialog = true;
 					if (confirmDialog) {
 						var doubleConfirm = confirm('Note: loading an existing character sheet will erase all information you entered on the current character sheet! Are you sure you want to proceed?');
+						if (autoLoad) doubleConfirm = true;
 						if (doubleConfirm) {
 							$('#name').val(record.get('name'));
 							$('#descriptors').val(record.get('descriptor'));
@@ -2023,7 +2025,11 @@ $(function() {
 	populateCyberwareSelect();
 	populateInventorySelect();
 	populateContactSelect();
-	if ( Cookies.get('sheetID') ) loadCharaSheet(Cookies.get('sheetID'));
+	if ( Cookies.get('sheetID') ) {
+		$('#sheet-id').val(Cookies.get('sheetID'));
+		$('#sheet-header').removeClass('toggled');
+		loadCharaSheet(Cookies.get('sheetID'),true);
+	}
 	//Cyberware Dragula
 	var cyberwareDrake = dragula([cyberwareDeleteSpace[0]],{
 			isContainer: function(el) {
