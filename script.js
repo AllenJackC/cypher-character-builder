@@ -2619,7 +2619,7 @@ $(function() {
 										var skillsArray = record.get('skills').split('¬');
 										var editableSkills = $('#skills .spell:not([data-default]) .name');
 										for (var i = 0; i < editableSkills.length; i++) {
-											editableSkills.eq(i).text(skillsArray[1]);
+											editableSkills.eq(i).text(skillsArray[i]);
 										}
 									}
 									$('#sheet-id').addClass('loaded');
