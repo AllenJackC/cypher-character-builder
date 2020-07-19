@@ -2082,7 +2082,7 @@ $(function() {
 		setTimeout( function() {
 			$('#sheet-id').val(Cookies.get('sheetID'));
 			$('#sheet-header').removeClass('toggled');
-			$('#load-sheet-toggle').html('&lt;<br>&lt;<br>&lt;');
+			$('#load-sheet-toggle').html('&gt;<br>&gt;<br>&gt;');
 			loadCharaSheet(Cookies.get('sheetID'),true);
 		}, 1000);
 	}
