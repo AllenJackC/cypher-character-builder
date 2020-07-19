@@ -1439,216 +1439,218 @@ function arrangeSpells() {
 		statusSection.css('grid-template-columns', '1fr');
 	}
 }
+//Save function
+function saveSheet() {
+	base('Sheets').select({
+		view: 'Grid view',
+		filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
+	}).eachPage(function page(records, fetchNextPage) {
+		records.forEach(function(record) {
+			recordID = record.id;
+		});
+		fetchNextPage();
+	}, function done(err) {
+		if (err) { console.error(err); return; }
+		var isHybrid = "false";
+		var feelingsLogic = "";
+		var magicTech = "";
+		var skillsArray = [];
+		var itemNames = [];
+		var itemIDs = [];
+		var itemStates = [];
+		var itemTypes = [];
+		var itemCosts = [];
+		var artifactNames = [];
+		var artifactIDs = [];
+		var artifactEffects = [];
+		var contactNames = [];
+		var contactIDs = [];
+		var contactTypes = [];
+		var contactDescriptions = [];
+		var contactSkills = [];
+		var cyberwareBodyParts = [];
+		var cyberwareIDs = [];
+		var cyberwareTypes = [];
+		var cyberwareDescriptions = [];
+		var notesArray = [];
+		var noteIDs = [];
+		if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
+		else isHybrid = "false";
+		if ( $('#logic-feelings .selected').length > 0 ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
+		else feelingsLogic = "unset";
+		if ( $('#magic-tech .selected').length > 0 ) magicTech = $('#magic-tech .selected').attr('data-number');
+		else magicTech = "unset";
+		//Building skills array
+		$('#skills .spell:not([data-default])').each( function() {
+			skillsArray.push($('.name',this).text());
+		});
+		if ( skillsArray.length < 1 ) skillsArray = "";
+		else skillsArray = skillsArray.join('¬');
+		//Building items arrays
+		$('#equipment .item .name .editable').each( function() {
+			itemNames.push($(this).text());
+		});
+		$('#equipment .item').each( function() {
+			if ( $(this).attr('data-default') ) itemIDs.push($(this).attr('data-default'));
+			else itemIDs.push('');
+		});
+		$('#equipment .item .equip select').each( function() {
+			itemStates.push($(this).val());
+		});
+		$('#equipment .item .type select').each( function() {
+			itemTypes.push($(this).val());
+		});
+		$('#equipment .item .value select').each( function() {
+			itemCosts.push($(this).val());
+		});
+		if ( itemNames.length < 1 ) {
+			itemNames = "";
+			itemIDs = "";
+			itemStates = "";
+			itemTypes = "";
+			itemCosts = "";
+		} else {
+			itemNames = itemNames.join('¬');
+			itemIDs = itemIDs.join('¬');
+			itemStates = itemStates.join('¬');
+			itemTypes = itemTypes.join('¬');
+			itemCosts = itemCosts.join('¬');
+		}
+		//Building artifacts arrays
+		$('#artifacts .item .name .editable').each( function() {
+			artifactNames.push($(this).text());
+		});
+		$('#artifacts .item').each( function() {
+			if ( $(this).attr('data-default') ) artifactIDs.push($(this).attr('data-default'));
+			else artifactIDs.push('');
+		});
+		$('#artifacts .item .effect .editable').each( function() {
+			artifactEffects.push($(this).text());
+		});
+		if ( artifactNames.length < 1 ) {
+			artifactNames = "";
+			artifactIDs = "";
+			artifactEffects = "";
+		} else {
+			artifactNames = artifactNames.join('¬');
+			artifactIDs = artifactIDs.join('¬');
+			artifactEffects = artifactEffects.join('¬');
+		}
+		//Building cyberware arrays
+		$('.cyberware .editable').each( function() {
+			cyberwareDescriptions.push($(this).text());
+		});
+		$('.cyberware').each( function() {
+			var thisBodyPart = $(this).attr('class').replace('cyberware','').replace(/\s/g,'');
+			cyberwareBodyParts.push(thisBodyPart);
+			if ( $(this).attr('data-default') ) cyberwareIDs.push($(this).attr('data-default'));
+			else cyberwareIDs.push('');
+		});
+		$('.cyberware .type select').each( function() {
+			cyberwareTypes.push($(this).val());
+		});
+		if ( cyberwareDescriptions.length < 1 ) {
+			cyberwareDescriptions = "";
+			cyberwareIDs = "";
+			cyberwareTypes = "";
+			cyberwareBodyParts = "";
+		} else {
+			cyberwareDescriptions = cyberwareDescriptions.join('¬');
+			cyberwareIDs = cyberwareIDs.join('¬');
+			cyberwareTypes = cyberwareTypes.join('¬');
+			cyberwareBodyParts = cyberwareBodyParts.join('¬');
+		}
+		//Building contacts arrays
+		$('#contacts .item .name .editable').each( function() {
+			contactNames.push($(this).text());
+		});
+		$('#contacts .item').each( function() {
+			if ( $(this).attr('data-default') ) contactIDs.push($(this).attr('data-default'));
+			else contactIDs.push('');
+		});
+		$('#contacts .item .type select').each( function() {
+			contactTypes.push($(this).val());
+		});
+		$('#contacts .item .effect:not(.skill) .editable').each( function() {
+			contactDescriptions.push($(this).text());
+		});
+		$('#contacts .item .skill .editable').each( function() {
+			contactSkills.push($(this).text());
+		});
+		if ( contactNames.length < 1 ) {
+			contactNames = "";
+			contactIDs = "";
+			contactTypes = "";
+			contactDescriptions = "";
+			contactSkills = "";
+		} else {
+			contactNames = contactNames.join('¬');
+			contactIDs = contactIDs.join('¬');
+			contactTypes = contactTypes.join('¬');
+			contactDescriptions = contactDescriptions.join('¬');
+			contactSkills = contactSkills.join('¬');
+		}
+		//Building notes arrays
+		$('#notes .item .editable').each( function() {
+			notesArray.push($(this).text());
+		});
+		$('#notes .item').each( function() {
+			if ( $(this).attr('data-default') ) noteIDs.push($(this).attr('data-default'));
+			else noteIDs.push('');
+		});
+		if ( notesArray.length < 1 ) {
+			notesArray = "";
+			noteIDs = "";
+		} else {
+			notesArray = notesArray.join('¬');
+			noteIDs = noteIDs.join('¬');
+		}
+		base('Sheets').update([
+		{
+			"id": recordID,
+			"fields": {
+				"id": $('#sheet-id').val(),
+				"name": $('#name').val(),
+				"descriptor": $('#descriptors').val(),
+				"species": $('#species').val(),
+				"hybrid": isHybrid,
+				"secondary-species": $('#secondary-species').val(),
+				"type": $('#types').val(),
+				"focus": $('#foci').val(),
+				"secondary-focus": $('#secondary-foci').val(),
+				"feelings-logic": feelingsLogic,
+				"magic-tech": magicTech,
+				"tier": $('#current-tier').text(),
+				"xp": $('#xp-number').text(),
+				"skills": skillsArray,
+				"items": itemNames,
+				"item-ids": itemIDs,
+				"item-states": itemStates,
+				"item-types": itemTypes,
+				"item-costs": itemCosts,
+				"artifacts": artifactNames,
+				"artifact-ids": artifactIDs,
+				"artifact-effects": artifactEffects,
+				"contacts": contactNames,
+				"contact-ids": contactIDs,
+				"contact-types": contactTypes,
+				"contact-descriptions": contactDescriptions,
+				"contact-skills":contactSkills,
+				"cyberwares": cyberwareDescriptions,
+				"cyberware-ids": cyberwareIDs,
+				"cyberware-types": cyberwareTypes,
+				"cyberware-bodyparts": cyberwareBodyParts,
+				"notes": notesArray,
+				"note-ids": noteIDs
+			}
+		}
+		], function (err) {	if (err) { console.error(err); return; }
+		});
+	});
+}
 //Autosave function for character sheet
 function autoSave() {
-	saveInterval = setInterval( function() {
-		base('Sheets').select({
-			view: 'Grid view',
-			filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
-		}).eachPage(function page(records, fetchNextPage) {
-			records.forEach(function(record) {
-				recordID = record.id;
-			});
-			fetchNextPage();
-		}, function done(err) {
-			if (err) { console.error(err); return; }
-			var isHybrid = "false";
-			var feelingsLogic = "";
-			var magicTech = "";
-			var skillsArray = [];
-			var itemNames = [];
-			var itemIDs = [];
-			var itemStates = [];
-			var itemTypes = [];
-			var itemCosts = [];
-			var artifactNames = [];
-			var artifactIDs = [];
-			var artifactEffects = [];
-			var contactNames = [];
-			var contactIDs = [];
-			var contactTypes = [];
-			var contactDescriptions = [];
-			var contactSkills = [];
-			var cyberwareBodyParts = [];
-			var cyberwareIDs = [];
-			var cyberwareTypes = [];
-			var cyberwareDescriptions = [];
-			var notesArray = [];
-			var noteIDs = [];
-			if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
-			else isHybrid = "false";
-			if ( $('#logic-feelings .selected').length > 0 ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
-			else feelingsLogic = "unset";
-			if ( $('#magic-tech .selected').length > 0 ) magicTech = $('#magic-tech .selected').attr('data-number');
-			else magicTech = "unset";
-			//Building skills array
-			$('#skills .spell:not([data-default])').each( function() {
-				skillsArray.push($('.name',this).text());
-			});
-			if ( skillsArray.length < 1 ) skillsArray = "";
-			else skillsArray = skillsArray.join('¬');
-			//Building items arrays
-			$('#equipment .item .name .editable').each( function() {
-				itemNames.push($(this).text());
-			});
-			$('#equipment .item').each( function() {
-				if ( $(this).attr('data-default') ) itemIDs.push($(this).attr('data-default'));
-				else itemIDs.push('');
-			});
-			$('#equipment .item .equip select').each( function() {
-				itemStates.push($(this).val());
-			});
-			$('#equipment .item .type select').each( function() {
-				itemTypes.push($(this).val());
-			});
-			$('#equipment .item .value select').each( function() {
-				itemCosts.push($(this).val());
-			});
-			if ( itemNames.length < 1 ) {
-				itemNames = "";
-				itemIDs = "";
-				itemStates = "";
-				itemTypes = "";
-				itemCosts = "";
-			} else {
-				itemNames = itemNames.join('¬');
-				itemIDs = itemIDs.join('¬');
-				itemStates = itemStates.join('¬');
-				itemTypes = itemTypes.join('¬');
-				itemCosts = itemCosts.join('¬');
-			}
-			//Building artifacts arrays
-			$('#artifacts .item .name .editable').each( function() {
-				artifactNames.push($(this).text());
-			});
-			$('#artifacts .item').each( function() {
-				if ( $(this).attr('data-default') ) artifactIDs.push($(this).attr('data-default'));
-				else artifactIDs.push('');
-			});
-			$('#artifacts .item .effect .editable').each( function() {
-				artifactEffects.push($(this).text());
-			});
-			if ( artifactNames.length < 1 ) {
-				artifactNames = "";
-				artifactIDs = "";
-				artifactEffects = "";
-			} else {
-				artifactNames = artifactNames.join('¬');
-				artifactIDs = artifactIDs.join('¬');
-				artifactEffects = artifactEffects.join('¬');
-			}
-			//Building cyberware arrays
-			$('.cyberware .editable').each( function() {
-				cyberwareDescriptions.push($(this).text());
-			});
-			$('.cyberware').each( function() {
-				var thisBodyPart = $(this).attr('class').replace('cyberware','').replace(/\s/g,'');
-				cyberwareBodyParts.push(thisBodyPart);
-				if ( $(this).attr('data-default') ) cyberwareIDs.push($(this).attr('data-default'));
-				else cyberwareIDs.push('');
-			});
-			$('.cyberware .type select').each( function() {
-				cyberwareTypes.push($(this).val());
-			});
-			if ( cyberwareDescriptions.length < 1 ) {
-				cyberwareDescriptions = "";
-				cyberwareIDs = "";
-				cyberwareTypes = "";
-				cyberwareBodyParts = "";
-			} else {
-				cyberwareDescriptions = cyberwareDescriptions.join('¬');
-				cyberwareIDs = cyberwareIDs.join('¬');
-				cyberwareTypes = cyberwareTypes.join('¬');
-				cyberwareBodyParts = cyberwareBodyParts.join('¬');
-			}
-			//Building contacts arrays
-			$('#contacts .item .name .editable').each( function() {
-				contactNames.push($(this).text());
-			});
-			$('#contacts .item').each( function() {
-				if ( $(this).attr('data-default') ) contactIDs.push($(this).attr('data-default'));
-				else contactIDs.push('');
-			});
-			$('#contacts .item .type select').each( function() {
-				contactTypes.push($(this).val());
-			});
-			$('#contacts .item .effect:not(.skill) .editable').each( function() {
-				contactDescriptions.push($(this).text());
-			});
-			$('#contacts .item .skill .editable').each( function() {
-				contactSkills.push($(this).text());
-			});
-			if ( contactNames.length < 1 ) {
-				contactNames = "";
-				contactIDs = "";
-				contactTypes = "";
-				contactDescriptions = "";
-				contactSkills = "";
-			} else {
-				contactNames = contactNames.join('¬');
-				contactIDs = contactIDs.join('¬');
-				contactTypes = contactTypes.join('¬');
-				contactDescriptions = contactDescriptions.join('¬');
-				contactSkills = contactSkills.join('¬');
-			}
-			//Building notes arrays
-			$('#notes .item .editable').each( function() {
-				notesArray.push($(this).text());
-			});
-			$('#notes .item').each( function() {
-				if ( $(this).attr('data-default') ) noteIDs.push($(this).attr('data-default'));
-				else noteIDs.push('');
-			});
-			if ( notesArray.length < 1 ) {
-				notesArray = "";
-				noteIDs = "";
-			} else {
-				notesArray = notesArray.join('¬');
-				noteIDs = noteIDs.join('¬');
-			}
-			base('Sheets').update([
-			{
-				"id": recordID,
-				"fields": {
-					"id": $('#sheet-id').val(),
-					"name": $('#name').val(),
-					"descriptor": $('#descriptors').val(),
-					"species": $('#species').val(),
-					"hybrid": isHybrid,
-					"secondary-species": $('#secondary-species').val(),
-					"type": $('#types').val(),
-					"focus": $('#foci').val(),
-					"secondary-focus": $('#secondary-foci').val(),
-					"feelings-logic": feelingsLogic,
-					"magic-tech": magicTech,
-					"tier": $('#current-tier').text(),
-					"xp": $('#xp-number').text(),
-					"skills": skillsArray,
-					"items": itemNames,
-					"item-ids": itemIDs,
-					"item-states": itemStates,
-					"item-types": itemTypes,
-					"item-costs": itemCosts,
-					"artifacts": artifactNames,
-					"artifact-ids": artifactIDs,
-					"artifact-effects": artifactEffects,
-					"contacts": contactNames,
-					"contact-ids": contactIDs,
-					"contact-types": contactTypes,
-					"contact-descriptions": contactDescriptions,
-					"contact-skills":contactSkills,
-					"cyberwares": cyberwareDescriptions,
-					"cyberware-ids": cyberwareIDs,
-					"cyberware-types": cyberwareTypes,
-					"cyberware-bodyparts": cyberwareBodyParts,
-					"notes": notesArray,
-					"note-ids": noteIDs
-				}
-			}
-			], function (err) {	if (err) { console.error(err); return; }
-			});
-		});
-	}, 5000);
+	saveInterval = setInterval( function() { saveSheet(); }, 5000);
 }
 //Load character sheet function
 function loadCharaSheet(sheetID,autoLoad) {
@@ -3033,6 +3035,7 @@ $(function() {
 						$('#new-sheet').removeClass('disabled');
 						$('#load-sheet').removeClass('disabled');
 						$('#sheet-id').addClass('loaded');
+						saveSheet();
 						autoSave();
 						Cookies.set('sheetID',$('#sheet-id').val(),{ expires: Infinity });
 					});
