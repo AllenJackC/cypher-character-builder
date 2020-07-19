@@ -1113,12 +1113,7 @@ function populateSpellLists() {
 							default:
 							selectThisType = "IT";
 						}
-						addItem(spellID,itemName);
-						var thisItem = $('#equipment tr[data-spellid="' + spellID + '"]');
-						$('.type select', thisItem).val(selectThisType);
-						$('.type select', thisItem).trigger('chosen:updated');
-						$('.value select', thisItem).val(itemValue);
-						$('.value select', thisItem).trigger('chosen:updated');
+						addItem(spellID,itemName,selecThisType,itemValue);
 					}
 				//Add to contact list
 				} else if ( !spellOptional && typeCheck == "Contact" && $('#contacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
@@ -1232,7 +1227,7 @@ function populateInventorySelect() {
 	});
 }
 //Add a blank item, unless variables are parsed
-function addItem(spellID,itemName) {
+function addItem(spellID,itemName,itemType,itemValue,itemState) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
 	if ( !itemName ) itemName = "";
@@ -1269,6 +1264,18 @@ function addItem(spellID,itemName) {
 		'</tr>';
 	if ( spellID ) $(itemToAdd).insertAfter('#equipment table tr:first-child');
 	else inventoryList.append(itemToAdd);
+	if ( itemName ) {
+		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
+		console.log(thisItem);
+		$('.type select', thisItem).val(itemType);
+		$('.type select', thisItem).trigger('chosen:updated');
+		$('.value select', thisItem).val(itemValue);
+		$('.value select', thisItem).trigger('chosen:updated');
+		if ( itemState ) {
+			$('.equip select',thisItem).val(itemState);
+			$('.equip select',thisItem).trigger('chosen:updated');
+		}
+	}
 	populateInventorySelect();
 }
 //Add a blank artifact, unless variables are parsed
@@ -2625,6 +2632,25 @@ $(function() {
 											editableSkills.eq(i).closest('.spell').css('order', newOrder);
 										}
 									}
+									if ( record.get('items') ) {
+										$('#equipment .item').each( function() {
+											$(this).remove();
+										});
+										var itemNames = record.get('items').split('¬');
+										var itemStates = record.get('item-states').split('¬');
+										var itemTypes = record.get('item-types').split('¬');
+										var itemCosts = record.get('item-costs').split('¬');
+										if ( record.get('item-ids') ) {
+											var itemIDs = record.get('item-ids').split('¬');
+											for (var i = 0; i < itemNames.length; i++) {
+												addItem(itemIDs[i],itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
+											}
+										} else {
+											for (var i = 0; i < itemNames.length; i++) {
+												addItem(undefined,itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
+											}
+										}
+									}
 									$('#sheet-id').addClass('loaded');
 									$('#submit-sheet').addClass('disabled');
 									$('#new-sheet').removeClass('disabled');
@@ -2695,6 +2721,11 @@ $(function() {
 				var feelingsLogic = "";
 				var magicTech = "";
 				var skillArray = [];
+				var itemNames = [];
+				var itemIDs = [];
+				var itemStates = [];
+				var itemTypes = [];
+				var itemCosts = [];
 				if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
 				if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
 				if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
@@ -2703,6 +2734,35 @@ $(function() {
 				});
 				if ( skillArray.length < 1 ) skillArray = "";
 				else skillArray = skillArray.join('¬');
+				$('#equipment .item .name .editable').each( function() {
+					itemNames.push($(this).text());
+				});
+				$('#equipment .item').each( function() {
+					if ( $(this).attr('data-default') ) itemIDs.push($(this).attr('data-default'));
+					else itemIDs.push('');
+				});
+				$('#equipment .item .equip select').each( function() {
+					itemStates.push($(this).val());
+				});
+				$('#equipment .item .type select').each( function() {
+					itemTypes.push($(this).val());
+				});
+				$('#equipment .item .value select').each( function() {
+					itemCosts.push($(this).val());
+				});
+				if ( itemNames.length < 1 ) {
+					itemNames = "";
+					itemIDs = "";
+					itemStates = "";
+					itemTypes = "";
+					itemCosts = "";
+				} else {
+					itemNames = itemNames.join('¬');
+					itemIDs = itemIDs.join('¬');
+					itemStates = itemStates.join('¬');
+					itemTypes = itemTypes.join('¬');
+					itemCosts = itemCosts.join('¬');
+				}
 				base('Sheets').update([
 				{
 					"id": recordID,
@@ -2720,7 +2780,11 @@ $(function() {
 						"magic-tech": magicTech,
 						"tier": $('#current-tier').text(),
 						"xp": $('#xp-number').text(),
-						"skills": skillArray
+						"items": itemNames,
+						"item-ids": itemIDs,
+						"item-states": itemStates,
+						"item-types": itemTypes,
+						"item-costs": itemCosts
 					}
 				}
 				], function (err) {	if (err) { console.error(err); return; }
