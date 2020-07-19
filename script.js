@@ -3029,8 +3029,8 @@ $(function() {
 		}
 	});
 	$('#load-sheet-toggle').click( function() {
-		if ($('#sheet-header').hasClass('toggled')) $(this).html('&#9205;<br>&#9205;<br>&#9205;');
-		else $(this).html('&#9204;<br>&#9204;<br>&#9204;');
+		if ($('#sheet-header').hasClass('toggled')) $(this).html('&gt;<br>&gt;<br>&gt;');
+		else $(this).html('&lt;<br>&lt;<br>&lt;');
 		$('#sheet-header').toggleClass('toggled');
 	});
 });

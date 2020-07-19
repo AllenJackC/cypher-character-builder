@@ -1670,12 +1670,11 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
     font-family: var(--header-font);
     pointer-events: auto;
     white-space: nowrap;
-    width: auto;
+    width: 30px;
     text-align: center;
     margin-left: -2px;
     font-size: 200%;
     line-height: 0.9;
-    letter-spacing: -4px;
     padding: 29px 0;
 }
 #load-sheet-toggle:hover {
@@ -1691,9 +1690,6 @@ input#sheet-id.loaded {
     font-weight: 700;
     text-align: center;
     border: none;
-}
-input#sheet-id {
-	text-transform: lowercase;
 }
 #random-name {
 	display: none;
