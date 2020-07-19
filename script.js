@@ -1476,8 +1476,11 @@ function autoSave() {
 			var notesArray = [];
 			var noteIDs = [];
 			if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
-			if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
-			if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
+			else isHybrid = "false";
+			if ( $('#logic-feelings .selected').length > 0 ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
+			else feelingsLogic = "unset";
+			if ( $('#magic-tech .selected').length > 0 ) magicTech = $('#magic-tech .selected').attr('data-number');
+			else magicTech = "unset";
 			//Building skills array
 			$('#skills .spell:not([data-default])').each( function() {
 				skillsArray.push($('.name',this).text());
@@ -1739,7 +1742,13 @@ function loadCharaSheet(sheetID,autoLoad) {
 							$('#descriptors option[value="M7"]').prop('disabled', false);
 							descriptors.trigger('chosen:updated');
 						}
-						if ( record.get('feelings-logic') ) {
+						if ( record.get('feelings-logic') === "unset" ) {
+							$('#logic-feelings .dice-number:not(.blocked)').removeClass('disabled');
+							$('#logic-feelings .dice-number').removeClass('selected');
+							$('#logic-feelings .dice h3').removeAttr('style');
+							$('#logic-feelings .pre-selection').show();
+							$('#logic-feelings .after-selection').hide();
+						} else if ( record.get('feelings-logic') ) {
 							var diceNumber = record.get('feelings-logic');
 							$('#logic-feelings .dice-number').removeClass('selected disabled');
 							$('#logic-feelings .dice-number[data-number="' + diceNumber + '"]').addClass('selected');
@@ -1750,7 +1759,13 @@ function loadCharaSheet(sheetID,autoLoad) {
 							$('#logic-feelings .after-selection').show();
 							$('#logic-feelings .pre-selection').hide();
 						}
-						if ( record.get('magic-tech') ) {
+						if ( record.get('feelings-logic') === "unset" ) {
+							$('#magic-tech .dice-number:not(.blocked)').removeClass('disabled');
+							$('#magic-tech .dice-number').removeClass('selected');
+							$('#magic-tech .dice h3').removeAttr('style');
+							$('#magic-tech .pre-selection').show();
+							$('#magic-tech .after-selection').hide();
+						} else if ( record.get('feelings-logic') ) {
 							var diceNumber = record.get('magic-tech');
 							$('#magic-tech .dice-number').removeClass('selected disabled');
 							$('#magic-tech .dice-number[data-number="' + diceNumber + '"]').addClass('selected');
@@ -1795,6 +1810,11 @@ function loadCharaSheet(sheetID,autoLoad) {
 									addItem(undefined,itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
 								}
 							}
+						} else {
+							$('#equipment .item').each( function() {
+								$(this).remove();
+							});
+							addItem();
 						}
 						//Load artifacts
 						if ( record.get('artifacts') ) {
@@ -1813,6 +1833,11 @@ function loadCharaSheet(sheetID,autoLoad) {
 									addArtifact(undefined,artifactNames[i],artifactEffects[i]);
 								}
 							}
+						} else {
+							$('#artifacts .item').each( function() {
+								$(this).remove();
+							});
+							addArtifact();
 						}
 						//Load cyberware
 						if ( record.get('cyberwares') ) {
@@ -1820,6 +1845,10 @@ function loadCharaSheet(sheetID,autoLoad) {
 							enableCyberware.addClass('clicked');
 							$('.cyberware').each( function() {
 								$(this).remove();
+							});
+							$('#cyber-mannequin img').each( function() {
+								var cyberwareBodyPart = $(this).attr('class');
+								$(this).attr('src',  'images/cyber'+ cyberwareBodyPart + '.png');
 							});
 							var cyberwareDescriptions = record.get('cyberwares').split('¬');
 							var cyberwareTypes = record.get('cyberware-types').split('¬');
@@ -1842,6 +1871,15 @@ function loadCharaSheet(sheetID,autoLoad) {
 									cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
 								}
 							}
+						} else {
+							$('.cyberware').each( function() {
+								$(this).remove();
+							});
+							$('#cyber-mannequin img').each( function() {
+								$(this).removeClass('modded active');
+								var cyberwareBodyPart = $(this).attr('class');
+								$(this).attr('src',  'images/cyber'+ cyberwareBodyPart + '.png');
+							});
 						}
 						//Load contacts
 						if ( record.get('contacts') ) {
@@ -1862,6 +1900,11 @@ function loadCharaSheet(sheetID,autoLoad) {
 									addContact(undefined,contactNames[i],contactDescriptions[i],contactSkills[i],contactTypes[i]);
 								}
 							}
+						} else {
+							$('#contacts .item').each( function() {
+								$(this).remove();
+							});
+							addContact();
 						}
 						//Load notes
 						if ( record.get('notes') ) {
@@ -1879,6 +1922,11 @@ function loadCharaSheet(sheetID,autoLoad) {
 									addNote(undefined,notesArray[i]);
 								}
 							}
+						} else {
+							$('#notes .item').each( function() {
+								$(this).remove();
+							});
+							addNote();
 						}
 						$('#sheet-id').addClass('loaded');
 						$('#submit-sheet').addClass('disabled');
@@ -2034,6 +2082,7 @@ $(function() {
 		setTimeout( function() {
 			$('#sheet-id').val(Cookies.get('sheetID'));
 			$('#sheet-header').removeClass('toggled');
+			$('#load-sheet-toggle').html('&lt;<br>&lt;<br>&lt;');
 			loadCharaSheet(Cookies.get('sheetID'),true);
 		}, 1000);
 	}
