@@ -2614,44 +2614,6 @@ $(function() {
 										$('#descriptors option[value="M7"]').prop('disabled', false);
 										descriptors.trigger('chosen:updated');
 									}
-									populateSpecies();
-									populateTypes();
-									populateFoci();
-									populateSpells();
-									if ( record.get('skills') ) {
-										var skillsArray = record.get('skills').split('¬');
-										var editableSkills = $('#skills .spell:not([data-default]) .name');
-										for (var i = 0; i < editableSkills.length; i++) {
-											var skillName = skillsArray[i];
-											var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
-											editableSkills.eq(i).text(skillName);
-											editableSkills.eq(i).closest('.spell').css('order', newOrder);
-										}
-									}
-									if ( record.get('items') ) {
-										$('#equipment .item').each( function() {
-											$(this).remove();
-										});
-										var itemNames = record.get('items').split('¬');
-										var itemStates = record.get('item-states').split('¬');
-										var itemTypes = record.get('item-types').split('¬');
-										var itemCosts = record.get('item-costs').split('¬');
-										if ( record.get('item-ids') ) {
-											var itemIDs = record.get('item-ids').split('¬');
-											for (var i = 0; i < itemNames.length; i++) {
-												addItem(itemIDs[i],itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
-											}
-										} else {
-											for (var i = 0; i < itemNames.length; i++) {
-												addItem(undefined,itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
-											}
-										}
-									}
-									$('#sheet-id').addClass('loaded');
-									$('#submit-sheet').addClass('disabled');
-									$('#new-sheet').removeClass('disabled');
-									$('#cancel-submit').addClass('disabled');
-									autoSave();
 									if ( record.get('feelings-logic') ) {
 										var diceNumber = record.get('feelings-logic');
 										$('#logic-feelings .dice-number').removeClass('selected disabled');
@@ -2674,6 +2636,64 @@ $(function() {
 										$('#magic-tech .after-selection').show();
 										$('#magic-tech .pre-selection').hide();
 									}
+									populateSpecies();
+									populateTypes();
+									populateFoci();
+									populateSpells();
+									//Load skills
+									if ( record.get('skills') ) {
+										var skillsArray = record.get('skills').split('¬');
+										var editableSkills = $('#skills .spell:not([data-default]) .name');
+										for (var i = 0; i < editableSkills.length; i++) {
+											var skillName = skillsArray[i];
+											var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+											editableSkills.eq(i).text(skillName);
+											editableSkills.eq(i).closest('.spell').css('order', newOrder);
+										}
+									}
+									//Load items
+									if ( record.get('items') ) {
+										$('#equipment .item').each( function() {
+											$(this).remove();
+										});
+										var itemNames = record.get('items').split('¬');
+										var itemStates = record.get('item-states').split('¬');
+										var itemTypes = record.get('item-types').split('¬');
+										var itemCosts = record.get('item-costs').split('¬');
+										if ( record.get('item-ids') ) {
+											var itemIDs = record.get('item-ids').split('¬');
+											for (var i = 0; i < itemNames.length; i++) {
+												addItem(itemIDs[i],itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
+											}
+										} else {
+											for (var i = 0; i < itemNames.length; i++) {
+												addItem(undefined,itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
+											}
+										}
+									}
+									//Load artifacts
+									if ( record.get('artifacts') ) {
+										$('#artifacts .item').each( function() {
+											$(this).remove();
+										});
+										var artifactNames = record.get('artifacts').split('¬');
+										var artifactEffects = record.get('artifact-effects').split('¬');
+										if ( record.get('artifact-ids') ) {
+											var artifactIDs = record.get('artifact-ids').split('¬');
+											for (var i = 0; i < artifactNames.length; i++) {
+												addArtifact(artifactIDs[i],artifactNames[i],artifactEffects[i]);
+											}
+										} else {
+											for (var i = 0; i < artifactNames.length; i++) {
+												addArtifact(undefined,artifactNames[i],artifactEffects[i]);
+											}
+										}
+									}
+									$('#sheet-id').addClass('loaded');
+									$('#submit-sheet').addClass('disabled');
+									$('#new-sheet').removeClass('disabled');
+									$('#cancel-submit').addClass('disabled');
+									autoSave();
 								}
 							}
 					});
@@ -2722,14 +2742,30 @@ $(function() {
 				var itemStates = [];
 				var itemTypes = [];
 				var itemCosts = [];
+				var artifactNames = [];
+				var artifactIDs = [];
+				var artifactEffects = [];
+				var contactNames = [];
+				var contactIDs = [];
+				var contactTypes = [];
+				var contactDescriptions = [];
+				var contactSkills = [];
+				var cyberwareNames = [];
+				var cyberwareIDs = [];
+				var cyberwareTypes = [];
+				var cyberwareDescriptions = [];
+				var notesArray = [];
+				var notesIDs = [];
 				if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
 				if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
 				if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
+				//Building skills array
 				$('#skills .spell:not([data-default])').each( function() {
 					skillArray.push($('.name',this).text());
 				});
 				if ( skillArray.length < 1 ) skillArray = "";
 				else skillArray = skillArray.join('¬');
+				//Building items arrays
 				$('#equipment .item .name .editable').each( function() {
 					itemNames.push($(this).text());
 				});
@@ -2759,6 +2795,26 @@ $(function() {
 					itemTypes = itemTypes.join('¬');
 					itemCosts = itemCosts.join('¬');
 				}
+				//Building artifacts arrays
+				$('#artifacts .item .name .editable').each( function() {
+					artifactNames.push($(this).text());
+				});
+				$('#artifacts .item').each( function() {
+					if ( $(this).attr('data-default') ) artifactIDs.push($(this).attr('data-default'));
+					else artifactIDs.push('');
+				});
+				$('#artifacts .item .effect .editable').each( function() {
+					artifactEffects.push($(this).text());
+				});
+				if ( artifactNames.length < 1 ) {
+					artifactNames = "";
+					artifactIDs = "";
+					artifactEffects = "";
+				} else {
+					artifactNames = artifactNames.join('¬');
+					artifactIDs = artifactIDs.join('¬');
+					artifactEffects = artifactEffects.join('¬');
+				}
 				base('Sheets').update([
 				{
 					"id": recordID,
@@ -2780,7 +2836,21 @@ $(function() {
 						"item-ids": itemIDs,
 						"item-states": itemStates,
 						"item-types": itemTypes,
-						"item-costs": itemCosts
+						"item-costs": itemCosts,
+						"artifacts": artifactNames,
+						"artifact-ids": artifactIDs,
+						"artifact-effects": artifactEffects/*,
+						"contacts": contactNames,
+						"contact-ids": contactIDs,
+						"contact-types": contactTypes,
+						"contact-descriptions": contactDescriptions,
+						"contact-skills":contactSkills,
+						"cyberwares": cyberwareNames,
+						"cyberware-ids": cyberwareIDs,
+						"cyberware-types": cyberwareTypes,
+						"cyberware-descriptions":cyberwareDescriptions,
+						"notes": notesArray,
+						"note-ids": noteIDs*/
 					}
 				}
 				], function (err) {	if (err) { console.error(err); return; }
