@@ -1635,22 +1635,65 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 .cyberware > div:hover .editable, .dice-counter:hover .current-value {
 	border-color: var(--white);	
 }
+#sheet-header {
+	position: absolute;
+    background: var(--black);
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    grid-gap: 5px;
+    padding: 17px 0 20px 20px;
+    top: 10%;
+    left: -168px;
+    border: var(--white) solid 1px;
+    transition: left 0.2s linear;
+    z-index: 1;
+}
+#sheet-header.toggled {
+	left: -1px;
+}
+#sheet-id-input {
+	display: flex;
+    max-width: 140px;
+    flex-wrap: wrap;
+    grid-column-start: span 2;
+}
+#sheet-header .button {
+    padding: 8px;
+    width: auto;
+    text-align: center;
+	margin: 0;
+}
+#load-sheet-toggle {
+	grid-row-start: span 3;
+    color: var(--white);
+    cursor: pointer;
+    font-family: var(--header-font);
+    pointer-events: auto;
+    white-space: nowrap;
+    width: auto;
+    text-align: center;
+    margin-left: -2px;
+    font-size: 200%;
+    line-height: 0.9;
+    letter-spacing: -4px;
+    padding: 29px 0;
+}
+#load-sheet-toggle:hover {
+	color: var(--selected-hover);
+}
+#load-sheet-toggle:active {
+	color: var(--selected-active);
+}
 input#sheet-id.loaded {
 	pointer-events: none;
-	cursor: default;
-	color: var(--white);
-	background-color: transparent;
-	border: none;
+    cursor: default;
+    background-color: var(--selected);
+    font-weight: 700;
+    text-align: center;
+    border: none;
 }
 input#sheet-id {
 	text-transform: lowercase;
-}
-button {
-	pointer-events: auto;
-}
-button.disabled {
-	filter: brightness(75%) grayscale(85%); 
-	pointer-events: none;
 }
 #random-name {
 	display: none;

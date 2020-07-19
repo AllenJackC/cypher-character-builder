@@ -72,6 +72,10 @@ var availSpellCount;
 var selectedSpellCount;
 var isHovering;
 var removeAbility;
+var Airtable;
+var base;
+var currentSheetID;
+var saveInterval;
 //Check if an integer is even
 function isEven(value) {
 	if (value%2 == 0)
@@ -1434,6 +1438,454 @@ function arrangeSpells() {
 		statusSection.css('grid-template-columns', '1fr');
 	}
 }
+//Autosave function for character sheet
+function autoSave() {
+	saveInterval = setInterval( function() {
+		base('Sheets').select({
+			view: 'Grid view',
+			filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
+		}).eachPage(function page(records, fetchNextPage) {
+			records.forEach(function(record) {
+				recordID = record.id;
+			});
+			fetchNextPage();
+		}, function done(err) {
+			if (err) { console.error(err); return; }
+			var isHybrid = "false";
+			var feelingsLogic = "";
+			var magicTech = "";
+			var skillArray = [];
+			var itemNames = [];
+			var itemIDs = [];
+			var itemStates = [];
+			var itemTypes = [];
+			var itemCosts = [];
+			var artifactNames = [];
+			var artifactIDs = [];
+			var artifactEffects = [];
+			var contactNames = [];
+			var contactIDs = [];
+			var contactTypes = [];
+			var contactDescriptions = [];
+			var contactSkills = [];
+			var cyberwareBodyParts = [];
+			var cyberwareIDs = [];
+			var cyberwareTypes = [];
+			var cyberwareDescriptions = [];
+			var notesArray = [];
+			var noteIDs = [];
+			if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
+			if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
+			if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
+			//Building skills array
+			$('#skills .spell:not([data-default])').each( function() {
+				skillArray.push($('.name',this).text());
+			});
+			if ( skillArray.length < 1 ) skillArray = "";
+			else skillArray = skillArray.join('¬');
+			//Building items arrays
+			$('#equipment .item .name .editable').each( function() {
+				itemNames.push($(this).text());
+			});
+			$('#equipment .item').each( function() {
+				if ( $(this).attr('data-default') ) itemIDs.push($(this).attr('data-default'));
+				else itemIDs.push('');
+			});
+			$('#equipment .item .equip select').each( function() {
+				itemStates.push($(this).val());
+			});
+			$('#equipment .item .type select').each( function() {
+				itemTypes.push($(this).val());
+			});
+			$('#equipment .item .value select').each( function() {
+				itemCosts.push($(this).val());
+			});
+			if ( itemNames.length < 1 ) {
+				itemNames = "";
+				itemIDs = "";
+				itemStates = "";
+				itemTypes = "";
+				itemCosts = "";
+			} else {
+				itemNames = itemNames.join('¬');
+				itemIDs = itemIDs.join('¬');
+				itemStates = itemStates.join('¬');
+				itemTypes = itemTypes.join('¬');
+				itemCosts = itemCosts.join('¬');
+			}
+			//Building artifacts arrays
+			$('#artifacts .item .name .editable').each( function() {
+				artifactNames.push($(this).text());
+			});
+			$('#artifacts .item').each( function() {
+				if ( $(this).attr('data-default') ) artifactIDs.push($(this).attr('data-default'));
+				else artifactIDs.push('');
+			});
+			$('#artifacts .item .effect .editable').each( function() {
+				artifactEffects.push($(this).text());
+			});
+			if ( artifactNames.length < 1 ) {
+				artifactNames = "";
+				artifactIDs = "";
+				artifactEffects = "";
+			} else {
+				artifactNames = artifactNames.join('¬');
+				artifactIDs = artifactIDs.join('¬');
+				artifactEffects = artifactEffects.join('¬');
+			}
+			//Building cyberware arrays
+			$('.cyberware .editable').each( function() {
+				cyberwareDescriptions.push($(this).text());
+			});
+			$('.cyberware').each( function() {
+				var thisBodyPart = $(this).attr('class').replace('cyberware','').replace(/\s/g,'');
+				cyberwareBodyParts.push(thisBodyPart);
+				if ( $(this).attr('data-default') ) cyberwareIDs.push($(this).attr('data-default'));
+				else cyberwareIDs.push('');
+			});
+			$('.cyberware .type select').each( function() {
+				cyberwareTypes.push($(this).val());
+			});
+			if ( cyberwareDescriptions.length < 1 ) {
+				cyberwareDescriptions = "";
+				cyberwareIDs = "";
+				cyberwareTypes = "";
+				cyberwareBodyParts = "";
+			} else {
+				cyberwareDescriptions = cyberwareDescriptions.join('¬');
+				cyberwareIDs = cyberwareIDs.join('¬');
+				cyberwareTypes = cyberwareTypes.join('¬');
+				cyberwareBodyParts = cyberwareBodyParts.join('¬');
+			}
+			//Building contacts arrays
+			$('#contacts .item .name .editable').each( function() {
+				contactNames.push($(this).text());
+			});
+			$('#contacts .item').each( function() {
+				if ( $(this).attr('data-default') ) contactIDs.push($(this).attr('data-default'));
+				else contactIDs.push('');
+			});
+			$('#contacts .item .type select').each( function() {
+				contactTypes.push($(this).val());
+			});
+			$('#contacts .item .effect:not(.skill) .editable').each( function() {
+				contactDescriptions.push($(this).text());
+			});
+			$('#contacts .item .skill .editable').each( function() {
+				contactSkills.push($(this).text());
+			});
+			if ( contactNames.length < 1 ) {
+				contactNames = "";
+				contactIDs = "";
+				contactTypes = "";
+				contactDescriptions = "";
+				contactSkills = "";
+			} else {
+				contactNames = contactNames.join('¬');
+				contactIDs = contactIDs.join('¬');
+				contactTypes = contactTypes.join('¬');
+				contactDescriptions = contactDescriptions.join('¬');
+				contactSkills = contactSkills.join('¬');
+			}
+			//Building notes arrays
+			$('#notes .item .editable').each( function() {
+				notesArray.push($(this).text());
+			});
+			$('#notes .item').each( function() {
+				if ( $(this).attr('data-default') ) noteIDs.push($(this).attr('data-default'));
+				else noteIDs.push('');
+			});
+			if ( notesArray.length < 1 ) {
+				notesArray = "";
+				noteIDs = "";
+			} else {
+				notesArray = notesArray.join('¬');
+				noteIDs = noteIDs.join('¬');
+			}
+			base('Sheets').update([
+			{
+				"id": recordID,
+				"fields": {
+					"id": $('#sheet-id').val(),
+					"name": $('#name').val(),
+					"descriptor": $('#descriptors').val(),
+					"species": $('#species').val(),
+					"hybrid": isHybrid,
+					"secondary-species": $('#secondary-species').val(),
+					"type": $('#types').val(),
+					"focus": $('#foci').val(),
+					"secondary-focus": $('#secondary-foci').val(),
+					"feelings-logic": feelingsLogic,
+					"magic-tech": magicTech,
+					"tier": $('#current-tier').text(),
+					"xp": $('#xp-number').text(),
+					"items": itemNames,
+					"item-ids": itemIDs,
+					"item-states": itemStates,
+					"item-types": itemTypes,
+					"item-costs": itemCosts,
+					"artifacts": artifactNames,
+					"artifact-ids": artifactIDs,
+					"artifact-effects": artifactEffects,
+					"contacts": contactNames,
+					"contact-ids": contactIDs,
+					"contact-types": contactTypes,
+					"contact-descriptions": contactDescriptions,
+					"contact-skills":contactSkills,
+					"cyberwares": cyberwareDescriptions,
+					"cyberware-ids": cyberwareIDs,
+					"cyberware-types": cyberwareTypes,
+					"cyberware-bodyparts": cyberwareBodyParts,
+					"notes": notesArray,
+					"note-ids": noteIDs
+				}
+			}
+			], function (err) {	if (err) { console.error(err); return; }
+			});
+		});
+	}, 5000);
+}
+//Load character sheet function
+function loadCharaSheet(sheetID) {
+	var sheetList = [];
+	var recordID;
+	base('Sheets').select({
+		view: 'Grid view',
+		filterByFormula: "{id} = '" + sheetID + "'"
+	}).eachPage(function page(records, fetchNextPage) {
+		records.forEach(function(record) {
+			recordID = record.id;
+			sheetList.push(recordID);
+		});
+		fetchNextPage();
+	}, function done(err) {
+		if (err) { console.error(err); return; }
+		if ( sheetList.length > 0 ) {
+			base('Sheets').find(recordID, function(err, record) {
+				if (err) { console.error(err); return; }
+				var confirmDialog = confirm('Load previously saved character sheet?');
+					if (confirmDialog) {
+						var doubleConfirm = confirm('Note: loading an existing character sheet will erase all information you entered on the current character sheet! Are you sure you want to proceed?');
+						if (doubleConfirm) {
+							$('#name').val(record.get('name'));
+							$('#descriptors').val(record.get('descriptor'));
+							$('#descriptors').trigger('chosen:updated');
+							$('#species').val(record.get('species'));
+							$('#secondary-species').val(record.get('secondary-species'));
+							$('#types').val(record.get('type'));
+							$('#foci').val(record.get('focus'));
+							$('#secondary-foci').val(record.get('secondary-focus'));
+							if ( record.get('tier') ) $('#current-tier').text(record.get('tier'));
+							if ( record.get('xp') ) $('#xp-number').text(record.get('xp'));
+							curXP = parseInt(xpNumber.text().replace(' XP', ''));
+							if ( curXP === (90 - ((parseInt($('#current-tier').text()) - 1) * 16)) ) xpUpButton.addClass('disabled');
+							else xpUpButton.removeClass('disabled');
+							if ( curXP >= 16 && nextTierButton.is(':hidden') ) nextTierButton.slideToggle(150);
+							if ( curXP === 0 ) xpDownButton.addClass('disabled');
+							else xpDownButton.removeClass('disabled');
+							if ( curXP < 16 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
+							if ( record.get('hybrid') === "true" ) {
+								$('#hybrid-button div').addClass('clicked');
+								if (hybridSection.is(':hidden')) {
+									$('#character-attributes').addClass('with-sec-species');
+									hybridSection.stop().slideToggle({
+										duration: 300,
+										done: function() {
+											hybridSection.css('display','flex');
+										}
+									});
+								} 
+							} else {
+								$('#hybrid-button div').removeClass('clicked');
+								if (hybridSection.is(':visible')) {
+									hybridSection.stop().slideToggle({
+										duration: 300,
+										done: function() {
+											$('#character-attributes').removeClass('with-sec-species');
+										}
+									});
+								}
+							}
+							//If user picks Forges a New Bond, show second focus
+							if ( $('#foci').val() === "E2" && secFociSection.is(':hidden') ) {
+								$('#character-attributes').addClass('with-sec-focus');
+								if ($('#sec-focus-connector').is(':hidden')) $('#sec-focus-connector').stop().slideToggle(300);
+								secFociSection.stop().slideToggle({
+									duration: 300,
+									done: function() {
+										secFociSection.css('display','flex');
+									}
+								});
+							} else if ( $('#foci').val() === "E2" && secFociSection.is(':visible') ) {
+								if ($('#sec-focus-connector').is(':visible')) $('#sec-focus-connector').stop().slideToggle(300);
+								secFociSection.stop().slideToggle({
+									duration: 300,
+									done: function() {
+										$('#character-attributes').removeClass('with-sec-focus');
+									}
+								});
+							}
+							//If "Has More Money Than Sense" focus is selected
+							if ( $('#foci').val() === "E8" || $('#secondary-foci').val() === "E8" ) {
+								$('#descriptors option[value="M7"]').prop('disabled', true);
+								descriptors.trigger('chosen:updated');
+							} else {
+								$('#descriptors option[value="M7"]').prop('disabled', false);
+								descriptors.trigger('chosen:updated');
+							}
+							if ( record.get('feelings-logic') ) {
+								var diceNumber = record.get('feelings-logic');
+								$('#logic-feelings .dice-number').removeClass('selected disabled');
+								$('#logic-feelings .dice-number[data-number="' + diceNumber + '"]').addClass('selected');
+								$('#logic-feelings .dice-number').not('.selected').addClass('disabled');
+								$('.logic-feelings-number').text(diceNumber);
+								$('#logic-feelings h3:first-child').css('order','3');
+								$('#logic-feelings h3:last-child').css('order','1');
+								$('#logic-feelings .after-selection').show();
+								$('#logic-feelings .pre-selection').hide();
+							}
+							if ( record.get('magic-tech') ) {
+								var diceNumber = record.get('magic-tech');
+								$('#magic-tech .dice-number').removeClass('selected disabled');
+								$('#magic-tech .dice-number[data-number="' + diceNumber + '"]').addClass('selected');
+								$('#magic-tech .dice-number').not('.selected').addClass('disabled');
+								$('.magic-tech-number').text(diceNumber);
+								$('#magic-tech h3:first-child').css('order','3');
+								$('#magic-tech h3:last-child').css('order','1');
+								$('#magic-tech .after-selection').show();
+								$('#magic-tech .pre-selection').hide();
+							}
+							populateSpecies();
+							populateTypes();
+							populateFoci();
+							populateSpells();
+							//Load skills
+							if ( record.get('skills') ) {
+								var skillsArray = record.get('skills').split('¬');
+								var editableSkills = $('#skills .spell:not([data-default]) .name');
+								for (var i = 0; i < editableSkills.length; i++) {
+									var skillName = skillsArray[i];
+									var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+									editableSkills.eq(i).text(skillName);
+									editableSkills.eq(i).closest('.spell').css('order', newOrder);
+								}
+							}
+							//Load items
+							if ( record.get('items') ) {
+								$('#equipment .item').each( function() {
+									$(this).remove();
+								});
+								var itemNames = record.get('items').split('¬');
+								var itemStates = record.get('item-states').split('¬');
+								var itemTypes = record.get('item-types').split('¬');
+								var itemCosts = record.get('item-costs').split('¬');
+								if ( record.get('item-ids') ) {
+									var itemIDs = record.get('item-ids').split('¬');
+									for (var i = 0; i < itemNames.length; i++) {
+										addItem(itemIDs[i],itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
+									}
+								} else {
+									for (var i = 0; i < itemNames.length; i++) {
+										addItem(undefined,itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
+									}
+								}
+							}
+							//Load artifacts
+							if ( record.get('artifacts') ) {
+								$('#artifacts .item').each( function() {
+									$(this).remove();
+								});
+								var artifactNames = record.get('artifacts').split('¬');
+								var artifactEffects = record.get('artifact-effects').split('¬');
+								if ( record.get('artifact-ids') ) {
+									var artifactIDs = record.get('artifact-ids').split('¬');
+									for (var i = 0; i < artifactNames.length; i++) {
+										addArtifact(artifactIDs[i],artifactNames[i],artifactEffects[i]);
+									}
+								} else {
+									for (var i = 0; i < artifactNames.length; i++) {
+										addArtifact(undefined,artifactNames[i],artifactEffects[i]);
+									}
+								}
+							}
+							//Load cyberware
+							if ( record.get('cyberwares') ) {
+								if ($('#cyberware').is(':hidden')) $('#cyberware').stop().slideToggle(300);
+								enableCyberware.addClass('clicked');
+								$('.cyberware').each( function() {
+									$(this).remove();
+								});
+								var cyberwareDescriptions = record.get('cyberwares').split('¬');
+								var cyberwareTypes = record.get('cyberware-types').split('¬');
+								var cyberwareBodyParts = record.get('cyberware-bodyparts').split('¬');
+								if ( record.get('cyberware-ids') ) {
+									var cyberwareIDs = record.get('cyberware-ids').split('¬');
+									for (var i = 0; i < cyberwareDescriptions.length; i++) {
+										var cyberImage = $('#cyber-mannequin img.' + cyberwareBodyParts[i]);
+										var cyberwareBodyPart = cyberwareBodyParts[i] + "-cyberware";
+										addCyberware(cyberwareIDs[i],cyberwareBodyPart,cyberwareDescriptions[i],cyberwareTypes[i]);
+										cyberImage.addClass('modded');
+										cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
+									}
+								} else {
+									for (var i = 0; i < cyberwareDescriptions.length; i++) {
+										var cyberImage = $('#cyber-mannequin img.' + cyberwareBodyParts[i]);
+										var cyberwareBodyPart = cyberwareBodyParts[i] + "-cyberware";
+										addCyberware(undefined,cyberwareBodyPart,cyberwareDescriptions[i],cyberwareTypes[i]);
+										cyberImage.addClass('modded active');
+										cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
+									}
+								}
+							}
+							//Load contacts
+							if ( record.get('contacts') ) {
+								$('#contacts .item').each( function() {
+									$(this).remove();
+								});
+								var contactNames = record.get('contacts').split('¬');
+								var contactTypes = record.get('contact-types').split('¬');
+								var contactDescriptions = record.get('contact-descriptions').split('¬');
+								var contactSkills = record.get('contact-skills').split('¬');
+								if ( record.get('contact-ids') ) {
+									var contactIDs = record.get('contact-ids').split('¬');
+									for (var i = 0; i < contactNames.length; i++) {
+										addContact(contactIDs[i],contactNames[i],contactDescriptions[i],contactSkills[i],contactTypes[i]);
+									}
+								} else {
+									for (var i = 0; i < contactNames.length; i++) {
+										addContact(undefined,contactNames[i],contactDescriptions[i],contactSkills[i],contactTypes[i]);
+									}
+								}
+							}
+							//Load notes
+							if ( record.get('notes') ) {
+								$('#notes .item').each( function() {
+									$(this).remove();
+								});
+								var notesArray = record.get('notes').split('¬');
+								if ( record.get('note-ids') ) {
+									var noteIDs = record.get('note-ids').split('¬');
+									for (var i = 0; i < notesArray.length; i++) {
+										addNote(noteIDs[i],notesArray[i]);
+									}
+								} else {
+									for (var i = 0; i < notesArray.length; i++) {
+										addNote(undefined,notesArray[i]);
+									}
+								}
+							}
+							$('#sheet-id').addClass('loaded');
+							$('#submit-sheet').addClass('disabled');
+							$('#new-sheet').removeClass('disabled');
+							$('#cancel-submit').addClass('disabled');
+							autoSave();
+							Cookies.set('sheetID',sheetID,{ expires: Infinity });
+						}
+					}
+			});
+		} else {alert('Unable to find character sheet. Please try a different sheet name, or save the sheet instead.');}
+	});
+}
 //Primary on load function
 $(function() {
 	popupError = $('#popup-error');
@@ -1512,6 +1964,8 @@ $(function() {
 	firstDrag = true;
 	randomNameButton = $('#random-name');
 	periodCount = 0;
+	Airtable = require('airtable');
+	base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
 	//Initial variables
 	curArc = 2;
 	curTier = 1;
@@ -1569,6 +2023,7 @@ $(function() {
 	populateCyberwareSelect();
 	populateInventorySelect();
 	populateContactSelect();
+	if ( Cookies.get('sheetID') ) loadCharaSheet(Cookies.get('sheetID'));
 	//Cyberware Dragula
 	var cyberwareDrake = dragula([cyberwareDeleteSpace[0]],{
 			isContainer: function(el) {
@@ -2483,10 +2938,6 @@ $(function() {
         }
 	});
 	//Character Sheet Saving
-	var Airtable = require('airtable');
-	var base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
-	var currentSheetID;
-	var saveInterval;
 	$('#submit-sheet').click( function() {
 		var sheetList = [];
 		var recordID;
@@ -2517,6 +2968,7 @@ $(function() {
 					$('#load-sheet').removeClass('disabled');
 					$('#sheet-id').addClass('loaded');
 					autoSave();
+					Cookies.set('sheetID',$('#sheet-id').val(),{ expires: Infinity });
 				});
 			} else {
 				alert('That character sheet already exists. Click Open to load an existing one, or type in a different name.');
@@ -2532,243 +2984,7 @@ $(function() {
 			$('#new-sheet').addClass('disabled');
 			$('#cancel-submit').removeClass('disabled');
 		} else {
-			var sheetList = [];
-			var recordID;
-			base('Sheets').select({
-				view: 'Grid view',
-				filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
-			}).eachPage(function page(records, fetchNextPage) {
-				records.forEach(function(record) {
-					recordID = record.id;
-					sheetList.push(recordID);
-				});
-				fetchNextPage();
-			}, function done(err) {
-				if (err) { console.error(err); return; }
-				if ( sheetList.length > 0 ) {
-					base('Sheets').find(recordID, function(err, record) {
-						if (err) { console.error(err); return; }
-						var confirmDialog = confirm('Load previously saved character sheet?');
-							if (confirmDialog) {
-								var doubleConfirm = confirm('Note: loading an existing character sheet will erase all information you entered on the current character sheet! Are you sure you want to proceed?');
-								if (doubleConfirm) {
-									$('#name').val(record.get('name'));
-									$('#descriptors').val(record.get('descriptor'));
-									$('#descriptors').trigger('chosen:updated');
-									$('#species').val(record.get('species'));
-									$('#secondary-species').val(record.get('secondary-species'));
-									$('#types').val(record.get('type'));
-									$('#foci').val(record.get('focus'));
-									$('#secondary-foci').val(record.get('secondary-focus'));
-									if ( record.get('tier') ) $('#current-tier').text(record.get('tier'));
-									if ( record.get('xp') ) $('#xp-number').text(record.get('xp'));
-									curXP = parseInt(xpNumber.text().replace(' XP', ''));
-									if ( curXP === (90 - ((parseInt($('#current-tier').text()) - 1) * 16)) ) xpUpButton.addClass('disabled');
-									else xpUpButton.removeClass('disabled');
-									if ( curXP >= 16 && nextTierButton.is(':hidden') ) nextTierButton.slideToggle(150);
-									if ( curXP === 0 ) xpDownButton.addClass('disabled');
-									else xpDownButton.removeClass('disabled');
-									if ( curXP < 16 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
-									if ( record.get('hybrid') === "true" ) {
-										$('#hybrid-button div').addClass('clicked');
-										if (hybridSection.is(':hidden')) {
-											$('#character-attributes').addClass('with-sec-species');
-											hybridSection.stop().slideToggle({
-												duration: 300,
-												done: function() {
-													hybridSection.css('display','flex');
-												}
-											});
-										} 
-									} else {
-										$('#hybrid-button div').removeClass('clicked');
-										if (hybridSection.is(':visible')) {
-											hybridSection.stop().slideToggle({
-												duration: 300,
-												done: function() {
-													$('#character-attributes').removeClass('with-sec-species');
-												}
-											});
-										}
-									}
-									//If user picks Forges a New Bond, show second focus
-									if ( $('#foci').val() === "E2" && secFociSection.is(':hidden') ) {
-										$('#character-attributes').addClass('with-sec-focus');
-										if ($('#sec-focus-connector').is(':hidden')) $('#sec-focus-connector').stop().slideToggle(300);
-										secFociSection.stop().slideToggle({
-											duration: 300,
-											done: function() {
-												secFociSection.css('display','flex');
-											}
-										});
-									} else if ( $('#foci').val() === "E2" && secFociSection.is(':visible') ) {
-										if ($('#sec-focus-connector').is(':visible')) $('#sec-focus-connector').stop().slideToggle(300);
-										secFociSection.stop().slideToggle({
-											duration: 300,
-											done: function() {
-												$('#character-attributes').removeClass('with-sec-focus');
-											}
-										});
-									}
-									//If "Has More Money Than Sense" focus is selected
-									if ( $('#foci').val() === "E8" || $('#secondary-foci').val() === "E8" ) {
-										$('#descriptors option[value="M7"]').prop('disabled', true);
-										descriptors.trigger('chosen:updated');
-									} else {
-										$('#descriptors option[value="M7"]').prop('disabled', false);
-										descriptors.trigger('chosen:updated');
-									}
-									if ( record.get('feelings-logic') ) {
-										var diceNumber = record.get('feelings-logic');
-										$('#logic-feelings .dice-number').removeClass('selected disabled');
-										$('#logic-feelings .dice-number[data-number="' + diceNumber + '"]').addClass('selected');
-										$('#logic-feelings .dice-number').not('.selected').addClass('disabled');
-										$('.logic-feelings-number').text(diceNumber);
-										$('#logic-feelings h3:first-child').css('order','3');
-										$('#logic-feelings h3:last-child').css('order','1');
-										$('#logic-feelings .after-selection').show();
-										$('#logic-feelings .pre-selection').hide();
-									}
-									if ( record.get('magic-tech') ) {
-										var diceNumber = record.get('magic-tech');
-										$('#magic-tech .dice-number').removeClass('selected disabled');
-										$('#magic-tech .dice-number[data-number="' + diceNumber + '"]').addClass('selected');
-										$('#magic-tech .dice-number').not('.selected').addClass('disabled');
-										$('.magic-tech-number').text(diceNumber);
-										$('#magic-tech h3:first-child').css('order','3');
-										$('#magic-tech h3:last-child').css('order','1');
-										$('#magic-tech .after-selection').show();
-										$('#magic-tech .pre-selection').hide();
-									}
-									populateSpecies();
-									populateTypes();
-									populateFoci();
-									populateSpells();
-									//Load skills
-									if ( record.get('skills') ) {
-										var skillsArray = record.get('skills').split('¬');
-										var editableSkills = $('#skills .spell:not([data-default]) .name');
-										for (var i = 0; i < editableSkills.length; i++) {
-											var skillName = skillsArray[i];
-											var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
-											editableSkills.eq(i).text(skillName);
-											editableSkills.eq(i).closest('.spell').css('order', newOrder);
-										}
-									}
-									//Load items
-									if ( record.get('items') ) {
-										$('#equipment .item').each( function() {
-											$(this).remove();
-										});
-										var itemNames = record.get('items').split('¬');
-										var itemStates = record.get('item-states').split('¬');
-										var itemTypes = record.get('item-types').split('¬');
-										var itemCosts = record.get('item-costs').split('¬');
-										if ( record.get('item-ids') ) {
-											var itemIDs = record.get('item-ids').split('¬');
-											for (var i = 0; i < itemNames.length; i++) {
-												addItem(itemIDs[i],itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
-											}
-										} else {
-											for (var i = 0; i < itemNames.length; i++) {
-												addItem(undefined,itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
-											}
-										}
-									}
-									//Load artifacts
-									if ( record.get('artifacts') ) {
-										$('#artifacts .item').each( function() {
-											$(this).remove();
-										});
-										var artifactNames = record.get('artifacts').split('¬');
-										var artifactEffects = record.get('artifact-effects').split('¬');
-										if ( record.get('artifact-ids') ) {
-											var artifactIDs = record.get('artifact-ids').split('¬');
-											for (var i = 0; i < artifactNames.length; i++) {
-												addArtifact(artifactIDs[i],artifactNames[i],artifactEffects[i]);
-											}
-										} else {
-											for (var i = 0; i < artifactNames.length; i++) {
-												addArtifact(undefined,artifactNames[i],artifactEffects[i]);
-											}
-										}
-									}
-									//Load cyberware
-									if ( record.get('cyberwares') ) {
-										if ($('#cyberware').is(':hidden')) $('#cyberware').stop().slideToggle(300);
-										enableCyberware.addClass('clicked');
-										$('.cyberware').each( function() {
-											$(this).remove();
-										});
-										var cyberwareDescriptions = record.get('cyberwares').split('¬');
-										var cyberwareTypes = record.get('cyberware-types').split('¬');
-										var cyberwareBodyParts = record.get('cyberware-bodyparts').split('¬');
-										if ( record.get('cyberware-ids') ) {
-											var cyberwareIDs = record.get('cyberware-ids').split('¬');
-											for (var i = 0; i < cyberwareDescriptions.length; i++) {
-												var cyberImage = $('#cyber-mannequin img.' + cyberwareBodyParts[i]);
-												var cyberwareBodyPart = cyberwareBodyParts[i] + "-cyberware";
-												addCyberware(cyberwareIDs[i],cyberwareBodyPart,cyberwareDescriptions[i],cyberwareTypes[i]);
-												cyberImage.addClass('modded');
-												cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
-											}
-										} else {
-											for (var i = 0; i < cyberwareDescriptions.length; i++) {
-												var cyberImage = $('#cyber-mannequin img.' + cyberwareBodyParts[i]);
-												var cyberwareBodyPart = cyberwareBodyParts[i] + "-cyberware";
-												addCyberware(undefined,cyberwareBodyPart,cyberwareDescriptions[i],cyberwareTypes[i]);
-												cyberImage.addClass('modded active');
-												cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
-											}
-										}
-									}
-									//Load contacts
-									if ( record.get('contacts') ) {
-										$('#contacts .item').each( function() {
-											$(this).remove();
-										});
-										var contactNames = record.get('contacts').split('¬');
-										var contactTypes = record.get('contact-types').split('¬');
-										var contactDescriptions = record.get('contact-descriptions').split('¬');
-										var contactSkills = record.get('contact-skills').split('¬');
-										if ( record.get('contact-ids') ) {
-											var contactIDs = record.get('contact-ids').split('¬');
-											for (var i = 0; i < contactNames.length; i++) {
-												addContact(contactIDs[i],contactNames[i],contactDescriptions[i],contactSkills[i],contactTypes[i]);
-											}
-										} else {
-											for (var i = 0; i < contactNames.length; i++) {
-												addContact(undefined,contactNames[i],contactDescriptions[i],contactSkills[i],contactTypes[i]);
-											}
-										}
-									}
-									//Load notes
-									if ( record.get('notes') ) {
-										$('#notes .item').each( function() {
-											$(this).remove();
-										});
-										var notesArray = record.get('notes').split('¬');
-										if ( record.get('note-ids') ) {
-											var noteIDs = record.get('note-ids').split('¬');
-											for (var i = 0; i < notesArray.length; i++) {
-												addNote(noteIDs[i],notesArray[i]);
-											}
-										} else {
-											for (var i = 0; i < notesArray.length; i++) {
-												addNote(undefined,notesArray[i]);
-											}
-										}
-									}
-									$('#sheet-id').addClass('loaded');
-									$('#submit-sheet').addClass('disabled');
-									$('#new-sheet').removeClass('disabled');
-									$('#cancel-submit').addClass('disabled');
-									autoSave();
-								}
-							}
-					});
-				} else {alert('Unable to find character sheet. Please try a different sheet name, or save the sheet instead.');}
-			});
+			loadCharaSheet($('#sheet-id').val());
 		}
 	});
 	//New Button
@@ -2791,212 +3007,6 @@ $(function() {
 		$('#sheet-id').addClass('loaded');
 		autoSave();
 	});
-	function autoSave() {
-		saveInterval = setInterval( function() {
-			base('Sheets').select({
-				view: 'Grid view',
-				filterByFormula: "{id} = '" + $('#sheet-id').val() + "'"
-			}).eachPage(function page(records, fetchNextPage) {
-				records.forEach(function(record) {
-					recordID = record.id;
-				});
-				fetchNextPage();
-			}, function done(err) {
-				if (err) { console.error(err); return; }
-				var isHybrid = "false";
-				var feelingsLogic = "";
-				var magicTech = "";
-				var skillArray = [];
-				var itemNames = [];
-				var itemIDs = [];
-				var itemStates = [];
-				var itemTypes = [];
-				var itemCosts = [];
-				var artifactNames = [];
-				var artifactIDs = [];
-				var artifactEffects = [];
-				var contactNames = [];
-				var contactIDs = [];
-				var contactTypes = [];
-				var contactDescriptions = [];
-				var contactSkills = [];
-				var cyberwareBodyParts = [];
-				var cyberwareIDs = [];
-				var cyberwareTypes = [];
-				var cyberwareDescriptions = [];
-				var notesArray = [];
-				var noteIDs = [];
-				if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
-				if ( $('#logic-feelings .selected') ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
-				if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
-				//Building skills array
-				$('#skills .spell:not([data-default])').each( function() {
-					skillArray.push($('.name',this).text());
-				});
-				if ( skillArray.length < 1 ) skillArray = "";
-				else skillArray = skillArray.join('¬');
-				//Building items arrays
-				$('#equipment .item .name .editable').each( function() {
-					itemNames.push($(this).text());
-				});
-				$('#equipment .item').each( function() {
-					if ( $(this).attr('data-default') ) itemIDs.push($(this).attr('data-default'));
-					else itemIDs.push('');
-				});
-				$('#equipment .item .equip select').each( function() {
-					itemStates.push($(this).val());
-				});
-				$('#equipment .item .type select').each( function() {
-					itemTypes.push($(this).val());
-				});
-				$('#equipment .item .value select').each( function() {
-					itemCosts.push($(this).val());
-				});
-				if ( itemNames.length < 1 ) {
-					itemNames = "";
-					itemIDs = "";
-					itemStates = "";
-					itemTypes = "";
-					itemCosts = "";
-				} else {
-					itemNames = itemNames.join('¬');
-					itemIDs = itemIDs.join('¬');
-					itemStates = itemStates.join('¬');
-					itemTypes = itemTypes.join('¬');
-					itemCosts = itemCosts.join('¬');
-				}
-				//Building artifacts arrays
-				$('#artifacts .item .name .editable').each( function() {
-					artifactNames.push($(this).text());
-				});
-				$('#artifacts .item').each( function() {
-					if ( $(this).attr('data-default') ) artifactIDs.push($(this).attr('data-default'));
-					else artifactIDs.push('');
-				});
-				$('#artifacts .item .effect .editable').each( function() {
-					artifactEffects.push($(this).text());
-				});
-				if ( artifactNames.length < 1 ) {
-					artifactNames = "";
-					artifactIDs = "";
-					artifactEffects = "";
-				} else {
-					artifactNames = artifactNames.join('¬');
-					artifactIDs = artifactIDs.join('¬');
-					artifactEffects = artifactEffects.join('¬');
-				}
-				//Building cyberware arrays
-				$('.cyberware .editable').each( function() {
-					cyberwareDescriptions.push($(this).text());
-				});
-				$('.cyberware').each( function() {
-					var thisBodyPart = $(this).attr('class').replace('cyberware','').replace(/\s/g,'');
-					cyberwareBodyParts.push(thisBodyPart);
-					if ( $(this).attr('data-default') ) cyberwareIDs.push($(this).attr('data-default'));
-					else cyberwareIDs.push('');
-				});
-				$('.cyberware .type select').each( function() {
-					cyberwareTypes.push($(this).val());
-				});
-				if ( cyberwareDescriptions.length < 1 ) {
-					cyberwareDescriptions = "";
-					cyberwareIDs = "";
-					cyberwareTypes = "";
-					cyberwareBodyParts = "";
-				} else {
-					cyberwareDescriptions = cyberwareDescriptions.join('¬');
-					cyberwareIDs = cyberwareIDs.join('¬');
-					cyberwareTypes = cyberwareTypes.join('¬');
-					cyberwareBodyParts = cyberwareBodyParts.join('¬');
-				}
-				//Building contacts arrays
-				$('#contacts .item .name .editable').each( function() {
-					contactNames.push($(this).text());
-				});
-				$('#contacts .item').each( function() {
-					if ( $(this).attr('data-default') ) contactIDs.push($(this).attr('data-default'));
-					else contactIDs.push('');
-				});
-				$('#contacts .item .type select').each( function() {
-					contactTypes.push($(this).val());
-				});
-				$('#contacts .item .effect:not(.skill) .editable').each( function() {
-					contactDescriptions.push($(this).text());
-				});
-				$('#contacts .item .skill .editable').each( function() {
-					contactSkills.push($(this).text());
-				});
-				if ( contactNames.length < 1 ) {
-					contactNames = "";
-					contactIDs = "";
-					contactTypes = "";
-					contactDescriptions = "";
-					contactSkills = "";
-				} else {
-					contactNames = contactNames.join('¬');
-					contactIDs = contactIDs.join('¬');
-					contactTypes = contactTypes.join('¬');
-					contactDescriptions = contactDescriptions.join('¬');
-					contactSkills = contactSkills.join('¬');
-				}
-				//Building notes arrays
-				$('#notes .item .editable').each( function() {
-					notesArray.push($(this).text());
-				});
-				$('#notes .item').each( function() {
-					if ( $(this).attr('data-default') ) noteIDs.push($(this).attr('data-default'));
-					else noteIDs.push('');
-				});
-				if ( notesArray.length < 1 ) {
-					notesArray = "";
-					noteIDs = "";
-				} else {
-					notesArray = notesArray.join('¬');
-					noteIDs = noteIDs.join('¬');
-				}
-				base('Sheets').update([
-				{
-					"id": recordID,
-					"fields": {
-						"id": $('#sheet-id').val(),
-						"name": $('#name').val(),
-						"descriptor": $('#descriptors').val(),
-						"species": $('#species').val(),
-						"hybrid": isHybrid,
-						"secondary-species": $('#secondary-species').val(),
-						"type": $('#types').val(),
-						"focus": $('#foci').val(),
-						"secondary-focus": $('#secondary-foci').val(),
-						"feelings-logic": feelingsLogic,
-						"magic-tech": magicTech,
-						"tier": $('#current-tier').text(),
-						"xp": $('#xp-number').text(),
-						"items": itemNames,
-						"item-ids": itemIDs,
-						"item-states": itemStates,
-						"item-types": itemTypes,
-						"item-costs": itemCosts,
-						"artifacts": artifactNames,
-						"artifact-ids": artifactIDs,
-						"artifact-effects": artifactEffects,
-						"contacts": contactNames,
-						"contact-ids": contactIDs,
-						"contact-types": contactTypes,
-						"contact-descriptions": contactDescriptions,
-						"contact-skills":contactSkills,
-						"cyberwares": cyberwareDescriptions,
-						"cyberware-ids": cyberwareIDs,
-						"cyberware-types": cyberwareTypes,
-						"cyberware-bodyparts": cyberwareBodyParts,
-						"notes": notesArray,
-						"note-ids": noteIDs
-					}
-				}
-				], function (err) {	if (err) { console.error(err); return; }
-				});
-			});
-		}, 5000);
-	}
 	//Pick random name based on species selected
 	randomNameButton.click( function() { 
 		if ( secSpecies.val() ) {
@@ -3004,5 +3014,10 @@ $(function() {
 		} else {
 			randomName(priSpecies.val());
 		}
+	});
+	$('#load-sheet-toggle').click( function() {
+		if ($('#sheet-header').hasClass('toggled')) $(this).html('&#9205;<br>&#9205;<br>&#9205;');
+		else $(this).html('&#9204;<br>&#9204;<br>&#9204;');
+		$('#sheet-header').toggleClass('toggled');
 	});
 });

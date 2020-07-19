@@ -38,13 +38,18 @@
 	<script src="libs/jquery-3.3.1.min.js" type="text/javascript"></script>
 </head>
 <body>
-	<div id="sheet-header">
-		<label for="sheet-id">Character Sheet ID:</label>
-		<input id="sheet-id" />
-		<button class="disabled" id="new-sheet">New</button>
-		<button id="load-sheet">Open</button>
-		<button id="submit-sheet">Save</button>
-		<button class="disabled" id="cancel-submit">Cancel</button>
+	<div class="toggled" id="sheet-header">
+		<div id="sheet-id-input">
+			<div class="border">
+				<input id="sheet-id" />
+			</div>
+			<label for="sheet-id">Character Sheet ID</label>
+		</div>
+		<div id="load-sheet-toggle">&#9205;<br>&#9205;<br>&#9205;</div>
+		<div class="button disabled" id="new-sheet">New</div>
+		<div class="button" id="load-sheet">Load</div>
+		<div class="button" id="submit-sheet">Save</div>
+		<div class="button disabled" id="cancel-submit">Cancel</div>
 	</div>
 	<div id="title">
 		<h1>Immortal Freedom</h1>
@@ -1011,7 +1016,7 @@
 		<p><span xmlns:dct="http://purl.org/dc/terms" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Immortal Freedom Character Builder</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://allenchristianson.weebly.com" property="cc:attributionName" rel="cc:attributionURL">Allen Christianson</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0 License</a>.</p>
 		<p><a target="blank" href="https://game-icons.net">Icons</a> by <a target="_blank" href="https://delapouite.com">Delapouite</a>, <a target="_blank" href="https://lorcblog.blogspot.com">Lorc</a> and <a target="_blank" href="https://game-icons.net">Skoll</a> are licensed under a <a target="blank" href="https://www.creativecommons.org/licenses/by/3.0">CC BY 3.0 License</a>. Some icons have been modified.</p>
 		<p>Name generation possible thanks to <a target="_blank" href="https://www.fantasynamegenerators.com/">FantasyNameGenerators.com</a>.
-		<p>Built with the help of <a target="_blank" href="https://www.jquery.com">JQuery</a>, <a target="_blank" href="https://www.papaparse.com">Papa Parse</a>, <a target="_blank" href="https://harvesthq.github.io/chosen">Chosen.js</a> & <a target="_blank" href="https://bevacqua.github.io/dragula">Dragula.js</a>.</p>
+		<p>Built with the help of <a target="_blank" href="https://www.jquery.com">JQuery</a>, <a target="_blank" href="https://www.papaparse.com">Papa Parse</a>, <a target="_blank" href="https://harvesthq.github.io/chosen">Chosen.js</a>, <a target="_blank" href="https://github.com/ScottHamper/Cookies">Cookies.js</a> & <a target="_blank" href="https://bevacqua.github.io/dragula">Dragula.js</a>.</p>
 		<p>Initial game systems and content pulled from:</p>
 		<p id="footer-links">
 			<a target="_blank" href="http://www.onesevendesign.com/laserfeelings">Lasers & Feelings</a>
@@ -3363,7 +3368,8 @@
 	<!-- Scripts -->
 	<script src="plugins/chosen.jquery.min.js" type="text/javascript"></script>
 	<script src="plugins/papaparse.min.js" type="text/javascript"></script>
-	<script src="plugins/airtable.browser.js" type="text/javascript"></script>
+	<script src="plugins/airtable.browser.js" type="text/javascript"></script>	
+	<script src="plugins/cookies.js" type="text/javascript"></script>
 	<script src="plugins/dragula.min.js" type="text/javascript"></script>
 	<script src="plugins/namegenerator.js" type="text/javascript"></script>
 	<script src="script.js" type="text/javascript"></script>
