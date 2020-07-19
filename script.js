@@ -1939,7 +1939,10 @@ function loadCharaSheet(sheetID,autoLoad) {
 					}
 				}
 			});
-		} else {alert('Unable to find character sheet. Please try a different sheet name, or save the sheet instead.');}
+		} else {
+			Cookies.expire('sheetID');
+			alert('Unable to find character sheet. Please try a different sheet name, or save the sheet instead.');
+		}
 	});
 }
 //Primary on load function
