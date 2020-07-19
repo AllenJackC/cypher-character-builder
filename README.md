@@ -6,7 +6,7 @@ Google Sheets Spell Database:
 https://docs.google.com/spreadsheets/d/1NWFhf8_oT5lvrNEN7cTAmRYnDHzGkD3Mw2P5nODXaCQ/edit?usp=sharing
 
 ## To-Do:
-* Save/load API
+* ~~Save/load API~~
 * Discord integration
 * ~~Tooltips~~
 * ~~Buffs~~
