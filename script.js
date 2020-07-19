@@ -602,7 +602,7 @@ function populateSpells() {
 			//define parameters and create a new div on the page for the spell
 			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck) && spellRank > curTier ) {
 				//Check to see if these values exist to avoid
-				//empty line breaks in the spell card
+				//empty line breaks in the spell card.
 				var skillProficiency = spellListDatabase[i].itemtype;
 				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( spellDuration ) spellDuration = '<span><strong>Duration:</strong> Lasts ' + spellDuration + '</span>';
@@ -2498,8 +2498,7 @@ $(function() {
 				base('Sheets').create([
 					{
 						"fields": {
-						  "id": $('#sheet-id').val(),
-						  "name": $('#name').val()
+						  "id": $('#sheet-id').val()
 						}
 					}
 				], function(err, records) {
@@ -2616,6 +2615,13 @@ $(function() {
 									populateTypes();
 									populateFoci();
 									populateSpells();
+									if ( record.get('skills') ) {
+										var skillsArray = record.get('skills').split('¬');
+										var editableSkills = $('#skills .spell:not([data-default])');
+										for (var i = 0; i < editableSkills.length; i++) {
+											editableSkills.eq(i).text(skillsArray[1]);
+										}
+									}
 									$('#sheet-id').addClass('loaded');
 									$('#submit-sheet').addClass('disabled');
 									$('#new-sheet').removeClass('disabled');
@@ -2693,7 +2699,7 @@ $(function() {
 					skillArray.push($('.name',this).text());
 				});
 				if ( skillArray.length < 1 ) skillArray = "";
-				else skillArray = skillArray.join(',');
+				else skillArray = skillArray.join('¬');
 				base('Sheets').update([
 				{
 					"id": recordID,
