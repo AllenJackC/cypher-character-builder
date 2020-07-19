@@ -1620,7 +1620,7 @@ function autoSave() {
 					"magic-tech": magicTech,
 					"tier": $('#current-tier').text(),
 					"xp": $('#xp-number').text(),
-					"skills": skillsArray;
+					"skills": skillsArray,
 					"items": itemNames,
 					"item-ids": itemIDs,
 					"item-states": itemStates,
