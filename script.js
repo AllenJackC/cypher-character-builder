@@ -1455,7 +1455,7 @@ function autoSave() {
 			var isHybrid = "false";
 			var feelingsLogic = "";
 			var magicTech = "";
-			var skillArray = [];
+			var skillsArray = [];
 			var itemNames = [];
 			var itemIDs = [];
 			var itemStates = [];
@@ -1480,10 +1480,10 @@ function autoSave() {
 			if ( $('#magic-tech .selected') ) magicTech = $('#magic-tech .selected').attr('data-number');
 			//Building skills array
 			$('#skills .spell:not([data-default])').each( function() {
-				skillArray.push($('.name',this).text());
+				skillsArray.push($('.name',this).text());
 			});
-			if ( skillArray.length < 1 ) skillArray = "";
-			else skillArray = skillArray.join('¬');
+			if ( skillsArray.length < 1 ) skillsArray = "";
+			else skillsArray = skillsArray.join('¬');
 			//Building items arrays
 			$('#equipment .item .name .editable').each( function() {
 				itemNames.push($(this).text());
@@ -1620,6 +1620,7 @@ function autoSave() {
 					"magic-tech": magicTech,
 					"tier": $('#current-tier').text(),
 					"xp": $('#xp-number').text(),
+					"skills": skillsArray;
 					"items": itemNames,
 					"item-ids": itemIDs,
 					"item-states": itemStates,
