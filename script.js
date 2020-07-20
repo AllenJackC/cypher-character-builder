@@ -1941,8 +1941,8 @@ function loadCharaSheet(sheetID,autoLoad) {
 						$('#submit-sheet').addClass('disabled');
 						$('#new-sheet').removeClass('disabled');
 						$('#cancel-submit').addClass('disabled');
-						$('#view-mode > *').removeClass('disabled');
-						autoSave();
+						if ( $('#disable-autosave').is(':checked') ) clearInterval(saveInterval);
+						else autoSave();
 						Cookies.set('sheetID',sheetID,{ expires: Infinity });
 					}
 				}
@@ -3046,9 +3046,9 @@ $(function() {
 						$('#new-sheet').removeClass('disabled');
 						$('#load-sheet').removeClass('disabled');
 						$('#sheet-id').addClass('loaded');
-						$('#view-mode > *').removeClass('disabled');
 						saveSheet();
-						autoSave();
+						if ( $('#disable-autosave').is(':checked') ) clearInterval(saveInterval);
+						else autoSave();
 						Cookies.set('sheetID',$('#sheet-id').val(),{ expires: Infinity });
 					});
 				} else {
@@ -3069,7 +3069,6 @@ $(function() {
 				$('#sheet-id').removeClass('loaded');
 				$('#new-sheet').addClass('disabled');
 				$('#cancel-submit').removeClass('disabled');
-				$('#view-mode > *').addClass('disabled');
 			} else {
 				loadCharaSheet(sheetID);
 			}
@@ -3084,7 +3083,6 @@ $(function() {
 		$('#load-sheet').addClass('disabled');
 		$('#sheet-id').removeClass('loaded');
 		$('#cancel-submit').removeClass('disabled');
-		$('#view-mode > *').addClass('disabled');
 	});
 	//Cancel Button
 	$('#cancel-submit').click( function() {
@@ -3094,8 +3092,8 @@ $(function() {
 		$('#load-sheet').removeClass('disabled');
 		$('#submit-sheet').addClass('disabled');
 		$('#sheet-id').addClass('loaded');
-		$('#view-mode > *').removeClass('disabled');
-		autoSave();
+		if ( $('#disable-autosave').is(':checked') ) clearInterval(saveInterval);
+		else autoSave();
 	});
 	//Pick random name based on species selected
 	randomNameButton.click( function() { 
