@@ -1494,7 +1494,7 @@ function saveSheet() {
 			itemNames.push($(this).text());
 		});
 		$('#equipment .item').each( function() {
-			if ( $(this).attr('data-default') ) itemIDs.push($(this).attr('data-default'));
+			if ( $(this).attr('data-spellid') ) itemIDs.push($(this).attr('data-spellid'));
 			else itemIDs.push('');
 		});
 		$('#equipment .item .equip select').each( function() {
@@ -1524,7 +1524,7 @@ function saveSheet() {
 			artifactNames.push($(this).text());
 		});
 		$('#artifacts .item').each( function() {
-			if ( $(this).attr('data-default') ) artifactIDs.push($(this).attr('data-default'));
+			if ( $(this).attr('data-spellid') ) artifactIDs.push($(this).attr('data-spellid'));
 			else artifactIDs.push('');
 		});
 		$('#artifacts .item .effect .editable').each( function() {
@@ -1546,7 +1546,7 @@ function saveSheet() {
 		$('.cyberware').each( function() {
 			var thisBodyPart = $(this).attr('class').replace('cyberware','').replace(/\s/g,'');
 			cyberwareBodyParts.push(thisBodyPart);
-			if ( $(this).attr('data-default') ) cyberwareIDs.push($(this).attr('data-default'));
+			if ( $(this).attr('data-spellid') ) cyberwareIDs.push($(this).attr('data-spellid'));
 			else cyberwareIDs.push('');
 		});
 		$('.cyberware .type select').each( function() {
@@ -1568,7 +1568,7 @@ function saveSheet() {
 			contactNames.push($(this).text());
 		});
 		$('#contacts .item').each( function() {
-			if ( $(this).attr('data-default') ) contactIDs.push($(this).attr('data-default'));
+			if ( $(this).attr('data-spellid') ) contactIDs.push($(this).attr('data-spellid'));
 			else contactIDs.push('');
 		});
 		$('#contacts .item .type select').each( function() {
@@ -1598,7 +1598,7 @@ function saveSheet() {
 			notesArray.push($(this).text());
 		});
 		$('#notes .item').each( function() {
-			if ( $(this).attr('data-default') ) noteIDs.push($(this).attr('data-default'));
+			if ( $(this).attr('data-spellid') ) noteIDs.push($(this).attr('data-spellid'));
 			else noteIDs.push('');
 		});
 		if ( notesArray.length < 1 ) {
