@@ -2095,7 +2095,7 @@ $(function() {
 		setTimeout( function() {
 			$('#sheet-id').val(Cookies.get('sheetID'));
 			$('#sheet-header').removeClass('toggled');
-			$('#load-sheet-toggle').html('&gt;<br>&gt;<br>&gt;');
+			$('#load-sheet-toggle').html('&#128447;');
 			$('#load-sheet-toggle').removeClass('toggled');
 			loadCharaSheet(Cookies.get('sheetID'),true);
 		}, 1000);
@@ -3106,8 +3106,8 @@ $(function() {
 	});
 	//Slideout for save/load sheet
 	$('#load-sheet-toggle').click( function() {
-		if ($('#sheet-header').hasClass('toggled')) $(this).html('&gt;<br>&gt;<br>&gt;');
-		else $(this).html('&lt;<br>&lt;<br>&lt;');
+		if ($('#sheet-header').hasClass('toggled')) $(this).html('&#128447;');
+		else $(this).html('&#9932;');
 		$('#sheet-header').toggleClass('toggled');
 		$(this).toggleClass('toggled');
 	});
