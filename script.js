@@ -2096,6 +2096,7 @@ $(function() {
 			$('#sheet-id').val(Cookies.get('sheetID'));
 			$('#sheet-header').removeClass('toggled');
 			$('#load-sheet-toggle').html('&gt;<br>&gt;<br>&gt;');
+			$('#load-sheet-toggle').removeClass('toggled');
 			loadCharaSheet(Cookies.get('sheetID'),true);
 		}, 1000);
 	}
