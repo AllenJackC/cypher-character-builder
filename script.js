@@ -86,17 +86,19 @@ function isEven(value) {
 }
 //Check to see if user is currently using a touch device
 function isTouchDevice() {
-  var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
-  var mq = function(query) {
-    return window.matchMedia(query).matches;
-  }
-  if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-    return true;
-  }
-  // include the 'heartz' as a way to have a non matching MQ to help terminate the join
-  // https://git.io/vznFH
-  var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
-  return mq(query);
+	var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+	var mq = function (query) {
+		return window.matchMedia(query).matches;
+	}
+
+	if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+		return true;
+	}
+
+	// include the 'heartz' as a way to have a non matching MQ to help terminate the join
+	// https://git.io/vznFH
+	var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+	return mq(query);
 }
 //Add leading zeros to number strings
 function leadZeros(number,places) {
@@ -1686,7 +1688,10 @@ function loadCharaSheet(sheetID,autoLoad) {
 						$('#types').val(record.get('type'));
 						$('#foci').val(record.get('focus'));
 						$('#secondary-foci').val(record.get('secondary-focus'));
-						if ( record.get('tier') ) $('#current-tier').text(record.get('tier'));
+						if ( record.get('tier') ) {
+							curTier = record.get('tier');
+							$('#current-tier').text(curTier);
+						}
 						if ( record.get('xp') ) $('#xp-number').text(record.get('xp'));
 						curXP = parseInt(xpNumber.text().replace(' XP', ''));
 						if ( curXP === (90 - ((parseInt($('#current-tier').text()) - 1) * 16)) ) xpUpButton.addClass('disabled');
