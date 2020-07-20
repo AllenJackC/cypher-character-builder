@@ -1837,7 +1837,7 @@ input#sheet-id.loaded {
 	}
 }
 /* Desktop tooltip CSS */
-@media (any-hover: hover) {
+@media (hover: hover) {
 	#hybrid-tooltip > *, #reset-tooltip > *, #cyberware-tooltip > *, #magic-tooltip > *, #tech-tooltip > *, #logic-tooltip > *, #feelings-tooltip > * {
 		flex-basis: 100%;
 		margin: 2px;
