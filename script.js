@@ -1792,10 +1792,12 @@ function loadCharaSheet(sheetID,autoLoad) {
 							var skillsArray = record.get('skills').split('¬');
 							var editableSkills = $('#skills .spell:not([data-default]) .name');
 							for (var i = 0; i < editableSkills.length; i++) {
-								var skillName = skillsArray[i];
-								var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
-								editableSkills.eq(i).text(skillName);
-								editableSkills.eq(i).closest('.spell').css('order', newOrder);
+								if ( skillsArray[i] ) {
+									var skillName = skillsArray[i];
+									var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+									editableSkills.eq(i).text(skillName);
+									editableSkills.eq(i).closest('.spell').css('order', newOrder);
+								}
 							}
 						}
 						//Load items
@@ -1939,6 +1941,7 @@ function loadCharaSheet(sheetID,autoLoad) {
 						$('#submit-sheet').addClass('disabled');
 						$('#new-sheet').removeClass('disabled');
 						$('#cancel-submit').addClass('disabled');
+						$('#view-mode > *').removeClass('disabled');
 						autoSave();
 						Cookies.set('sheetID',sheetID,{ expires: Infinity });
 					}
@@ -3043,6 +3046,7 @@ $(function() {
 						$('#new-sheet').removeClass('disabled');
 						$('#load-sheet').removeClass('disabled');
 						$('#sheet-id').addClass('loaded');
+						$('#view-mode > *').removeClass('disabled');
 						saveSheet();
 						autoSave();
 						Cookies.set('sheetID',$('#sheet-id').val(),{ expires: Infinity });
@@ -3065,6 +3069,7 @@ $(function() {
 				$('#sheet-id').removeClass('loaded');
 				$('#new-sheet').addClass('disabled');
 				$('#cancel-submit').removeClass('disabled');
+				$('#view-mode > *').addClass('disabled');
 			} else {
 				loadCharaSheet(sheetID);
 			}
@@ -3079,6 +3084,7 @@ $(function() {
 		$('#load-sheet').addClass('disabled');
 		$('#sheet-id').removeClass('loaded');
 		$('#cancel-submit').removeClass('disabled');
+		$('#view-mode > *').addClass('disabled');
 	});
 	//Cancel Button
 	$('#cancel-submit').click( function() {
@@ -3088,6 +3094,7 @@ $(function() {
 		$('#load-sheet').removeClass('disabled');
 		$('#submit-sheet').addClass('disabled');
 		$('#sheet-id').addClass('loaded');
+		$('#view-mode > *').removeClass('disabled');
 		autoSave();
 	});
 	//Pick random name based on species selected
@@ -3098,9 +3105,15 @@ $(function() {
 			randomName(priSpecies.val());
 		}
 	});
+	//Slideout for save/load sheet
 	$('#load-sheet-toggle').click( function() {
 		if ($('#sheet-header').hasClass('toggled')) $(this).html('&gt;<br>&gt;<br>&gt;');
 		else $(this).html('&lt;<br>&lt;<br>&lt;');
 		$('#sheet-header').toggleClass('toggled');
+		$(this).toggleClass('toggled');
+	});
+	$('#disable-autosave').click( function() {
+		if ( $(this).is(':checked') ) clearInterval(saveInterval);
+		else autoSave();
 	});
 });

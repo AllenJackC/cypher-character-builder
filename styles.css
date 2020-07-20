@@ -1639,11 +1639,11 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	position: absolute;
     background: var(--black);
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: 1fr 1fr;
     grid-gap: 5px;
-    padding: 17px 0 20px 20px;
+    padding: 17px 20px 20px 20px;
     top: 10%;
-    left: -168px;
+    left: -182px;
     border: var(--white) solid 1px;
     transition: left 0.2s linear;
     z-index: 1;
@@ -1664,24 +1664,30 @@ tr.gu-mirror:hover .editable, tr.gu-transit:hover .editable {
 	margin: 0;
 }
 #load-sheet-toggle {
-	grid-row-start: span 3;
+	position: absolute;
+    top: 10%;
+    left: 0;
+    border: 1px solid var(--button);
+    background-color: var(--button);
     color: var(--white);
     cursor: pointer;
     font-family: var(--header-font);
     pointer-events: auto;
     white-space: nowrap;
-    width: 30px;
     text-align: center;
     margin-left: -2px;
     font-size: 200%;
-    line-height: 0.9;
-    padding: 29px 0;
+    padding: 0 7px 10px 7px;
+	transition: left 0.2s linear;
+}
+#load-sheet-toggle.toggled {
+	left: 182px;
 }
 #load-sheet-toggle:hover {
-	color: var(--selected-hover);
+	background-color: var(--button-hover);
 }
 #load-sheet-toggle:active {
-	color: var(--selected-active);
+	background-color: var(--button-active);
 }
 input#sheet-id.loaded {
 	pointer-events: none;
@@ -1696,6 +1702,37 @@ input#sheet-id.loaded {
 }
 #random-name > div {
 	width: 46px;
+}
+#view-mode {
+	grid-column-start: span 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	margin-top: 10px;
+}
+#disable-autosave {
+	margin: 0;
+    width: 16px;
+    height: 16px;
+    pointer-events: auto;
+    cursor: pointer;
+}
+#view-mode label {
+	background: none;
+    font-weight: 700;
+    font-family: var(--body-font);
+    width: auto;
+    line-height: 1em;
+    padding: 0;
+    font-size: 14px;
+    font-variant: small-caps;
+    margin: 2px 0 0 5px;
+}
+#view-mode > *.disabled {
+	cursor: default;
+    filter: grayscale(80%);
+    opacity: 0.7;
+    pointer-events: none;
 }
 @media (hover: none) {
 	h4 {

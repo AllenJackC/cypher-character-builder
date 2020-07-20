@@ -38,6 +38,7 @@
 	<script src="libs/jquery-3.3.1.min.js" type="text/javascript"></script>
 </head>
 <body>
+	<div class="toggled" id="load-sheet-toggle">&lt;<br>&lt;<br>&lt;</div>
 	<div class="toggled" id="sheet-header">
 		<div id="sheet-id-input">
 			<div class="border">
@@ -45,11 +46,14 @@
 			</div>
 			<label for="sheet-id">Character Sheet ID</label>
 		</div>
-		<div id="load-sheet-toggle">&lt;<br>&lt;<br>&lt;</div>
 		<div class="button disabled" id="new-sheet">New</div>
 		<div class="button" id="load-sheet">Load</div>
 		<div class="button" id="submit-sheet">Save</div>
 		<div class="button disabled" id="cancel-submit">Cancel</div>
+		<div id="view-mode">
+			<input class="disabled" id="disable-autosave" type="checkbox" />
+			<label class="disabled" for="disable-autosave">Disable Autosave</label>
+		</div>
 	</div>
 	<div id="title">
 		<h1>Immortal Freedom</h1>
