@@ -505,7 +505,7 @@ function populateFoci() {
 	secFoci.trigger('chosen:updated');
 }
 //Populate the spell list based on the currently selected options
-function populateSpells() {
+function populateSpells(loadItems) {
 	var descriptorVal = descriptors.val();
 	var priSpeciesVal = priSpecies.val();
 	var secSpeciesVal = secSpecies.val();
@@ -901,10 +901,10 @@ function populateSpells() {
 		spellbookButton.text('Abilities');
 		$('.spell', spellBook).removeClass('hide-for-select');
 	}
-	populateSpellLists();
+	populateSpellLists(loadItems);
 }
 //Populate each individual spell list on the main character sheet
-function populateSpellLists() {	
+function populateSpellLists(loadItems) {	
 	//Move each spell to their respective lists
 	$('#spellbook .spell').each( function() {
 		var talentsVisible = talentsSection.parent('.spell-list').is(':visible');
@@ -1101,7 +1101,7 @@ function populateSpellLists() {
 						});
 					}
 				//Add items to the inventory list
-				} else if ( !spellOptional && typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 && $('#artifacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( loadItems && !spellOptional && typeCheck == "Items" && $('#equipment tr[data-spellid="' + spellID + '"]').length <= 0 && $('#artifacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var itemType = spellListDatabase[i].itemtype;
 					var itemValue = spellListDatabase[i].itemvalue;
 					var itemEffect = spellListDatabase[i].itemeffect;
@@ -1122,7 +1122,7 @@ function populateSpellLists() {
 						addItem(spellID,itemName,itemType,itemValue);
 					}
 				//Add to contact list
-				} else if ( !spellOptional && typeCheck == "Contact" && $('#contacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( loadItems && !spellOptional && typeCheck == "Contact" && $('#contacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var contactType = spellListDatabase[i].itemtype;
 					var contactSkill = spellListDatabase[i].itemvalue;
 					var contactDescription = spellListDatabase[i].itemeffect;
@@ -1138,7 +1138,7 @@ function populateSpellLists() {
 					}
 					addContact(spellID,itemName,contactDescription,contactSkill,contactType);
 				//Add cyberware to the cyberware
-				} else if ( !spellOptional && typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
+				} else if ( loadItems && !spellOptional && typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var bodyPart = spellListDatabase[i].itemtype;
 					var cyberwareLocation = bodyPart + "-cyberware";
 					var cyberwareFunction = spellListDatabase[i].itemeffect;
@@ -1155,7 +1155,8 @@ function populateSpellLists() {
 					enableCyberware.addClass('clicked');
 					if ( cyberware.is(':visible') == false ) cyberware.stop().slideToggle(200);
 					if ( bodyPartImg.hasClass('active') == false ) bodyPartImg.attr('src',  'images/cyber'+ bodyPart + '-modded.png');
-				} else if ( !spellOptional && typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+				//Add to notes list
+				} else if ( loadItems && !spellOptional && typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
 					addNote(spellID,note);
 				}
@@ -1786,7 +1787,7 @@ function loadCharaSheet(sheetID,autoLoad) {
 						populateSpecies();
 						populateTypes();
 						populateFoci();
-						populateSpells();
+						populateSpells(false);
 						//Load skills
 						if ( record.get('skills') ) {
 							var skillsArray = record.get('skills').split('¬');
@@ -2434,7 +2435,7 @@ $(function() {
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		populateSpells();
+		populateSpells(true);
 	});
 	//Reset button to reset all values and hide extra sections
 	//Does not affect hybrid toggle
@@ -2454,7 +2455,7 @@ $(function() {
 		populateTypes();
 		populateFoci();
 		$('.selected', spellBook).removeClass('selected');
-		populateSpells();
+		populateSpells(true);
 		loreButton.text('Lore');
 		spellbookButton.text('Abilities');
 		filterButtons.addClass('clicked');
@@ -2469,20 +2470,20 @@ $(function() {
 	//with, populate spells, and show the reset button
 	descriptors.on('change', function() {
 		populateFoci();
-		populateSpells();
+		populateSpells(true);
 	});
 	species.on('change', function() {
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		populateSpells();
+		populateSpells(true);
 		loreButton.text('New Lore');
 		randomNameButton.css('display','flex');
 	});
 	types.on('change', function() {
 		populateSpecies();
 		populateFoci();
-		populateSpells();
+		populateSpells(true);
 		loreButton.text('New Lore');
 	});
 	foci.on('change', function() {
@@ -2518,7 +2519,7 @@ $(function() {
 		populateSpecies();
 		populateTypes();
 		populateFoci();
-		populateSpells();
+		populateSpells(true);
 	});
 	//Toggle optional character options
 	$('#open-options').click( function() {
@@ -2687,7 +2688,7 @@ $(function() {
 				} else $('#' + spellID, spellBook).addClass('selected');
 			}
 		});
-		populateSpells();
+		populateSpells(true);
 	});
 	//Re-arrange spell hotbars when window is resized
 	$( window ).resize(function() {arrangeSpells();});
@@ -2733,7 +2734,7 @@ $(function() {
 		curXP = curXP - 16;
 		tierNumber.text(curTier);
 		xpNumber.text(curXP + ' XP');
-		populateSpells();
+		populateSpells(true);
 		if ( curXP < 16 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
 		if ( curXP === 0 ) xpDownButton.addClass('disabled');
 	});
