@@ -2086,6 +2086,11 @@ $(function() {
 		placeholder_text_single: "Select a focus",
 		width: "100%"
 	});
+	$('#genders').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select a gender",
+		width: "100%"
+	});
 	//Populate inventory & skills select dropdowns
 	//and initate drag and drop
 	populateCyberwareSelect();
