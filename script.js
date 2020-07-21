@@ -2088,7 +2088,7 @@ $(function() {
 	});
 	$('#genders').chosen({
 		no_results_text: "No results found.",
-		placeholder_text_single: "Select a gender",
+		placeholder_text_multiple: "Select gender(s)",
 		width: "100%"
 	});
 	//Populate inventory & skills select dropdowns

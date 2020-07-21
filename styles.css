@@ -1745,7 +1745,7 @@ input#sheet-id.loaded {
 	display: flex;
 	flex-wrap: wrap;
 	flex-grow: 1;
-	margin: -9px -11px;
+	margin: 0 -11px;
 }
 .field {
 	flex-grow: 1;
@@ -1754,7 +1754,7 @@ input#sheet-id.loaded {
 }
 .cosmetic-fields h2 {
 	flex-basis: 100%;
-	margin-bottom: 10px;
+	margin: 10px;
 }
 .field.small {
 	width: 75px;
@@ -1794,12 +1794,9 @@ input[type=range] {
 	background-color: transparent;
 	-webkit-appearance: none;
 	padding: 0;
-}
-input#health {
 	position: relative;
 }
-input#health:before {
-    content: 'near death';
+input[type=range]:before {
     position: absolute;
     left: 4px;
     font-weight: 700;
@@ -1807,14 +1804,25 @@ input#health:before {
     text-transform: uppercase;
     font-family: var(--body-font);
 }
-input#health:after {
-    content: 'healthy';
+input[type=range]:after {
     position: absolute;
     right: 4px;
     font-weight: 700;
     top: 1px;
     text-transform: uppercase;
     font-family: var(--body-font);
+}
+input#health:before {
+    content: 'near death';
+}
+input#health:after {
+    content: 'healthy';
+}
+input#mental-health:before {
+    content: 'unstable';
+}
+input#mental-health:after {
+    content: 'healthy';
 }
 input[type=range]:focus {
 	outline: none;
@@ -1883,6 +1891,24 @@ input[type=range]:focus::-ms-fill-lower {
 }
 input[type=range]:focus::-ms-fill-upper {
 	background: var(--white);
+}
+#genders_chosen input {
+    height: 19px;
+    font-family: var(--body-font);
+    color: var(--black);
+}
+.chosen-container-multi .chosen-choices li.search-choice {
+	font-family: var(--body-font);
+    border-radius: 0;
+    background-image: none;
+    background-color: var(--secondary-button-hover);
+    color: var(--black);
+    box-shadow: none;
+    border: 0;
+    height: 19px;
+    line-height: 19px;
+	margin: 3px 3px 0 0;
+    padding: 0 20px 0 5px;
 }
 /*TODO: Use one of the selectors from https://stackoverflow.com/a/20541859/7077589 and figure out
 how to remove the virtical space around the range input in IE*/

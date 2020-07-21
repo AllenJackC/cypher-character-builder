@@ -743,9 +743,9 @@
 		</div>
 		<div class="cosmetic-fields">
 			<h2>Physical</h2>
-			<div class="field large">
+			<div class="field extra-large">
 				<div class="border">
-					<select id="genders">
+					<select multiple id="genders">
 						<option></option>
 						<option value="G01">Agender</div>
 						<option value="G02">Androgynous</div>
@@ -762,13 +762,9 @@
 						<option value="G13">Nonbinary</div>
 						<option value="G14">Pangender</div>
 						<option value="G15">Transgender</div>
-						<option value="G16">Transgender Female</div>
-						<option value="G17">Transgender Male</div>
-						<option value="G18">Transsexual</div>
-						<option value="G19">Transsexual Female</div>
-						<option value="G20">Transsexual Male</div>
-						<option value="G21">Trigender</div>
-						<option value="G22">Two-spirit</div>
+						<option value="G16">Transsexual</div>
+						<option value="G17">Trigender</div>
+						<option value="G18">Two-spirit</div>
 					</select>
 				</div>
 				<label for="genders">GENDER</label>
@@ -874,6 +870,21 @@
 					<input type="range" id="health" min="1" max="8" value="8"/>
 				</div>
 				<label for="health">HEALTH</label>
+			</div>
+		</div>
+		<div class="cosmetic-fields">
+			<h2>Mental</h2>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="mental-health" min="1" max="8" value="8"/>
+				</div>
+				<label for="mental-health">MENTAL STATE</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border">
+					<div class="editable" contenteditable id="mental-disabilities"></div>
+				</div>
+				<label for="mental-disabilities">MENTAL DISABILITIES</label>
 			</div>
 		</div>
 		<!-- Skills -->
