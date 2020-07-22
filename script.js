@@ -1488,6 +1488,8 @@ function saveSheet() {
 		$('#spellbook .spell.optional.selected').each( function() {
 			selectionsArray.push($(this).attr('data-spellid'));
 		});
+		if ( selectionsArray.length < 1 ) selectionsArray = "";
+		else selectionsArray = selectionsArray.join('¬');
 		//Building skills array
 		$('#skills .spell:not([data-default])').each( function() {
 			skillsArray.push($('.name',this).text());
