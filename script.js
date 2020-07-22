@@ -1457,6 +1457,7 @@ function saveSheet() {
 		var isHybrid = "false";
 		var feelingsLogic = "";
 		var magicTech = "";
+		var selectionsArray = [];
 		var skillsArray = [];
 		var itemNames = [];
 		var itemIDs = [];
@@ -1483,6 +1484,10 @@ function saveSheet() {
 		else feelingsLogic = "unset";
 		if ( $('#magic-tech .selected').length > 0 ) magicTech = $('#magic-tech .selected').attr('data-number');
 		else magicTech = "unset";
+		//Building selections array
+		$('#spellbook .spell.optional.selected').each( function() {
+			selectionsArray.push($(this).attr('data-spellid'));
+		});
 		//Building skills array
 		$('#skills .spell:not([data-default])').each( function() {
 			skillsArray.push($('.name',this).text());
@@ -1625,6 +1630,7 @@ function saveSheet() {
 				"magic-tech": magicTech,
 				"tier": $('#current-tier').text(),
 				"xp": $('#xp-number').text(),
+				"selections": selectionsArray,
 				"skills": skillsArray,
 				"items": itemNames,
 				"item-ids": itemIDs,
@@ -1788,6 +1794,35 @@ function loadCharaSheet(sheetID,autoLoad) {
 						populateTypes();
 						populateFoci();
 						populateSpells();
+						//Load selections
+						if ( record.get('selections') ) {
+							var skillsArray = record.get('selections').split('¬');
+							for (var i = 0; i < skillsArray.length; i++) {
+								var selectListItem = $('.selectable[data-spellid="' + skillsArray[i] + '"')
+								var spellList = selectListItem.closest('ul');
+								spellList.children('li.selectable').each( function() {
+									var spellID = $(this).data('spellid');
+									var isSelected = $(this).hasClass('selected');
+									if ( spellID.length > 4 ) {
+										spellID = spellID.split(',');
+										for (i = 0; i < spellID.length; i++) {
+											if ( !isSelected ) {
+												$('#' + spellID[i], spellBook).hide(0, function() {
+													$('#' + spellID[i], spellBook).addClass('hidden-spell');
+												});
+											} else $('#' + spellID[i], spellBook).addClass('selected');
+										}
+									} else {
+										if ( !isSelected ) {
+											$('#' + spellID, spellBook).stop().hide(0, function() {
+												$('#' + spellID, spellBook).addClass('hidden-spell');
+											});
+										} else $('#' + spellID, spellBook).addClass('selected');
+									}
+								});
+							}
+							populateSpells();
+						}
 						//Load skills
 						if ( record.get('skills') ) {
 							var skillsArray = record.get('skills').split('¬');
@@ -2440,6 +2475,11 @@ $(function() {
 	//Reset button to reset all values and hide extra sections
 	//Does not affect hybrid toggle
 	resetButton.click(function(){
+		curTier = 1;
+		curXP = 0;
+		xpNumber.text('0 XP');
+		tierNumber.text('1');
+		xpDownButton.addClass('disabled');
 		availSpellCount = 4;
 		selectedSpellCount = 0;
 		descriptors.val('');
@@ -2454,6 +2494,19 @@ $(function() {
 		populateSpecies();
 		populateTypes();
 		populateFoci();
+		$('.item').each( function() {
+			$(this).remove();
+		});
+		$('.cyberware').each( function() {
+			$(this).remove();
+		});
+		$('#cyber-mannequin img').each( function() {
+			$(this).removeClass('modded');
+		});
+		addItem();
+		addArtifact();
+		addNote();
+		addContact();
 		$('.selected', spellBook).removeClass('selected');
 		populateSpells();
 		loreButton.text('Lore');
