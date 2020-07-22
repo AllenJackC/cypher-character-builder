@@ -153,13 +153,14 @@ a:hover, h5 a:hover {
 a:active, h5 a:active {
 	color: var(--selected-active);
 }
-input, select {
+input, select, textarea {
 	background: var(--white);
     border: 0;
     color: var(--black);
 	font-family: var(--body-font);
 	font-size: 14px;
 	height: 19px;
+	line-height: 19px;
     padding: 3px 5px;
     pointer-events: auto;
     -webkit-touch-callout: auto;
@@ -169,6 +170,9 @@ input, select {
     -ms-user-select: auto;
     user-select: auto;
     width: calc( 100% - 10px );
+}
+textarea {
+	resize: none;
 }
 select {
 	height: 25px;
@@ -1790,17 +1794,18 @@ input#sheet-id.loaded {
 }
 input[type=range] {
 	width: 100%;
-	margin: 0px 0;
-	background-color: transparent;
-	-webkit-appearance: none;
-	padding: 0;
-	position: relative;
+    margin: 0;
+    background-color: transparent;
+    -webkit-appearance: none;
+    padding: 1px 0;
+    position: relative;
+    height: 22px;
 }
 input[type=range]:before {
     position: absolute;
     left: 4px;
     font-weight: 700;
-    top: 1px;
+    top: 5px;
     text-transform: uppercase;
     font-family: var(--body-font);
 }
@@ -1808,7 +1813,7 @@ input[type=range]:after {
     position: absolute;
     right: 4px;
     font-weight: 700;
-    top: 1px;
+    top: 5px;
     text-transform: uppercase;
     font-family: var(--body-font);
 }
@@ -1892,7 +1897,7 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
 	background: var(--white);
 }
-#genders_chosen input {
+.chosen-container-multi .chosen-choices li.search-field input[type=text] {
     height: 19px;
     font-family: var(--body-font);
     color: var(--black);

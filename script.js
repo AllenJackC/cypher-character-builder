@@ -2091,6 +2091,24 @@ $(function() {
 		placeholder_text_multiple: "Select gender(s)",
 		width: "100%"
 	});
+	$('#mental-disabilities').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select disorder(s)",
+		width: "100%"
+	});
+	$('textarea').each(function() {
+		textareaValue = $(this).val();
+		if ( textareaValue ) this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+		else this.setAttribute('style', 'height: 19px;overflow-y:hidden;');
+	}).on('input', function() {
+		textareaValue = $(this).val();
+		if ( textareaValue ) {
+			this.style.height = 'auto';
+			this.style.height = (this.scrollHeight - 6) + 'px';
+		} else {
+			this.setAttribute('style', 'height: 19px;overflow-y:hidden;');
+		}
+	});
 	//Populate inventory & skills select dropdowns
 	//and initate drag and drop
 	populateCyberwareSelect();
