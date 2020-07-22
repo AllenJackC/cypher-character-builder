@@ -1486,7 +1486,7 @@ function saveSheet() {
 		else magicTech = "unset";
 		//Building selections array
 		$('#spellbook .spell.optional.selected').each( function() {
-			selectionsArray.push($(this).attr('data-spellid'));
+			selectionsArray.push($(this).attr('id'));
 		});
 		if ( selectionsArray.length < 1 ) selectionsArray = "";
 		else selectionsArray = selectionsArray.join('¬');
