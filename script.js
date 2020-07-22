@@ -1801,15 +1801,16 @@ function loadCharaSheet(sheetID,autoLoad) {
 							var selectionsArray = record.get('selections').split('¬');
 							for (var i = 0; i < selectionsArray.length; i++) {
 								var selectListItem = $('li.selectable[data-spellid="' + selectionsArray[i] + '"]')
-								console.log(selectListItem);
 								var spellList = selectListItem.closest('ul');
-								console.log(spellList);
+								spellList.children('li.selectable').not(selectListItem).addClass('disabled')
+								selectListItem.addClass('selected');
 								spellList.children('li.selectable').each( function() {
 									var spellID = $(this).data('spellid');
 									var isSelected = $(this).hasClass('selected');
 									if ( spellID.length > 4 ) {
 										spellID = spellID.split(',');
 										for (i = 0; i < spellID.length; i++) {
+											console.log($('#' + spellID, spellBook));
 											if ( !isSelected ) {
 												$('#' + spellID[i], spellBook).hide(0, function() {
 													$('#' + spellID[i], spellBook).addClass('hidden-spell');
@@ -1817,8 +1818,9 @@ function loadCharaSheet(sheetID,autoLoad) {
 											} else $('#' + spellID[i], spellBook).addClass('selected');
 										}
 									} else {
+										console.log($('#' + spellID, spellBook));
 										if ( !isSelected ) {
-											$('#' + spellID, spellBook).stop().hide(0, function() {
+											$('#' + spellID, spellBook).hide(0, function() {
 												$('#' + spellID, spellBook).addClass('hidden-spell');
 											});
 										} else $('#' + spellID, spellBook).addClass('selected');
@@ -2079,7 +2081,7 @@ $(function() {
 	curXP = 0;
 	spellListDatabase = [];
 	//Setup spell list database
-	Papa.parse('/cypher-character-builder/databases/spell-list.csv', {
+	Papa.parse('https://allenjackc.github.io/cypher-character-builder/databases/spell-list.csv', {
 		header: true,
 		download: true,
 		complete: function(results) {
@@ -2484,6 +2486,7 @@ $(function() {
 		xpNumber.text('0 XP');
 		tierNumber.text('1');
 		xpDownButton.addClass('disabled');
+		xpDownButton.removeClass('disabled');
 		availSpellCount = 4;
 		selectedSpellCount = 0;
 		descriptors.val('');
