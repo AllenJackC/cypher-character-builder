@@ -1801,7 +1801,9 @@ function loadCharaSheet(sheetID,autoLoad) {
 							var selectionsArray = record.get('selections').split('¬');
 							for (var i = 0; i < selectionsArray.length; i++) {
 								var selectListItem = $('li.selectable[data-spellid="' + selectionsArray[i] + '"]')
+								console.log(selectListItem);
 								var spellList = selectListItem.closest('ul');
+								console.log(spellList);
 								spellList.children('li.selectable').each( function() {
 									var spellID = $(this).data('spellid');
 									var isSelected = $(this).hasClass('selected');
