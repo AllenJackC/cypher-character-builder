@@ -1798,9 +1798,9 @@ function loadCharaSheet(sheetID,autoLoad) {
 						populateSpells();
 						//Load selections
 						if ( record.get('selections') ) {
-							var skillsArray = record.get('selections').split('¬');
-							for (var i = 0; i < skillsArray.length; i++) {
-								var selectListItem = $('.selectable[data-spellid="' + skillsArray[i] + '"')
+							var selectionsArray = record.get('selections').split('¬');
+							for (var i = 0; i < selectionsArray.length; i++) {
+								var selectListItem = $('li.selectable[data-spellid="' + selectionsArray[i] + '"]')
 								var spellList = selectListItem.closest('ul');
 								spellList.children('li.selectable').each( function() {
 									var spellID = $(this).data('spellid');
