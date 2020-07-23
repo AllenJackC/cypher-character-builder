@@ -2096,18 +2096,20 @@ $(function() {
 		placeholder_text_multiple: "Select disorder(s)",
 		width: "100%"
 	});
-	$('textarea').each(function() {
-		textareaValue = $(this).val();
-		if ( textareaValue ) this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
-		else this.setAttribute('style', 'height: 19px;overflow-y:hidden;');
-	}).on('input', function() {
-		textareaValue = $(this).val();
-		if ( textareaValue ) {
-			this.style.height = 'auto';
-			this.style.height = (this.scrollHeight - 6) + 'px';
-		} else {
-			this.setAttribute('style', 'height: 19px;overflow-y:hidden;');
-		}
+	$('#temperament').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select temperament(s)",
+		width: "100%",
+		max_selected_options: 2
+	});
+	//Auto resize textareas to work like editable content
+	$('textarea').autogrow({vertical: true, horizontal: false});
+	$('textarea').on('input', function() {
+		var inputValue = $(this).val();
+		var inputBorder = $(this).closest('.border');
+		var borderHeight = $(this).height() + 10 + "px";
+		if ( inputValue ) inputBorder.css('height', borderHeight);
+		else inputBorder.css('height','29px');
 	});
 	//Populate inventory & skills select dropdowns
 	//and initate drag and drop

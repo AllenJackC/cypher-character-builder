@@ -173,6 +173,7 @@ input, select, textarea {
 }
 textarea {
 	resize: none;
+	overflow: hidden;
 }
 select {
 	height: 25px;
@@ -1264,8 +1265,13 @@ tr.gu-mirror {
     background: -moz-linear-gradient(top, var(--black) 0%, var(--button) 100%);
     background: -webkit-linear-gradient(top, var(--black) 0%, var(--button) 100%);
     background: linear-gradient(to bottom, var(--black) 0%, var(--button) 100%);
-    padding: 4px;
+    padding: 4px 4px 0 4px;
     width: 100%;
+    height: 29px;
+}
+.border.multi-select {
+	height: auto;
+	padding-bottom: 4px;
 }
 .chosen-container {
 	font-size: 14px!important;
@@ -1754,43 +1760,25 @@ input#sheet-id.loaded {
 .field {
 	flex-grow: 1;
 	margin: 9px 11px;
-	width: 100px;
+	min-width: 100px;
+	max-width: 100px;
+	/*max-width: 280px;*/
 }
 .cosmetic-fields h2 {
 	flex-basis: 100%;
 	margin: 10px;
 }
 .field.small {
-	width: 75px;
+	max-width: 75px;
+	min-width: 75px;
 }
 .field.large {
-	width: 150px;
+	max-width: 150px;
+	min-width: 150px;
 }
 .field.extra-large {
-	width: 200px;
-}
-.field .editable {
-	background: var(--white);
-    border: 0;
-    color: var(--black);
-	font-family: var(--body-font);
-	font-size: 14px;
-	line-height: 19px;
-    padding: 3px 5px;
-    pointer-events: auto;
-    -webkit-touch-callout: auto;
-    -webkit-user-select: auto;
-    -khtml-user-select: auto;
-    -moz-user-select: auto;
-    -ms-user-select: auto;
-    user-select: auto;
-    width: calc( 100% - 10px );
-}
-.field:not(.range) .border {
-	padding-bottom: 5px;
-}
-.field.range .border {
-	padding-bottom: 0;
+	max-width: 200px;
+	min-width: 200px;
 }
 input[type=range] {
 	width: 100%;
@@ -1805,31 +1793,87 @@ input[type=range]:before {
     position: absolute;
     left: 4px;
     font-weight: 700;
-    top: 5px;
+    top: 4px;
     text-transform: uppercase;
     font-family: var(--body-font);
+	pointer-events: none;
 }
 input[type=range]:after {
     position: absolute;
     right: 4px;
     font-weight: 700;
-    top: 5px;
+    top: 4px;
     text-transform: uppercase;
     font-family: var(--body-font);
+	pointer-events: none;
 }
 input#health:before {
-    content: 'near death';
+    content: 'Near Death';
 }
 input#health:after {
-    content: 'healthy';
+    content: 'Healthy';
+}
+input#strength:before {
+    content: 'Weak';
+}
+input#strength:after {
+    content: 'Strong';
 }
 input#mental-health:before {
-    content: 'unstable';
+    content: 'Unstable';
 }
 input#mental-health:after {
-    content: 'healthy';
+    content: 'Healthy';
 }
-input[type=range]:focus {
+input#awareness:before {
+    content: 'Oblivious';
+}
+input#awareness:after {
+    content: 'Perceptive';
+}
+input#imagination:before {
+    content: 'Dull';
+}
+input#imagination:after {
+    content: 'Creative';
+}
+input#drive:before {
+    content: 'Lazy';
+}
+input#drive:after {
+    content: 'Disciplined';
+}
+input#literacy:before {
+    content: 'Illiterate';
+}
+input#literacy:after {
+    content: 'Bibiliophile';
+}
+input#academic-interest:before {
+    content: 'Dropout';
+}
+input#academic-interest:after {
+    content: 'Valedictorian';
+}
+input#academic-interest:before {
+    content: 'Dropout';
+}
+input#academic-interest:after {
+    content: 'Valedictorian';
+}
+input#mental-strength:before {
+    content: 'Weak';
+}
+input#mental-strength:after {
+    content: 'Strong';
+}
+input#self-honesty:before {
+    content: 'Full Denial';
+}
+input#self-honesty:after {
+    content: 'Genuine';
+}
+input[type=range]:focus, textarea {
 	outline: none;
 }
 input[type=range]::-webkit-slider-runnable-track {
@@ -1841,12 +1885,15 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 input[type=range]::-webkit-slider-thumb {
 	margin-top: 0px;
-	width: 12.5%;
+	width: 9.09%;
 	height: 25px;
 	background: var(--selected-active);
 	border: 0;
 	cursor: pointer;
 	-webkit-appearance: none;
+}
+input#health::-webkit-slider-thumb, input#mental-health::-webkit-slider-thumb {
+	width: 12.5%;
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
 	background: var(--white);
@@ -1859,11 +1906,14 @@ input[type=range]::-moz-range-track {
 	cursor: pointer;
 }
 input[type=range]::-moz-range-thumb {
-	width: 12.5%;
+	width: 9.09%;
 	height: 25px;
 	background: var(--selected-active);
 	border: 0;
 	cursor: pointer;
+}
+input#health::-moz-range-thumb, input#mental-health::-moz-range-thumb {
+	width: 12.5%;
 }
 input[type=range]::-ms-track {
 	background: transparent;
@@ -1883,13 +1933,16 @@ input[type=range]::-ms-fill-upper {
 	border: 0;
 }
 input[type=range]::-ms-thumb {
-	width: 12.5%;
+	width: 9.09%;
 	height: 25px;
 	background: var(--selected-active);
 	border: 0;
 	cursor: pointer;
 	margin-top: 0px;
 	/*Needed to keep the Edge thumb centred*/
+}
+input#health::-ms-thumb, input#mental-health::-ms-thumb {
+	width: 12.5%;
 }
 input[type=range]:focus::-ms-fill-lower {
 	background: var(--white);

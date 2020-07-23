@@ -66,7 +66,7 @@
 				<!-- NAME -->
 				<div class="attribute" id="name-attribute">
 					<div class="border">
-						<input id="name">
+						<textarea id="name"></textarea>
 					</div>
 					<label for="name">NAME</label>
 					<div class="secondary-button" id="random-name">
@@ -744,7 +744,7 @@
 		<div class="cosmetic-fields">
 			<h2>Physical</h2>
 			<div class="field extra-large">
-				<div class="border">
+				<div class="border multi-select">
 					<select multiple id="genders">
 						<option></option>
 						<option value="G01">Agender</div>
@@ -771,99 +771,105 @@
 			</div>
 			<div class="field small">
 				<div class="border">
-					<div class="editable" contenteditable id="age"></div>
+					<textarea id="age"></textarea>
 				</div>
 				<label for="age">AGE</label>
 			</div>
 			<div class="field">
 				<div class="border birthday">
-					<div class="editable" contenteditable id="birthday"></div>
+					<textarea id="birthday"></textarea>
 				</div>
 				<label for="birthday">BIRTHDAY</label>
 			</div>
 			<div class="field">
 				<div class="border">
-					<div class="editable" contenteditable id="height"></div>
+					<textarea id="height"></textarea>
 				</div>
 				<label for="height">HEIGHT</label>
 			</div>
 			<div class="field">
 				<div class="border">
-					<div class="editable" contenteditable id="weight"></div>
+					<textarea id="weight"></textarea>
 				</div>
 				<label for="weight">WEIGHT</label>
 			</div>
 			<div class="field">
 				<div class="border">
-					<div class="editable" contenteditable id="build"></div>
+					<textarea id="build"></textarea>
 				</div>
 				<label for="build">BUILD</label>
 			</div>
 			<div class="field large">
 				<div class="border">
-					<div class="editable" contenteditable id="skin-color"></div>
+					<textarea id="skin-color"></textarea>
 				</div>
 				<label for="skin-color">SKIN COLOUR</label>
 			</div>
 			<div class="field large">
 				<div class="border">
-					<div class="editable" contenteditable id="eye-color"></div>
+					<textarea id="eye-color"></textarea>
 				</div>
 				<label for="eye-color">EYE COLOUR</label>
 			</div>
 			<div class="field large">
 				<div class="border">
-					<div class="editable" contenteditable id="hair-colour"></div>
+					<textarea id="hair-colour"></textarea>
 				</div>
 				<label for="hair-colour">HAIR COLOUR</label>
 			</div>
 			<div class="field large">
 				<div class="border">
-					<div class="editable" contenteditable id="hair-style"></div>
+					<textarea id="hair-style"></textarea>
 				</div>
 				<label for="hair-style">HAIR STYLE</label>
 			</div>
 			<div class="field large">
 				<div class="border">
-					<div class="editable" contenteditable id="hair-texture"></div>
+					<textarea id="hair-texture"></textarea>
 				</div>
 				<label for="hair-texture">HAIR TEXTURE</label>
 			</div>
-			<div class="field large">
+			<div class="field">
 				<div class="border">
-					<div class="editable" contenteditable id="tattoos"></div>
+					<textarea id="tattoos"></textarea>
 				</div>
 				<label for="tattoos">TATTOOS</label>
 			</div>
-			<div class="field large">
+			<div class="field">
 				<div class="border">
-					<div class="editable" contenteditable id="scars"></div>
+					<textarea id="scars"></textarea>
 				</div>
 				<label for="scars">SCARS</label>
 			</div>
 			<div class="field large">
 				<div class="border">
-					<div class="editable" contenteditable id="piercings"></div>
+					<textarea id="piercings"></textarea>
 				</div>
 				<label for="piercings">PIERCINGS</label>
 			</div>
 			<div class="field large">
 				<div class="border">
-					<div class="editable" contenteditable id="skin-markings"></div>
+					<textarea id="skin-markings"></textarea>
 				</div>
 				<label for="skin-markings">SKIN MARKINGS</label>
 			</div>
 			<div class="field large">
 				<div class="border">
-					<div class="editable" contenteditable id="expression"></div>
+					<textarea id="expression"></textarea>
 				</div>
 				<label for="expression">EXPRESSION</label>
 			</div>
 			<div class="field extra-large">
 				<div class="border">
-					<div class="editable" contenteditable id="physical-disabilities"></div>
+					<textarea id="physical-disabilities"></textarea>
 				</div>
 				<label for="physical-disabilities">PHYSICAL DISABILITIES</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="strength" min="0" max="10" value="5"/>
+				</div>
+				<label for="strength">PHYSICAL STRENGTH</label>
 			</div>
 			<div class="field extra-large range">
 				<div class="border">
@@ -874,14 +880,68 @@
 		</div>
 		<div class="cosmetic-fields">
 			<h2>Mental</h2>
-			<div class="field extra-large range">
+			<div class="field extra-large">
 				<div class="border">
 					<textarea id="motivation"></textarea>
 				</div>
 				<label for="motiviation">GREATEST MOTIVATION</label>
 			</div>
-			<div class="field extra-large">
+			<div class="field large">
 				<div class="border">
+					<textarea id="fear"></textarea>
+				</div>
+				<label for="fear">GREATEST FEAR</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="asset"></textarea>
+				</div>
+				<label for="asset">GREATEST ASSET</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="flaw"></textarea>
+				</div>
+				<label for="flaw">GREATEST FLAW</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="awareness" min="0" max="10" value="5"/>
+				</div>
+				<label for="awareness">AWARENESS</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="imagination" min="0" max="10" value="5"/>
+				</div>
+				<label for="imagination">IMAGINATION</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="drive" min="0" max="10" value="5"/>
+				</div>
+				<label for="drive">DRIVE</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="literacy" min="0" max="10" value="5"/>
+				</div>
+				<label for="literacy">LITERACY</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="academic-interest" min="0" max="10" value="5"/>
+				</div>
+				<label for="academic-interest">ACADEMIC INTEREST</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="self-honesty" min="0" max="10" value="5"/>
+				</div>
+				<label for="self-honesty">SELF-HONESTY</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border multi-select">
 					<select multiple id="mental-disabilities">
 						<option></option>
 						<option value="MD1">Absence seizure</option>
@@ -1138,9 +1198,36 @@
 			</div>
 			<div class="field extra-large range">
 				<div class="border">
+					<input type="range" id="mental-strength" min="0" max="10" value="5"/>
+				</div>
+				<label for="mental-strength">MENTAL STRENGTH</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
 					<input type="range" id="mental-health" min="1" max="8" value="8"/>
 				</div>
 				<label for="mental-health">MENTAL STATE</label>
+			</div>
+		</div>
+		<div class="cosmetic-fields">
+			<h2>Personality</h2>
+			<div class="field extra-large">
+				<div class="border">
+					<textarea id="short-description"></textarea>
+				</div>
+				<label for="short-description">SHORT DESCRIPTION</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="temperament">
+						<option></option>
+						<option value="TP1">Choleric</div>
+						<option value="TP2">Melancholic</div>
+						<option value="TP3">Phlegmatic</div>
+						<option value="TP4">Sanguine</div>
+					</select>
+				</div>
+				<label for="temperament">TEMPERAMENT</label>
 			</div>
 		</div>
 		<!-- Skills -->
@@ -3772,6 +3859,7 @@
 	</div>
 	<!-- Scripts -->
 	<script src="plugins/chosen.jquery.min.js" type="text/javascript"></script>
+	<script src="plugins/jquery.ns-autogrow.min.js" type="text/javascript"></script>
 	<script src="plugins/papaparse.min.js" type="text/javascript"></script>
 	<script src="plugins/airtable.browser.js" type="text/javascript"></script>	
 	<script src="plugins/cookies.js" type="text/javascript"></script>
