@@ -1873,6 +1873,78 @@ input#self-honesty:before {
 input#self-honesty:after {
     content: 'Genuine';
 }
+input#confidence:before {
+    content: 'Meek';
+}
+input#confidence:after {
+    content: 'Bold';
+}
+input#modesty:before {
+    content: 'Arrogant';
+}
+input#modesty:after {
+    content: 'Humble';
+}
+input#gravitas:before {
+    content: 'Goofy';
+}
+input#gravitas:after {
+    content: 'Stern';
+}
+input#shame:before {
+    content: 'Guilt-ridden';
+}
+input#shame:after {
+    content: 'Impenitent';
+}
+input#kindness:before {
+    content: 'Cold';
+}
+input#kindness:after {
+    content: 'Warm';
+}
+input#disposition:before {
+    content: 'Passive';
+}
+input#disposition:after {
+    content: 'Aggresive';
+}
+input#character:before {
+    content: 'Introverted';
+}
+input#character:after {
+    content: 'Extroverted';
+}
+input#libido:before {
+    content: 'Celebate';
+}
+input#libido:after {
+    content: 'Lewd';
+}
+input#consistency:before {
+    content: 'Erratic';
+}
+input#consistency:after {
+    content: 'Steady';
+}
+input#amity:before {
+    content: 'Antagonistic';
+}
+input#amity:after {
+    content: 'Friendly';
+}
+input#loyalty:before {
+    content: 'Traitorous';
+}
+input#loyalty:after {
+    content: 'Devout';
+}
+input#dependability:before {
+    content: 'Fickle';
+}
+input#dependability:after {
+    content: 'Reliable';
+}
 input[type=range]:focus, textarea {
 	outline: none;
 }

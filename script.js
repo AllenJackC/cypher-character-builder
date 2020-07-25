@@ -2091,6 +2091,11 @@ $(function() {
 		placeholder_text_multiple: "Select gender(s)",
 		width: "100%"
 	});
+	$('#sexuality').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select sexuality(ies)",
+		width: "100%"
+	});
 	$('#mental-disabilities').chosen({
 		no_results_text: "No results found.",
 		placeholder_text_multiple: "Select disorder(s)",
@@ -2101,6 +2106,27 @@ $(function() {
 		placeholder_text_multiple: "Select temperament(s)",
 		width: "100%",
 		max_selected_options: 2
+	});
+	$('#academic-pursuit').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select pursuit(s)",
+		width: "100%"
+	});
+	$('#traveling').chosen({
+		disable_search: true,
+		width: "100%"
+	});
+	$('#dating').chosen({
+		disable_search: true,
+		width: "100%"
+	});
+	$('#partying').chosen({
+		disable_search: true,
+		width: "100%"
+	});
+	$('#reading').chosen({
+		disable_search: true,
+		width: "100%"
 	});
 	//Auto resize textareas to work like editable content
 	$('textarea').autogrow({vertical: true, horizontal: false});
