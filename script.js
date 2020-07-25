@@ -2486,7 +2486,7 @@ $(function() {
 		xpNumber.text('0 XP');
 		tierNumber.text('1');
 		xpDownButton.addClass('disabled');
-		xpDownButton.removeClass('disabled');
+		xpUpButton.removeClass('disabled');
 		availSpellCount = 4;
 		selectedSpellCount = 0;
 		descriptors.val('');
