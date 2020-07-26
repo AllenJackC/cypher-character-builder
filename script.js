@@ -1831,16 +1831,18 @@ function loadCharaSheet(sheetID,autoLoad) {
 						}
 						//Load skills
 						if ( record.get('skills') ) {
-							var skillsArray = record.get('skills').split('¬');
-							var editableSkills = $('#skills .spell:not([data-default]) .name');
-							for (var i = 0; i < editableSkills.length; i++) {
-								if ( skillsArray[i] ) {
-									var skillName = skillsArray[i];
-									var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
-									editableSkills.eq(i).text(skillName);
-									editableSkills.eq(i).closest('.spell').css('order', newOrder);
+							setTimeout( function() {
+								var skillsArray = record.get('skills').split('¬');
+								var editableSkills = $('#skills .spell:not([data-default]) .name');
+								for (var i = 0; i < editableSkills.length; i++) {
+									if ( skillsArray[i] ) {
+										var skillName = skillsArray[i];
+										var newOrder = parseInt((parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97) + leadZeros(parseInt(skillName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
+										editableSkills.eq(i).text(skillName);
+										editableSkills.eq(i).closest('.spell').css('order', newOrder);
+									}
 								}
-							}
+							}, 2000);
 						}
 						//Load items
 						if ( record.get('items') ) {
