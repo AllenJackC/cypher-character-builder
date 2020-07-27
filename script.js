@@ -2128,6 +2128,41 @@ $(function() {
 		disable_search: true,
 		width: "100%"
 	});
+	$('#flavours').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select flavour(s)",
+		width: "100%"
+	});
+	$('#relationship-status').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select status(es)",
+		width: "100%"
+	});
+	$('#blood-type').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select a blood type",
+		width: "100%"
+	});
+	$('#mbti').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select an MBTI type",
+		width: "100%"
+	});
+	$('#virtue-alignment').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select an alignment",
+		width: "100%"
+	});
+	$('#order-alignment').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select an alignment",
+		width: "100%"
+	});
+	$('#enneagram').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select an Enneagram type",
+		width: "100%"
+	});
 	//Auto resize textareas to work like editable content
 	$('textarea').autogrow({vertical: true, horizontal: false});
 	$('textarea').on('input', function() {
