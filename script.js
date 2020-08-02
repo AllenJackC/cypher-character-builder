@@ -1544,7 +1544,8 @@ function saveSheet() {
 		} else {
 			artifactNames = artifactNames.join('¬');
 			artifactIDs = artifactIDs.join('¬');
-			artifactEffects = artifactEffects.join('¬');
+			if(artifactEffects.length > 0) artifactEffects = artifactEffects.join('¬');
+			else artifactEffects = "";
 		}
 		//Building cyberware arrays
 		$('.cyberware .editable').each( function() {
@@ -1597,8 +1598,10 @@ function saveSheet() {
 			contactNames = contactNames.join('¬');
 			contactIDs = contactIDs.join('¬');
 			contactTypes = contactTypes.join('¬');
-			contactDescriptions = contactDescriptions.join('¬');
-			contactSkills = contactSkills.join('¬');
+			if(contactDescriptions.length > 0) contactDescriptions = contactDescriptions.join('¬');
+			else contactDescriptions = "";
+			if(contactSkills.length > 0) contactSkills = contactSkills.join('¬');
+			else contactSkills = "";
 		}
 		//Building notes arrays
 		$('#notes .item .editable').each( function() {
