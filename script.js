@@ -1544,8 +1544,7 @@ function saveSheet() {
 		} else {
 			artifactNames = artifactNames.join('¬');
 			artifactIDs = artifactIDs.join('¬');
-			if(artifactEffects.length > 0) artifactEffects = artifactEffects.join('¬');
-			else artifactEffects = "";
+			artifactEffects = artifactEffects.join('¬');
 		}
 		//Building cyberware arrays
 		$('.cyberware .editable').each( function() {
@@ -1598,10 +1597,8 @@ function saveSheet() {
 			contactNames = contactNames.join('¬');
 			contactIDs = contactIDs.join('¬');
 			contactTypes = contactTypes.join('¬');
-			if(contactDescriptions.length > 0) contactDescriptions = contactDescriptions.join('¬');
-			else contactDescriptions = "";
-			if(contactSkills.length > 0) contactSkills = contactSkills.join('¬');
-			else contactSkills = "";
+			contactDescriptions = contactDescriptions.join('¬');
+			contactSkills = contactSkills.join('¬');
 		}
 		//Building notes arrays
 		$('#notes .item .editable').each( function() {
@@ -1878,7 +1875,9 @@ function loadCharaSheet(sheetID,autoLoad) {
 								$(this).remove();
 							});
 							var artifactNames = record.get('artifacts').split('¬');
-							var artifactEffects = record.get('artifact-effects').split('¬');
+							var artifactEffects = record.get('artifact-effects');
+							if (artifactEffects) artifactEffects = artifactEffects.split('¬');
+							else artifactEffects = [""];
 							if ( record.get('artifact-ids') ) {
 								var artifactIDs = record.get('artifact-ids').split('¬');
 								for (var i = 0; i < artifactNames.length; i++) {
@@ -1944,8 +1943,12 @@ function loadCharaSheet(sheetID,autoLoad) {
 							});
 							var contactNames = record.get('contacts').split('¬');
 							var contactTypes = record.get('contact-types').split('¬');
-							var contactDescriptions = record.get('contact-descriptions').split('¬');
-							var contactSkills = record.get('contact-skills').split('¬');
+							var contactDescriptions = record.get('contact-descriptions');
+							var contactSkills = record.get('contact-skills');
+							if (contactDescriptions) contactDescriptions = contactDescriptions.split('¬');
+							else contactDescriptions = [""];
+							if (contactSkills) contactSkills = contactSkills.split('¬');
+							else contactSkills = [""];
 							if ( record.get('contact-ids') ) {
 								var contactIDs = record.get('contact-ids').split('¬');
 								for (var i = 0; i < contactNames.length; i++) {
