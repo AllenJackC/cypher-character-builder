@@ -1810,7 +1810,6 @@ function loadCharaSheet(sheetID,autoLoad) {
 									if ( spellID.length > 4 ) {
 										spellID = spellID.split(',');
 										for (i = 0; i < spellID.length; i++) {
-											console.log($('#' + spellID, spellBook));
 											if ( !isSelected ) {
 												$('#' + spellID[i], spellBook).hide(0, function() {
 													$('#' + spellID[i], spellBook).addClass('hidden-spell');
