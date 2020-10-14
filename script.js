@@ -2163,6 +2163,11 @@ $(function() {
 		placeholder_text_single: "Select an Enneagram type",
 		width: "100%"
 	});
+	$('#religion').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select belief(s)",
+		width: "100%"
+	});
 	//Auto resize textareas to work like editable content
 	$('textarea').autogrow({vertical: true, horizontal: false});
 	$('textarea').on('input', function() {
