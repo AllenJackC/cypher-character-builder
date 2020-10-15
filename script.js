@@ -2134,6 +2134,102 @@ $(function() {
 		placeholder_text_single: "Select a focus",
 		width: "100%"
 	});
+	$('#genders').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select gender(s)",
+		width: "100%"
+	});
+	$('#sexuality').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select sexuality(ies)",
+		width: "100%"
+	});
+	$('#mental-disabilities').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select disorder(s)",
+		width: "100%"
+	});
+	$('#temperament').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select temperament(s)",
+		width: "100%",
+		max_selected_options: 2
+	});
+	$('#academic-pursuit').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select pursuit(s)",
+		width: "100%"
+	});
+	$('#traveling').chosen({
+		disable_search: true,
+		width: "100%"
+	});
+	$('#dating').chosen({
+		disable_search: true,
+		width: "100%"
+	});
+	$('#partying').chosen({
+		disable_search: true,
+		width: "100%"
+	});
+	$('#reading').chosen({
+		disable_search: true,
+		width: "100%"
+	});
+	$('#flavours').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select flavour(s)",
+		width: "100%"
+	});
+	$('#relationship-status').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select status(es)",
+		width: "100%"
+	});
+	$('#blood-type').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select a blood type",
+		width: "100%"
+	});
+	$('#mbti').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select an MBTI type",
+		width: "100%"
+	});
+	$('#virtue-alignment').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select an alignment",
+		width: "100%"
+	});
+	$('#order-alignment').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select an alignment",
+		width: "100%"
+	});
+	$('#enneagram').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_single: "Select an Enneagram type",
+		width: "100%"
+	});
+	$('#religion').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select belief(s)",
+		width: "100%"
+	});
+	$('#sins').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select sin(s)",
+		width: "100%"
+	});
+	//Auto resize textareas to work like editable content
+	$('textarea').autogrow({vertical: true, horizontal: false});
+	$('textarea').on('input', function() {
+		var inputValue = $(this).val();
+		var inputBorder = $(this).closest('.border');
+		var borderHeight = $(this).height() + 10 + "px";
+		if ( inputValue ) inputBorder.css('height', borderHeight);
+		else inputBorder.css('height','29px');
+	});
 	//Populate inventory & skills select dropdowns
 	//and initate drag and drop
 	populateCyberwareSelect();

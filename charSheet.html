@@ -66,7 +66,7 @@
 				<!-- NAME -->
 				<div class="attribute" id="name-attribute">
 					<div class="border">
-						<input id="name">
+						<textarea id="name"></textarea>
 					</div>
 					<label for="name">NAME</label>
 					<div class="secondary-button" id="random-name">
@@ -97,13 +97,13 @@
 							<option value="B7">Compassionate</option>
 							<option value="B8">Corrupted</option>
 							<option value="B9">Craven</option>
-							<option value="C1">Crazy</option>
+							<option value="C1">Mentally Unstable</option>
 							<option value="C2">Creative</option>
 							<option value="C3">Cruel</option>
 							<option value="C4">Dangerous</option>
 							<option value="C5">Daring</option>
 							<option value="C6">Deliberate</option>
-							<option value="C7">Desert-Dwelling</option>
+							<option value="C7">Desert Dwelling</option>
 							<option value="C8">Devout</option>
 							<option value="C9">Dishonorable</option>
 							<option value="D1">Doomed</option>
@@ -181,9 +181,9 @@
 							<option value="L1">Spiritual</option>
 							<option value="L2">Stealthy</option>
 							<option value="L3">Strong</option>
-							<option value="L4">Strong-Willed</option>
+							<option value="L4">Strong Willed</option>
 							<option value="L5">Swift</option>
-							<option value="L6">Tongue-Tied</option>
+							<option value="L6">Tongue Tied</option>
 							<option value="L7">Tough</option>
 							<option value="L8">Traumatized</option>
 							<option value="L9">Utilitarian</option>
@@ -741,6 +741,956 @@
 				</div>
 			</div>
 		</div>
+		<div class="cosmetic-fields">
+			<h2>Basics</h2>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="genders">
+						<option></option>
+						<option value="G1">AFAB</option>
+						<option value="G2">AMAB</option>
+						<option value="G3">Agender</option>
+						<option value="G4">Aliagender</option>
+						<option value="G5">AMAB</option>
+						<option value="G6">Androgynous</option>
+						<option value="G7">Aporagender</option>
+						<option value="G8">Bigender</option>
+						<option value="G9">Boi</option>
+						<option value="G10">Butch</option>
+						<option value="G11">Cisgender</option>
+						<option value="G12">Demiboy</option>
+						<option value="G13">Demigender</option>
+						<option value="G14">Demigirl</option>
+						<option value="G15">Dyadic</option>
+						<option value="G16">Female</option>
+						<option value="G17">Femme</option>
+						<option value="G18">Female-to-male</option>
+						<option value="G19">FTM</option>
+						<option value="G20">Gender apathetic</option>
+						<option value="G21">Gender nonconforming</option>
+						<option value="G22">Gender questioning</option>
+						<option value="G23">Gender variant</option>
+						<option value="G24">Genderfluid</option>
+						<option value="G25">Genderqueer</option>
+						<option value="G26">Graygender</option>
+						<option value="G27">Intergender</option>
+						<option value="G28">Intersex</option>
+						<option value="G29">Male</option>
+						<option value="G30">Maverique</option>
+						<option value="G31">Male-to-female</option>
+						<option value="G32">MTF</option>
+						<option value="G33">Multi-gender</option>
+						<option value="G34">Neutrois</option>
+						<option value="G35">Nonbinary</option>
+						<option value="G36">Novigender</option>
+						<option value="G37">Pangender</option>
+						<option value="G38">Polygender</option>
+						<option value="G39">Presenting</option>
+						<option value="G40">Soft butch</option>
+						<option value="G41">Stone butch</option>
+						<option value="G42">Third gender</option>
+						<option value="G43">Trans</option>
+						<option value="G44">Transfeminine</option>
+						<option value="G45">Transgender</option>
+						<option value="G46">Transitioning</option>
+						<option value="G47">Transmasculine</option>
+						<option value="G48">Transsexual</option>
+						<option value="G49">Trigender</option>
+						<option value="G50">Two-spirit</option>
+					</select>
+				</div>
+				<label for="genders">GENDER</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="sexuality">
+						<option></option>
+						<option value="SX1">Androphilia</option>
+						<option value="SX2">Aromantic</option>
+						<option value="SX3">Asexual</option>
+						<option value="SX4">Autoromantic</option>
+						<option value="SX5">Autosexual</option>
+						<option value="SX6">Bicurious</option>
+						<option value="SX7">Biromantic</option>
+						<option value="SX8">Bisexual</option>
+						<option value="SX9">Closeted</option>
+						<option value="SX10">Coming Out</option>
+						<option value="SX11">Cupiosexual</option>
+						<option value="SX12">Demiromantic</option>
+						<option value="SX13">Demisexual</option>
+						<option value="SX14">Fluid</option>
+						<option value="SX15">Gay</option>
+						<option value="SX16">Grayromantic</option>
+						<option value="SX17">Graysexual</option>
+						<option value="SX18">Gynephilia</option>
+						<option value="SX19">Heterosexual</option>
+						<option value="SX20">Homosexual</option>
+						<option value="SX21">Lesbian</option>
+						<option value="SX22">Libidoist</option>
+						<option value="SX23">Lithromantic</option>
+						<option value="SX24">Lithsexual</option>
+						<option value="SX25">Monosexual</option>
+						<option value="SX26">Omnisexual</option>
+						<option value="SX27">Panromantic</option>
+						<option value="SX28">Pansexual</option>
+						<option value="SX29">Passing</option>
+						<option value="SX30">Polyamorous</option>
+						<option value="SX31">Polysexual</option>
+						<option value="SX32">Pomosexual</option>
+						<option value="SX33">Queer</option>
+						<option value="SX34">Questioning</option>
+						<option value="SX35">Sapiosexual</option>
+						<option value="SX36">Skoliosexual</option>
+						<option value="SX37">Spectrasexual</option>
+					</select>
+				</div>
+				<label for="sexuality">SEXUALITY</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="relationship-status">
+						<option></option>
+						<option value="RS1">Complicated</option>
+						<option value="RS2">Engaged</option>
+						<option value="RS3">Civil Union</option>
+						<option value="RS4">Divorced</option>
+						<option value="RS5">Domestic Partnership</option>
+						<option value="RS6">Married</option>
+						<option value="RS7">Open</option>
+						<option value="RS8">Separated</option>
+						<option value="RS9">Single</option>
+						<option value="RS10">Taken</option>
+						<option value="RS11">Widowed</option>
+					</select>
+				</div>
+				<label for="relationship-status">RELATIONSHIP STATUS</label>
+			</div>
+			<div class="field small">
+				<div class="border">
+					<textarea id="age"></textarea>
+				</div>
+				<label for="age">AGE</label>
+			</div>
+			<div class="field">
+				<div class="border birthday">
+					<textarea id="birthday"></textarea>
+				</div>
+				<label for="birthday">BIRTHDAY</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<select id="blood-type">
+						<option></option>
+						<option value="BT1">A+</option>
+						<option value="BT2">A-</option>
+						<option value="BT3">B+</option>
+						<option value="BT4">B-</option>
+						<option value="BT5">AB+</option>
+						<option value="BT6">AB-</option>
+						<option value="BT7">O+</option>
+						<option value="BT8">O-</option>
+					</select>
+				</div>
+				<label for="blood-type">BLOOD TYPE</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<select id="order-alignment">
+						<option></option>
+						<option value="OL1">Lawful</option>
+						<option value="OL2">Neutral</option>
+						<option value="OL3">Chaotic</option>
+					</select>
+				</div>
+				<label for="order-alignment">ORDER ALIGNMENT</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<select id="virtue-alignment">
+						<option></option>
+						<option value="VL1">Good</option>
+						<option value="VL2">Neutral</option>
+						<option value="VL3">Evil</option>
+					</select>
+				</div>
+				<label for="virtue-alignment">VIRTUE ALIGNMENT</label>
+			</div>	
+			<div class="field extra-large">
+				<div class="border">
+					<select id="mbti">
+						<option></option>
+						<option value="MT1">ENFJ-A (Protagonist)</option>
+						<option value="MT2">ENFJ-B (Protagonist)</option>
+						<option value="MT3">ENFP-A (Campaigner)</option>
+						<option value="MT4">ENFP-B (Campaigner)</option>
+						<option value="MT5">ENTJ-A (Commander)</option>
+						<option value="MT6">ENTJ-B (Commander)</option>
+						<option value="MT7">ENTP-A (Debater)</option>
+						<option value="MT8">ENTP-B (Debater)</option>
+						<option value="MT9">ESFJ-A (Consul)</option>
+						<option value="MT10">ESFJ-B (Consul)</option>
+						<option value="MT11">ESFP-A (Entertainer)</option>
+						<option value="MT12">ESFP-B (Entertainer)</option>
+						<option value="MT13">ESTJ-A (Executive)</option>
+						<option value="MT14">ESTJ-B (Executive)</option>
+						<option value="MT15">ESTP-A (Entrepeneur)</option>
+						<option value="MT16">ESTP-B (Entrepeneur)</option>
+						<option value="MT17">INFJ-A (Advocate)</option>
+						<option value="MT18">INFJ-B (Advocate)</option>
+						<option value="MT19">INFP-A (Mediator)</option>
+						<option value="MT20">INFP-B (Mediator)</option>
+						<option value="MT21">INTJ-A (Architect)</option>
+						<option value="MT22">INTJ-B (Architect)</option>
+						<option value="MT23">INTP-A (Logician)</option>
+						<option value="MT24">INTP-B (Logician)</option>
+						<option value="MT25">ISFJ-A (Defender)</option>
+						<option value="MT26">ISFJ-B (Defender)</option>
+						<option value="MT27">ISFP-A (Adventurer)</option>
+						<option value="MT28">ISFP-B (Adventurer)</option>
+						<option value="MT29">ISTJ-A (Logistician)</option>
+						<option value="MT30">ISTJ-B (Logistician)</option>
+						<option value="MT31">ISTP-A (Virtuoso)</option>
+						<option value="MT32">ISTP-B (Virtuoso)</option>
+					</select>
+				</div>
+				<label for="mbti">MBTI TYPE</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border">
+					<select id="enneagram">
+						<option></option>
+						<option value="EN1">Type 1 (Perfectionist)</option>
+						<option value="EN2">Type 2 (Giver)</option>
+						<option value="EN3">Type 3 (Achiever)</option>
+						<option value="EN4">Type 4 (Individualist)</option>
+						<option value="EN5">Type 5 (Investigator)</option>
+						<option value="EN6">Type 6 (Skeptic)</option>
+						<option value="EN7">Type 7 (Enthusiast)</option>
+						<option value="EN8">Type 8 (Challenger)</option>
+						<option value="EN9">Type 9 (Peacemaker)</option>
+					</select>
+				</div>
+				<label for="enneagram">ENNEAGRAM TYPE</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="religion">
+						<option></option>
+						<option value="R1">Agnosticism</option>
+						<option value="R2">Atheism</option>
+						<option value="R3">Creator Pantheon</option>
+						<option value="R4">Gnosticism</option>
+						<option value="R5">Mysticism</option>
+						<option value="R6">Nebaz Worship</option>
+						<option value="R7">Paganism</option>
+						<option value="R8">Shamanism</option>
+						<option value="R9">Spiritualism</option>
+						<option value="R10">The Divine</option>
+						<option value="R11">The Goddess Ay'driel</option>
+						<option value="R12">Unity</option>
+					</select>
+				</div>
+				<label for="religion">SPIRITUAL BELIEFS</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="patron"></textarea>
+				</div>
+				<label for="patron">CELESTIAL PATRON</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="sins">
+						<option></option>
+						<option value="SIN1">Lust</option>
+						<option value="SIN2">Greed</option>
+						<option value="SIN3">Gluttony</option>
+						<option value="SIN4">Wrath</option>
+						<option value="SIN5">Sloth</option>
+						<option value="SIN6">Pride</option>
+						<option value="SIN7">Envy</option>
+					</select>
+				</div>
+				<label for="sins">DEADLY SIN(S)</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="theme"></textarea>
+				</div>
+				<label for="theme">THEME COLOUR(S)</label>
+			</div>
+		</div>
+		<div class="cosmetic-fields">
+			<h2>Physical</h2>
+			<div class="field">
+				<div class="border">
+					<textarea id="height"></textarea>
+				</div>
+				<label for="height">HEIGHT</label>
+			</div>
+			<div class="field">
+				<div class="border">
+					<textarea id="weight"></textarea>
+				</div>
+				<label for="weight">WEIGHT</label>
+			</div>
+			<div class="field">
+				<div class="border">
+					<textarea id="build"></textarea>
+				</div>
+				<label for="build">BUILD</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="skin-color"></textarea>
+				</div>
+				<label for="skin-color">SKIN COLOUR</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="eye-color"></textarea>
+				</div>
+				<label for="eye-color">EYE COLOUR</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="hair-colour"></textarea>
+				</div>
+				<label for="hair-colour">HAIR COLOUR</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="hair-style"></textarea>
+				</div>
+				<label for="hair-style">HAIR STYLE</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="hair-texture"></textarea>
+				</div>
+				<label for="hair-texture">HAIR TEXTURE</label>
+			</div>
+			<div class="field">
+				<div class="border">
+					<textarea id="tattoos"></textarea>
+				</div>
+				<label for="tattoos">TATTOOS</label>
+			</div>
+			<div class="field">
+				<div class="border">
+					<textarea id="scars"></textarea>
+				</div>
+				<label for="scars">SCARS</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="piercings"></textarea>
+				</div>
+				<label for="piercings">PIERCINGS</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="skin-markings"></textarea>
+				</div>
+				<label for="skin-markings">SKIN MARKINGS</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="expression"></textarea>
+				</div>
+				<label for="expression">EXPRESSION</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border">
+					<textarea id="physical-disabilities"></textarea>
+				</div>
+				<label for="physical-disabilities">PHYSICAL DISABILITIES</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="strength" min="0" max="10" value="5"/>
+				</div>
+				<label for="strength">PHYSICAL STRENGTH</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="health" min="1" max="8" value="8"/>
+				</div>
+				<label for="health">HEALTH</label>
+			</div>
+		</div>
+		<div class="cosmetic-fields">
+			<h2>Mental</h2>
+			<div class="field extra-large">
+				<div class="border">
+					<textarea id="motivation"></textarea>
+				</div>
+				<label for="motiviation">GREATEST MOTIVATION</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="fear"></textarea>
+				</div>
+				<label for="fear">GREATEST FEAR</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="asset"></textarea>
+				</div>
+				<label for="asset">GREATEST ASSET</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="flaw"></textarea>
+				</div>
+				<label for="flaw">GREATEST FLAW</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="awareness" min="0" max="10" value="5"/>
+				</div>
+				<label for="awareness">AWARENESS</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="imagination" min="0" max="10" value="5"/>
+				</div>
+				<label for="imagination">IMAGINATION</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="drive" min="0" max="10" value="5"/>
+				</div>
+				<label for="drive">DRIVE</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="literacy" min="0" max="10" value="5"/>
+				</div>
+				<label for="literacy">LITERACY</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="academic-interest" min="0" max="10" value="5"/>
+				</div>
+				<label for="academic-interest">ACADEMIC INTEREST</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="self-honesty" min="0" max="10" value="5"/>
+				</div>
+				<label for="self-honesty">SELF-HONESTY</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="mental-disabilities">
+						<option></option>
+						<option value="MD1">Absence seizure</option>
+						<option value="MD2">Aboulia</option>
+						<option value="MD3">Acute stress disorder</option>
+						<option value="MD4">Adjustment disorder</option>
+						<option value="MD5">Agoraphobia</option>
+						<option value="MD6">Alcohol abuse</option>
+						<option value="MD7">Alcohol addiction</option>
+						<option value="MD8">Alcohol dependence</option>
+						<option value="MD9">Alcohol withdrawal</option>
+						<option value="MD10">Alcoholic hallucinosis</option>
+						<option value="MD11">Alice in Wonderland syndrome</option>
+						<option value="MD12">Alzheimer's disease</option>
+						<option value="MD13">Amnestic disorder (Amnesia)</option>
+						<option value="MD14">Amphetamine dependence</option>
+						<option value="MD15">Anosognosia</option>
+						<option value="MD16">Anorexia nervosa</option>
+						<option value="MD17">Anterograde amnesia</option>
+						<option value="MD18">Antisocial behavior</option>
+						<option value="MD19">Antisocial personality disorder</option>
+						<option value="MD20">Anxiety disorder</option>
+						<option value="MD21">Asperger syndrome</option>
+						<option value="MD22">Attention deficit hyperactivity disorder</option>
+						<option value="MD23">Attenuated psychosis syndrome</option>
+						<option value="MD24">Autism spectrum disorder</option>
+						<option value="MD25">Autophagia</option>
+						<option value="MD26">Avoidant personality disorder</option>
+						<option value="MD27">Avoidant/restrictive food intake disorder</option>
+						<option value="MD28">Atypical depression</option>
+						<option value="MD29">Bibliomania</option>
+						<option value="MD30">Binge eating disorder</option>
+						<option value="MD31">Bipolar disorder</option>
+						<option value="MD32">Body dysmorphic disorder</option>
+						<option value="MD33">Borderline intellectual functioning</option>
+						<option value="MD34">Borderline personality disorder</option>
+						<option value="MD35">Breathing-related sleep disorder</option>
+						<option value="MD36">Brief psychotic disorder</option>
+						<option value="MD37">Bulimia nervosa</option>
+						<option value="MD38">Caffeine-induced anxiety disorder</option>
+						<option value="MD39">Caffeine-induced sleep disorder</option>
+						<option value="MD40">Caffeine dependence</option>
+						<option value="MD41">Caffeine withdrawal</option>
+						<option value="MD42">Cannabis dependence</option>
+						<option value="MD43">Capgras delusion</option>
+						<option value="MD44">Catalepsy (Narcolepsy)</option>
+						<option value="MD45">Catatonia</option>
+						<option value="MD46">Catatonic schizophrenia</option>
+						<option value="MD47">Childhood amnesia</option>
+						<option value="MD48">Childhood disintegrative disorder</option>
+						<option value="MD49">Childhood onset fluency disorder</option>
+						<option value="MD50">Child neglect</option>
+						<option value="MD51">Circadian rhythm sleep disorder</option>
+						<option value="MD52">Claustrophobia</option>
+						<option value="MD53">Cocaine dependence</option>
+						<option value="MD54">Cocaine intoxication</option>
+						<option value="MD55">Cognitive disorder</option>
+						<option value="MD56">Communication disorder</option>
+						<option value="MD57">Conduct disorder</option>
+						<option value="MD58">Conversion disorder</option>
+						<option value="MD59">Cotard delusion</option>
+						<option value="MD60">Cyclothymic disorder</option>
+						<option value="MD61">Delirium</option>
+						<option value="MD62">Delusional disorder</option>
+						<option value="MD63">Delusional parasitosis (Ekbom's syndrome)</option>
+						<option value="MD64">Dementia</option>
+						<option value="MD65">Dependent personality disorder</option>
+						<option value="MD66">Depersonalization disorder</option>
+						<option value="MD67">Depression (mood)</option>
+						<option value="MD68">Depressive personality disorder</option>
+						<option value="MD69">Dermotillomania</option>
+						<option value="MD70">Developmental coordination disorder</option>
+						<option value="MD71">Diogenes syndrome</option>
+						<option value="MD72">Disinhibited social engagement disorder</option>
+						<option value="MD73">Disorder of written expression</option>
+						<option value="MD74">Dispareunia</option>
+						<option value="MD75">Disruptive mood dysregulation disorder</option>
+						<option value="MD76">Dissociative amnesia (Psychogenic amnesia)</option>
+						<option value="MD77">Dissociative identity disorder</option>
+						<option value="MD78">Down syndrome</option>
+						<option value="MD79">Drug withdrawal</option>
+						<option value="MD80">Dyscalculia</option>
+						<option value="MD81">Dyslexia</option>
+						<option value="MD82">Encopresis</option>
+						<option value="MD83">Enuresis</option>
+						<option value="MD84">Erectile disorder</option>
+						<option value="MD85">Erotomania</option>
+						<option value="MD86">Excoriation disorder</option>
+						<option value="MD87">Exhibitionistic disorder</option>
+						<option value="MD88">Expressive language disorder</option>
+						<option value="MD89">Factitious disorder</option>
+						<option value="MD90">Female sexual arousal/interest disorder</option>
+						<option value="MD91">Folie à deux (Shared psychotic disorder)</option>
+						<option value="MD92">Fregoli delusion</option>
+						<option value="MD93">Frotteuristic Disorder</option>
+						<option value="MD94">Fugue state</option>
+						<option value="MD95">Gambling disorder</option>
+						<option value="MD96">Ganser syndrome</option>
+						<option value="MD97">Gender dysphoria</option>
+						<option value="MD98">General adaptation syndrome</option>
+						<option value="MD99">Generalized anxiety disorder</option>
+						<option value="MD100">Grandiose delusions</option>
+						<option value="MD101">Hallucinogen persisting perception disorder</option>
+						<option value="MD102">Haltlose personality disorder</option>
+						<option value="MD103">Histrionic personality disorder</option>
+						<option value="MD104">Hoarding disorder</option>
+						<option value="MD105">Huntington's disease</option>
+						<option value="MD106">Hyperkinetic syndrome</option>
+						<option value="MD107">Hypersomnia</option>
+						<option value="MD108">Hypoactive sexual desire disorder</option>
+						<option value="MD109">Hypochondriasis</option>
+						<option value="MD110">Hypomanic episode</option>
+						<option value="MD111">Hysteria</option>
+						<option value="MD112">Illness anxiety disorder (Hypochondriasis)</option>
+						<option value="MD113">Impostor syndrome</option>
+						<option value="MD114">Impulse control disorder</option>
+						<option value="MD115">Inhalant use disorder</option>
+						<option value="MD116">Insomnia</option>
+						<option value="MD117">Intellectual development disorder</option>
+						<option value="MD118">Intermittent explosive disorder</option>
+						<option value="MD119">Internet gaming disorder</option>
+						<option value="MD120">Kleptomania</option>
+						<option value="MD121">Korsakoff's syndrome</option>
+						<option value="MD122">Lacunar amnesia</option>
+						<option value="MD123">Language disorder</option>
+						<option value="MD124">Learning disorder</option>
+						<option value="MD125">Major depressive disorder</option>
+						<option value="MD126">Major depressive episode</option>
+						<option value="MD127">Maladaptive daydreaming</option>
+						<option value="MD128">Male erectile disorder</option>
+						<option value="MD129">Malingering</option>
+						<option value="MD130">Mania</option>
+						<option value="MD131">Melancholia</option>
+						<option value="MD132">Minor depressive disorder</option>
+						<option value="MD133">Misophonia</option>
+						<option value="MD134">Mood disorder</option>
+						<option value="MD135">Morbid jealousy</option>
+						<option value="MD136">Munchausen syndrome</option>
+						<option value="MD137">Munchausen by proxy</option>
+						<option value="MD138">Mixed episode</option>
+						<option value="MD139">Narcissistic personality disorder</option>
+						<option value="MD140">Narcolepsy</option>
+						<option value="MD141">Neurodevelopmental disorder</option>
+						<option value="MD142">Neuroleptic-related disorder</option>
+						<option value="MD143">Nicotine dependence</option>
+						<option value="MD144">Nicotine withdrawal</option>
+						<option value="MD145">Night eating syndrome</option>
+						<option value="MD146">Nightmare disorder</option>
+						<option value="MD147">Non-suicidal self-injury</option>
+						<option value="MD148">Obsessive-compulsive disorder</option>
+						<option value="MD149">Obsessive-compulsive personality disorder</option>
+						<option value="MD150">Obsessive love disorder</option>
+						<option value="MD151">Oneirophrenia</option>
+						<option value="MD152">Onychophagia</option>
+						<option value="MD153">Opioid dependence</option>
+						<option value="MD154">Opioid use disorder</option>
+						<option value="MD155">Oppositional defiant disorder</option>
+						<option value="MD156">Orthorexia nervosa</option>
+						<option value="MD157">Other specified feeding or eating disorder</option>
+						<option value="MD158">Pain disorder</option>
+						<option value="MD159">Panic attack</option>
+						<option value="MD160">Panic disorder</option>
+						<option value="MD161">Paranoid personality disorder</option>
+						<option value="MD162">Parasomnia</option>
+						<option value="MD163">Parkinson's disease</option>
+						<option value="MD164">Partialism</option>
+						<option value="MD165">Passive-aggressive personality disorder</option>
+						<option value="MD166">Pathological gambling</option>
+						<option value="MD167">Pedophilic disorder</option>
+						<option value="MD168">Perfectionism</option>
+						<option value="MD169">Persecutory delusion</option>
+						<option value="MD170">Persistent complex bereavement disorder (Complicated grief disorder)</option>
+						<option value="MD171">Persistent depressive disorder (Dysthymia)</option>
+						<option value="MD172">Personality disorder</option>
+						<option value="MD173">Pervasive developmental disorder</option>
+						<option value="MD174">Pervasive developmental disorder not otherwise specified</option>
+						<option value="MD175">Phencyclidine-related disorder</option>
+						<option value="MD176">Phobic disorder (Phobia)</option>
+						<option value="MD177">Phonological disorder (Speech disorder)</option>
+						<option value="MD178">Physical abuse</option>
+						<option value="MD179">Pica (disorder)</option>
+						<option value="MD180">Polysubstance-related disorder</option>
+						<option value="MD181">Postpartum depression</option>
+						<option value="MD182">Posttraumatic embitterment disorder</option>
+						<option value="MD183">Posttraumatic stress disorder</option>
+						<option value="MD184">Premature ejaculation</option>
+						<option value="MD185">Premenstrual dysphoric disorder</option>
+						<option value="MD186">Primary hypersomnia</option>
+						<option value="MD187">Provisional tic disorder</option>
+						<option value="MD188">Pseudologia fantastica (Pathological lying)</option>
+						<option value="MD189">Psychogenic amnesia</option>
+						<option value="MD190">Psychoneurotic personality disorder</option>
+						<option value="MD191">Psychotic disorder (Psychosis)</option>
+						<option value="MD192">Pyromania</option>
+						<option value="MD193">Reactive attachment disorder</option>
+						<option value="MD194">Reading disorder</option>
+						<option value="MD195">Recurrent brief depression</option>
+						<option value="MD196">Relational disorder</option>
+						<option value="MD197">REM sleep behavior disorder</option>
+						<option value="MD198">Residual schizophrenia</option>
+						<option value="MD199">Restless legs syndrome</option>
+						<option value="MD200">Retrograde amnesia</option>
+						<option value="MD201">Retts disorder</option>
+						<option value="MD202">Rumination syndrome</option>
+						<option value="MD203">Sadistic personality disorder</option>
+						<option value="MD204">Schizoaffective disorder</option>
+						<option value="MD205">Schizoid personality disorder</option>
+						<option value="MD206">Schizophrenia</option>
+						<option value="MD207">Schizophreniform disorder</option>
+						<option value="MD208">Schizotypal personality disorder</option>
+						<option value="MD209">Seasonal affective disorder</option>
+						<option value="MD210">Sedative-, hypnotic-, or anxiolytic-related disorder</option>
+						<option value="MD211">Selective mutism</option>
+						<option value="MD212">Self-defeating personality disorder</option>
+						<option value="MD213">Separation anxiety disorder</option>
+						<option value="MD214">Sexual addiction</option>
+						<option value="MD215">Sexual fetishism</option>
+						<option value="MD216">Sexual masochism disorder</option>
+						<option value="MD217">Sexual sadism disorder</option>
+						<option value="MD218">Shared psychotic disorder</option>
+						<option value="MD219">Sleep disorder</option>
+						<option value="MD220">Sleep terror disorder</option>
+						<option value="MD221">Sleep paralysis</option>
+						<option value="MD222">Sleepwalking disorder</option>
+						<option value="MD223">Social anxiety disorder (Social phobia)</option>
+						<option value="MD224">Sociopathy (Psychopathy)</option>
+						<option value="MD225">Somatic symptom disorder</option>
+						<option value="MD226">Somatization disorder</option>
+						<option value="MD227">Specific phobia</option>
+						<option value="MD228">Stendhal syndrome</option>
+						<option value="MD229">Stereotypic movement disorder</option>
+						<option value="MD230">Stimulant use disorder</option>
+						<option value="MD231">Stockholm syndrome</option>
+						<option value="MD232">Stuttering</option>
+						<option value="MD233">Substance dependence</option>
+						<option value="MD234">Substance-related disorder</option>
+						<option value="MD235">Substance use disorder</option>
+						<option value="MD236">Suicidal ideation</option>
+						<option value="MD237">Suicide</option>
+						<option value="MD238">Tardive dyskinesia</option>
+						<option value="MD239">Tic disorder</option>
+						<option value="MD240">Tobacco use disorder (Nicotine dependence)</option>
+						<option value="MD241">Tourette syndrome</option>
+						<option value="MD242">Transient global amnesia</option>
+						<option value="MD243">Transvestic disorder</option>
+						<option value="MD244">Trichotillomania</option>
+						<option value="MD245">Truman syndrome</option>
+						<option value="MD246">Undifferentiated somatoform disorder (Somatic symptom disorder)</option>
+						<option value="MD247">Vaginismus</option>
+						<option value="MD248">Voyeuristic disorder</option>
+					</select>
+				</div>
+				<label for="mental-disabilities">MENTAL DISABILITIES</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="mental-strength" min="0" max="10" value="5"/>
+				</div>
+				<label for="mental-strength">MENTAL STRENGTH</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="mental-health" min="1" max="8" value="8"/>
+				</div>
+				<label for="mental-health">MENTAL STATE</label>
+			</div>
+		</div>
+		<div class="cosmetic-fields">
+			<h2>Personality</h2>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="temperament">
+						<option></option>
+						<option value="TP1">Choleric</div>
+						<option value="TP2">Melancholic</div>
+						<option value="TP3">Phlegmatic</div>
+						<option value="TP4">Sanguine</div>
+					</select>
+				</div>
+				<label for="temperament">TEMPERAMENT</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="confidence" min="0" max="10" value="5"/>
+				</div>
+				<label for="confidence">CONFIDENCE</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="modesty" min="0" max="10" value="5"/>
+				</div>
+				<label for="modesty">MODESTY</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="gravitas" min="0" max="10" value="5"/>
+				</div>
+				<label for="gravitas">GRAVITAS</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="shame" min="0" max="10" value="5"/>
+				</div>
+				<label for="shame">SHAME</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="kindness" min="0" max="10" value="5"/>
+				</div>
+				<label for="kindness">KINDNESS</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="disposition" min="0" max="10" value="5"/>
+				</div>
+				<label for="disposition">DISPOSITION</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="character" min="0" max="10" value="5"/>
+				</div>
+				<label for="character">CHARACTER</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="libido" min="0" max="10" value="5"/>
+				</div>
+				<label for="libido">LIBIDO</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="consistency" min="0" max="10" value="5"/>
+				</div>
+				<label for="consistency">CONSISTENCY</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="amity" min="0" max="10" value="5"/>
+				</div>
+				<label for="amity">AMITY</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="loyalty" min="0" max="10" value="5"/>
+				</div>
+				<label for="loyalty">LOYALTY</label>
+			</div>
+			<div class="field extra-large range">
+				<div class="border">
+					<input type="range" id="dependability" min="0" max="10" value="5"/>
+				</div>
+				<label for="dependability">DEPENDABILITY</label>
+			</div>
+		</div>
+		<div class="cosmetic-fields">
+			<h2>Interests</h2>
+			<div class="field">
+				<div class="border">
+					<select id="traveling">
+						<option value="L1">Love</option>
+						<option value="L2">Like</option>
+						<option value="L3" selected>Neutral</option>
+						<option value="L4">Dislike</option>
+						<option value="L5">Hate</option>
+					</select>
+				</div>
+				<label for="traveling">TRAVELING</label>
+			</div>
+			<div class="field">
+				<div class="border">
+					<select id="dating">
+						<option value="L1">Love</option>
+						<option value="L2">Like</option>
+						<option value="L3" selected>Neutral</option>
+						<option value="L4">Dislike</option>
+						<option value="L5">Hate</option>
+					</select>
+				</div>
+				<label for="dating">DATING</label>
+			</div>
+			<div class="field">
+				<div class="border">
+					<select id="partying">
+						<option value="L1">Love</option>
+						<option value="L2">Like</option>
+						<option value="L3" selected>Neutral</option>
+						<option value="L4">Dislike</option>
+						<option value="L5">Hate</option>
+					</select>
+				</div>
+				<label for="partying">PARTYING</label>
+			</div>
+			<div class="field">
+				<div class="border">
+					<select id="reading">
+						<option value="L1">Love</option>
+						<option value="L2">Like</option>
+						<option value="L3" selected>Neutral</option>
+						<option value="L4">Dislike</option>
+						<option value="L5">Hate</option>
+					</select>
+				</div>
+				<label for="reading">READING</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="academic-pursuit">
+						<option></option>
+						<option value="AP1">Anthropology</option>
+						<option value="AP2">Archaeology</option>
+						<option value="AP3">Arts</option>
+						<option value="AP4">Astrobiology</option>
+						<option value="AP5">Astronomy</option>
+						<option value="AP6">Astrophysics</option>
+						<option value="AP7">Biology</option>
+						<option value="AP8">Business</option>
+						<option value="AP9">Chemistry</option>
+						<option value="AP10">Computer Science</option>
+						<option value="AP11">Cybernetics</option>
+						<option value="AP12">Divine Magic</option>
+						<option value="AP13">Economics</option>
+						<option value="AP14">Elemental Magic</option>
+						<option value="AP15">Engineering and technology</option>
+						<option value="AP16">Formal Sciences</option>
+						<option value="AP17">Geography</option>
+						<option value="AP18">History</option>
+						<option value="AP19">Home economics</option>
+						<option value="AP20">Interstellar medium</option>
+						<option value="AP21">Languages and literature</option>
+						<option value="AP22">Law</option>
+						<option value="AP23">Mathematics</option>
+						<option value="AP24">Medicine and health</option>
+						<option value="AP25">Numerical simulations</option>
+						<option value="AP26">Philosophy</option>
+						<option value="AP27">Physical cosmology</option>
+						<option value="AP28">Planetary science</option>
+						<option value="AP29">Political science</option>
+						<option value="AP30">Psionics</option>
+						<option value="AP31">Psychology</option>
+						<option value="AP32">Social Work</option>
+						<option value="AP33">Sociology</option>
+						<option value="AP34">Statistics</option>
+						<option value="AP35">Stellar astrophysics</option>
+						<option value="AP36">Theology</option>
+					</select>
+				</div>
+				<label for="academic-pursuit">ACADEMIC PURSUIT</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="ideal-career"></textarea>
+				</div>
+				<label for="ideal-career">IDEAL CAREER</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border">
+					<textarea id="hobbies"></textarea>
+				</div>
+				<label for="hobbies">HOBBIES</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border">
+					<textarea id="genres"></textarea>
+				</div>
+				<label for="genres">GENRES</label>
+			</div>
+		</div>
+		<div class="cosmetic-fields">
+			<h2>Tastes</h2>
+			<div class="field extra-large">
+				<div class="border multi-select">
+					<select multiple id="flavours">
+						<option></option>
+						<option value="FL1">Bitter</option>
+						<option value="FL2">Salty</option>
+						<option value="FL3">Sour</option>
+						<option value="FL4">Spicy</option>
+						<option value="FL5">Sweet</option>
+						<option value="FL6">Umami</option>
+					</select>
+				</div>
+				<label for="flavours">FLAVOURS</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="foods"></textarea>
+				</div>
+				<label for="foods">FOODS</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="drinks"></textarea>
+				</div>
+				<label for="drinks">DRINKS</label>
+			</div>
+			<div class="field large">
+				<div class="border">
+					<textarea id="alchohol"></textarea>
+				</div>
+				<label for="alchohol">ALCHOHOL</label>
+			</div>
+			<div class="field extra-large">
+				<div class="border">
+					<textarea id="drugs"></textarea>
+				</div>
+				<label for="drugs">RECREATIONAL DRUGS</label>
+			</div>
+		</div>
 		<!-- Skills -->
 		<div class="spell-list">
 			<div class="list-header">
@@ -1020,6 +1970,7 @@
 		<p><a target="blank" href="https://game-icons.net">Icons</a> by <a target="_blank" href="https://delapouite.com">Delapouite</a>, <a target="_blank" href="https://lorcblog.blogspot.com">Lorc</a> and <a target="_blank" href="https://game-icons.net">Skoll</a> are licensed under a <a target="blank" href="https://www.creativecommons.org/licenses/by/3.0">CC BY 3.0 License</a>. Some icons have been modified.</p>
 		<p>Name generation possible thanks to <a target="_blank" href="https://www.fantasynamegenerators.com/">FantasyNameGenerators.com</a>.
 		<p>Built with the help of <a target="_blank" href="https://www.jquery.com">JQuery</a>, <a target="_blank" href="https://www.papaparse.com">Papa Parse</a>, <a target="_blank" href="https://harvesthq.github.io/chosen">Chosen.js</a>, <a target="_blank" href="https://github.com/ScottHamper/Cookies">Cookies.js</a> & <a target="_blank" href="https://bevacqua.github.io/dragula">Dragula.js</a>.</p>
+		<p><a target="_blank" href="https://www.healthline.com/health/different-genders">Gender</a> and <a target="_blank" href="https://www.healthline.com/health/different-types-of-sexuality">sexuality</a> identity lists constructed using information on <a target="_blank" href="https://www.healthline.com">Healthline.com</a></p>
 		<p>Initial game systems and content pulled from:</p>
 		<p id="footer-links">
 			<a target="_blank" href="http://www.onesevendesign.com/laserfeelings">Lasers & Feelings</a>
@@ -3370,6 +4321,7 @@
 	</div>
 	<!-- Scripts -->
 	<script src="plugins/chosen.jquery.min.js" type="text/javascript"></script>
+	<script src="plugins/jquery.ns-autogrow.min.js" type="text/javascript"></script>
 	<script src="plugins/papaparse.min.js" type="text/javascript"></script>
 	<script src="plugins/airtable.browser.js" type="text/javascript"></script>	
 	<script src="plugins/cookies.js" type="text/javascript"></script>
