@@ -2168,6 +2168,11 @@ $(function() {
 		placeholder_text_multiple: "Select belief(s)",
 		width: "100%"
 	});
+	$('#sins').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select sin(s)",
+		width: "100%"
+	});
 	//Auto resize textareas to work like editable content
 	$('textarea').autogrow({vertical: true, horizontal: false});
 	$('textarea').on('input', function() {
