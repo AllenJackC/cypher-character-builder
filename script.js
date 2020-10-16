@@ -2173,6 +2173,26 @@ $(function() {
 		placeholder_text_multiple: "Select sin(s)",
 		width: "100%"
 	});
+	$('#humour').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select type(s) of humour",
+		width: "100%"
+	});
+	$('#vices').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select vice(s)",
+		width: "100%"
+	});
+	$('#criminal-record').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select crime(s)",
+		width: "100%"
+	});
+	$('#patron').chosen({
+		no_results_text: "No results found.",
+		placeholder_text_multiple: "Select celestial patron(s)",
+		width: "100%"
+	});
 	//Auto resize textareas to work like editable content
 	$('textarea').autogrow({vertical: true, horizontal: false});
 	$('textarea').on('input', function() {
