@@ -546,7 +546,7 @@ function populateSpells() {
 			var spellID = spellListDatabase[i].id;
 			var optionID = curOption.substring(1);
 			var typeCheck = spellListDatabase[i].type;
-			console.log(typeCheck);
+			console.log(typeCheck + " " + spellID);
 			var spellType = '<img src="images/' + typeCheck.toLowerCase() + '.png">';
 			//Set the order of the spell in the flex-box by its Tier and name
 			var spellOrder = parseInt(String(parseInt(spellTier) + 1) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(0)) - 97,2) + leadZeros(parseInt(spellName.replace(/[^A-Za-z0-9_]/g,'').replace(/\s+/g,'').toLowerCase().charCodeAt(1)) - 97,2));
