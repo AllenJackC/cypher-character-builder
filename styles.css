@@ -1741,6 +1741,29 @@ input#sheet-id.loaded {
     font-variant: small-caps;
     margin: 2px 0 0 5px;
 }
+#1683 table, #1685 table {
+	padding-bottom: 20px;
+    border-spacing: 0;
+    width: auto;
+    margin: 0 auto;
+}
+#1683 th, #1685 th {
+	color: var(--black);
+    font-size: 16px;
+	font-weight: 700;
+    width: 60px;
+}
+#1683 tr td:first-child, #1685 tr td:first-child {
+	ont-weight: 700;
+    text-align: left;
+}
+#1683 td, #1685 td {
+	color: var(--black);
+    font-size: 16px;
+	height: 16px;
+    line-height: 1em;
+    border-top: 1px solid black;
+}
 @media (any-hover: none) {
 	h4 {
 		color: var(--button);
