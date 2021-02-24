@@ -1741,23 +1741,23 @@ input#sheet-id.loaded {
     font-variant: small-caps;
     margin: 2px 0 0 5px;
 }
-.spell#1683 table, .spell#1685 table {
+.spell table {
 	padding-bottom: 20px;
     border-spacing: 0;
     width: auto;
     margin: 0 auto;
 }
-.spell#1683 th, .spell#1685 th {
+.spell th {
 	color: var(--black);
     font-size: 16px;
 	font-weight: 700;
     width: 60px;
 }
-.spell#1683 tr td:first-child, .spell#1685 tr td:first-child {
+.spell tr td:first-child {
 	ont-weight: 700;
     text-align: left;
 }
-.spell#1683 td, .spell#1685 td {
+.spell td {
 	color: var(--black);
     font-size: 16px;
 	height: 16px;
