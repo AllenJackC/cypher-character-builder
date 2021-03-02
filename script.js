@@ -627,10 +627,13 @@ function populateSpells() {
 				var newOrigin = spellOrigin;
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
-				//the origin name; otherwise, create a spell card
+				//the origin name; otherwise, create a spell card.
+				//But if Speaks No Evil and either Recondite or Priestess
+				//of Ay'driel are selected, then don't create Tier 6
+				//Psi Magic spell
 				if ( $('#' + spellID).length > 0 ) {
 					$('#' + spellID + ' .origin').text(newOrigin);
-				} else {
+				} else if ( spellID != "1761" && ( typeVal != "A8" || typeVal != "B0" ) ) {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell + '"' + itemName + skillProficiency + 'style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
