@@ -510,6 +510,7 @@ function populateSpells() {
 	var priSpeciesVal = priSpecies.val();
 	var secSpeciesVal = secSpecies.val();
 	var typeVal = types.val();
+	var isPsiUser = types.val('A8') || types.val('B0');
 	var priFocusVal = priFoci.val();
 	var secFocusVal = secFoci.val();
 	var selectedAttributes = [];
@@ -633,7 +634,7 @@ function populateSpells() {
 				//Psi Magic spell
 				if ( $('#' + spellID).length > 0 ) {
 					$('#' + spellID + ' .origin').text(newOrigin);
-				} else if ( spellID != "1761" && ( typeVal != "A8" || typeVal != "B0" ) ) {
+				} else if ( spellID != "1761" && !isPsiUser ) {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell + '"' + itemName + skillProficiency + 'style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
