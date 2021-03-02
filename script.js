@@ -510,7 +510,7 @@ function populateSpells() {
 	var priSpeciesVal = priSpecies.val();
 	var secSpeciesVal = secSpecies.val();
 	var typeVal = types.val();
-	var isPsiUser = types.val('A8') || types.val('B0');
+	var isPsiUser = false;
 	var priFocusVal = priFoci.val();
 	var secFocusVal = secFoci.val();
 	var selectedAttributes = [];
@@ -526,6 +526,7 @@ function populateSpells() {
 	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
 	//If character has specialization foci, don't push Type
 	if ( typeVal && ['F8','G1','G2','G5','G6','K9','O7'].includes(priFocusVal) == false && ['F8','G1','G2','G5','G6','K9','O7'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
+	if ( typeVal == 'A8' || typeVal == 'B0' ) isPsiUser = true;
 	//If character has "Infected" descriptor and selects "Ascension",
 	//push "Worships Dark Beings" focus
 	if ( $('#0515', spellBook).hasClass('selected') ) {
