@@ -545,6 +545,7 @@ function populateSpells() {
 			var spellRank = spellListDatabase[i].rank;
 			var spellOptional = spellListDatabase[i].optional;
 			var spellID = spellListDatabase[i].id;
+			var duplicateSpell = false;
 			var optionID = curOption.substring(1);
 			var typeCheck = spellListDatabase[i].type;
 			var spellType = '<img src="images/' + typeCheck.toLowerCase() + '.png">';
@@ -561,6 +562,8 @@ function populateSpells() {
 			var itemEffect = spellListDatabase[i].itemeffect;
 			var spellOptional = spellListDatabase[i].optional;
 			var spellOrigin;
+			//Check for duplicate spells
+			if ( spellID == "1761" && isPsiUser ) duplicateSpell = true;
 			//Check to see if these values exist to avoid
 			//empty line breaks in the spell card
 			if ( spellName == "<hide>" || typeCheck == "Status" ) hideThis = " hidden-spell";
@@ -608,7 +611,7 @@ function populateSpells() {
 			//If the current spell in the array is associated with this attribute
 			//and the current tier is equal or lower to the tier of the spell,
 			//define parameters and create a new div on the page for the spell
-			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck) && spellRank > curTier ) {
+			if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && ['Action','Talent','Select','Note','Skill','Status'].includes(typeCheck) && spellRank > curTier && !duplicateSpell ) {
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card.
 				var skillProficiency = spellListDatabase[i].itemtype;
@@ -629,12 +632,9 @@ function populateSpells() {
 				spellOrigin = '<span class="origin">' + spellOrigin + '</span>';
 				//If the spell ID is already on the page, just change
 				//the origin name; otherwise, create a spell card.
-				//But if Speaks No Evil and either Recondite or Priestess
-				//of Ay'driel are selected, then don't create Tier 6
-				//Psi Magic spell
 				if ( $('#' + spellID).length > 0 ) {
 					$('#' + spellID + ' .origin').text(newOrigin);
-				} else if ( spellID != "1761" && !isPsiUser ) {
+				} else {
 					$('#spellbook').append(
 						'<div id="' + spellID + '" class="spell' + hideThis + optionalSpell + '"' + itemName + skillProficiency + 'style="order: ' + spellOrder + '">' +
 							'<div class="header">' +
