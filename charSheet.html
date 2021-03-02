@@ -249,6 +249,14 @@
 							<option value="S6">Busy</option>
 							<option value="S7">Callous</option>
 							<option value="S8">Candid</option>
+							<option value="S9">Grumpy</option>
+							<option value="T1">Careful</option>
+							<option value="T2">Careless</option>
+							<option value="T3">Caring</option>
+							<option value="T4">Cautious</option>
+							<option value="T5">Charismatic</option>
+							<option value="T6">Charitable</option>
+							<option value="T7">Chatty</option>
 						</select>
 					</div>
 					<label for="descriptors">DESCRIPTOR</label>
@@ -484,7 +492,10 @@
 							<option value="Q9">Avoids Conflict</option>
 							<option value="R1">Cultivates Opportunities</option>
 							<option value="R2">Deflects Blame</option>
-							<option value="R3">Sees Without Eyes</option>
+							<option value="R3">Sees No Evil</option>
+							<option value="R4">Provides Excellent Care</option>
+							<option value="R5">Hears No Evil</option>
+							<option value="R6">Speaks No Evil</option>
 						</select>
 					</div>
 					<label for="foci">FOCUS</label>
@@ -648,7 +659,10 @@
 							<option value="Q9">Avoids Conflict</option>
 							<option value="R1">Cultivates Opportunities</option>
 							<option value="R2">Deflects Blame</option>
-							<option value="R3">Sees Without Eyes</option>
+							<option value="R3">Sees No Evil</option>
+							<option value="R4">Provides Excellent Care</option>
+							<option value="R5">Hears No Evil</option>
+							<option value="R6">Speaks No Evil</option>
 						</select>
 					</div>
 					<label for="secondary-foci">SECONDARY FOCUS</label>
@@ -830,6 +844,18 @@
 						</span>
 					</div>
 				</div>
+			</div>
+		</div>
+		<!-- Karma -->
+		<div class="spell-list">
+			<div class="list-header">
+				<img src="images/karma.png">
+				<h2>Karma</h2>
+			</div>
+			<div id="karma-section">
+				<div id="karma-number">0 Points</div>
+				<div id="karma-up">&#x25b2;</div>
+				<div class="disabled" id="karma-down">&#x25bc;</div>
 			</div>
 		</div>
 		<!-- Skills -->
@@ -2362,6 +2388,10 @@
 							<td>Modifies how investigation <em>Tasks</em> work.  Or, the associated <em>Ability</em> has something to do with investigating that isn't directly related to your roll.</td>
 						</tr>
 						<tr>
+							<td>Karma</td>
+							<td>Add a die to any dice roll, heal a point of Harm on yourself, gain 1 XP, re-roll a dice roll or gain Insight.</td>
+						</tr>
+						<tr>
 							<td>Knock Down</td>
 							<td>Knock down the target so that they become prone when <em>Attacking</em>.</td>
 						</tr>
@@ -3305,6 +3335,10 @@
 						<tr>
 							<td>Item</td>
 							<td>Any object that you can feasibly claim to own. This could be something as simple as a rock or a water bottle, to assets like starships or a house.</td>
+						</tr>
+						<tr>
+							<td>Karma</td>
+							<td>A special resource unique to the Charitable descriptor that can be spent for various benefits.</td>
 						</tr>
 						<tr>
 							<td>Language</td>

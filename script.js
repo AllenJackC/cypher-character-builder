@@ -902,6 +902,10 @@ function populateSpells() {
 		$('.spell', spellBook).removeClass('hide-for-select');
 	}
 	populateSpellLists();
+	//Show or hide Karma section for Charitable descriptor
+	var karmaSection = $('#karma-section').parent('.spell-list');
+	if ( descriptorVal == "T6" && karmaSection.is(':hidden') ) karmaSection.stop().slideToggle(300);
+	else if ( descriptorVal != "T6" && karmaSection.is(':visible') ) karmaSection.stop().slideToggle(200);
 }
 //Populate each individual spell list on the main character sheet
 function populateSpellLists() {	
@@ -2042,6 +2046,9 @@ $(function() {
 	feelingsTooltip = $('#feelings-tooltip');
 	resetButton = $('#reset-button');
 	resetTooltip = $('#reset-tooltip');
+	karmaNumber = $('#karma-number');
+	karmaUpButton = $('#karma-up');
+	karmaDownButton = $('#karma-down');
 	addSkillButton = $('#add-skill');
 	spellBook = $('#spellbook');
 	spellbookButton = $('#open-spellbook');
@@ -2494,6 +2501,7 @@ $(function() {
 		tierNumber.text('1');
 		xpDownButton.addClass('disabled');
 		xpUpButton.removeClass('disabled');
+		karmaDownButton.addClass('disabled');
 		availSpellCount = 4;
 		selectedSpellCount = 0;
 		descriptors.val('');
@@ -2804,6 +2812,20 @@ $(function() {
 		populateSpells();
 		if ( curXP < 16 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
 		if ( curXP === 0 ) xpDownButton.addClass('disabled');
+	});
+	//Increase and decrease Karma points when buttons are pushed
+	karmaUpButton.click( function() {
+		var karmaPoints = karmaNumber.text().replace(' Points', '');
+		karmaDownButton.removeClass('disabled');
+		karmaPoints++;
+		karmaNumber.text(karmaPoints + ' Points');
+	});
+	karmaDownButton.click( function() {
+		var karmaPoints = karmaNumber.text().replace(' Points', '');
+		karmaDownButton.removeClass('disabled');
+		karmaPoints--;
+		karmaNumber.text(karmaPoints + ' Points');
+		if ( karmaPoints === 0 ) karmaDownButton.addClass('disabled');
 	});
 	//Click headers to expand sub-headers and content in the rules
 	//and check for any visible 'child' headers or topics to
