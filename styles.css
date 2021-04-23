@@ -866,7 +866,7 @@ div.proficiency {
     align-items: flex-start;
 	color: var(--white);
 }
-#xp-up.disabled, #xp-down.disabled, #karma-down.disabled {
+#xp-up.disabled, #xp-down.disabled, #karma-down.disabled, .secondary-button div.disabled {
 	opacity: 0.5;
 	pointer-events: none;
 }

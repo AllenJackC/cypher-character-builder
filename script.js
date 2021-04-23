@@ -77,6 +77,8 @@ var base;
 var currentSheetID;
 var saveInterval;
 var recordID;
+var tierDifference;
+var wasEwoche;
 //Check if an integer is even
 function isEven(value) {
 	if (value%2 == 0)
@@ -112,7 +114,8 @@ function setStoryArc(arc) {
 		$(this).removeAttr('disabled');
 	});
 	$('option[data-arc]').each( function() {
-		if( $(this).data('arc') >= arc) {
+		optSection = $(this).closest('.attribute').attr('id');
+		if ( $(this).data('arc') > arc ) {
 			$(this).prop('hidden', true);
 			$(this).hide();
 		} else {
@@ -273,8 +276,26 @@ function populateSpecies() {
 	}
 	//Disable the currently selected primary or secondary species based on the
 	//respective selection in the other field, stopping users from double dipping
-	if ( priSpeciesVal ) $('#secondary-species option[value=' + priSpeciesVal + ']').prop('disabled', true);
-	if ( secSpeciesVal ) $('#species option[value=' + secSpeciesVal + ']').prop('disabled', true);
+	if ( priSpeciesVal == 4 && curArc === 2 ) {
+		$('#secondary-species option').prop('disabled', true);
+		$('#secondary-species option[value=8]').prop('disabled', false);
+	} else if ( priSpeciesVal == 8 && curArc === 2 ) {
+		$('#secondary-species option').prop('disabled', true);
+		$('#secondary-species option[value=4]').prop('disabled', false);
+	} else if ( priSpeciesVal ) {
+		$('#secondary-species option[value=' + priSpeciesVal + ']').prop('disabled', true);
+	}
+	if ( secSpeciesVal == 4 && curArc === 2 ) {
+		$('#species option').prop('disabled', true);
+		$('#species option[value=8]').prop('disabled', false);
+	} else if ( secSpeciesVal == 8 && curArc === 2 ) {
+		$('#species option').prop('disabled', true);
+		$('#species option[value=4]').prop('disabled', false);
+	} else if ( secSpeciesVal ) {
+		$('#species option[value=' + secSpeciesVal + ']').prop('disabled', true);
+		$('#species option[value=2]').prop('disabled', true);
+		$('#species option[value=7]').prop('disabled', true);
+	}
 	//Do not display any options that are marked as 'hidden' by the startup story arc function
 	hideOptions(speciesOptions);
 	//Trigger an update of the contents of both species select fields
@@ -1284,6 +1305,13 @@ function addItem(spellID,itemName,itemType,itemValue,itemState) {
 	}
 	populateInventorySelect();
 }
+//Populate all of the active artifact select fields
+function populateArtifactSelect() {
+	$('#artifacts .equip select').chosen({
+		disable_search: true,
+		width: "fit-content"
+	});
+}
 //Add a blank artifact, unless variables are parsed
 function addArtifact(spellID,itemName,itemEffect) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
@@ -1293,6 +1321,13 @@ function addArtifact(spellID,itemName,itemEffect) {
 	var artifactToAdd =
 		'<tr class="item"' + spellID + '>' +
 			'<td class="arrow mobile-handle"></td>' +
+			'<td class="equip">' +
+				'<select>' +
+					'<option selected value="S">Stashed</option>' +
+					'<option value="R">Readied</option>' +
+					'<option value="E">Equipped</option>' +
+				'</select>' +
+			'</td>' +
 			'<td class="name">' +
 				'<div class="editable" contenteditable="true">' + itemName + '</div>' +
 			'</td>' +
@@ -1303,6 +1338,7 @@ function addArtifact(spellID,itemName,itemEffect) {
 		'</tr>';
 	if ( spellID ) $(artifactToAdd).insertAfter('#artifacts table tr:first-child');
 	else artifactsList.append(artifactToAdd);
+	populateArtifactSelect();
 }
 //Populate all of the active item select fields
 function populateCyberwareSelect() {
@@ -2091,12 +2127,14 @@ $(function() {
 	notesDeleteSpace = $('#notes .delete-space');
 	firstDrag = true;
 	randomNameButton = $('#random-name');
+	wasEwoche = false;
 	periodCount = 0;
 	Airtable = require('airtable');
 	base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
 	//Initial variables
-	curArc = 2;
+	curArc = 3;
 	curTier = 1;
+	tierDifference = 2;
 	curXP = 0;
 	spellListDatabase = [];
 	//Setup spell list database
@@ -2150,6 +2188,7 @@ $(function() {
 	//and initate drag and drop
 	populateCyberwareSelect();
 	populateInventorySelect();
+	populateArtifactSelect();
 	populateContactSelect();
 	//Autoload sheet if accessing from existing device
 	if ( Cookies.get('sheetID') ) {
@@ -2501,6 +2540,7 @@ $(function() {
 	//Does not affect hybrid toggle
 	resetButton.click(function(){
 		curTier = 1;
+		tierDifference = 2;
 		curXP = 0;
 		xpNumber.text('0 XP');
 		tierNumber.text('1');
@@ -2553,6 +2593,49 @@ $(function() {
 		populateSpells();
 	});
 	species.on('change', function() {
+		if ( priSpecies.val() == 2 || priSpecies.val() == 7 ) {
+			hybridButton.addClass('disabled');
+			hybridButton.removeClass('clicked');
+			if ( hybridSection.is(':visible') ) {
+				hybridSection.stop().slideToggle({
+					duration: 300,
+					done: function() {
+						$('#character-attributes').removeClass('with-sec-species');
+					}
+				});
+			}
+			secSpecies.val('');
+			populateSpecies();
+			populateTypes();
+			populateFoci();
+			populateSpells();
+		} else {
+			hybridButton.removeClass('disabled');
+		}
+		if ( priSpecies.val() == 2 ) {
+			var storedTier = curTier;
+			curTier = curTier + tierDifference;
+			tierDifference = curTier - storedTier;
+			if ( curTier > 6 ) curTier = 6;
+			if ( curXP >= (90 - ((curTier - 1) * 16)) ) {
+				curXP = 90 - ((curTier - 1) * 16);
+				xpUpButton.addClass('disabled');
+				xpNumber.text(curXP + ' XP');
+			} else if ( curXP < (90 - ((curTier - 1) * 16)) ) {
+				xpUpButton.removeClass('disabled');
+			}
+			if ( curTier === 6 && nextTierButton.is(':visible') ) nextTierButton.slideToggle(150);
+			tierNumber.text(curTier);
+			wasEwoche = true;
+		} else if ( wasEwoche ) {
+			var storedTier = curTier;
+			curTier = curTier - tierDifference;
+			tierDifference = storedTier - curTier;
+			tierNumber.text(curTier);
+			wasEwoche = false;
+			if ( curXP < (90 - ((curTier - 1) * 16)) ) xpUpButton.removeClass('disabled');
+			if ( curXP >= 16 && nextTierButton.is(':hidden') ) nextTierButton.slideToggle(150);
+		}
 		populateSpecies();
 		populateTypes();
 		populateFoci();
