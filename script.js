@@ -517,8 +517,8 @@ function populateFoci() {
 			}
 		});
 	}
-	//If the "Wealthy" descriptor is selected
-	if ( descriptorVal === "M7" ) $('#foci option[value="E8"], #secondary-foci option[value="E8"]').prop('disabled', true);
+	//If the "Wealthy" or "Poor" descriptor is selected
+	if ( descriptorVal === "M7" || descriptorVal === "1D" ) $('#foci option[value="E8"], #secondary-foci option[value="E8"]').prop('disabled', true);
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
 	hideOptions(fociOptions);
 	//Trigger an update of the contents
@@ -584,8 +584,12 @@ function populateSpells() {
 			var itemEffect = spellListDatabase[i].itemeffect;
 			var spellOptional = spellListDatabase[i].optional;
 			var spellOrigin;
+			var excludedPoor = false;
 			//Check for duplicate spells
 			if ( spellID == "1761" && isPsiUser ) duplicateSpell = true;
+			//Check if the Descriptor is "Poor". If so,
+			//exclude base items from the Type
+			if ( (spellID == "0322" || spellID == "0276" || spellID == "0277" || spellID == "1560" || spellID == "1561" || spellID == "1562" || spellID == "1563" || spellID = "0009") && descriptorVal = "1D" ) excludedPoor = true;
 			//Check to see if these values exist to avoid
 			//empty line breaks in the spell card
 			if ( spellName == "<hide>" || typeCheck == "Status" ) hideThis = " hidden-spell";
@@ -687,7 +691,7 @@ function populateSpells() {
 				}
 				//Push this spell to the spell list array
 				spellsList.push(parseInt(spellID));
-			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" ) {
+			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Items" && !excludedPoor ) {
 				//Variables specific to items
 				var itemType = spellListDatabase[i].itemtype;
 				var itemValue = spellListDatabase[i].itemvalue;
@@ -2674,9 +2678,11 @@ $(function() {
 		//If "Has More Money Than Sense" focus is selected
 		if ( curFocus === "E8" || secFoci.val() === "E8" ) {
 			$('#descriptors option[value="M7"]').prop('disabled', true);
+			$('#descriptors option[value="1D"]').prop('disabled', true);
 			descriptors.trigger('chosen:updated');
 		} else {
 			$('#descriptors option[value="M7"]').prop('disabled', false);
+			$('#descriptors option[value="1D"]').prop('disabled', false);
 			descriptors.trigger('chosen:updated');
 		}
 		populateSpecies();
