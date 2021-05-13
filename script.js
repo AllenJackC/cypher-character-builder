@@ -589,7 +589,7 @@ function populateSpells() {
 			if ( spellID == "1761" && isPsiUser ) duplicateSpell = true;
 			//Check if the Descriptor is "Poor". If so,
 			//exclude base items from the Type
-			if ( (spellID == "0322" || spellID == "0276" || spellID == "0277" || spellID == "1560" || spellID == "1561" || spellID == "1562" || spellID == "1563" || spellID = "0009") && descriptorVal = "1D" ) excludedPoor = true;
+			if ( (spellID == "0322" || spellID == "0276" || spellID == "0277" || spellID == "1560" || spellID == "1561" || spellID == "1562" || spellID == "1563" || spellID == "0009") && descriptorVal == "1D" ) excludedPoor = true;
 			//Check to see if these values exist to avoid
 			//empty line breaks in the spell card
 			if ( spellName == "<hide>" || typeCheck == "Status" ) hideThis = " hidden-spell";
