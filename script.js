@@ -123,6 +123,10 @@ function setStoryArc(arc) {
 			$(this).show();
 		}
 	});
+	$('tr[data-arc], td[data-arc]').each( function() {;
+		if ( $(this).data('arc') > arc ) $(this).hide();
+		else $(this).show();
+	});
 }
 //Hide any options that are marked as 'hidden' by the startup story arc function
 function hideOptions(options) {
