@@ -2141,7 +2141,7 @@ $(function() {
 	Airtable = require('airtable');
 	base = new Airtable({apiKey: 'keymlfH0gK5O3u0wp'}).base('appP3SrsrqcRFnoX7');
 	//Initial variables
-	curArc = 2;
+	curArc = 1;
 	curTier = 1;
 	tierDifference = 2;
 	curXP = 0;
