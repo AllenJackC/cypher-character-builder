@@ -937,7 +937,7 @@ function populateSpells() {
 	if ( descriptorVal == "T6" && karmaSection.is(':hidden') ) karmaSection.stop().slideToggle(300);
 	else if ( descriptorVal != "T6" && karmaSection.is(':visible') ) karmaSection.stop().slideToggle(200);
 	//Hide or show table elements based on the current Arc
-	$('tr[data-arc], td[data-arc]').each( function() {;
+	$('tr[data-arc], td[data-arc], th[data-arc]').each( function() {;
 		if ( $(this).data('arc') > curArc ) $(this).hide();
 		else $(this).show();
 	});
