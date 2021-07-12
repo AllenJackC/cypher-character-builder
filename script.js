@@ -532,6 +532,7 @@ function populateSpells() {
 	var secSpeciesVal = secSpecies.val();
 	var typeVal = types.val();
 	var isPsiUser = false;
+	var isAuraUser = false;
 	var priFocusVal = priFoci.val();
 	var secFocusVal = secFoci.val();
 	var selectedAttributes = [];
@@ -548,6 +549,7 @@ function populateSpells() {
 	//If character has specialization foci, don't push Type
 	if ( typeVal && ['F8','G1','G2','G5','G6','K9','O7'].includes(priFocusVal) == false && ['F8','G1','G2','G5','G6','K9','O7'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
 	if ( typeVal == 'A8' || typeVal == 'B0' ) isPsiUser = true;
+	if ( typeVal == 'B7' ) isAuraUser = true;
 	//If character has "Infected" descriptor and selects "Ascension",
 	//push "Worships Dark Beings" focus
 	if ( $('#0515', spellBook).hasClass('selected') ) {
@@ -586,7 +588,7 @@ function populateSpells() {
 			var spellOrigin;
 			var excludedPoor = false;
 			//Check for duplicate spells
-			if ( spellID == "1761" && isPsiUser ) duplicateSpell = true;
+			if ( (spellID == "1761" && isPsiUser) || (spellID == "1719" && isAuraUser) ) duplicateSpell = true;
 			//Check if the Descriptor is "Poor". If so,
 			//exclude base items from the Type
 			if ( (spellID == "0322" || spellID == "1560" || spellID == "1561" || spellID == "1562" || spellID == "1563" || spellID == "0009") && descriptorVal == "1D" ) excludedPoor = true;

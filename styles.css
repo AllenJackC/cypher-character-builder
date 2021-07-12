@@ -790,6 +790,12 @@ div.proficiency {
 .glossary-rules td:first-child {
 	font-weight: 800;
 }
+.social-encounters-rules tr td:nth-child(n+2) {
+	white-space: normal;
+}
+#rules .social-encounters-rules th {
+	text-align: center;
+}
 #footer {
 	color: var(--light-grey);
     font-size: 12px;
