@@ -1650,6 +1650,7 @@ function saveSheet() {
 			cyberwareEffects = cyberwareDescriptions.join('¬');
 			cyberwareCosts = cyberwareCosts.join('¬');
 		}
+		console.log(cyberwareDescriptions);
 		//Building contacts arrays
 		$('#contacts .item .name .editable').each( function() {
 			contactNames.push($(this).text());
