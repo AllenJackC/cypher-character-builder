@@ -1647,30 +1647,6 @@ function saveSheet() {
 			cyberwareEffects = cyberwareDescriptions.join('¬');
 			cyberwareCosts = cyberwareCosts.join('¬');
 		}
-		
-		$('.cyberware .editable').each( function() {
-			cyberwareDescriptions.push($(this).text());
-		});
-		$('.cyberware').each( function() {
-			var thisBodyPart = $(this).attr('class').replace('cyberware','').replace(/\s/g,'');
-			cyberwareBodyParts.push(thisBodyPart);
-			if ( $(this).attr('data-spellid') ) cyberwareIDs.push($(this).attr('data-spellid'));
-			else cyberwareIDs.push('');
-		});
-		$('.cyberware .name select').each( function() {
-			cyberwareTypes.push($(this).val());
-		});
-		if ( cyberwareDescriptions.length < 1 ) {
-			cyberwareDescriptions = "";
-			cyberwareIDs = "";
-			cyberwareTypes = "";
-			cyberwareBodyParts = "";
-		} else {
-			cyberwareDescriptions = cyberwareDescriptions.join('¬');
-			cyberwareIDs = cyberwareIDs.join('¬');
-			cyberwareTypes = cyberwareTypes.join('¬');
-			cyberwareBodyParts = cyberwareBodyParts.join('¬');
-		}
 		//Building contacts arrays
 		$('#contacts .item .name .editable').each( function() {
 			contactNames.push($(this).text());
