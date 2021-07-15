@@ -1554,12 +1554,15 @@ function saveSheet() {
 		var cyberwareCosts = [];
 		var notesArray = [];
 		var noteIDs = [];
+		var secondarySpeciesValues;
 		if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
 		else isHybrid = "false";
 		if ( $('#logic-feelings .selected').length > 0 ) feelingsLogic = $('#logic-feelings .selected').attr('data-number');
 		else feelingsLogic = "unset";
 		if ( $('#magic-tech .selected').length > 0 ) magicTech = $('#magic-tech .selected').attr('data-number');
 		else magicTech = "unset";
+		if ( $('#secondary-species').val() ) secondarySpeciesValues = $('#secondary-species').val().join('¬');
+		else secondarySpeciesValues = "";
 		//Building selections array
 		$('#spellbook .spell.optional.selected').each( function() {
 			selectionsArray.push($(this).attr('id'));
@@ -1701,7 +1704,7 @@ function saveSheet() {
 				"descriptor": $('#descriptors').val(),
 				"species": $('#species').val(),
 				"hybrid": isHybrid,
-				"secondary-species": $('#secondary-species').val().join('¬');
+				"secondary-species": secondarySpeciesValues,
 				"type": $('#types').val(),
 				"focus": $('#foci').val(),
 				"secondary-focus": $('#secondary-foci').val(),
@@ -1771,7 +1774,7 @@ function loadCharaSheet(sheetID,autoLoad) {
 						$('#descriptors').val(record.get('descriptor'));
 						$('#descriptors').trigger('chosen:updated');
 						$('#species').val(record.get('species'));
-						$('#secondary-species').val(record.get('secondary-species').split('¬'));
+						if ( record.get('secondary-species') ) $('#secondary-species').val(record.get('secondary-species').split('¬'));
 						$('#types').val(record.get('type'));
 						$('#foci').val(record.get('focus'));
 						$('#secondary-foci').val(record.get('secondary-focus'));
