@@ -1549,8 +1549,9 @@ function saveSheet() {
 		var contactSkills = [];
 		var cyberwareBodyParts = [];
 		var cyberwareIDs = [];
-		var cyberwareTypes = [];
+		var cyberwareNames = [];
 		var cyberwareDescriptions = [];
+		var cyberwareCosts = [];
 		var notesArray = [];
 		var noteIDs = [];
 		if ( $('#hybrid-button div').hasClass('clicked') ) isHybrid = "true";
@@ -1622,6 +1623,31 @@ function saveSheet() {
 			artifactEffects = artifactEffects.join('¬');
 		}
 		//Building cyberware arrays
+		$('#cyberware .item .name .editable').each( function() {
+			cyberwareNames.push($(this).text());
+		});
+		$('#cyberware .item').each( function() {
+			if ( $(this).attr('data-spellid') ) cyberwareIDs.push($(this).attr('data-spellid'));
+			else cyberwareIDs.push('');
+		});
+		$('#cyberware .item .effect .editable').each( function() {
+			cyberwareDescriptions.push($(this).text());
+		});
+		$('#cyberware .item .value select').each( function() {
+			cyberwareCosts.push($(this).val());
+		});
+		if ( cyberwareNames.length < 1 ) {
+			cyberwareNames = "";
+			cyberwareIDs = "";
+			cyberwareDescriptions = "";
+			cyberwareCosts = "";
+		} else {
+			cyberwareNames = cyberwareNames.join('¬');
+			cyberwareIDs = cyberwareIDs.join('¬');
+			cyberwareEffects = cyberwareDescriptions.join('¬');
+			cyberwareCosts = cyberwareCosts.join('¬');
+		}
+		
 		$('.cyberware .editable').each( function() {
 			cyberwareDescriptions.push($(this).text());
 		});
@@ -1631,7 +1657,7 @@ function saveSheet() {
 			if ( $(this).attr('data-spellid') ) cyberwareIDs.push($(this).attr('data-spellid'));
 			else cyberwareIDs.push('');
 		});
-		$('.cyberware .type select').each( function() {
+		$('.cyberware .name select').each( function() {
 			cyberwareTypes.push($(this).val());
 		});
 		if ( cyberwareDescriptions.length < 1 ) {
@@ -1724,8 +1750,9 @@ function saveSheet() {
 				"contact-skills":contactSkills,
 				"cyberwares": cyberwareDescriptions,
 				"cyberware-ids": cyberwareIDs,
-				"cyberware-types": cyberwareTypes,
+				"cyberware-names": cyberwareNames,
 				"cyberware-bodyparts": cyberwareBodyParts,
+				"cyberware-costs": cyberwareCosts,
 				"notes": notesArray,
 				"note-ids": noteIDs
 			}
@@ -1969,46 +1996,29 @@ function loadCharaSheet(sheetID,autoLoad) {
 							addArtifact();
 						}
 						//Load cyberware
-						if ( record.get('cyberwares') ) {
-							if ($('#cyberware').is(':hidden')) $('#cyberware').stop().slideToggle(300);
-							enableCyberware.addClass('clicked');
-							$('.cyberware').each( function() {
+						if ( record.get('cyberware') ) {
+							$('#cyberware .item').each( function() {
 								$(this).remove();
 							});
-							$('#cyber-mannequin img').each( function() {
-								var cyberwareBodyPart = $(this).attr('class');
-								$(this).attr('src',  'images/cyber'+ cyberwareBodyPart + '.png');
-							});
-							var cyberwareDescriptions = record.get('cyberwares').split('¬');
-							var cyberwareTypes = record.get('cyberware-types').split('¬');
+							var cyberwareNames = record.get('cyberware-names').split('¬');
+							var cyberwareFunctions = record.get('cyberwares')split('¬');
 							var cyberwareBodyParts = record.get('cyberware-bodyparts').split('¬');
+							var cyberwareCosts = record.get('cyberware-costs')split('¬');
 							if ( record.get('cyberware-ids') ) {
 								var cyberwareIDs = record.get('cyberware-ids').split('¬');
-								for (var i = 0; i < cyberwareDescriptions.length; i++) {
-									var cyberImage = $('#cyber-mannequin img.' + cyberwareBodyParts[i]);
-									var cyberwareBodyPart = cyberwareBodyParts[i] + "-cyberware";
-									addCyberware(cyberwareIDs[i],cyberwareBodyPart,cyberwareDescriptions[i],cyberwareTypes[i]);
-									cyberImage.addClass('modded');
-									cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
+								for (var i = 0; i < cyberwareNames.length; i++) {
+									addCyberware(cyberwareIDs[i],cyberwareBodyParts[1],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
 								}
 							} else {
-								for (var i = 0; i < cyberwareDescriptions.length; i++) {
-									var cyberImage = $('#cyber-mannequin img.' + cyberwareBodyParts[i]);
-									var cyberwareBodyPart = cyberwareBodyParts[i] + "-cyberware";
-									addCyberware(undefined,cyberwareBodyPart,cyberwareDescriptions[i],cyberwareTypes[i]);
-									cyberImage.addClass('modded active');
-									cyberImage.attr('src',  'images/cyber'+ cyberwareBodyParts[i] + '-modded.png');
+								for (var i = 0; i < cyberwareNames.length; i++) {
+									addCyberware(undefined,cyberwareBodyParts[1],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
 								}
 							}
 						} else {
-							$('.cyberware').each( function() {
+							$('#cyberware .item').each( function() {
 								$(this).remove();
 							});
-							$('#cyber-mannequin img').each( function() {
-								$(this).removeClass('modded active');
-								var cyberwareBodyPart = $(this).attr('class');
-								$(this).attr('src',  'images/cyber'+ cyberwareBodyPart + '.png');
-							});
+							addCyberware();
 						}
 						//Load contacts
 						if ( record.get('contacts') ) {
