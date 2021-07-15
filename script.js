@@ -1701,7 +1701,7 @@ function saveSheet() {
 				"descriptor": $('#descriptors').val(),
 				"species": $('#species').val(),
 				"hybrid": isHybrid,
-				"secondary-species": $('#secondary-species').val(),
+				"secondary-species": $('#secondary-species').val().join('¬');
 				"type": $('#types').val(),
 				"focus": $('#foci').val(),
 				"secondary-focus": $('#secondary-foci').val(),
@@ -1771,7 +1771,7 @@ function loadCharaSheet(sheetID,autoLoad) {
 						$('#descriptors').val(record.get('descriptor'));
 						$('#descriptors').trigger('chosen:updated');
 						$('#species').val(record.get('species'));
-						$('#secondary-species').val(record.get('secondary-species'));
+						$('#secondary-species').val(record.get('secondary-species').split('¬'));
 						$('#types').val(record.get('type'));
 						$('#foci').val(record.get('focus'));
 						$('#secondary-foci').val(record.get('secondary-focus'));
