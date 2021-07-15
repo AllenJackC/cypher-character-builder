@@ -47,6 +47,7 @@ var cyberwareSection;
 var cyberBodyParts;
 var cyberwareImages;
 var cyberwareDeleteSpace;
+var cyberwareList;
 var addItemButton;
 var inventoryList;
 var inventoryBody;
@@ -285,14 +286,16 @@ function populateSpecies() {
 	} else if ( priSpeciesVal ) {
 		$('#secondary-species option[value=' + priSpeciesVal + ']').prop('disabled', true);
 	}
-	if ( secSpeciesVal == 4 && curArc === 2 ) {
+	if ( jQuery.inArray(4, secSpeciesVal) != -1 && curArc === 2 ) {
 		$('#species option').prop('disabled', true);
 		$('#species option[value=8]').prop('disabled', false);
-	} else if ( secSpeciesVal == 8 && curArc === 2 ) {
+	} else if ( jQuery.inArray(8, secSpeciesVal) != -1 && curArc === 2 ) {
 		$('#species option').prop('disabled', true);
 		$('#species option[value=4]').prop('disabled', false);
 	} else if ( secSpeciesVal ) {
-		$('#species option[value=' + secSpeciesVal + ']').prop('disabled', true);
+		$.each( secSpeciesVal, function( index, selectedSpecies ) {
+			$('#species option[value=' + selectedSpecies + ']').prop('disabled', true);
+		});
 		$('#species option[value=2]').prop('disabled', true);
 		$('#species option[value=7]').prop('disabled', true);
 	}
@@ -543,9 +546,32 @@ function populateSpells() {
 	//If "Has More Money Than Sense" is selected, add the "Wealthy"
 	//descriptor to the list of attributes
 	if ( priFocusVal == "E8" || secFocusVal == "E8" ) selectedAttributes.push("DM7");
-	if ( priSpeciesVal && !secSpeciesVal ) selectedAttributes.push("S" + priSpeciesVal);
-	else if ( !priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + secSpeciesVal);
-	else if ( priSpeciesVal && secSpeciesVal ) selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
+	//Check if there are secondary species selected, then
+	//count how many there are and retrieve spells based on that
+	if ( priSpeciesVal && !secSpeciesVal ) {
+		selectedAttributes.push("S" + priSpeciesVal);
+	} else if ( !priSpeciesVal && secSpeciesVal ) {
+		if ( secSpeciesVal.length < 2 ) {
+			selectedAttributes.push("S" + secSpeciesVal.toString());
+		} else if ( secSpeciesVal.length == 9 ) {
+			selectedAttributes.push("SAH");
+		} else {
+			$.each(secSpeciesVal, function(index,selectedSpecies) {
+				selectedAttributes.push("S" + selectedSpecies + "H");
+			});
+		}
+	} else if ( priSpeciesVal && secSpeciesVal ) {
+		if ( secSpeciesVal.length < 2 ) {
+			selectedAttributes.push("S" + String(priSpeciesVal) + String(secSpeciesVal));
+		} else if ( secSpeciesVal.length == 8 ) {
+			selectedAttributes.push("SAH");
+		} else {
+			selectedAttributes.push("S" + priSpeciesVal + "H");
+			$.each(secSpeciesVal, function(index,selectedSpecies) {
+				selectedAttributes.push("S" + selectedSpecies + "H");
+			});
+		}
+	}
 	//If character has specialization foci, don't push Type
 	if ( typeVal && ['F8','G1','G2','G5','G6','K9','O7'].includes(priFocusVal) == false && ['F8','G1','G2','G5','G6','K9','O7'].includes(secFocusVal) == false ) selectedAttributes.push("T" + typeVal);
 	if ( typeVal == 'A8' || typeVal == 'B0' ) isPsiUser = true;
@@ -788,16 +814,15 @@ function populateSpells() {
 				spellsList.push(parseInt(spellID));
 			} else if ( spellListDatabase[i][curOption] == "TRUE" && spellTier <= curTier && typeCheck == "Cyberware" ) {
 				//Variables specific to cyberware
-				var cyberwareLocation = spellListDatabase[i].itemtype;
+				var cyberwareBodyPart = spellListDatabase[i].itemtype;
 				var cyberwareValue = spellListDatabase[i].itemvalue;
-				var cyberwareType = spellListDatabase[i].itemlevel;
+				var cyberwareEffect = spellListDatabase[i].itemeffect;
 				spellType = '<img src="images/cyberware.png">';					
 				//Check to see if these values exist to avoid
 				//empty line breaks in the spell card
 				if ( spellTier ) spellTier = '<div class="tier">Tier ' + spellTier + '</div>';
 				if ( cyberwareValue ) cyberwareValue = '<span><strong>Value: </strong>' + cyberwareValue + '₡</span>';
-				if ( cyberwareType ) cyberwareType = '<span><strong>Type: </strong>' + cyberwareType + '</span>';
-				if ( cyberwareLocation ) cyberwareLocation = '<span><strong>Location: </strong>' + cyberwareLocation + '</span>';
+				if ( cyberwareBodyPart ) cyberwareBodyPart = '<span><strong>Body Part: </strong>' + cyberwareBodyPart.toUpperCase() + '</span>';
 				if ( spellOptional ) {
 					spellOptional = '<span class="optional">Optional</span>';
 					optionalSpell = ' optional';
@@ -821,8 +846,7 @@ function populateSpells() {
 							'<div class="details">' +
 								'<div class="stats">' +
 									spellOptional +
-									cyberwareLocation +
-									cyberwareType +
+									cyberwareBodyPart +
 									cyberwareValue +
 								'</div>' +
 								'<div class="description">' +
@@ -1179,23 +1203,11 @@ function populateSpellLists() {
 					}
 					addContact(spellID,itemName,contactDescription,contactSkill,contactType);
 				//Add cyberware to the cyberware
-				} else if ( !spellOptional && typeCheck == "Cyberware" && $('#cyberware .cyberware[data-spellid="' + spellID + '"]').length <= 0 ) {
-					var bodyPart = spellListDatabase[i].itemtype;
-					var cyberwareLocation = bodyPart + "-cyberware";
+				} else if ( !spellOptional && typeCheck == "Cyberware" && $('#cyberware tr[data-spellid="' + spellID + '"]').length <= 0 ) {
+					var cyberwareBodyPart = spellListDatabase[i].itemtype;
+					var cyberwareValue = spellListDatabase[i].itemvalue;
 					var cyberwareFunction = spellListDatabase[i].itemeffect;
-					switch ( itemName ) {
-						case "Weapon":
-						itemName = "WE";
-						break;
-						default:
-						itemName = "UT";
-					}
-					addCyberware(spellID,cyberwareLocation,cyberwareFunction,itemName);
-					var bodyPartImg = $('#cyber-mannequin img.' + bodyPart);
-					bodyPartImg.addClass('modded');
-					enableCyberware.addClass('clicked');
-					if ( cyberware.is(':visible') == false ) cyberware.stop().slideToggle(200);
-					if ( bodyPartImg.hasClass('active') == false ) bodyPartImg.attr('src',  'images/cyber'+ bodyPart + '-modded.png');
+					addCyberware(spellID,cyberwareBodyPart,cyberwareFunction,itemName,cyberwareValue);
 				//Add to notes list
 				} else if ( !spellOptional && typeCheck == "Note" && $('#notes tr[data-spellid="' + spellID + '"]').length <= 0 ) {
 					var note = spellListDatabase[i].description;
@@ -1358,48 +1370,55 @@ function populateCyberwareSelect() {
 		placeholder_text_single: "Select one",		
 		width: "fit-content"
 	});
+	$('#cyberware .value select').chosen({
+		disable_search: true,	
+		width: "fit-content"
+	});
 }
 //Add a blank cyberware, unless variables are parsed
-function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareType) {
-	var contentEditable;
-	var disabledSelect;
-	if ( spellID ) {
-		spellID = ' data-spellid="' + spellID + '"';
-		contentEditable = false;
-	} else {
-		spellID = "";
-		contentEditable = true;
-	}
+function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareName,cyberwareValue) {
+	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
+	else spellID = "";
 	if ( !cyberwareFunction ) cyberwareFunction = "";
+	if ( !cyberwareName ) cyberwareName = "";
 	var cyberwareToAdd =
-		'<div class="cyberware ' + bodyPart.replace('-cyberware','') + '"' + spellID + '>' +
-			'<div class="function">' +
-				'<div class="cyber-label"><span class="blue-text">run</span> <span class="yellow-text">$</span>FUNCTION.<span class="red-text">exec</span><span class="mobile-handle">&#9776;</span></div>' +
-				'<div class="text-wrapper">' +
-					'<div contenteditable="true" class="editable">' + cyberwareFunction + '</div>' +
-				'</div>' +
-			'</div>' +
-			'<div class="type">' +
-				'<div class="cyber-label"><span class="blue-text">var</span> TYPE =</div>' +
-				'<div class="text-wrapper">' +
-					'<select>' +
-						'<option></option>' +
-						'<option value="WE">"Weapon"</option>' +
-						'<option value="UT">"Utility"</option>' +
-					'</select>' +
-				'</div>' +
-			'</div>' +
-		'</div>';
-	$(cyberwareToAdd).appendTo($('#' + bodyPart)).stop().slideToggle({
-		duration: 300,
-		complete: function() {
-			$(this).css('min-height','75px');
-		}
-	});
-	if ( cyberwareFunction && cyberwareType ) {
-		var thisCyberware = $('.cyberware .editable:contains("' + cyberwareFunction + '")').closest('.cyberware');
-		$('.type select', thisCyberware).val(cyberwareType);
+		'<tr class="item"' + spellID + '>' +
+			'<td class="arrow mobile-handle"></td>' +
+			'<td class="type">' +
+				'<select>' +
+					'<option selected></option>' +
+					'<option value="skin">Skin</option>' +
+					'<option value="head">Head</option>' +
+					'<option value="core">Core</option>' +
+					'<option value="rightarm">Right Arm</option>' +
+					'<option value="leftarm">Left Arm</option>' +
+					'<option value="rightleg">Right Leg</option>' +
+					'<option value="leftleg">Left Leg</option>' +
+				'</select>' +
+			'</td>' +
+			'<td class="name">' +
+				'<div class="editable" contenteditable="true">' + cyberwareName + '</div>' +
+			'</td>' +
+			'<td class="effect">' +
+				'<div class="mobile-label">Effect:</div>' +
+				'<div class="editable" contenteditable="true">' + cyberwareFunction + '</div>' +
+			'</td>' +
+			'<td class="value">' +
+				'<select>' +
+					'<option selected value="3">Expensive</option>' +
+					'<option value="4">Very Expensive</option>' +
+					'<option value="5">Exorbitant</option>' +
+				'</select>' +
+			'</td>' +
+		'</tr>';
+	if ( spellID ) $(cyberwareToAdd).insertAfter('#cyberware table tr:first-child');
+	else cyberwareList.append(cyberwareToAdd);
+	if ( cyberwareName ) {
+		var thisCyberware = $('.name .editable:contains("' + cyberwareName + '")').closest('.item');
+		$('.type select', thisCyberware).val(bodyPart);
 		$('.type select', thisCyberware).trigger('chosen:updated');
+		$('.value select', thisCyberware).val(cyberwareValue);
+		$('.value select', thisCyberware).trigger('chosen:updated');
 	}
 	populateCyberwareSelect();
 }
@@ -2113,13 +2132,15 @@ $(function() {
 	talentsSection = $('#talents');
 	statusSection = $('#status');
 	spellHotbars = $('.spell-list .hotbars');
-	addCyberwareButton = $('.add-cyberware');
+	addCyberwareButton = $('#add-cyberware');
 	cyberware = $('#cyberware');
 	cyberError = $('#cyberware .error');
 	cyberwareSection = $('#cyber-mods');
 	cyberBodyParts = $('.cyber-section');
 	cyberwareImages = $('#cyber-mannequin img');
 	cyberwareDeleteSpace = $('#cyberware .delete-space');
+	cyberwareList = $('#cyberware table');
+	cyberwareBody = $('#cyberware tbody');
 	addItemButton = $('#add-item');
 	inventoryList = $('#equipment table');
 	inventoryBody = $('#equipment tbody');
@@ -2174,7 +2195,7 @@ $(function() {
 	sortOptions(secSpecies,secSpeciesOptions);
 	secSpecies.chosen({
 		no_results_text: "No results found.",
-		placeholder_text_single: "Select a species",
+		placeholder_text_multiple: "Select species",
 		width: "100%"
 	});
 	sortOptions(types,typesOptions);
@@ -2212,68 +2233,65 @@ $(function() {
 		}, 1000);
 	}
 	//Cyberware Dragula
-	var cyberwareDrake = dragula([cyberwareDeleteSpace[0]],{
-			isContainer: function(el) {
-				return el.classList.contains('cyber-section');
-			}, moves: function(el,container,handle) {
+	var cyberwareDrake = dragula([cyberwareBody[0], cyberwareDeleteSpace[0]],{
+			moves: function(el,container,handle) {
 				return handle.classList.contains('mobile-handle');
-			}, accepts: function (el,target,source,sibling) {
-				if ( target.classList.contains('cyber-section') && target != source ) return false;
-				else if ( el.hasAttribute('data-spellid') && target.classList.contains('delete-space') ) return false;
-				else if ( sibling === null || sibling.classList.contains('cyberware') ) return true;
 			}
 		}).on('drag', function(el,source) {
-			if ( el.hasAttribute('data-spellid') && cyberError.is(':visible') == false ) {
-				cyberError.text('Cyberware granted by character attributes cannot be removed');
-				cyberError.stop().slideToggle(150);
-			} else {
-				cyberwareDeleteSpace.stop().slideToggle(150);
-			}
+			cyberwareDeleteSpace.stop().slideToggle(150);
 			if ( firstDrag ) firstDrag = false;
+			if ( cyberwareBody.children('tr:first-child').is(':visible') ) defaultContainerHeight = "31px";
+			else defaultContainerHeight = "169px";
 		}).on('shadow', function(el,container,source) {
 			if ( container.classList.contains('delete-space') ) {
-				cyberwareDeleteSpace.stop().animate({
-					'height' : $('.gu-transit').height
-				}, 150);
-				cyberwareDeleteSpace.css('margin-top', String(parseInt($('.gu-transit').css('height').replace('px','')) + 40) + 'px');
+				if ( cyberwareBody.children('tr:first-child').is(':visible') ) {
+					cyberwareDeleteSpace.stop().animate({
+						'height' : $('.gu-transit').css('height')
+					}, 150);
+					cyberwareList.css('padding-bottom', String(parseInt($('.gu-transit').css('height').replace('px','')) + 5) + 'px');
+				} else {
+					cyberwareDeleteSpace.stop().animate({
+						'height' : String(parseInt($('.gu-transit').css('height').replace('px','')) - 20) + 'px'
+					}, 150);
+					if ( !isEven(cyberwareBody.children().length) || addCyberwareButton.css('width') == "40px" ) cyberwareList.css('padding-bottom', $('.gu-transit').outerHeight(true) + 11);
+					else cyberwareList.css('padding-bottom', $('.gu-transit').outerHeight(true) - 208);
+				}
 			} else {
 				cyberwareDeleteSpace.stop().animate({
-					'height' : '185px'
+					'height' : defaultContainerHeight
 				}, 150);
-				cyberwareDeleteSpace.css('margin-top', '');
+				cyberwareList.css('padding-bottom', '');
 			}
 		}).on('drop', function(el,target,source,sibling) {
 			if ( target.classList.contains('delete-space') ) {
-				cyberwareDrake.remove();
-				var bodyPart = el.classList[1];
-				var emptyMods = 0;
-				for (var i = 0; i < $('.cyberware.' + bodyPart).length; i++) {
-					emptyMods++;
+				if ( source.children.length === 1 ) {
+						addCyberware();
+						cyberwareList.removeAttr('style');
+				} else {
+					cyberwareList.stop().animate({
+						'padding-bottom' : '0'
+					}, 300, function() {
+						$(this).removeAttr('style');
+					});
 				}
-				if ( !emptyMods ) $('#cyber-mannequin img.' + bodyPart).removeClass('modded');
-				if ( isTouchDevice() && $('.cyberware').length === 0 ) $('#cyberware-option em').hide();
+				cyberwareDrake.remove();
+			} else {
+				cyberwareList.removeAttr('style');
 			}
-			if ( cyberError.is(':visible') ) cyberError.stop().slideToggle(300);			
-			else if ( cyberwareDeleteSpace.is(':visible') ){
-				cyberwareDeleteSpace.stop().animate({
-					'margin-top' : '10px',
-					'height' : '185px'
-				}, 100, function() {
-					$(this).css('height','');
-					$(this).stop().slideToggle(200);
-				});
-			}
+			cyberwareDeleteSpace.stop().animate({
+				'height' : defaultContainerHeight
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).stop().slideToggle(200);
+			});
 			firstDrag = true;
 		}).on('cancel', function(el,container,source) {
-			if ( cyberError.is(':visible') ) cyberError.stop().slideToggle(300);
-			else if ( cyberwareDeleteSpace.is(':visible') ) {
-				cyberwareDeleteSpace.stop().animate({
-					'height' : '185px'
-				}, 100, function() {
-					$(this).css('height','');
-					$(this).stop().slideToggle(200);
-				});
-			}
+			cyberwareDeleteSpace.stop().animate({
+				'height' : defaultContainerHeight
+			}, 100, function() {
+				$(this).css('height','');
+				$(this).stop().slideToggle(200);
+			});
 			firstDrag = true;
 		});
 	cyberwareDrake;
@@ -2731,12 +2749,7 @@ $(function() {
 	addArtifactButton.click( function() { addArtifact(); });
 	addContactButton.click( function() { addContact(); });
 	addNoteButton.click( function() { addNote(); });
-	addCyberwareButton.click( function() { 
-		var bodyPart = $(this).closest('.cyber-section').attr('id').replace('-cyberware','');
-		addCyberware(undefined,$(this).closest('.cyber-section').attr('id'));
-		$('#cyber-mannequin img.' + bodyPart).addClass('modded');
-		if ( isTouchDevice() ) $('#cyberware-option em').show();
-	});	
+	addCyberwareButton.click( function() { addCyberware(); });	
 	statusSection.on('click', '.status-effect', function() {
 		$(this).toggleClass('active');
 	});

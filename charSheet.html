@@ -506,8 +506,7 @@
 				<!-- SECONDARY SPECIES -->
 				<div class="attribute" id="sec-species-attribute">
 					<div class="border">
-						<select id="secondary-species">
-							<option></option>
+						<select multiple id="secondary-species">
 							<option value="0">Aeyan</option>
 							<option value="1">Erelan</option>
 							<option value="3">K'ohma</option>
@@ -1146,12 +1145,6 @@
 				<div class="button rules-anchor" data-rule="major-effect-rules">
 					Major Effects
 				</div>
-				<div class="button" id="open-options">
-					Optional
-				</div>
-			</div>
-			<!-- Options -->
-			<div id="character-options">
 				<div class="button" id="reset-button">
 					Reset
 				</div>
@@ -1160,19 +1153,6 @@
 					<span class="description">
 						Click to reset all character attributes, Abillities and dice numbers, and remove any Items gained from attributes. Nothing else is reset or deleted in the process.
 					</span>
-				</div>
-				<div id="cyberware-option">
-					<div id="enable-cyberware" class="character-option">
-						<div class="checkbox"></div>
-						<div>Cyberware</div>
-					</div>
-					<div id="cyberware-tooltip">
-						<h4>Cyberware Interface</h4>
-						<span class="description">
-							Toggle the Cyberware interface. Cyberware is an additional customization option, but has some drawbacks.
-							<em>You cannot disable the Cyberware interface while you have Cyberware installed.</em>
-						</span>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -1315,84 +1295,57 @@
 			<div class="delete-space"></div>
 		</div>
 		<!-- Cyberware -->
-		<div id="cyberware">
+		<div class="item-list" id="cyberware">
 			<div class="list-header">
 				<div class="header">
 					<img src="images/cyberware.png">
 					<h2>Cyberware</h2>
 				</div>
-			</div>
-			<!-- Mannequin & Mods -->
-			<div id="cyber-content">
-				<!-- Mannequin -->
-				<div id="cyber-mannequin">
-					<img class="skin" src="images/cyberskin.png" alt="Configure skin cyberware" />
-					<img class="head" src="images/cyberhead.png" alt="Configure head cyberware" />
-					<img class="core" src="images/cybercore.png" alt="Configure core cyberware" />
-					<img class="leftarm" src="images/cyberleftarm.png" alt="Configure left arm cyberware" />
-					<img class="rightarm" src="images/cyberrightarm.png" alt="Configure right arm cyberware" />
-					<img class="leftleg" src="images/cyberleftleg.png" alt="Configure left leg cyberware" />
-					<img class="rightleg" src="images/cyberrightleg.png" alt="Configure right leg cyberware" />
-				</div>
-				<!-- Body Parts -->
-				<div id="cyber-mods">
-					<div id="cyber-intro">
-						<p><span class="blue-text">init</span> <span class="yellow-text">CyberMod System</span> v 1.7.706</p>
-						<p>Select the body part you would like to modify.</p>
-					</div>
-					<!-- Skin Cyberware -->
-					<div class="cyber-section" id="skin-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/dermalLayer</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<!-- Head Cyberware -->
-					<div class="cyber-section" id="head-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/cranial</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<!-- Core Cyberware -->
-					<div class="cyber-section" id="core-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/core</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<!-- Left Arm Cyberware -->
-					<div class="cyber-section" id="leftarm-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/leftArm</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<!-- Right Arm Cyberware -->
-					<div class="cyber-section" id="rightarm-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/rightArm</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<!-- Left Leg Cyberware -->
-					<div class="cyber-section" id="leftleg-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/leftLeg</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<!-- Right Leg Cyberware -->
-					<div class="cyber-section" id="rightleg-cyberware">
-						<div class="cyber-header">
-							<div><span class="yellow-text">#//</span>./cyberMod/rightLeg</div>
-							<div class="add-cyberware">addMod()</div>
-						</div>
-					</div>
-					<div class="error"></div>
-					<div class="delete-space"></div>
+				<div class="button" id="add-cyberware">
+					Add Cyberware
 				</div>
 			</div>
+			<table>
+				<tbody>
+					<tr>
+						<th></th>
+						<th>BODY PART</th>
+						<th>NAME</th>
+						<th>EFFECT</th>
+						<th>VALUE</th>
+					</tr>
+					<tr class="item">
+						<td class="arrow mobile-handle"></td>
+						<td class="type">
+							<select>
+								<option selected></option>
+								<option value="skin">Skin</option>
+								<option value="head">Head</option>
+								<option value="core">Core</option>
+								<option value="rightarm">Right Arm</option>
+								<option value="leftarm">Left Arm</option>
+								<option value="rightleg">Right Leg</option>
+								<option value="leftleg">Left Leg</option>
+							</select>
+						</td>
+						<td class="name">
+							<div class="editable" contenteditable="true"></div>
+						</td>
+						<td class="effect">
+							<div class="mobile-label">Effect:</div>
+							<div class="editable" contenteditable="true"></div>
+						</td>
+						<td class="value">
+							<select>
+								<option selected value="3">Expensive</option>
+								<option value="4">Very Expensive</option>
+								<option value="5">Exorbitant</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="delete-space"></div>
 		</div>
 		<!-- Contacts -->
 		<div class="item-list" id="contacts">

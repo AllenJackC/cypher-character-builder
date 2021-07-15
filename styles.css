@@ -449,6 +449,24 @@ div.proficiency {
 	text-align: left;
 	width: fit-content;
 }
+.chosen-container-multi .chosen-choices li.search-field input[type=text] {
+    height: 19px;
+    font-family: var(--body-font);
+    color: var(--black);
+}
+.chosen-container-multi .chosen-choices li.search-choice {
+	font-family: var(--body-font);
+    border-radius: 0;
+    background-image: none;
+    background-color: var(--secondary-button-hover);
+    color: var(--black);
+    box-shadow: none;
+    border: 0;
+    height: 19px;
+    line-height: 19px;
+	margin: 3px 3px 0 0;
+    padding: 0 20px 0 5px;
+}
 #contacts td.effect {
 	width: 50%;
 }
@@ -457,9 +475,6 @@ div.proficiency {
 }
 #artifacts td.effect {
 	width: 75%;
-}
-#cyberware {
-	display: none;
 }
 #cyber-content {
 	display: flex;
