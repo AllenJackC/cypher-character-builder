@@ -1647,10 +1647,9 @@ function saveSheet() {
 		} else {
 			cyberwareNames = cyberwareNames.join('¬');
 			cyberwareIDs = cyberwareIDs.join('¬');
-			cyberwareEffects = cyberwareDescriptions.join('¬');
+			cyberwareDescriptions = cyberwareDescriptions.join('¬');
 			cyberwareCosts = cyberwareCosts.join('¬');
 		}
-		console.log(cyberwareDescriptions);
 		//Building contacts arrays
 		$('#contacts .item .name .editable').each( function() {
 			contactNames.push($(this).text());
