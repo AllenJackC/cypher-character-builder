@@ -2001,9 +2001,9 @@ function loadCharaSheet(sheetID,autoLoad) {
 								$(this).remove();
 							});
 							var cyberwareNames = record.get('cyberware-names').split('¬');
-							var cyberwareFunctions = record.get('cyberwares')split('¬');
+							var cyberwareFunctions = record.get('cyberwares').split('¬');
 							var cyberwareBodyParts = record.get('cyberware-bodyparts').split('¬');
-							var cyberwareCosts = record.get('cyberware-costs')split('¬');
+							var cyberwareCosts = record.get('cyberware-costs').split('¬');
 							if ( record.get('cyberware-ids') ) {
 								var cyberwareIDs = record.get('cyberware-ids').split('¬');
 								for (var i = 0; i < cyberwareNames.length; i++) {
