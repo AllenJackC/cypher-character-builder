@@ -2017,14 +2017,18 @@ function loadCharaSheet(sheetID,autoLoad) {
 							addArtifact();
 						}
 						//Load cyberware
-						if ( record.get('cyberware') ) {
+						if ( record.get('cyberware-names') ) {
 							$('#cyberware .item').each( function() {
 								$(this).remove();
 							});
 							var cyberwareNames = record.get('cyberware-names').split('¬');
-							var cyberwareFunctions = record.get('cyberwares').split('¬');
-							var cyberwareBodyParts = record.get('cyberware-bodyparts').split('¬');
+							var cyberwareFunctions = record.get('cyberwares');
+							var cyberwareBodyParts = record.get('cyberware-bodyparts');
 							var cyberwareCosts = record.get('cyberware-costs').split('¬');
+							if (cyberwareFunctions) cyberwareFunctions.split('¬');
+							else cyberwareFunctions = [""];
+							if (cyberwareBodyParts) cyberwareBodyParts.split('¬');
+							else cyberwareBodyParts = [""];
 							if ( record.get('cyberware-ids') ) {
 								var cyberwareIDs = record.get('cyberware-ids').split('¬');
 								for (var i = 0; i < cyberwareNames.length; i++) {
