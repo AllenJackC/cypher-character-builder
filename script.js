@@ -2028,11 +2028,11 @@ function loadCharaSheet(sheetID,autoLoad) {
 							if ( record.get('cyberware-ids') ) {
 								var cyberwareIDs = record.get('cyberware-ids').split('¬');
 								for (var i = 0; i < cyberwareNames.length; i++) {
-									addCyberware(cyberwareIDs[i],cyberwareBodyParts[1],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
+									addCyberware(cyberwareIDs[i],cyberwareBodyParts[i],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
 								}
 							} else {
 								for (var i = 0; i < cyberwareNames.length; i++) {
-									addCyberware(undefined,cyberwareBodyParts[1],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
+									addCyberware(undefined,cyberwareBodyParts[i],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
 								}
 							}
 						} else {
