@@ -327,7 +327,7 @@ function populateTypes() {
 			disableOptions($(this),array,true);
 		});
 	//If there is a focus selected and a primary species selected, but no secondary species
-	} else if ( resTypes && priSpeciesVal && !secSpeciesVal ) {
+	} else if ( resTypes && priSpeciesVal && secSpeciesVal.length < 1 ) {
 		var resTypesArray = resTypes.match(/.{1,2}/g);
 		typesOptions.each( function() {
 			var thisType = $(this).val();
@@ -340,59 +340,75 @@ function populateTypes() {
 			}
 		});
 	//If there is a focus selected and a secondary species selected, but no primary species
-	} else if ( resTypes && !priSpeciesVal && secSpeciesVal ) {
+	} else if ( resTypes && !priSpeciesVal && secSpeciesVal.length > 0 ) {
 		var resTypesArray = resTypes.match(/.{1,2}/g);
 		typesOptions.each( function() {
 			var thisType = $(this).val();
+			var thisOption = $(this);
 			var availSecSpecies = String($(this).data('secondary-species'));
 			if ( availSecSpecies ) availSecSpecies = availSecSpecies.split('');
-			if( $.inArray(secSpeciesVal,availSecSpecies) < 0 || $.inArray(thisType,resTypesArray) > -1 ) {
-				$(this).prop('disabled', true);
-			} else {
-				$(this).prop('disabled', false);
-			}
+			$.each(secSpeciesVal, function ( index, curVal) {
+				if( $.inArray(curVal,availSecSpecies) < 0 || $.inArray(thisType,resTypesArray) > -1 ) {
+					$thisOption.prop('disabled', true);
+				} else {
+					thisOption.prop('disabled', false);
+				}
+			});
 		});
 	//If there is a focus selected and both species are selected
-	} else if ( resTypes && priSpeciesVal && secSpeciesVal ) {
+	} else if ( resTypes && priSpeciesVal && secSpeciesVal.length > 0 ) {
 		var resTypesArray = resTypes.match(/.{1,2}/g);
 		typesOptions.each( function() {
 			var thisType = $(this).val();
+			var thisOption = $(this);
 			var availPriSpecies = String($(this).data('primary-species'));
 			var availSecSpecies = String($(this).data('secondary-species'));
 			if ( availPriSpecies ) availPriSpecies = availPriSpecies.split('');
 			if ( availSecSpecies ) availSecSpecies = availSecSpecies.split('');
-			if( $.inArray(priSpeciesVal,availPriSpecies) < 0 || $.inArray(secSpeciesVal,availSecSpecies) < 0 || $.inArray(thisType,resTypesArray) > -1 ) {
-				$(this).prop('disabled', true);
-			} else {
-				$(this).prop('disabled', false);
-			}
+			$.each(secSpeciesVal, function ( index, curVal) {
+				if( $.inArray(priSpeciesVal,availPriSpecies) < 0 || $.inArray(curVal,availSecSpecies) < 0 || $.inArray(thisType,resTypesArray) > -1 ) {
+					thisOption.prop('disabled', true);
+				} else {
+					thisOption.prop('disabled', false);
+				}
+			});
 		});
 	//If there is NO focus selected, but only the primary species is selected
-	} else if ( !resTypes && priSpeciesVal && !secSpeciesVal ) {
+	} else if ( !resTypes && priSpeciesVal && secSpeciesVal.length < 1 ) {
 		typesOptions.each( function() {
 			var array = String($(this).data('primary-species'));
 			if ( array ) { array = array.split(''); }
 			disableOptions($(this),array,false,priSpeciesVal);
 		});
 	//If there is NO focus selected, but only the secondary species is selected
-	} else if ( !resTypes && !priSpeciesVal && secSpeciesVal ) {
+	} else if ( !resTypes && !priSpeciesVal && secSpeciesVal.length > 0 ) {
 		typesOptions.each( function() {
-			var array = String($(this).data('secondary-species'));
-			if ( array ) { array = array.split(''); }
-			disableOptions($(this),array,false,secSpeciesVal);
+			var thisOption = $(this);
+			var availSecSpecies = String($(this).data('secondary-species'));
+			if ( availSecSpecies ) availSecSpecies = availSecSpecies.split('');
+			$.each(secSpeciesVal, function ( index, curVal) {
+				if( $.inArray(curVal,availSecSpecies) < 0 ) {
+					thisOption.prop('disabled', true);
+				} else {
+					thisOption.prop('disabled', false);
+				}
+			});
 		});
 	//If there is NO focus selected, but both species are selected
-	} else if ( !resTypes && priSpeciesVal && secSpeciesVal ) {
+	} else if ( !resTypes && priSpeciesVal && secSpeciesVal.length > 0 ) {
 		typesOptions.each( function() {
+			var thisOption = $(this);
 			var availPriSpecies = String($(this).data('primary-species'));
 			var availSecSpecies = String($(this).data('secondary-species'));
 			if ( availPriSpecies ) availPriSpecies = availPriSpecies.split('');
 			if ( availSecSpecies ) availSecSpecies = availSecSpecies.split('');
-			if( $.inArray(priSpeciesVal,availPriSpecies) < 0 || $.inArray(secSpeciesVal,availSecSpecies) < 0 ) {
-				$(this).prop('disabled', true);
-			} else {
-				$(this).prop('disabled', false);
-			}
+			$.each(secSpeciesVal, function ( index, curVal) {
+				if( $.inArray(priSpeciesVal,availPriSpecies) < 0 || $.inArray(curVal,availSecSpecies) < 0 ) {
+					thisOption.prop('disabled', true);
+				} else {
+					thisOption.prop('disabled', false);
+				}
+			});
 		});
 	}
 	//Do not display any options thate marked as 'hidden' by the startup story arc function
@@ -413,7 +429,7 @@ function populateFoci() {
 		$(this).removeAttr('disabled');
 	});
 	//If the type is NOT selected, and only the primary species is selected
-	if ( !typeVal && priSpeciesVal && !secSpeciesVal ) {
+	if ( !typeVal && priSpeciesVal && secSpeciesVal.length < 1 ) {
 		fociOptions.each( function() {
 			var resSpecies = String($(this).data('restricted-species'));
 			if ( resSpecies ) {
@@ -422,29 +438,38 @@ function populateFoci() {
 			}
 		});
 	//If the type is NOT selected, and only the secondary species is selected	
-	} else if ( !typeVal && !priSpeciesVal && secSpeciesVal ) {
+	} else if ( !typeVal && !priSpeciesVal && secSpeciesVal.length > 0 ) {
 		fociOptions.each( function() {
+			var thisOption = $(this);
 			var resSpecies = String($(this).data('restricted-species'));
 			if ( resSpecies ) {
 				var speciesArray = resSpecies.split('');
-				disableOptions($(this),speciesArray,true,secSpeciesVal);
+				$.each(secSpeciesVal, function ( index, curVal) {
+					if( $.inArray(curVal,speciesArray) > -1 ) {
+						thisOption.prop('disabled', true);
+					} else {
+						thisOption.prop('disabled', false);
+					}
+				});
 			}
 		});
 	//If the type is NOT selected, and both species are selected
-	} else if ( !typeVal && priSpeciesVal && secSpeciesVal ) {
+	} else if ( !typeVal && priSpeciesVal && secSpeciesVal.length > 0 ) {
 		fociOptions.each( function() {
 			var resSpecies = String($(this).data('restricted-species'));
 			if ( resSpecies ) {
 				var speciesArray = resSpecies.split('');
-				if( $.inArray(priSpeciesVal,speciesArray) > -1 || $.inArray(secSpeciesVal,speciesArray) > -1 ) {
-					$(this).prop('disabled', true);
-				} else {
-					$(this).prop('disabled', false);
-				}
+				$.each(secSpeciesVal, function ( index, curVal) {
+					if( $.inArray(priSpeciesVal,speciesArray) > -1 || $.inArray(curVal,speciesArray) > -1 ) {
+						thisOption.prop('disabled', true);
+					} else {
+						thisOption.prop('disabled', false);
+					}
+				});
 			}
 		});
 	//If the type is selected, and only the primary species is selected
-	} else if ( typeVal && priSpeciesVal && !secSpeciesVal ) {
+	} else if ( typeVal && priSpeciesVal && secSpeciesVal.length < 1 ) {
 		fociOptions.each( function() {
 			var resSpecies = String($(this).data('restricted-species'));
 			var resTypes = $(this).data('restricted-types');
@@ -465,53 +490,65 @@ function populateFoci() {
 			}
 		});
 	//If the type is selected, and only the secondary species is selected
-	} else if ( typeVal && !priSpeciesVal && secSpeciesVal ) {
+	} else if ( typeVal && !priSpeciesVal && secSpeciesVal.length > 0 ) {
 		fociOptions.each( function() {
 			var resSpecies = String($(this).data('restricted-species'));
 			var resTypes = $(this).data('restricted-types');
 			if ( resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
 				var typesArray = resTypes.match(/.{1,2}/g);
-				if( $.inArray(secSpeciesVal,speciesArray) > -1 || $.inArray(typeVal,typesArray) > -1 ) {
-					$(this).prop('disabled', true);
-				} else {
-					$(this).prop('disabled', false);
-				}
+				$.each(secSpeciesVal, function ( index, curVal) {
+					if( $.inArray(curVal,speciesArray) > -1 || $.inArray(typeVal,typesArray) > -1 ) {
+						thisOption.prop('disabled', true);
+					} else {
+						thisOption.prop('disabled', false);
+					}
+				});
 			} else if ( resTypes && !resSpecies ) {
 				var typesArray = resTypes.match(/.{1,2}/g);
 				disableOptions($(this),typesArray,true,typeVal);
 			} else if ( !resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
-				disableOptions($(this),speciesArray,true,secSpeciesVal);
+				$.each(secSpeciesVal, function ( index, curVal) {
+					if( $.inArray(curVal,speciesArray) > -1 ) {
+						thisOption.prop('disabled', true);
+					} else {
+						thisOption.prop('disabled', false);
+					}
+				});
 			}
 		});
 	//If the type is selected, and both species are selected
-	} else if ( typeVal && priSpeciesVal && secSpeciesVal ) {
+	} else if ( typeVal && priSpeciesVal && secSpeciesVal.length > 0 ) {
 		fociOptions.each( function() {
 			var resSpecies = String($(this).data('restricted-species'));
 			var resTypes = $(this).data('restricted-types');
 			if ( resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
 				var typesArray = resTypes.match(/.{1,2}/g);
-				if( $.inArray(priSpeciesVal,speciesArray) > -1 || $.inArray(secSpeciesVal,speciesArray) > -1 || $.inArray(typeVal,typesArray) > -1 ) {
-					$(this).prop('disabled', true);
-				} else {
-					$(this).prop('disabled', false);
-				}
+				$.each(secSpeciesVal, function ( index, curVal) {
+					if( $.inArray(priSpeciesVal,speciesArray) > -1 || $.inArray(curVal,speciesArray) > -1 || $.inArray(typeVal,typesArray) > -1 ) {
+						thisOption.prop('disabled', true);
+					} else {
+						thisOption.prop('disabled', false);
+					}
+				});
 			} else if ( resTypes && !resSpecies ) {
 				var typesArray = resTypes.match(/.{1,2}/g);
 				disableOptions($(this),typesArray,true,typeVal);
 			} else if ( !resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
-				if( $.inArray(priSpeciesVal,speciesArray) > -1 || $.inArray(secSpeciesVal,speciesArray) > -1 ) {
-					$(this).prop('disabled', true);
-				} else {
-					$(this).prop('disabled', false);
-				}
+				$.each(secSpeciesVal, function ( index, curVal) {
+					if( $.inArray(priSpeciesVal,speciesArray) > -1 || $.inArray(curVal,speciesArray) > -1 ) {
+						thisOption.prop('disabled', true);
+					} else {
+						thisOption.prop('disabled', false);
+					}
+				});
 			}
 		});
-	//If the type is select, and no species is selected
-	} else if ( typeVal && !priSpeciesVal && !secSpeciesVal ) {
+	//If the type is selected, and no species is selected
+	} else if ( typeVal && !priSpeciesVal && secSpeciesVal.length < 1 ) {
 		fociOptions.each( function() {
 			var resTypes = $(this).data('restricted-types');
 			if ( resTypes ) {
@@ -1639,16 +1676,21 @@ function saveSheet() {
 		$('#cyberware .item .value select').each( function() {
 			cyberwareCosts.push($(this).val());
 		});
+		$('#cyberware .item .type select').each( function() {
+			cyberwareBodyParts.push($(this).val());
+		});
 		if ( cyberwareNames.length < 1 ) {
 			cyberwareNames = "";
 			cyberwareIDs = "";
 			cyberwareDescriptions = "";
 			cyberwareCosts = "";
+			cyberwareBodyParts = "";
 		} else {
 			cyberwareNames = cyberwareNames.join('¬');
 			cyberwareIDs = cyberwareIDs.join('¬');
 			cyberwareDescriptions = cyberwareDescriptions.join('¬');
 			cyberwareCosts = cyberwareCosts.join('¬');
+			cyberwareBodyParts = cyberwareBodyParts.join('¬');
 		}
 		//Building contacts arrays
 		$('#contacts .item .name .editable').each( function() {
