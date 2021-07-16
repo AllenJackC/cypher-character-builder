@@ -2021,8 +2021,10 @@ function loadCharaSheet(sheetID,autoLoad) {
 								$(this).remove();
 							});
 							var cyberwareNames = record.get('cyberware-names').split('¬');
-							var cyberwareFunctions = record.get('cyberwares').toString();
-							var cyberwareBodyParts = record.get('cyberware-bodyparts').toString();
+							//var cyberwareFunctions = record.get('cyberwares');
+							//var cyberwareBodyParts = record.get('cyberware-bodyparts');
+							var cyberwareFunctions = "testing";
+							var cyberwareBodyParts = "head";
 							var cyberwareCosts = record.get('cyberware-costs').split('¬');
 							if (cyberwareFunctions) cyberwareFunctions.split('¬');
 							else cyberwareFunctions = [""];
