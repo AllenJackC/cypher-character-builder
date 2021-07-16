@@ -1450,6 +1450,7 @@ function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareName,cyberware
 		'</tr>';
 	if ( spellID ) $(cyberwareToAdd).insertAfter('#cyberware table tr:first-child');
 	else cyberwareList.append(cyberwareToAdd);
+	console.log(bodyPart);
 	if ( cyberwareName && bodyPart ) {
 		var thisCyberware = $('.name .editable:contains("' + cyberwareName + '")').closest('.item');
 		$('.type select', thisCyberware).val(bodyPart);
@@ -2025,12 +2026,16 @@ function loadCharaSheet(sheetID,autoLoad) {
 							var cyberwareFunctions = record.get('cyberwares');
 							var cyberwareBodyParts = record.get('cyberware-bodyparts');
 							var cyberwareCosts = record.get('cyberware-costs').split('¬');
+							console.log(cyberwareFunctions);
+							console.log(cyberwareBodyParts);
 							if (cyberwareFunctions) cyberwareFunctions.split('¬');
 							else cyberwareFunctions = [""];
 							if (cyberwareBodyParts) cyberwareBodyParts.split('¬');
 							else cyberwareBodyParts = [""];
 							console.log(cyberwareFunctions);
 							console.log(cyberwareBodyParts);
+							console.log(cyberwareNames);
+							console.log(cyberwareCosts);
 							if ( record.get('cyberware-ids') ) {
 								var cyberwareIDs = record.get('cyberware-ids').split('¬');
 								for (var i = 0; i < cyberwareNames.length; i++) {
