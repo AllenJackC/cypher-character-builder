@@ -2029,6 +2029,8 @@ function loadCharaSheet(sheetID,autoLoad) {
 							else cyberwareFunctions = [""];
 							if (cyberwareBodyParts) cyberwareBodyParts.split('¬');
 							else cyberwareBodyParts = [""];
+							console.log(cyberwareFunctions);
+							console.log(cyberwareBodyParts);
 							if ( record.get('cyberware-ids') ) {
 								var cyberwareIDs = record.get('cyberware-ids').split('¬');
 								for (var i = 0; i < cyberwareNames.length; i++) {
