@@ -1450,7 +1450,6 @@ function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareName,cyberware
 		'</tr>';
 	if ( spellID ) $(cyberwareToAdd).insertAfter('#cyberware table tr:first-child');
 	else cyberwareList.append(cyberwareToAdd);
-	console.log(bodyPart);
 	if ( cyberwareName && bodyPart ) {
 		var thisCyberware = $('.name .editable:contains("' + cyberwareName + '")').closest('.item');
 		$('.type select', thisCyberware).val(bodyPart);
@@ -1941,7 +1940,6 @@ function loadCharaSheet(sheetID,autoLoad) {
 											} else $('#' + spellID[i], spellBook).addClass('selected');
 										}
 									} else {
-										console.log($('#' + spellID, spellBook));
 										if ( !isSelected ) {
 											$('#' + spellID, spellBook).hide(0, function() {
 												$('#' + spellID, spellBook).addClass('hidden-spell');
@@ -2023,19 +2021,13 @@ function loadCharaSheet(sheetID,autoLoad) {
 								$(this).remove();
 							});
 							var cyberwareNames = record.get('cyberware-names').split('¬');
-							var cyberwareFunctions = record.get('cyberwares');
-							var cyberwareBodyParts = record.get('cyberware-bodyparts');
+							var cyberwareFunctions = record.get('cyberwares').toString();
+							var cyberwareBodyParts = record.get('cyberware-bodyparts').toString();
 							var cyberwareCosts = record.get('cyberware-costs').split('¬');
-							console.log(cyberwareFunctions);
-							console.log(cyberwareBodyParts);
 							if (cyberwareFunctions) cyberwareFunctions.split('¬');
 							else cyberwareFunctions = [""];
 							if (cyberwareBodyParts) cyberwareBodyParts.split('¬');
 							else cyberwareBodyParts = [""];
-							console.log(cyberwareFunctions);
-							console.log(cyberwareBodyParts);
-							console.log(cyberwareNames);
-							console.log(cyberwareCosts);
 							if ( record.get('cyberware-ids') ) {
 								var cyberwareIDs = record.get('cyberware-ids').split('¬');
 								for (var i = 0; i < cyberwareNames.length; i++) {
@@ -2635,9 +2627,6 @@ $(function() {
 		$('.item').each( function() {
 			$(this).remove();
 		});
-		$('.cyberware').each( function() {
-			$(this).remove();
-		});
 		$('#cyber-mannequin img').each( function() {
 			$(this).removeClass('modded');
 		});
@@ -2645,6 +2634,7 @@ $(function() {
 		addArtifact();
 		addNote();
 		addContact();
+		addCyberware();
 		$('.selected', spellBook).removeClass('selected');
 		populateSpells();
 		loreButton.text('Lore');
