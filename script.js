@@ -2021,23 +2021,21 @@ function loadCharaSheet(sheetID,autoLoad) {
 								$(this).remove();
 							});
 							var cyberwareNames = record.get('cyberware-names').split('¬');
-							//var cyberwareFunctions = record.get('cyberwares');
-							//var cyberwareBodyParts = record.get('cyberware-bodyparts');
-							var cyberwareFunctions = "testing";
-							var cyberwareBodyParts = "head";
+							var cyberwareDescriptions = record.get('cyberwares');
+							var cyberwareBodyParts = record.get('cyberware-bodyparts');
 							var cyberwareCosts = record.get('cyberware-costs').split('¬');
-							if (cyberwareFunctions) cyberwareFunctions.split('¬');
-							else cyberwareFunctions = [""];
-							if (cyberwareBodyParts) cyberwareBodyParts.split('¬');
+							if (cyberwareDescriptions) cyberwareDescriptions = cyberwareDescriptions.split('¬');
+							else cyberwareDescriptions = [""];
+							if (cyberwareBodyParts) cyberwareBodyParts = cyberwareBodyParts.split('¬');
 							else cyberwareBodyParts = [""];
 							if ( record.get('cyberware-ids') ) {
 								var cyberwareIDs = record.get('cyberware-ids').split('¬');
 								for (var i = 0; i < cyberwareNames.length; i++) {
-									addCyberware(cyberwareIDs[i],cyberwareBodyParts[i],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
+									addCyberware(cyberwareIDs[i],cyberwareBodyParts[i],cyberwareDescriptions[i],cyberwareNames[i],cyberwareCosts[i]);
 								}
 							} else {
 								for (var i = 0; i < cyberwareNames.length; i++) {
-									addCyberware(undefined,cyberwareBodyParts[i],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
+									addCyberware(undefined,cyberwareBodyParts[i],cyberwareDescriptions[i],cyberwareNames[i],cyberwareCosts[i]);
 								}
 							}
 						} else {
