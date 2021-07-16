@@ -1450,13 +1450,13 @@ function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareName,cyberware
 		'</tr>';
 	if ( spellID ) $(cyberwareToAdd).insertAfter('#cyberware table tr:first-child');
 	else cyberwareList.append(cyberwareToAdd);
-	if ( cyberwareName ) {
-		var thisCyberware = $('.name .editable:contains("' + cyberwareName + '")').closest('.item');
+	if ( cyberwareName ) var thisCyberware = $('.name .editable:contains("' + cyberwareName + '")').closest('.item');
+	if ( cyberwareBodyPart ) {
 		$('.type select', thisCyberware).val(bodyPart);
 		$('.type select', thisCyberware).trigger('chosen:updated');
-		$('.value select', thisCyberware).val(cyberwareValue);
-		$('.value select', thisCyberware).trigger('chosen:updated');
 	}
+	$('.value select', thisCyberware).val(cyberwareValue);
+	$('.value select', thisCyberware).trigger('chosen:updated');
 	populateCyberwareSelect();
 }
 //Add a blank note, unless variables are parsed
