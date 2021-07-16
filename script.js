@@ -1451,7 +1451,7 @@ function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareName,cyberware
 	if ( spellID ) $(cyberwareToAdd).insertAfter('#cyberware table tr:first-child');
 	else cyberwareList.append(cyberwareToAdd);
 	if ( cyberwareName ) var thisCyberware = $('.name .editable:contains("' + cyberwareName + '")').closest('.item');
-	if ( cyberwareBodyPart ) {
+	if ( bodyPart ) {
 		$('.type select', thisCyberware).val(bodyPart);
 		$('.type select', thisCyberware).trigger('chosen:updated');
 	}
