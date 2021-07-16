@@ -2030,13 +2030,13 @@ function loadCharaSheet(sheetID,autoLoad) {
 							if (cyberwareBodyParts) cyberwareBodyParts.split('¬');
 							else cyberwareBodyParts = [""];
 							if ( record.get('cyberware-ids') ) {
-								var itemIDs = record.get('cyberware-ids').split('¬');
+								var cyberwareIDs = record.get('cyberware-ids').split('¬');
 								for (var i = 0; i < cyberwareNames.length; i++) {
-									addItem(cyberwareIDs[i],cyberwareBodyParts[i],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
+									addCyberware(cyberwareIDs[i],cyberwareBodyParts[i],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
 								}
 							} else {
 								for (var i = 0; i < cyberwareNames.length; i++) {
-									addItem(undefined,cyberwareBodyParts[i],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
+									addCyberware(undefined,cyberwareBodyParts[i],cyberwareFunctions[i],cyberwareNames[i],cyberwareCosts[i]);
 								}
 							}
 						} else {
