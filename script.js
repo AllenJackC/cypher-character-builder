@@ -1319,6 +1319,7 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
 	if ( !itemName ) itemName = "";
+	if ( !itemEffect ) itemEffect = "";
 	var itemToAdd =
 		'<tr class="item"' + spellID + ' style="width: 0">' +
 			'<td class="arrow mobile-handle"></td>' +
