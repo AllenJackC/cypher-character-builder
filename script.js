@@ -1221,7 +1221,7 @@ function populateSpellLists() {
 							default:
 							itemType = "IT";
 						}
-						addItem(spellID,itemName,itemType,itemValue);
+						addItem(spellID,itemName,itemEffect,itemType,itemValue);
 					}
 				//Add to contact list
 				} else if ( !spellOptional && typeCheck == "Contact" && $('#contacts tr[data-spellid="' + spellID + '"]').length <= 0 ) {
@@ -1315,7 +1315,7 @@ function populateInventorySelect() {
 	});
 }
 //Add a blank item, unless variables are parsed
-function addItem(spellID,itemName,itemType,itemValue,itemState) {
+function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 	if ( spellID ) spellID = ' data-spellid="' + spellID + '"';
 	else spellID = "";
 	if ( !itemName ) itemName = "";
@@ -1331,6 +1331,10 @@ function addItem(spellID,itemName,itemType,itemValue,itemState) {
 			'</td>' +
 			'<td class="name">' +
 				'<div class="editable" contenteditable="true">' + itemName + '</div>' +
+			'</td>' +
+			'<td class="effect">' +
+				'<div class="mobile-label">Effect:</div>' +
+				'<div class="editable" contenteditable="true">' + itemEffect + '</div>' +
 			'</td>' +
 			'<td class="type">' +
 				'<select>' +
@@ -1422,6 +1426,7 @@ function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareName,cyberware
 		'<tr class="item"' + spellID + '>' +
 			'<td class="arrow mobile-handle"></td>' +
 			'<td class="type">' +
+				'<div class="mobile-label">Body Part:</div>' +
 				'<select>' +
 					'<option selected></option>' +
 					'<option value="skin">Skin</option>' +
@@ -1573,6 +1578,7 @@ function saveSheet() {
 		var skillsArray = [];
 		var itemNames = [];
 		var itemIDs = [];
+		var itemEffects = [];
 		var itemStates = [];
 		var itemTypes = [];
 		var itemCosts = [];
@@ -1620,6 +1626,9 @@ function saveSheet() {
 			if ( $(this).attr('data-spellid') ) itemIDs.push($(this).attr('data-spellid'));
 			else itemIDs.push('');
 		});
+		$('#equipment .item .effect .editable').each( function() {
+			itemEffects.push($(this).text());
+		});
 		$('#equipment .item .equip select').each( function() {
 			itemStates.push($(this).val());
 		});
@@ -1631,6 +1640,7 @@ function saveSheet() {
 		});
 		if ( itemNames.length < 1 ) {
 			itemNames = "";
+			itemEffects = "";
 			itemIDs = "";
 			itemStates = "";
 			itemTypes = "";
@@ -1638,6 +1648,7 @@ function saveSheet() {
 		} else {
 			itemNames = itemNames.join('¬');
 			itemIDs = itemIDs.join('¬');
+			itemEffects = itemEffects.join('¬');
 			itemStates = itemStates.join('¬');
 			itemTypes = itemTypes.join('¬');
 			itemCosts = itemCosts.join('¬');
@@ -1758,6 +1769,7 @@ function saveSheet() {
 				"skills": skillsArray,
 				"items": itemNames,
 				"item-ids": itemIDs,
+				"item-effects": itemEffects,
 				"item-states": itemStates,
 				"item-types": itemTypes,
 				"item-costs": itemCosts,
@@ -1971,17 +1983,18 @@ function loadCharaSheet(sheetID,autoLoad) {
 								$(this).remove();
 							});
 							var itemNames = record.get('items').split('¬');
+							var itemEffects = record.get('item-effects').split('¬');
 							var itemStates = record.get('item-states').split('¬');
 							var itemTypes = record.get('item-types').split('¬');
 							var itemCosts = record.get('item-costs').split('¬');
 							if ( record.get('item-ids') ) {
 								var itemIDs = record.get('item-ids').split('¬');
 								for (var i = 0; i < itemNames.length; i++) {
-									addItem(itemIDs[i],itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
+									addItem(itemIDs[i],itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
 								}
 							} else {
 								for (var i = 0; i < itemNames.length; i++) {
-									addItem(undefined,itemNames[i],itemTypes[i],itemCosts[i],itemStates[i]);
+									addItem(undefined,itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
 								}
 							}
 						} else {

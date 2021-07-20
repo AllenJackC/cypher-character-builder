@@ -470,10 +470,10 @@ div.proficiency {
 #contacts td.effect {
 	width: 50%;
 }
-#contacts td.name, #contacts td.skill, #artifacts td.name {
+#contacts td.name, #contacts td.skill, #artifacts td.name, #equipment td.name, #cyberware td.name {
 	width: 20%;
 }
-#artifacts td.effect {
+#artifacts td.effect, #equipment td.effect, #cyberware td.effect {
 	width: 75%;
 }
 #cyber-content {
@@ -1790,6 +1790,27 @@ input#sheet-id.loaded {
 	height: 16px;
     line-height: 1em;
     border-top: 1px solid black;
+}
+@media (prefers-color-scheme: dark) {
+	:root {
+		--white: #FBFBFB;
+		--black: #212931;
+		--black-translucent: #212931FA;
+		--light-grey: #B6B4B4;
+		--dark-grey: #375473;
+		--button: #6C501B;
+		--button-hover: #7A5A1F;
+		--button-active: #513C15;
+		--secondary-button: #BDBDDB;
+		--secondary-button-hover: #DEDEED;
+		--secondary-button-active: #9C9CC9;
+		--selected: #E6B83D;
+		--selected-hover: #ECC96A;
+		--selected-active: #D4A31C;
+		--remove: #EF4B39;
+		--remove-hover: #F7A399;
+		--remove-active: #F37668;
+	}
 }
 @media (any-hover: none) {
 	h4 {
