@@ -456,6 +456,7 @@ function populateFoci() {
 	//If the type is NOT selected, and both species are selected
 	} else if ( !typeVal && priSpeciesVal && secSpeciesVal.length > 0 ) {
 		fociOptions.each( function() {
+			var thisOption = $(this);
 			var resSpecies = String($(this).data('restricted-species'));
 			if ( resSpecies ) {
 				var speciesArray = resSpecies.split('');
