@@ -474,6 +474,7 @@ function populateFoci() {
 		fociOptions.each( function() {
 			var resSpecies = String($(this).data('restricted-species'));
 			var resTypes = $(this).data('restricted-types');
+			var thisOption = $(this);
 			if ( resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
 				var typesArray = resTypes.match(/.{1,2}/g);
@@ -495,6 +496,7 @@ function populateFoci() {
 		fociOptions.each( function() {
 			var resSpecies = String($(this).data('restricted-species'));
 			var resTypes = $(this).data('restricted-types');
+			var thisOption = $(this);
 			if ( resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
 				var typesArray = resTypes.match(/.{1,2}/g);
@@ -524,6 +526,7 @@ function populateFoci() {
 		fociOptions.each( function() {
 			var resSpecies = String($(this).data('restricted-species'));
 			var resTypes = $(this).data('restricted-types');
+			var thisOption = $(this);
 			if ( resTypes && resSpecies ) {
 				var speciesArray = resSpecies.split('');
 				var typesArray = resTypes.match(/.{1,2}/g);
