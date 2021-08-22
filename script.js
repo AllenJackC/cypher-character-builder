@@ -1995,10 +1995,12 @@ function loadCharaSheet(sheetID,autoLoad) {
 							if ( record.get('item-ids') ) {
 								var itemIDs = record.get('item-ids').split('¬');
 								for (var i = 0; i < itemNames.length; i++) {
+									itemCosts[i] = itemCosts[i].toString();
 									addItem(itemIDs[i],itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
 								}
 							} else {
 								for (var i = 0; i < itemNames.length; i++) {
+									itemCosts[i] = itemCosts[i].toString();
 									addItem(undefined,itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
 								}
 							}
