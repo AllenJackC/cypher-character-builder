@@ -1367,6 +1367,7 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 		$('.type select', thisItem).val(itemType);
 		$('.type select', thisItem).trigger('chosen:updated');
 		$('.value select', thisItem).val(itemValue);
+		console.log(itemName);
 		console.log(itemValue);
 		console.log($('.value select', thisItem).val());
 		$('.value select', thisItem).trigger('chosen:updated');
