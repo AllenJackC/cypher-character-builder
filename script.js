@@ -1363,9 +1363,11 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 	else inventoryList.append(itemToAdd);
 	if ( itemName ) {
 		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
+		console.log(itemValue);
+		itemValue = itemValue.toString();
+		console.log(itemValue);
 		$('.type select', thisItem).val(itemType);
 		$('.type select', thisItem).trigger('chosen:updated');
-		console.log(itemValue);
 		$('.value select', thisItem).val(itemValue);
 		$('.value select', thisItem).trigger('chosen:updated');
 		if ( itemState ) {
@@ -1997,9 +1999,7 @@ function loadCharaSheet(sheetID,autoLoad) {
 							if ( record.get('item-ids') ) {
 								var itemIDs = record.get('item-ids').split('¬');
 								for (var i = 0; i < itemNames.length; i++) {
-									
-									console.log(itemCosts[i]);
-									addItem(itemIDs[i],itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
+																		addItem(itemIDs[i],itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
 								}
 							} else {
 								for (var i = 0; i < itemNames.length; i++) {
