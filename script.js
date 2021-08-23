@@ -1363,12 +1363,12 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 	else inventoryList.append(itemToAdd);
 	if ( itemName ) {
 		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
-		console.log(itemValue);
-		itemValue = itemValue.toString();
-		console.log(itemValue);
+		
 		$('.type select', thisItem).val(itemType);
 		$('.type select', thisItem).trigger('chosen:updated');
 		$('.value select', thisItem).val(itemValue);
+		console.log(itemValue);
+		console.log($('.value select', thisItem).val());
 		$('.value select', thisItem).trigger('chosen:updated');
 		if ( itemState ) {
 			$('.equip select',thisItem).val(itemState);
@@ -1995,11 +1995,10 @@ function loadCharaSheet(sheetID,autoLoad) {
 							var itemStates = record.get('item-states').split('¬');
 							var itemTypes = record.get('item-types').split('¬');
 							var itemCosts = record.get('item-costs').split('¬');
-							console.log(itemCosts);
 							if ( record.get('item-ids') ) {
 								var itemIDs = record.get('item-ids').split('¬');
 								for (var i = 0; i < itemNames.length; i++) {
-																		addItem(itemIDs[i],itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
+									addItem(itemIDs[i],itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
 								}
 							} else {
 								for (var i = 0; i < itemNames.length; i++) {
