@@ -1361,22 +1361,18 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 		'</tr>';
 	if ( spellID ) $(itemToAdd).insertAfter('#equipment table tr:first-child');
 	else inventoryList.append(itemToAdd);
+	populateInventorySelect();
 	if ( itemName ) {
 		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
-		
 		$('.type select', thisItem).val(itemType);
 		$('.type select', thisItem).trigger('chosen:updated');
 		$('.value select', thisItem).val(itemValue);
-		console.log(itemName);
-		console.log(itemValue);
-		console.log($('.value select', thisItem).val());
 		$('.value select', thisItem).trigger('chosen:updated');
 		if ( itemState ) {
 			$('.equip select',thisItem).val(itemState);
 			$('.equip select',thisItem).trigger('chosen:updated');
 		}
 	}
-	populateInventorySelect();
 }
 //Populate all of the active artifact select fields
 function populateArtifactSelect() {
