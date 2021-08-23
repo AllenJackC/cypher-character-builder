@@ -1363,12 +1363,12 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 	else inventoryList.append(itemToAdd);
 	if ( itemName ) {
 		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
-		$('.type select', thisItem).val(itemType);
-		$('.type select', thisItem).trigger('chosen:updated');
-		$('.value select', thisItem).val(3);
-		$('.value select', thisItem).trigger('chosen:updated');
+		$('.type select',thisItem).val(itemType);
+		$('.type select',thisItem).trigger('chosen:updated');
 		$('.equip select',thisItem).val(itemState);
 		$('.equip select',thisItem).trigger('chosen:updated');
+		$('.value select',thisItem).val(itemValue);
+		setTimeout(function(){$('.value select',thisItem).trigger('chosen:updated')},2000);
 	}
 	populateInventorySelect();
 }
