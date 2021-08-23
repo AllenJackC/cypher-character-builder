@@ -1993,9 +1993,11 @@ function loadCharaSheet(sheetID,autoLoad) {
 							var itemStates = record.get('item-states').split('¬');
 							var itemTypes = record.get('item-types').split('¬');
 							var itemCosts = record.get('item-costs').split('¬');
+							console.log(itemCosts);
 							if ( record.get('item-ids') ) {
 								var itemIDs = record.get('item-ids').split('¬');
 								for (var i = 0; i < itemNames.length; i++) {
+									
 									console.log(itemCosts[i]);
 									addItem(itemIDs[i],itemNames[i],itemEffects[i],itemTypes[i],itemCosts[i],itemStates[i]);
 								}
