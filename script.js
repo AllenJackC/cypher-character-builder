@@ -1367,8 +1367,9 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 		$('.type select',thisItem).trigger('chosen:updated');
 		$('.equip select',thisItem).val(itemState);
 		$('.equip select',thisItem).trigger('chosen:updated');
-		$('.value select',thisItem).val(itemValue);
-		setTimeout(function(){$('.value select',thisItem).trigger('chosen:updated')},2000);
+		//$('.value select',thisItem).val(itemValue);
+		$('.value select option[=' + itemValue + ']',thisItem).attr('selected', true);
+		$('.value select',thisItem).trigger('chosen:updated');
 	}
 	populateInventorySelect();
 }
