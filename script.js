@@ -1365,14 +1365,12 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
 		$('.type select', thisItem).val(itemType);
 		$('.type select', thisItem).trigger('chosen:updated');
-		$('.value select', thisItem).val(itemValue);
+		$('.value select', thisItem).val(3);
 		$('.value select', thisItem).trigger('chosen:updated');
 		$('.equip select',thisItem).val(itemState);
 		$('.equip select',thisItem).trigger('chosen:updated');
 	}
 	populateInventorySelect();
-	console.log($('.value select', thisItem).val());
-	console.log(itemName);
 }
 //Populate all of the active artifact select fields
 function populateArtifactSelect() {
