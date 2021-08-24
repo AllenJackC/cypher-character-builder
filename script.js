@@ -1361,16 +1361,15 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 		'</tr>';
 	if ( spellID ) $(itemToAdd).insertAfter('#equipment table tr:first-child');
 	else inventoryList.append(itemToAdd);
+	var thisItem;
 	if ( itemName ) {
-		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
-		$('.value select',thisItem).val(itemValue);
-		$('.value select',thisItem).trigger('chosen:updated');
-		$('.type select',thisItem).val(itemType);
-		$('.type select',thisItem).trigger('chosen:updated');
-		$('.equip select',thisItem).val(itemState);
-		$('.equip select',thisItem).trigger('chosen:updated');
+		thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
+		if ( itemValue ) $('.value select' ,thisItem).val(itemValue);
+		if ( itemType ) $('.type select' ,thisItem).val(itemType);
+		if ( itemState ) $('.equip select' ,thisItem).val(itemState);
 	}
 	populateInventorySelect();
+	$('select', thisItem).trigger('chosen:updated');
 }
 //Populate all of the active artifact select fields
 function populateArtifactSelect() {
@@ -1458,14 +1457,14 @@ function addCyberware(spellID,bodyPart,cyberwareFunction,cyberwareName,cyberware
 		'</tr>';
 	if ( spellID ) $(cyberwareToAdd).insertAfter('#cyberware table tr:first-child');
 	else cyberwareList.append(cyberwareToAdd);
+	var thisCyberware;
 	if ( cyberwareName && bodyPart ) {
-		var thisCyberware = $('.name .editable:contains("' + cyberwareName + '")').closest('.item');
+		thisCyberware = $('.name .editable:contains("' + cyberwareName + '")').closest('.item');
 		$('.type select', thisCyberware).val(bodyPart);
-		$('.type select', thisCyberware).trigger('chosen:updated');
+		if ( cyberwareValue ) $('.value select', thisCyberware).val(cyberwareValue);
 	}
-	$('.value select', thisCyberware).val(cyberwareValue);
-	$('.value select', thisCyberware).trigger('chosen:updated');
 	populateCyberwareSelect();
+	$('select', thisCyberware).trigger('chosen:updated');
 }
 //Add a blank note, unless variables are parsed
 function addNote(spellID,note) {
