@@ -1370,7 +1370,7 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 		$('.equip select',thisItem).val(itemState);
 		$('.equip select',thisItem).trigger('chosen:updated');
 	}
-	populateInventorySelect();
+	//populateInventorySelect();
 }
 //Populate all of the active artifact select fields
 function populateArtifactSelect() {
