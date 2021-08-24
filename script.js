@@ -1350,12 +1350,12 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 			'</td>' +
 			'<td class="value">' +
 				'<select>' +
-					'<option selected value="0">Priceless</option>' +
-					'<option value="1">Inexpensive</option>' +
-					'<option value="2">Moderately Priced</option>' +
-					'<option value="3">Expensive</option>' +
-					'<option value="4">Very Expensive</option>' +
-					'<option value="5">Exorbitant</option>' +
+					'<option selected value="PR">Priceless</option>' +
+					'<option value="IN">Inexpensive</option>' +
+					'<option value="MP">Moderately Priced</option>' +
+					'<option value="EP">Expensive</option>' +
+					'<option value="VE">Very Expensive</option>' +
+					'<option value="ET">Exorbitant</option>' +
 				'</select>' +
 			'</td>' +
 		'</tr>';
