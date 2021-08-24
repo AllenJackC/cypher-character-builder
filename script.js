@@ -1363,14 +1363,14 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 	else inventoryList.append(itemToAdd);
 	if ( itemName ) {
 		var thisItem = $('.name .editable:contains("' + itemName + '")').closest('.item');
-		//$('.value select',thisItem).val(itemValue);
-		//$('.value select',thisItem).trigger('chosen:updated');
+		$('.value select',thisItem).val(itemValue);
+		$('.value select',thisItem).trigger('chosen:updated');
 		$('.type select',thisItem).val(itemType);
 		$('.type select',thisItem).trigger('chosen:updated');
 		$('.equip select',thisItem).val(itemState);
 		$('.equip select',thisItem).trigger('chosen:updated');
 	}
-	//populateInventorySelect();
+	populateInventorySelect();
 }
 //Populate all of the active artifact select fields
 function populateArtifactSelect() {
@@ -1527,7 +1527,7 @@ function addContact(spellID,contactName,contactDescription,contactSkill,contactT
 		$('.type select', thisContact).val(contactType);
 		$('.type select', thisContact).trigger('chosen:updated');
 	}
-	populateInventorySelect();
+	populateContactSelect();
 }
 function arrangeSpells() {
 	if ( !isTouchDevice() ) {
