@@ -1369,7 +1369,8 @@ function addItem(spellID,itemName,itemEffect,itemType,itemValue,itemState) {
 		$('.equip select',thisItem).trigger('chosen:updated');
 		//$('.value select',thisItem).val(itemValue);
 		if (itemValue) {
-			$('.value select option[value=' + itemValue + ']',thisItem).attr('selected', true);
+			$('.value select option',thisItem).removeAttr('selected');
+			$('.value select option[value=' + itemValue + ']',thisItem).attr('selected');
 			$('.value select',thisItem).trigger('chosen:updated');
 		}
 	}
